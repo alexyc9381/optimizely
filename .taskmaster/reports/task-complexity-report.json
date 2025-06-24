@@ -1,0 +1,109 @@
+{
+	"meta": {
+		"generatedAt": "2025-06-24T05:18:09.892Z",
+		"tasksAnalyzed": 12,
+		"totalTasks": 12,
+		"analysisCount": 12,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Setup Project Infrastructure and Development Environment",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down the infrastructure setup into specific components: monorepo configuration, frontend Next.js setup, backend Node.js/Express setup, PostgreSQL database initialization, Redis configuration, deployment pipeline setup, development tooling configuration, and environment-specific configurations.",
+			"reasoning": "High complexity due to multiple technology integrations, deployment configurations, and the need to establish the foundation for the entire system. Requires expertise in DevOps, multiple frameworks, and cloud platforms."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Implement Universal B2B Visitor Tracking System",
+			"complexityScore": 9,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Decompose into: lightweight script architecture, session management system, IP-to-company mapping integration, behavioral tracking implementation, technology detection, real-time WebSocket communication, GDPR compliance features, performance optimization, cross-platform compatibility testing, and analytics integration.",
+			"reasoning": "Very high complexity requiring advanced JavaScript optimization, real-time processing, compliance considerations, and universal compatibility. The <8KB size constraint and 90%+ accuracy requirement add significant technical challenges."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Build AI Revenue Prediction Engine with Industry-Specific Models",
+			"complexityScore": 10,
+			"recommendedSubtasks": 12,
+			"expansionPrompt": "Break into: core scoring algorithm development, firmographic data processing, behavioral analysis engine, intent signal detection, timing factor calculation, industry-specific model training, buyer profile classification, competitive intelligence integration, real-time prediction updates, confidence scoring, accuracy tracking, and revenue attribution logic.",
+			"reasoning": "Maximum complexity involving machine learning, real-time processing, multiple data sources, and industry-specific customization. The 92%+ accuracy requirement demands sophisticated ML engineering and extensive testing."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Create Autonomous Revenue Optimization and Personalization System",
+			"complexityScore": 8,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Divide into: real-time trigger system, industry-specific personalization strategies, account-based personalization, progressive profiling workflows, A/B testing framework, dynamic content delivery, automated experience customization, platform integration layer, and performance optimization tracking.",
+			"reasoning": "High complexity due to real-time personalization requirements, multiple integration points, and the need for sophisticated trigger logic. Requires expertise in personalization engines and conversion optimization."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Develop Executive Revenue Intelligence Dashboard",
+			"complexityScore": 6,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Structure as: real-time pipeline visualization, revenue forecasting components, account intelligence displays, competitive monitoring interface, campaign attribution reporting, executive KPI tracking, and mobile-responsive design implementation.",
+			"reasoning": "Moderate-high complexity focused on data visualization and executive-level reporting. Requires strong frontend skills and understanding of executive decision-making needs, but less complex than core ML components."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Build Sales Intelligence Interface and Lead Management System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into: hot accounts dashboard, visitor intelligence interface, territory management system, automated lead routing, real-time notification system, lead qualification workflows, mobile application development, and sales velocity tracking.",
+			"reasoning": "High complexity requiring sales process understanding, real-time notifications, mobile development, and integration with existing sales methodologies. Multiple user interfaces and workflow automation add complexity."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Implement CRM Integration and Data Synchronization",
+			"complexityScore": 8,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Decompose into: OAuth 2.0 authentication system, bidirectional sync engine, real-time score updates, contact enrichment workflows, custom field mapping, duplicate detection system, webhook processing, error handling mechanisms, and audit logging implementation.",
+			"reasoning": "High complexity due to multiple CRM platform integrations, data consistency requirements, security considerations, and real-time synchronization challenges. Each CRM has unique API characteristics."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Create Built-in Revenue Automation Engine",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Structure as: event-driven workflow system, enterprise prospect detection, competitive intelligence workflows, account-based marketing automation, revenue attribution tracking, marketing platform integrations, automated email sequences, sales alert system, performance tracking, and rule customization engine.",
+			"reasoning": "High complexity involving workflow automation, multiple platform integrations, and event-driven architecture. Requires sophisticated rule engines and reliable automation execution."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implement Marketing Attribution and Content Intelligence System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break into: full-funnel attribution tracking, content performance analysis, campaign ROI measurement, audience segmentation engine, A/B testing framework, analytics platform integration, attribution modeling, and automated reporting system.",
+			"reasoning": "High complexity requiring advanced analytics, multi-touch attribution modeling, and integration with various marketing platforms. Complex data processing and attribution logic needed."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Build Enterprise Security and Compliance Framework",
+			"complexityScore": 9,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Divide into: encryption implementation, SOC2 compliance setup, GDPR compliance features, RBAC system, SSO integration, data residency management, audit logging system, security monitoring, compliance reporting, and disaster recovery implementation.",
+			"reasoning": "Very high complexity due to multiple compliance requirements, security standards, and enterprise-grade features. Requires deep security expertise and understanding of various regulatory frameworks."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Develop Real-time Performance Optimization and Monitoring",
+			"complexityScore": 8,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Structure as: API performance monitoring, WebSocket optimization, database optimization, Redis clustering, CDN integration, auto-scaling configuration, performance analytics, caching strategies, and load balancing setup.",
+			"reasoning": "High complexity requiring expertise in performance optimization, scalability architecture, and real-time monitoring. Enterprise-scale requirements and sub-200ms response time targets add significant technical challenges."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Create Comprehensive Testing Suite and Quality Assurance Framework",
+			"complexityScore": 6,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down into: unit testing implementation, integration testing suite, performance testing framework, end-to-end testing, A/B testing infrastructure, automated testing pipeline, accuracy validation system, and user acceptance testing coordination.",
+			"reasoning": "Moderate-high complexity as it spans the entire system but follows established testing patterns. Requires comprehensive coverage of all components and integration with CI/CD pipeline."
+		}
+	]
+}
