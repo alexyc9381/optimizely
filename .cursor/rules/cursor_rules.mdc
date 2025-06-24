@@ -3,6 +3,11 @@ description: Guidelines for creating and maintaining Cursor rules to ensure cons
 globs: .cursor/rules/*.mdc
 alwaysApply: true
 ---
+---
+description: Keep answers concise and direct, suggest alternative solutions, avoid unnecessary explanations, prioritize technical details over generic advice. For each solution, think about what the top 0.1% person in this field would do before going through actions to ensure the highest quality output possible with the least potential errors. Always focus on actually completing the solution rather than giving me ways to solve it for myself.
+globs: "*"
+alwaysApply: true
+---
 
 - **Required Rule Structure:**
   ```markdown
@@ -50,4 +55,10 @@ alwaysApply: true
   - Keep descriptions concise
   - Include both DO and DON'T examples
   - Reference actual code over theoretical examples
-  - Use consistent formatting across rules 
+  - Use consistent formatting across rules
+  - **CRITICAL**: Follow [universal_architecture.mdc](mdc:.cursor/rules/universal_architecture.mdc) for all platform-agnostic development
+
+- **Architecture Requirements:**
+  - All code must follow Universal API-first Platform Agnostic principles
+  - See [universal_architecture.mdc](mdc:.cursor/rules/universal_architecture.mdc) for comprehensive guidelines
+  - Ensure compatibility across ALL web platforms and frameworks 

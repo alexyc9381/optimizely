@@ -5,6 +5,20 @@
 ### Vision Statement
 Build an AI-powered revenue intelligence platform that transforms website visitors into qualified leads for B2B companies by predicting purchase intent in real-time and automatically personalizing the experience to maximize conversion rates by 40%+.
 
+---
+### Universal, API-First, Platform-Agnostic Architecture
+**Core Principle:** The platform is designed as a universal, API-first, and platform-agnostic system. All core intelligence, optimization, and data processing logic is exposed via APIs that do not assume any specific frontend or backend technology stack.
+
+- **API endpoints** must be decoupled from any particular frontend or backend implementation.
+- **Data models** must be flexible and extensible to support a wide range of integration scenarios and future requirements.
+- **Authentication** must support multi-tenancy and secure, scalable integrations.
+- **SDKs/adapters** for popular platforms (e.g., React, Next.js, WordPress, Shopify, etc.) are planned, but not required for the MVP.
+- **Documentation and onboarding** must be prioritized to enable third-party developers to easily integrate and extend the platform.
+
+All technical and product decisions must align with this universal, API-first vision to ensure long-term adaptability and ease of integration across diverse web platforms.
+
+---
+
 ### Business Context
 - **Target Market**: B2B companies with 6+ figure deals (SaaS, Professional Services, Manufacturing, Consulting)
 - **Problem**: Only 2-4% of B2B website visitors convert to qualified leads
