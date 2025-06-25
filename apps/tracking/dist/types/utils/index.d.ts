@@ -1,0 +1,22 @@
+export declare function generateVisitorId(): string;
+export declare function generateSessionId(): string;
+export declare function now(): number;
+export declare function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void;
+export declare function throttle<T extends (...args: any[]) => void>(func: T, limit: number): (...args: Parameters<T>) => void;
+export declare function isBrowser(): boolean;
+export declare function isProduction(): boolean;
+export declare function safeJsonParse<T>(str: string, fallback: T): T;
+export declare function safeJsonStringify(obj: any): string;
+export declare function getCurrentUrl(): string;
+export declare function getCurrentTitle(): string;
+export declare function getReferrer(): string;
+export declare function getUserAgent(): string;
+export declare function detectPlatform(): string;
+export declare function detectBrowser(): string;
+export declare function isElementVisible(element: Element): boolean;
+export declare function getScrollDepth(): number;
+export declare function domReady(callback: () => void): void;
+export declare function addEventListener(element: EventTarget, event: string, handler: EventListener, options?: boolean | AddEventListenerOptions): () => void;
+export declare function simpleHash(str: string): number;
+export declare function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T;
+//# sourceMappingURL=index.d.ts.map
