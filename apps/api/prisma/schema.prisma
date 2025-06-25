@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file for LOCAL DEVELOPMENT,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -10,12 +7,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 // =============================================================================
-// UNIVERSAL PLATFORM-AGNOSTIC SCHEMA
+// UNIVERSAL PLATFORM-AGNOSTIC SCHEMA - SQLITE VERSION
 // Designed to work with ANY website platform (WordPress, Shopify, React, etc.)
 // =============================================================================
 
@@ -24,13 +21,13 @@ model Visitor {
   id                String   @id @default(cuid())
   anonymousId       String   @unique // Universal anonymous tracking ID
   identifiedAt      DateTime?
-  
+
   // Universal platform detection
   platformType      String?  // "wordpress", "shopify", "react", "vue", "static", etc.
   platformVersion   String?  // Platform version detected
   firstSeen         DateTime @default(now())
   lastSeen          DateTime @updatedAt
-  
+
   // Universal device/browser tracking
   userAgent         String?
   deviceType        String?  // "desktop", "mobile", "tablet"
@@ -40,30 +37,29 @@ model Visitor {
   screenResolution  String?
   timezone          String?
   language          String?
-  
+
   // Universal location tracking
   country           String?
   region            String?
   city              String?
   ipAddress         String?
-  
+
   // Business intelligence
   isBot             Boolean  @default(false)
   totalSessions     Int      @default(0)
   totalPageViews    Int      @default(0)
   totalEvents       Int      @default(0)
-  lifetimeValue     Float    @default(0)
-  
+  lifetimeValue     Float    @default(0) // Float for SQLite
+
   // Relationships
   sessions          Session[]
   pageViews         PageView[]
   events            Event[]
   companies         CompanyVisitor[]
-  experiments       ExperimentParticipant[]
-  
+
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
   @@map("visitors")
 }
 
@@ -72,7 +68,7 @@ model Session {
   id                String   @id @default(cuid())
   visitorId         String
   sessionId         String   @unique // Universal session identifier
-  
+
   // Universal platform context
   platformType      String   // Platform where session occurred
   platformVersion   String?
@@ -83,7 +79,7 @@ model Session {
   utmCampaign       String?
   utmTerm           String?
   utmContent        String?
-  
+
   // Session metrics
   startTime         DateTime @default(now())
   endTime           DateTime?
@@ -92,21 +88,21 @@ model Session {
   eventCount        Int      @default(0)
   bounced           Boolean  @default(false)
   converted         Boolean  @default(false)
-  
+
   // Universal device context
   deviceType        String?
   browserName       String?
   operatingSystem   String?
   screenResolution  String?
-  
+
   // Relationships
   visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
   pageViews         PageView[]
   events            Event[]
-  
+
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
   @@map("sessions")
 }
 
@@ -115,34 +111,34 @@ model PageView {
   id                String   @id @default(cuid())
   visitorId         String
   sessionId         String
-  
+
   // Universal page identification
   url               String   // Full URL
   path              String   // Path portion
   title             String?  // Page title
   canonical         String?  // Canonical URL
-  
+
   // Universal platform context
   platformType      String   // Platform serving the page
   platformVersion   String?
-  
+
   // Page performance metrics
   loadTime          Int?     // Page load time in ms
   timeOnPage        Int?     // Time spent on page in seconds
   scrollDepth       Float?   // Scroll depth percentage
-  
+
   // Navigation context
   referrer          String?
   isLandingPage     Boolean  @default(false)
   isExitPage        Boolean  @default(false)
-  
+
   // Relationships
   visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
   session           Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   events            Event[]
-  
+
   timestamp         DateTime @default(now())
-  
+
   @@map("page_views")
 }
 
@@ -152,262 +148,67 @@ model Event {
   visitorId         String
   sessionId         String?
   pageViewId        String?
-  
+
   // Universal event identification
   eventType         String   // "click", "form_submit", "purchase", "scroll", etc.
   eventCategory     String?  // "interaction", "commerce", "engagement"
   eventAction       String   // Specific action performed
   eventLabel        String?  // Additional context
   eventValue        Float?   // Numeric value if applicable
-  
+
   // Universal platform context
   platformType      String   // Platform where event occurred
   platformVersion   String?
-  
-  // Event context (flexible JSON)
-  properties        Json?    // Any additional event properties
-  
+
+  // Event context (flexible JSON stored as TEXT in SQLite)
+  properties        String?  // JSON string for SQLite compatibility
+
   // Element context (for UI events)
   elementSelector   String?  // CSS selector or element identifier
   elementText       String?  // Text content of element
   elementType       String?  // Element type (button, link, form, etc.)
-  
+
   // Relationships
   visitor           Visitor   @relation(fields: [visitorId], references: [id], onDelete: Cascade)
   session           Session?  @relation(fields: [sessionId], references: [id], onDelete: SetNull)
   pageView          PageView? @relation(fields: [pageViewId], references: [id], onDelete: SetNull)
-  
+
   timestamp         DateTime @default(now())
-  
+
   @@map("events")
 }
 
-// Universal company identification and B2B tracking
+// Simplified models for SQLite compatibility
 model Company {
   id                String   @id @default(cuid())
-  domain            String   @unique // Company domain
+  domain            String   @unique
   name              String
-  
-  // Company intelligence
   industry          String?
-  size              String?  // "startup", "small", "medium", "enterprise"
+  size              String?
   location          String?
-  revenue           String?  // Revenue range
-  techStack         String[] // Technologies detected
-  
-  // Firmographic data
-  employeeCount     Int?
-  foundedYear       Int?
-  description       String?
-  website           String?
-  
-  // Platform usage patterns
-  platformTypes     String[] // Platforms this company uses
-  
+  revenue           String?
+
   // Relationships
   visitors          CompanyVisitor[]
-  
+
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
   @@map("companies")
 }
 
-// Junction table for visitor-company relationships
 model CompanyVisitor {
   id                String   @id @default(cuid())
-  visitorId         String
   companyId         String
-  
-  // Confidence and identification
-  confidence        Float    @default(0) // 0-1 confidence score
-  identificationMethod String // "domain", "ip", "email", "manual"
-  
-  // Relationships
-  visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
-  company           Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  
-  createdAt         DateTime @default(now())
-  
-  @@unique([visitorId, companyId])
-  @@map("company_visitors")
-}
-
-// Universal A/B testing and experimentation
-model Experiment {
-  id                String   @id @default(cuid())
-  name              String
-  description       String?
-  
-  // Universal platform support
-  platformTypes     String[] // Platforms this experiment can run on
-  
-  // Experiment configuration
-  status            String   @default("draft") // "draft", "active", "paused", "completed"
-  trafficSplit      Float    @default(0.5) // Percentage of traffic to include
-  startDate         DateTime?
-  endDate           DateTime?
-  
-  // Targeting rules (flexible JSON)
-  targetingRules    Json?    // Platform-agnostic targeting rules
-  
-  // Success metrics
-  primaryMetric     String?  // Primary success metric
-  secondaryMetrics  String[] // Additional metrics to track
-  
-  // Statistical configuration
-  confidenceLevel   Float    @default(0.95)
-  minimumSampleSize Int?
-  minimumDetectableEffect Float?
-  
-  // Relationships
-  variants          ExperimentVariant[]
-  participants      ExperimentParticipant[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  
-  @@map("experiments")
-}
-
-// Experiment variants (A/B test variations)
-model ExperimentVariant {
-  id                String   @id @default(cuid())
-  experimentId      String
-  name              String   // "control", "variation_a", etc.
-  description       String?
-  
-  // Universal implementation
-  implementationType String  // "javascript", "server_side", "redirect"
-  configuration     Json?    // Platform-agnostic configuration
-  
-  // Traffic allocation
-  trafficPercentage Float    // Percentage of experiment traffic
-  
-  // Relationships
-  experiment        Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
-  participants      ExperimentParticipant[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  
-  @@map("experiment_variants")
-}
-
-// Visitor participation in experiments
-model ExperimentParticipant {
-  id                String   @id @default(cuid())
   visitorId         String
-  experimentId      String
-  variantId         String
-  
-  // Participation context
-  assignedAt        DateTime @default(now())
-  firstExposure     DateTime @default(now())
-  lastExposure      DateTime @updatedAt
-  exposureCount     Int      @default(1)
-  
-  // Universal platform context
-  platformType      String   // Platform where participation occurred
-  
-  // Conversion tracking
-  converted         Boolean  @default(false)
-  conversionValue   Float?
-  conversionTime    DateTime?
-  
+  confidence        Float    @default(0) // Float for SQLite
+
   // Relationships
-  visitor           Visitor           @relation(fields: [visitorId], references: [id], onDelete: Cascade)
-  experiment        Experiment        @relation(fields: [experimentId], references: [id], onDelete: Cascade)
-  variant           ExperimentVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  
-  @@unique([visitorId, experimentId])
-  @@map("experiment_participants")
-}
+  company           Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
 
-// Universal optimization recommendations
-model OptimizationRecommendation {
-  id                String   @id @default(cuid())
-  
-  // Universal targeting
-  platformTypes     String[] // Platforms this applies to
-  pagePatterns      String[] // URL patterns this applies to
-  
-  // Recommendation details
-  title             String
-  description       String
-  category          String   // "performance", "conversion", "engagement", "accessibility"
-  priority          String   // "low", "medium", "high", "critical"
-  
-  // Implementation guidance
-  implementationType String  // "css", "javascript", "content", "structural"
-  implementationGuide String // Step-by-step implementation
-  expectedImpact    String?  // Expected improvement
-  
-  // Validation
-  status            String   @default("pending") // "pending", "implemented", "testing", "dismissed"
-  confidence        Float?   // AI confidence score 0-1
-  
-  // Performance tracking
-  implementedAt     DateTime?
-  measuredImpact    Float?   // Actual measured improvement
-  
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  
-  @@map("optimization_recommendations")
-}
 
-// Universal analytics aggregations for performance
-model DailyAnalytics {
-  id                String   @id @default(cuid())
-  date              DateTime @db.Date
-  
-  // Universal platform breakdown
-  platformType      String
-  
-  // Core metrics
-  uniqueVisitors    Int      @default(0)
-  totalSessions     Int      @default(0)
-  totalPageViews    Int      @default(0)
-  totalEvents       Int      @default(0)
-  
-  // Engagement metrics
-  averageSessionDuration Float @default(0)
-  bounceRate        Float    @default(0)
-  pagesPerSession   Float    @default(0)
-  
-  // Conversion metrics
-  conversions       Int      @default(0)
-  conversionRate    Float    @default(0)
-  revenue           Float    @default(0)
-  
-  createdAt         DateTime @default(now())
-  
-  @@unique([date, platformType])
-  @@map("daily_analytics")
-}
-
-// Universal API rate limiting and usage tracking
-model ApiUsage {
-  id                String   @id @default(cuid())
-  
-  // Universal client identification
-  clientId          String?  // API client identifier
-  platformType      String   // Platform making requests
-  ipAddress         String
-  
-  // Usage metrics
-  endpoint          String   // API endpoint called
-  method            String   // HTTP method
-  requestCount      Int      @default(1)
-  responseTime      Float?   // Average response time
-  errorCount        Int      @default(0)
-  
-  // Time aggregation
-  hour              DateTime @db.Timestamp(3)
-  
-  createdAt         DateTime @default(now())
-  
-  @@unique([clientId, platformType, endpoint, method, hour])
-  @@map("api_usage")
+  @@unique([companyId, visitorId])
+  @@map("company_visitors")
 }

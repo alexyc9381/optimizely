@@ -1,0 +1,196 @@
+# Staging Docker Compose
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: optimizely-postgres-staging
+    environment:
+      POSTGRES_DB: optimizely_staging
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-staging_password}
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: optimizely-redis-staging
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-staging_redis}
+    volumes:
+      - redis_staging_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-staging_redis}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
+  # API Service
+  api:
+    image: ghcr.io/${GITHUB_REPOSITORY:-optimizely}/api:staging
+    container_name: optimizely-api-staging
+    environment:
+      NODE_ENV: staging
+      PORT: 4000
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-staging_password}@postgres:5432/optimizely_staging
+      REDIS_URL: redis://:${REDIS_PASSWORD:-staging_redis}@redis:6379
+      API_PORT: 4000
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://staging.optimizely.ai}
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 200
+      JWT_SECRET: ${JWT_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+      LOG_LEVEL: info
+      # Analytics and monitoring
+      SENTRY_DSN: ${SENTRY_DSN}
+      DATADOG_API_KEY: ${DATADOG_API_KEY}
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - api_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  # Web Service
+  web:
+    image: ghcr.io/${GITHUB_REPOSITORY:-optimizely}/web:staging
+    container_name: optimizely-web-staging
+    environment:
+      NODE_ENV: staging
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api-staging.optimizely.ai}
+      NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-wss://api-staging.optimizely.ai}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://staging.optimizely.ai}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      # Analytics and monitoring
+      NEXT_PUBLIC_GA_ID: ${GA_ID}
+      NEXT_PUBLIC_HOTJAR_ID: ${HOTJAR_ID}
+      SENTRY_DSN: ${SENTRY_DSN}
+    ports:
+      - "3001:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: optimizely-nginx-staging
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/staging.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - api
+      - web
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.1'
+
+  # Monitoring and logging
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.0
+    container_name: optimizely-filebeat-staging
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - api_logs:/var/log/api:ro
+      - nginx_logs:/var/log/nginx:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
+      - KIBANA_HOST=${KIBANA_HOST}
+    networks:
+      - optimizely-staging
+    restart: unless-stopped
+    depends_on:
+      - api
+      - web
+
+volumes:
+  postgres_staging_data:
+    driver: local
+  redis_staging_data:
+    driver: local
+  api_logs:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  optimizely-staging:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

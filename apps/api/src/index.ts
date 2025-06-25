@@ -1,21 +1,19 @@
-import express, { Request, Response, NextFunction } from 'express';
+import compression from 'compression';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
-import rateLimit from 'express-rate-limit';
-import compression from 'compression';
 import { db } from './services/database';
-import { redisManager } from './services/redis-client';
-import { cacheService } from './services/cache-service';
-import { sessionManager } from './services/session-manager';
 import { eventManager } from './services/event-manager';
+import { redisManager } from './services/redis-client';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.API_PORT || process.env.PORT || 4000;
 const apiVersion = 'v1';
 
 // =============================================================================
@@ -43,9 +41,9 @@ app.use(cors({
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'X-API-Key', 
+    'Content-Type',
+    'Authorization',
+    'X-API-Key',
     'X-Platform-Type',
     'X-Platform-Version',
     'X-Session-ID'
@@ -85,7 +83,7 @@ app.use((req, res, next) => {
   // Detect platform from headers or user agent
   const platformHeader = req.headers['x-platform-type'] as string;
   const userAgent = req.headers['user-agent'] as string;
-  
+
   let detectedPlatform = 'unknown';
   if (platformHeader) {
     detectedPlatform = platformHeader;
@@ -100,13 +98,13 @@ app.use((req, res, next) => {
     else if (userAgent.includes('Angular')) detectedPlatform = 'angular';
     else detectedPlatform = 'generic-web';
   }
-  
+
   req.platform = {
     type: detectedPlatform,
     version: req.headers['x-platform-version'] as string || 'unknown',
     userAgent: userAgent
   };
-  
+
   next();
 });
 
@@ -122,10 +120,10 @@ app.get('/health', async (req, res) => {
       redisManager.healthCheck(),
       eventManager.healthCheck()
     ]);
-    
+
     const overallHealthy = dbHealthy && redisHealth.status === 'healthy';
-    
-    res.json({ 
+
+    res.json({
       status: overallHealthy ? 'ok' : 'degraded',
       message: 'Universal API is running!',
       version: apiVersion,
@@ -160,8 +158,8 @@ app.get('/health', async (req, res) => {
 
 // Legacy root endpoint for compatibility
 app.get('/', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     message: 'API is running!',
     version: apiVersion,
     documentation: `/api/${apiVersion}/docs`
@@ -224,7 +222,7 @@ app.get(`/api/${apiVersion}/docs`, (req, res) => {
       }
     },
     supportedPlatforms: [
-      'WordPress', 'Shopify', 'Wix', 'Squarespace', 
+      'WordPress', 'Shopify', 'Wix', 'Squarespace',
       'React', 'Vue', 'Angular', 'Static HTML', 'Universal'
     ]
   });
@@ -253,7 +251,7 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('Error:', err);
-  
+
   res.status(err.status || 500).json({
     error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
     message: 'An error occurred processing your request',
@@ -268,32 +266,27 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 async function startServer() {
   try {
-    // Initialize database connection
-    await db.connect();
-    await db.runMigrations();
-    
+    // Try to initialize database connection, but don't fail if it's not available
+    try {
+      await db.connect();
+      await db.runMigrations();
+      console.log(`🔌 Database connection established`);
+    } catch (dbError) {
+      console.log('⚠️  Database connection failed, continuing without database (degraded mode)');
+      console.log('   Database will be available once DATABASE_URL is configured');
+    }
+
     const server = app.listen(port, () => {
       console.log(`🚀 Universal API server listening at http://localhost:${port}`);
       console.log(`📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`);
       console.log(`🏥 Health check available at http://localhost:${port}/health`);
       console.log(`🌍 Platform-agnostic architecture enabled`);
-      console.log(`🔌 Database connection established`);
     });
-    
+
     return server;
   } catch (error) {
     console.error('❌ Failed to start server:', error);
-    console.log('⚠️  Server starting without database connection (will show as degraded)');
-    
-    const server = app.listen(port, () => {
-      console.log(`🚀 Universal API server listening at http://localhost:${port} (degraded mode)`);
-      console.log(`📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`);
-      console.log(`🏥 Health check available at http://localhost:${port}/health`);
-      console.log(`🌍 Platform-agnostic architecture enabled`);
-      console.log(`⚠️  Database connection not available`);
-    });
-    
-    return server;
+    throw error;
   }
 }
 
@@ -326,4 +319,4 @@ declare global {
       };
     }
   }
-} 
+}

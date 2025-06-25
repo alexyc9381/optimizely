@@ -1,0 +1,215 @@
+// This is your Prisma schema file for LOCAL DEVELOPMENT,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// UNIVERSAL PLATFORM-AGNOSTIC SCHEMA - SQLITE VERSION
+// Designed to work with ANY website platform (WordPress, Shopify, React, etc.)
+// =============================================================================
+
+// Universal visitor tracking and identification
+model Visitor {
+  id                String   @id @default(cuid())
+  anonymousId       String   @unique // Universal anonymous tracking ID
+  identifiedAt      DateTime?
+
+  // Universal platform detection
+  platformType      String?  // "wordpress", "shopify", "react", "vue", "static", etc.
+  platformVersion   String?  // Platform version detected
+  firstSeen         DateTime @default(now())
+  lastSeen          DateTime @updatedAt
+
+  // Universal device/browser tracking
+  userAgent         String?
+  deviceType        String?  // "desktop", "mobile", "tablet"
+  browserName       String?
+  browserVersion    String?
+  operatingSystem   String?
+  screenResolution  String?
+  timezone          String?
+  language          String?
+
+  // Universal location tracking
+  country           String?
+  region            String?
+  city              String?
+  ipAddress         String?
+
+  // Business intelligence
+  isBot             Boolean  @default(false)
+  totalSessions     Int      @default(0)
+  totalPageViews    Int      @default(0)
+  totalEvents       Int      @default(0)
+  lifetimeValue     Real     @default(0) // Changed from Float to Real for SQLite
+
+  // Relationships
+  sessions          Session[]
+  pageViews         PageView[]
+  events            Event[]
+  companies         CompanyVisitor[]
+  experiments       ExperimentParticipant[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("visitors")
+}
+
+// Universal session tracking across all platforms
+model Session {
+  id                String   @id @default(cuid())
+  visitorId         String
+  sessionId         String   @unique // Universal session identifier
+
+  // Universal platform context
+  platformType      String   // Platform where session occurred
+  platformVersion   String?
+  websiteUrl        String   // Base URL of the website
+  referrerUrl       String?
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  utmTerm           String?
+  utmContent        String?
+
+  // Session metrics
+  startTime         DateTime @default(now())
+  endTime           DateTime?
+  duration          Int?     // Duration in seconds
+  pageViewCount     Int      @default(0)
+  eventCount        Int      @default(0)
+  bounced           Boolean  @default(false)
+  converted         Boolean  @default(false)
+
+  // Universal device context
+  deviceType        String?
+  browserName       String?
+  operatingSystem   String?
+  screenResolution  String?
+
+  // Relationships
+  visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  pageViews         PageView[]
+  events            Event[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+// Universal page tracking - works with any URL structure
+model PageView {
+  id                String   @id @default(cuid())
+  visitorId         String
+  sessionId         String
+
+  // Universal page identification
+  url               String   // Full URL
+  path              String   // Path portion
+  title             String?  // Page title
+  canonical         String?  // Canonical URL
+
+  // Universal platform context
+  platformType      String   // Platform serving the page
+  platformVersion   String?
+
+  // Page performance metrics
+  loadTime          Int?     // Page load time in ms
+  timeOnPage        Int?     // Time spent on page in seconds
+  scrollDepth       Real?    // Scroll depth percentage (Real for SQLite)
+
+  // Navigation context
+  referrer          String?
+  isLandingPage     Boolean  @default(false)
+  isExitPage        Boolean  @default(false)
+
+  // Relationships
+  visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  session           Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  events            Event[]
+
+  timestamp         DateTime @default(now())
+
+  @@map("page_views")
+}
+
+// Universal event tracking - supports any event type from any platform
+model Event {
+  id                String   @id @default(cuid())
+  visitorId         String
+  sessionId         String?
+  pageViewId        String?
+
+  // Universal event identification
+  eventType         String   // "click", "form_submit", "purchase", "scroll", etc.
+  eventCategory     String?  // "interaction", "commerce", "engagement"
+  eventAction       String   // Specific action performed
+  eventLabel        String?  // Additional context
+  eventValue        Real?    // Numeric value if applicable (Real for SQLite)
+
+  // Universal platform context
+  platformType      String   // Platform where event occurred
+  platformVersion   String?
+
+  // Event context (flexible JSON stored as TEXT in SQLite)
+  properties        String?  // JSON string for SQLite compatibility
+
+  // Element context (for UI events)
+  elementSelector   String?  // CSS selector or element identifier
+  elementText       String?  // Text content of element
+  elementType       String?  // Element type (button, link, form, etc.)
+
+  // Relationships
+  visitor           Visitor   @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  session           Session?  @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  pageView          PageView? @relation(fields: [pageViewId], references: [id], onDelete: SetNull)
+
+  timestamp         DateTime @default(now())
+
+  @@map("events")
+}
+
+// Simplified models for SQLite compatibility
+model Company {
+  id                String   @id @default(cuid())
+  domain            String   @unique
+  name              String
+  industry          String?
+  size              String?
+  location          String?
+  revenue           String?
+
+  // Relationships
+  visitors          CompanyVisitor[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model CompanyVisitor {
+  id                String   @id @default(cuid())
+  companyId         String
+  visitorId         String
+  confidence        Real     @default(0) // Real instead of Float
+
+  // Relationships
+  company           Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  visitor           Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime @default(now())
+
+  @@unique([companyId, visitorId])
+  @@map("company_visitors")
+}

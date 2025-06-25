@@ -1,0 +1,15 @@
+{
+  "*.{ts,tsx,js,jsx}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "*.{json,md,yml,yaml}": [
+    "prettier --write"
+  ],
+  "apps/api/src/**/*.ts": [
+    "npm run test:api --passWithNoTests"
+  ],
+  "apps/web/src/**/*.{ts,tsx}": [
+    "npm run test:web --passWithNoTests"
+  ]
+} 

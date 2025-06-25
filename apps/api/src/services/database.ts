@@ -7,18 +7,26 @@ import { PrismaClient } from '../generated/prisma';
 
 class DatabaseService {
   private static instance: DatabaseService;
-  public prisma: PrismaClient;
+  public prisma: PrismaClient | null = null;
+  private isAvailable: boolean = false;
 
   private constructor() {
-    this.prisma = new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
-      errorFormat: 'pretty',
-    });
-    
-    // Handle graceful shutdown
-    process.on('beforeExit', async () => {
-      await this.disconnect();
-    });
+    // Check if DATABASE_URL is available
+    if (process.env.DATABASE_URL) {
+      this.prisma = new PrismaClient({
+        log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
+        errorFormat: 'pretty',
+      });
+      this.isAvailable = true;
+      
+      // Handle graceful shutdown
+      process.on('beforeExit', async () => {
+        await this.disconnect();
+      });
+    } else {
+      console.log('⚠️  DATABASE_URL not found - database operations will be disabled');
+      this.isAvailable = false;
+    }
   }
 
   public static getInstance(): DatabaseService {
@@ -29,6 +37,10 @@ class DatabaseService {
   }
 
   public async connect(): Promise<void> {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+    
     try {
       await this.prisma.$connect();
       console.log('🔌 Database connected successfully');
@@ -39,6 +51,10 @@ class DatabaseService {
   }
 
   public async disconnect(): Promise<void> {
+    if (!this.isAvailable || !this.prisma) {
+      return;
+    }
+    
     try {
       await this.prisma.$disconnect();
       console.log('📴 Database disconnected');
@@ -48,6 +64,10 @@ class DatabaseService {
   }
 
   public async healthCheck(): Promise<boolean> {
+    if (!this.isAvailable || !this.prisma) {
+      return false;
+    }
+    
     try {
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
@@ -75,6 +95,10 @@ class DatabaseService {
     region?: string;
     city?: string;
   }) {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+    
     try {
       return await this.prisma.visitor.upsert({
         where: { anonymousId: data.anonymousId },
@@ -127,6 +151,10 @@ class DatabaseService {
     utmMedium?: string;
     utmCampaign?: string;
   }) {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+    
     try {
       return await this.prisma.session.create({
         data: {
