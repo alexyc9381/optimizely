@@ -1,6 +1,7 @@
 {
   "name": "optimizely-monorepo",
   "private": true,
+  "type": "module",
   "packageManager": "npm@10.9.2",
   "workspaces": [
     "apps/*",
@@ -48,6 +49,7 @@
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.2.0",
     "husky": "^9.1.7",
     "jest": "^30.0.2",
     "jest-environment-node": "^30.0.2",

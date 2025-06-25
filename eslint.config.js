@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
@@ -14,6 +15,10 @@ export default [
         ecmaFeatures: {
           jsx: true
         }
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node
       }
     },
     plugins: {
@@ -28,11 +33,20 @@ export default [
       // Allow empty functions
       '@typescript-eslint/no-empty-function': 'off',
       // Allow require statements
-      '@typescript-eslint/no-var-requires': 'off'
+      '@typescript-eslint/no-var-requires': 'off',
+      // Disable Function type restriction for callbacks
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      // Allow prototype methods
+      'no-prototype-builtins': 'off'
     }
   },
   {
     files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    },
     rules: {
       // Allow require in JS files
       'no-undef': 'off'

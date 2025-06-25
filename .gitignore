@@ -26,4 +26,39 @@ node_modules/
 
 # Task files
 # tasks.json
-# tasks/ 
+# tasks/
+
+# Next.js build output and cache
+.next/
+out/
+
+# Turbo cache
+.turbo/
+
+# Build outputs
+build/
+dist/
+
+# Coverage reports
+coverage/
+
+# Redis
+dump.rdb
+*.rdb
+
+# Local development files
+.local/
+
+# Docker
+.dockerignore
+
+# Test outputs
+test-results/
+playwright-report/
+
+# Temporary files
+tmp/
+temp/
+
+# TypeScript build info
+*.tsbuildinfo

@@ -53,7 +53,7 @@ app.use(cors({
 }));
 
 // Compression for performance
-app.use(compression());
+app.use(compression() as any);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -74,12 +74,12 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 });
-app.use(limiter);
+app.use(limiter as any);
 
 // =============================================================================
 // UNIVERSAL PLATFORM DETECTION MIDDLEWARE
 // =============================================================================
-app.use((req, res, next) => {
+app.use((req, res, _next) => {
   // Detect platform from headers or user agent
   const platformHeader = req.headers['x-platform-type'] as string;
   const userAgent = req.headers['user-agent'] as string;
@@ -105,7 +105,7 @@ app.use((req, res, next) => {
     userAgent: userAgent
   };
 
-  next();
+  _next();
 });
 
 // =============================================================================
@@ -249,7 +249,7 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', err);
 
   res.status(err.status || 500).json({
@@ -271,7 +271,7 @@ async function startServer() {
       await db.connect();
       await db.runMigrations();
       console.log(`🔌 Database connection established`);
-    } catch (dbError) {
+    } catch (_dbError) {
       console.log('⚠️  Database connection failed, continuing without database (degraded mode)');
       console.log('   Database will be available once DATABASE_URL is configured');
     }
@@ -309,14 +309,12 @@ process.on('SIGTERM', async () => {
 });
 
 // Add platform detection to Express Request type
-declare global {
-  namespace Express {
-    interface Request {
-      platform: {
-        type: string;
-        version: string;
-        userAgent: string;
-      };
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    platform: {
+      type: string;
+      version: string;
+      userAgent: string;
+    };
   }
 }

@@ -18,7 +18,7 @@ class DatabaseService {
         errorFormat: 'pretty',
       });
       this.isAvailable = true;
-      
+
       // Handle graceful shutdown
       process.on('beforeExit', async () => {
         await this.disconnect();
@@ -40,7 +40,7 @@ class DatabaseService {
     if (!this.isAvailable || !this.prisma) {
       throw new Error('Database not available - DATABASE_URL not configured');
     }
-    
+
     try {
       await this.prisma.$connect();
       console.log('🔌 Database connected successfully');
@@ -54,7 +54,7 @@ class DatabaseService {
     if (!this.isAvailable || !this.prisma) {
       return;
     }
-    
+
     try {
       await this.prisma.$disconnect();
       console.log('📴 Database disconnected');
@@ -67,7 +67,7 @@ class DatabaseService {
     if (!this.isAvailable || !this.prisma) {
       return false;
     }
-    
+
     try {
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
@@ -98,7 +98,7 @@ class DatabaseService {
     if (!this.isAvailable || !this.prisma) {
       throw new Error('Database not available - DATABASE_URL not configured');
     }
-    
+
     try {
       return await this.prisma.visitor.upsert({
         where: { anonymousId: data.anonymousId },
@@ -154,7 +154,7 @@ class DatabaseService {
     if (!this.isAvailable || !this.prisma) {
       throw new Error('Database not available - DATABASE_URL not configured');
     }
-    
+
     try {
       return await this.prisma.session.create({
         data: {
@@ -188,9 +188,13 @@ class DatabaseService {
     referrer?: string;
     loadTime?: number;
   }) {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+
     try {
       const path = new URL(data.url).pathname;
-      
+
       return await this.prisma.pageView.create({
         data: {
           visitorId: data.visitorId,
@@ -221,11 +225,15 @@ class DatabaseService {
     eventValue?: number;
     platformType: string;
     platformVersion?: string;
-    properties?: any;
+    properties?: Record<string, unknown>;
     elementSelector?: string;
     elementText?: string;
     elementType?: string;
   }) {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+
     try {
       return await this.prisma.event.create({
         data: {
@@ -239,7 +247,7 @@ class DatabaseService {
           eventValue: data.eventValue,
           platformType: data.platformType,
           platformVersion: data.platformVersion,
-          properties: data.properties,
+          properties: data.properties ? JSON.stringify(data.properties) : null,
           elementSelector: data.elementSelector,
           elementText: data.elementText,
           elementType: data.elementType,
@@ -256,10 +264,14 @@ class DatabaseService {
   // =============================================================================
 
   public async getVisitorAnalytics(timeframe: 'day' | 'week' | 'month' = 'day') {
+    if (!this.isAvailable || !this.prisma) {
+      throw new Error('Database not available - DATABASE_URL not configured');
+    }
+
     try {
       const now = new Date();
       const startDate = new Date();
-      
+
       switch (timeframe) {
         case 'day':
           startDate.setDate(now.getDate() - 1);
@@ -290,7 +302,7 @@ class DatabaseService {
       // Platform breakdown
       const platformBreakdown = await this.prisma.visitor.groupBy({
         by: ['platformType'],
-        where: { 
+        where: {
           createdAt: { gte: startDate },
           platformType: { not: null }
         },
@@ -334,4 +346,4 @@ class DatabaseService {
 
 // Export singleton instance
 export const db = DatabaseService.getInstance();
-export default DatabaseService; 
+export default DatabaseService;
