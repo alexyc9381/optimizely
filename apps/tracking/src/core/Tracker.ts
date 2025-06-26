@@ -1,23 +1,27 @@
 import { BehavioralTracker } from '../modules/BehavioralTracker';
 import { TechnologyDetector } from '../modules/TechnologyDetector';
+import { WebSocketManager } from '../modules/WebSocketManager';
 import {
-  ConsentData,
-  EventData,
-  ModuleInterface,
-  PageViewData,
-  TechStackDetection,
-  TrackerConfig,
-  TrackerInstance,
-  VisitorSession,
+    ConsentData,
+    EventData,
+    ModuleInterface,
+    PageViewData,
+    TechStackDetection,
+    TrackerConfig,
+    TrackerInstance,
+    VisitorSession,
+    WebSocketConfig,
+    WebSocketConnectionState,
+    WebSocketMetrics,
 } from '../types';
 import {
-  deepMerge,
-  domReady,
-  getCurrentTitle,
-  getCurrentUrl,
-  getReferrer,
-  isBrowser,
-  now,
+    deepMerge,
+    domReady,
+    getCurrentTitle,
+    getCurrentUrl,
+    getReferrer,
+    isBrowser,
+    now,
 } from '../utils';
 import { EventEmitter } from './EventEmitter';
 import { SessionManager, SessionOptions } from './SessionManager';
@@ -147,6 +151,49 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     // Initialize and register technology detection module
     const technologyDetector = new TechnologyDetector();
     this.use(technologyDetector);
+
+    // Initialize and register WebSocket manager if enabled
+    if (this.config.websocket?.enabled && isBrowser()) {
+      const wsConfig = this.config.websocket;
+      const cleanConfig: Partial<WebSocketConfig> = {
+        url: wsConfig.url || '',
+      };
+
+      // Only add non-undefined values
+      if (this.config.debug !== undefined) cleanConfig.debug = this.config.debug;
+      if (wsConfig.protocols) cleanConfig.protocols = wsConfig.protocols;
+      if (wsConfig.reconnect !== undefined) cleanConfig.reconnect = wsConfig.reconnect;
+      if (wsConfig.reconnectInterval) cleanConfig.reconnectInterval = wsConfig.reconnectInterval;
+      if (wsConfig.maxReconnectAttempts) cleanConfig.maxReconnectAttempts = wsConfig.maxReconnectAttempts;
+      if (wsConfig.heartbeatInterval) cleanConfig.heartbeatInterval = wsConfig.heartbeatInterval;
+      if (wsConfig.messageQueueSize) cleanConfig.messageQueueSize = wsConfig.messageQueueSize;
+      if (wsConfig.enableCompression !== undefined) cleanConfig.enableCompression = wsConfig.enableCompression;
+      if (wsConfig.enableFallback !== undefined) cleanConfig.enableFallback = wsConfig.enableFallback;
+      if (wsConfig.fallbackUrl) cleanConfig.fallbackUrl = wsConfig.fallbackUrl;
+      if (wsConfig.timeout) cleanConfig.timeout = wsConfig.timeout;
+
+      const webSocketManager = new WebSocketManager(cleanConfig);
+
+      // Set session context for WebSocket messages
+      webSocketManager.setSessionContext(this.session.sessionId, this.session.visitorId);
+
+      // Register the module
+      this.use(webSocketManager);
+
+      // Auto-connect if enabled
+      if (wsConfig.autoConnect && wsConfig.url) {
+        try {
+          await webSocketManager.connect();
+          if (this.config.debug) {
+            console.log('WebSocket auto-connected');
+          }
+        } catch (error) {
+          if (this.config.debug) {
+            console.warn('WebSocket auto-connect failed:', error);
+          }
+        }
+      }
+    }
 
     // Start automatic flushing
     this._startFlushTimer();
@@ -304,6 +351,54 @@ export class Tracker extends EventEmitter implements TrackerInstance {
   }
 
   /**
+   * Connect to WebSocket server
+   */
+  async connectWebSocket(): Promise<void> {
+    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
+    if (!webSocketManager) {
+      throw new Error('WebSocket module not initialized');
+    }
+    return webSocketManager.connect();
+  }
+
+  /**
+   * Disconnect from WebSocket server
+   */
+  disconnectWebSocket(): void {
+    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
+    if (webSocketManager) {
+      webSocketManager.disconnect();
+    }
+  }
+
+  /**
+   * Send an event via WebSocket
+   */
+  async sendWebSocketEvent(event: string, data?: any, priority: 'low' | 'normal' | 'high' | 'critical' = 'normal'): Promise<boolean> {
+    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
+    if (!webSocketManager) {
+      return false;
+    }
+    return webSocketManager.sendEvent(event, data, priority);
+  }
+
+  /**
+   * Get WebSocket connection state
+   */
+  getWebSocketState(): WebSocketConnectionState | null {
+    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
+    return webSocketManager ? webSocketManager.getConnectionState() : null;
+  }
+
+  /**
+   * Get WebSocket metrics
+   */
+  getWebSocketMetrics(): WebSocketMetrics | null {
+    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
+    return webSocketManager ? webSocketManager.getMetrics() : null;
+  }
+
+  /**
    * Set GDPR consent
    */
   setConsent(consent: ConsentData): void {
@@ -330,6 +425,145 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     } catch {
       return false;
     }
+  }
+
+  // Enhanced GDPR Methods
+
+  /**
+   * Show consent banner
+   */
+  showConsentBanner(): void {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      gdprModule.showConsentBanner();
+    } else if (this.config.debug) {
+      console.warn('GDPR Compliance module not found');
+    }
+  }
+
+  /**
+   * Hide consent banner
+   */
+  hideConsentBanner(): void {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      gdprModule.hideConsentBanner();
+    } else if (this.config.debug) {
+      console.warn('GDPR Compliance module not found');
+    }
+  }
+
+  /**
+   * Get GDPR consent details
+   */
+  getGDPRConsent(): any {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.getConsent();
+    }
+    return null;
+  }
+
+  /**
+   * Set GDPR consent
+   */
+  setGDPRConsent(consent: any): void {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      gdprModule.setConsent(consent);
+    } else if (this.config.debug) {
+      console.warn('GDPR Compliance module not found');
+    }
+  }
+
+  /**
+   * Withdraw consent
+   */
+  withdrawConsent(category?: string): void {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      gdprModule.withdrawConsent(category);
+    } else if (this.config.debug) {
+      console.warn('GDPR Compliance module not found');
+    }
+  }
+
+  /**
+   * Request data access
+   */
+  async requestDataAccess(email?: string): Promise<any> {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.requestDataAccess(email);
+    }
+    throw new Error('GDPR Compliance module not found');
+  }
+
+  /**
+   * Request data deletion
+   */
+  async requestDataDeletion(email?: string): Promise<any> {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.requestDataDeletion(email);
+    }
+    throw new Error('GDPR Compliance module not found');
+  }
+
+  /**
+   * Request data portability
+   */
+  async requestDataPortability(email?: string): Promise<any> {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.requestDataPortability(email);
+    }
+    throw new Error('GDPR Compliance module not found');
+  }
+
+  /**
+   * Get privacy settings
+   */
+  getPrivacySettings(): any {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.getPrivacySettings();
+    }
+    return null;
+  }
+
+  /**
+   * Set privacy settings
+   */
+  setPrivacySettings(settings: any): void {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      gdprModule.setPrivacySettings(settings);
+    } else if (this.config.debug) {
+      console.warn('GDPR Compliance module not found');
+    }
+  }
+
+  /**
+   * Check if GDPR compliant
+   */
+  isGDPRCompliant(): boolean {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.isCompliant();
+    }
+    return !this.config.enableGDPR; // Compliant if GDPR is disabled
+  }
+
+  /**
+   * Export user data
+   */
+  async exportUserData(visitorId?: string): Promise<any> {
+    const gdprModule = this.getModule<any>('GDPRCompliance');
+    if (gdprModule) {
+      return gdprModule.exportUserData(visitorId || this.session.visitorId);
+    }
+    throw new Error('GDPR Compliance module not found');
   }
 
   /**

@@ -1,4 +1,4 @@
-import { ConsentData, ModuleInterface, PageViewData, TrackerConfig, TrackerInstance, VisitorSession } from '../types';
+import { ConsentData, ModuleInterface, PageViewData, TechStackDetection, TrackerConfig, TrackerInstance, VisitorSession, WebSocketConnectionState, WebSocketMetrics } from '../types';
 import { EventEmitter } from './EventEmitter';
 export declare class Tracker extends EventEmitter implements TrackerInstance {
     config: TrackerConfig;
@@ -17,8 +17,26 @@ export declare class Tracker extends EventEmitter implements TrackerInstance {
     pageView(data?: Partial<PageViewData>): void;
     use(module: ModuleInterface): void;
     getModule<T extends ModuleInterface>(name: string): T | null;
+    getTechnologyStack(): TechStackDetection;
+    connectWebSocket(): Promise<void>;
+    disconnectWebSocket(): void;
+    sendWebSocketEvent(event: string, data?: any, priority?: 'low' | 'normal' | 'high' | 'critical'): Promise<boolean>;
+    getWebSocketState(): WebSocketConnectionState | null;
+    getWebSocketMetrics(): WebSocketMetrics | null;
     setConsent(consent: ConsentData): void;
     hasConsent(): boolean;
+    showConsentBanner(): void;
+    hideConsentBanner(): void;
+    getGDPRConsent(): any;
+    setGDPRConsent(consent: any): void;
+    withdrawConsent(category?: string): void;
+    requestDataAccess(email?: string): Promise<any>;
+    requestDataDeletion(email?: string): Promise<any>;
+    requestDataPortability(email?: string): Promise<any>;
+    getPrivacySettings(): any;
+    setPrivacySettings(settings: any): void;
+    isGDPRCompliant(): boolean;
+    exportUserData(visitorId?: string): Promise<any>;
     flush(): Promise<void>;
     destroy(): void;
     private _createEmptySession;

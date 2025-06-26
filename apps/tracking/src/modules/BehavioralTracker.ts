@@ -274,7 +274,7 @@ export class BehavioralTracker implements ModuleInterface {
       if (this._tracker.config.debug) {
         console.log('Scroll tracked:', scrollData);
       }
-    }, 250);
+    }, 250) as EventListener;
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     this._listeners.push(() => window.removeEventListener('scroll', handleScroll));
@@ -344,7 +344,7 @@ export class BehavioralTracker implements ModuleInterface {
       this._mouseEvents++;
       this._mouseMovements++;
       this._updateActivity();
-    }, this._config.mouseSampleRate);
+    }, this._config.mouseSampleRate) as EventListener;
 
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
     this._listeners.push(() => document.removeEventListener('mousemove', handleMouseMove));

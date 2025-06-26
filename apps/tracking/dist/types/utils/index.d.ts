@@ -1,12 +1,13 @@
 export declare function generateVisitorId(): string;
 export declare function generateSessionId(): string;
+export declare function generateId(): string;
 export declare function now(): number;
-export declare function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void;
-export declare function throttle<T extends (...args: any[]) => void>(func: T, limit: number): (...args: Parameters<T>) => void;
+export declare function debounce(func: Function, wait: number): Function;
+export declare function throttle(func: Function, limit: number): Function;
 export declare function isBrowser(): boolean;
 export declare function isProduction(): boolean;
-export declare function safeJsonParse<T>(str: string, fallback: T): T;
-export declare function safeJsonStringify(obj: any): string;
+export declare function safeJsonParse<T = any>(json: string, fallback?: T): T;
+export declare function safeJsonStringify(obj: any, fallback?: string): string;
 export declare function getCurrentUrl(): string;
 export declare function getCurrentTitle(): string;
 export declare function getReferrer(): string;
@@ -18,5 +19,27 @@ export declare function getScrollDepth(): number;
 export declare function domReady(callback: () => void): void;
 export declare function addEventListener(element: EventTarget, event: string, handler: EventListener, options?: boolean | AddEventListenerOptions): () => void;
 export declare function simpleHash(str: string): number;
-export declare function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T;
+export declare function deepMerge(target: any, source: any): any;
+export declare function getPlatform(): string;
+export declare function getLanguage(): string;
+export declare function getTimezoneOffset(): number;
+export declare function shouldAnonymizeIP(ip: string, settings: {
+    anonymizeIPs: boolean;
+}): boolean;
+export declare function anonymizeIPv4(ip: string): string;
+export declare function anonymizeIPv6(ip: string): string;
+export declare function anonymizeIP(ip: string): string;
+export declare function shouldMinimizeData(settings: {
+    dataMinimization: boolean;
+}): boolean;
+export declare function removePII(data: any): any;
+export declare function hashSensitiveData(data: string): string;
+export declare function isConsentRequired(): boolean;
+export declare function getDoNotTrackStatus(): boolean;
+export declare function areCookiesEnabled(): boolean;
+export declare function clearAllCookies(domain?: string): void;
+export declare function isValidEmail(email: string): boolean;
+export declare function formatGDPRDate(timestamp: number): string;
+export declare function calculateRetentionExpiry(timestamp: number, retentionDays: number): number;
+export declare function isDataExpired(timestamp: number, retentionDays: number): boolean;
 //# sourceMappingURL=index.d.ts.map

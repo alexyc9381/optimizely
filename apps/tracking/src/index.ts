@@ -8,7 +8,9 @@ export { SessionManager } from './core/SessionManager';
 export { Storage } from './core/Storage';
 export { Tracker } from './core/Tracker';
 export { BehavioralTracker } from './modules/BehavioralTracker';
+export { GDPRCompliance } from './modules/GDPRCompliance';
 export { TechnologyDetector } from './modules/TechnologyDetector';
+export { WebSocketManager } from './modules/WebSocketManager';
 export * from './types';
 export * from './utils';
 

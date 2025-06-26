@@ -8,6 +8,22 @@ export interface TrackerConfig {
     batchSize?: number;
     flushInterval?: number;
     platform?: string;
+    websocket?: {
+        enabled?: boolean;
+        url?: string;
+        autoConnect?: boolean;
+        protocols?: string[];
+        reconnect?: boolean;
+        reconnectInterval?: number;
+        maxReconnectAttempts?: number;
+        heartbeatInterval?: number;
+        messageQueueSize?: number;
+        enableCompression?: boolean;
+        enableFallback?: boolean;
+        fallbackUrl?: string;
+        timeout?: number;
+    };
+    gdpr?: GDPRConfig;
 }
 export interface VisitorSession {
     sessionId: string;
@@ -102,7 +118,154 @@ export interface ConsentData {
         analytics: boolean;
         marketing: boolean;
         functional: boolean;
+        advertising?: boolean;
+        personalization?: boolean;
     };
+}
+export interface GDPRConfig {
+    enabled: boolean;
+    consentBanner?: {
+        enabled: boolean;
+        position: 'top' | 'bottom' | 'modal';
+        theme: 'light' | 'dark' | 'custom';
+        customStyles?: Record<string, string>;
+        texts?: GDPRTexts;
+        showOnEveryPage?: boolean;
+        respectDoNotTrack?: boolean;
+    };
+    cookieCategories?: CookieCategory[];
+    dataRetention?: {
+        defaultDays: number;
+        purposeSpecific?: Record<string, number>;
+        automaticDeletion: boolean;
+    };
+    userRights?: {
+        enableDataAccess: boolean;
+        enableDataDeletion: boolean;
+        enableDataPortability: boolean;
+        enableOptOut: boolean;
+        contactEmail?: string;
+    };
+    privacyByDesign?: {
+        dataMinimization: boolean;
+        purposeLimitation: boolean;
+        storageMinimization: boolean;
+        autoAnonymization: boolean;
+    };
+    legalBasis?: LegalBasis;
+}
+export interface GDPRTexts {
+    bannerTitle: string;
+    bannerDescription: string;
+    acceptAll: string;
+    rejectAll: string;
+    customize: string;
+    savePreferences: string;
+    necessary: string;
+    analytics: string;
+    marketing: string;
+    privacyPolicy: string;
+    cookiePolicy: string;
+}
+export interface CookieCategory {
+    id: string;
+    name: string;
+    description: string;
+    required: boolean;
+    enabled: boolean;
+    cookies: CookieInfo[];
+    purpose: string;
+    legalBasis: LegalBasis;
+    retentionPeriod: number;
+}
+export interface CookieInfo {
+    name: string;
+    purpose: string;
+    provider: string;
+    expiry: string;
+    type: 'essential' | 'analytics' | 'marketing' | 'functional' | 'advertising';
+    domain?: string;
+}
+export interface LegalBasis {
+    type: 'consent' | 'contract' | 'legal_obligation' | 'vital_interests' | 'public_task' | 'legitimate_interests';
+    description: string;
+    legitimateInterests?: string;
+}
+export interface GDPRConsent extends ConsentData {
+    id: string;
+    timestamp: number;
+    version: string;
+    method: 'banner' | 'settings' | 'api' | 'implied';
+    ipAddress?: string;
+    userAgent?: string;
+    categories: Record<string, boolean>;
+    legalBasis: Record<string, LegalBasis>;
+    withdrawalDate?: number;
+    renewalRequired?: boolean;
+    consentString?: string;
+}
+export interface DataSubjectRequest {
+    id: string;
+    type: 'access' | 'deletion' | 'portability' | 'rectification' | 'restriction' | 'objection';
+    timestamp: number;
+    visitorId: string;
+    email?: string;
+    status: 'pending' | 'processing' | 'completed' | 'rejected';
+    requestData?: any;
+    responseData?: any;
+    completedAt?: number;
+    expiresAt: number;
+}
+export interface PrivacySettings {
+    dataMinimization: boolean;
+    anonymizeIPs: boolean;
+    respectDoNotTrack: boolean;
+    cookielessTracking: boolean;
+    storageMinimization: boolean;
+    automaticDeletion: boolean;
+    purposeLimitation: boolean;
+    dataRetentionDays: number;
+    consentRequired: boolean;
+}
+export interface GDPRComplianceModule extends ModuleInterface {
+    showConsentBanner(): void;
+    hideConsentBanner(): void;
+    getConsent(): GDPRConsent | null;
+    setConsent(consent: Partial<GDPRConsent>): void;
+    withdrawConsent(category?: string): void;
+    renewConsent(): void;
+    getCookieCategories(): CookieCategory[];
+    setCookieCategory(categoryId: string, enabled: boolean): void;
+    clearCookies(category?: string): void;
+    requestDataAccess(email?: string): Promise<DataSubjectRequest>;
+    requestDataDeletion(email?: string): Promise<DataSubjectRequest>;
+    requestDataPortability(email?: string): Promise<DataSubjectRequest>;
+    getPrivacySettings(): PrivacySettings;
+    setPrivacySettings(settings: Partial<PrivacySettings>): void;
+    anonymizeData(data: any): any;
+    isCompliant(): boolean;
+    getComplianceReport(): GDPRComplianceReport;
+    exportUserData(visitorId: string): Promise<UserDataExport>;
+    deleteUserData(visitorId: string): Promise<boolean>;
+}
+export interface GDPRComplianceReport {
+    timestamp: number;
+    consentStatus: 'valid' | 'expired' | 'missing' | 'withdrawn';
+    dataRetentionCompliance: boolean;
+    cookieCompliance: boolean;
+    privacySettingsCompliance: boolean;
+    issues: string[];
+    recommendations: string[];
+}
+export interface UserDataExport {
+    visitorId: string;
+    exportDate: number;
+    sessions: VisitorSession[];
+    events: EventData[];
+    pageViews: PageViewData[];
+    consent: GDPRConsent[];
+    profile?: any;
+    format: 'json' | 'csv' | 'xml';
 }
 export interface PerformanceMetrics {
     loadTime: number;
@@ -123,6 +286,23 @@ export interface TrackerInstance extends EventEmitter {
     getModule<T extends ModuleInterface>(name: string): T | null;
     setConsent(consent: ConsentData): void;
     hasConsent(): boolean;
+    showConsentBanner(): void;
+    hideConsentBanner(): void;
+    getGDPRConsent(): GDPRConsent | null;
+    setGDPRConsent(consent: Partial<GDPRConsent>): void;
+    withdrawConsent(category?: string): void;
+    requestDataAccess(email?: string): Promise<DataSubjectRequest>;
+    requestDataDeletion(email?: string): Promise<DataSubjectRequest>;
+    requestDataPortability(email?: string): Promise<DataSubjectRequest>;
+    getPrivacySettings(): PrivacySettings;
+    setPrivacySettings(settings: Partial<PrivacySettings>): void;
+    isGDPRCompliant(): boolean;
+    exportUserData(visitorId?: string): Promise<UserDataExport>;
+    connectWebSocket(): Promise<void>;
+    disconnectWebSocket(): void;
+    sendWebSocketEvent(event: string, data?: any, priority?: 'low' | 'normal' | 'high' | 'critical'): Promise<boolean>;
+    getWebSocketState(): WebSocketConnectionState | null;
+    getWebSocketMetrics(): WebSocketMetrics | null;
     flush(): Promise<void>;
     destroy(): void;
 }
@@ -163,5 +343,114 @@ export interface SessionEvent {
     session: VisitorSession;
     timestamp: number;
     tabId: string;
+}
+export interface WebSocketConfig {
+    url?: string;
+    protocols?: string[];
+    reconnect?: boolean;
+    reconnectInterval?: number;
+    maxReconnectAttempts?: number;
+    heartbeatInterval?: number;
+    messageQueueSize?: number;
+    enableCompression?: boolean;
+    enableFallback?: boolean;
+    fallbackUrl?: string;
+    timeout?: number;
+    debug?: boolean;
+}
+export interface WebSocketMessage {
+    id: string;
+    type: 'event' | 'heartbeat' | 'ack' | 'error' | 'command';
+    data?: any;
+    timestamp: number;
+    sessionId: string;
+    visitorId: string;
+    priority?: 'low' | 'normal' | 'high' | 'critical';
+    retry?: boolean;
+}
+export interface WebSocketConnectionState {
+    status: 'disconnected' | 'connecting' | 'connected' | 'reconnecting' | 'error' | 'closed';
+    url: string;
+    protocol?: string;
+    reconnectAttempts: number;
+    lastError?: Error;
+    connectedAt?: number;
+    disconnectedAt?: number;
+    latency?: number;
+}
+export interface WebSocketMetrics {
+    messagesSet: number;
+    messagesReceived: number;
+    reconnections: number;
+    errors: number;
+    averageLatency: number;
+    uptime: number;
+    lastActivity: number;
+}
+export interface QueuedMessage extends WebSocketMessage {
+    attempts: number;
+    nextRetry: number;
+    maxRetries: number;
+}
+export interface WebSocketEvents {
+    'connection:open': WebSocketConnectionState;
+    'connection:close': WebSocketConnectionState;
+    'connection:error': {
+        error: Error;
+        state: WebSocketConnectionState;
+    };
+    'connection:reconnecting': WebSocketConnectionState;
+    'connection:reconnected': WebSocketConnectionState;
+    'message:sent': WebSocketMessage;
+    'message:received': WebSocketMessage;
+    'message:queued': WebSocketMessage;
+    'message:failed': {
+        message: WebSocketMessage;
+        error: Error;
+    };
+    'heartbeat:sent': {
+        timestamp: number;
+    };
+    'heartbeat:received': {
+        timestamp: number;
+        latency: number;
+    };
+    'queue:full': {
+        size: number;
+        dropped: WebSocketMessage;
+    };
+    'fallback:activated': {
+        reason: string;
+        url: string;
+    };
+}
+export interface WebSocketManagerInterface extends ModuleInterface {
+    readonly connectionState: WebSocketConnectionState;
+    readonly metrics: WebSocketMetrics;
+    readonly isConnected: boolean;
+    readonly queueSize: number;
+    connect(url?: string): Promise<void>;
+    disconnect(): void;
+    reconnect(): Promise<void>;
+    send(message: Omit<WebSocketMessage, 'id' | 'timestamp' | 'sessionId' | 'visitorId'>): Promise<boolean>;
+    sendEvent(event: string, data?: any, priority?: WebSocketMessage['priority']): Promise<boolean>;
+    sendHeartbeat(): void;
+    getConnectionState(): WebSocketConnectionState;
+    getMetrics(): WebSocketMetrics;
+    clearQueue(): void;
+    on<K extends keyof WebSocketEvents>(event: K, callback: (data: WebSocketEvents[K]) => void): void;
+    off<K extends keyof WebSocketEvents>(event: K, callback: (data: WebSocketEvents[K]) => void): void;
+}
+export interface HeartbeatConfig {
+    interval: number;
+    timeout: number;
+    maxMissed: number;
+    enabled: boolean;
+}
+export interface FallbackTransport {
+    type: 'http' | 'sse' | 'polling';
+    url: string;
+    enabled: boolean;
+    retryInterval: number;
 }
 //# sourceMappingURL=index.d.ts.map

@@ -27,6 +27,13 @@ function generateRandomId(length: number): string {
 }
 
 /**
+ * Generate a unique ID (general purpose)
+ */
+export function generateId(): string {
+  return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+}
+
+/**
  * Get current timestamp
  */
 export function now(): number {
@@ -36,28 +43,33 @@ export function now(): number {
 /**
  * Debounce function calls
  */
-export function debounce<T extends (...args: any[]) => void>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: number | undefined;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = window.setTimeout(() => func(...args), wait);
+export function debounce(func: Function, wait: number): Function {
+  let timeout: NodeJS.Timeout | null = null;
+
+  return function(this: any, ...args: any[]) {
+    const context = this;
+
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+      func.apply(context, args);
+    }, wait);
   };
 }
 
 /**
  * Throttle function calls
  */
-export function throttle<T extends (...args: any[]) => void>(
-  func: T,
-  limit: number
-): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-  return (...args: Parameters<T>) => {
+export function throttle(func: Function, limit: number): Function {
+  let inThrottle: boolean = false;
+
+  return function(this: any, ...args: any[]) {
+    const context = this;
+
     if (!inThrottle) {
-      func(...args);
+      func.apply(context, args);
       inThrottle = true;
       setTimeout(() => inThrottle = false, limit);
     }
@@ -81,9 +93,9 @@ export function isProduction(): boolean {
 /**
  * Safe JSON parsing
  */
-export function safeJsonParse<T>(str: string, fallback: T): T {
+export function safeJsonParse<T = any>(json: string, fallback: T = null as any): T {
   try {
-    return JSON.parse(str);
+    return JSON.parse(json);
   } catch {
     return fallback;
   }
@@ -92,11 +104,11 @@ export function safeJsonParse<T>(str: string, fallback: T): T {
 /**
  * Safe JSON stringifying
  */
-export function safeJsonStringify(obj: any): string {
+export function safeJsonStringify(obj: any, fallback: string = '{}'): string {
   try {
     return JSON.stringify(obj);
   } catch {
-    return '{}';
+    return fallback;
   }
 }
 
@@ -128,7 +140,7 @@ export function getReferrer(): string {
  * Get user agent string
  */
 export function getUserAgent(): string {
-  if (!isBrowser()) return '';
+  if (!isBrowser()) return 'server';
   return navigator.userAgent || '';
 }
 
@@ -254,18 +266,15 @@ export function simpleHash(str: string): number {
 /**
  * Deep merge objects
  */
-export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
+export function deepMerge(target: any, source: any): any {
   const result = { ...target };
 
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
-      const sourceValue = source[key];
-      const targetValue = result[key];
-
-      if (isObject(sourceValue) && isObject(targetValue)) {
-        result[key] = deepMerge(targetValue, sourceValue as any);
-      } else if (sourceValue !== undefined) {
-        result[key] = sourceValue as T[typeof key];
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        result[key] = deepMerge(result[key] || {}, source[key]);
+      } else {
+        result[key] = source[key];
       }
     }
   }
@@ -276,6 +285,231 @@ export function deepMerge<T extends Record<string, any>>(target: T, source: Part
 /**
  * Check if value is an object
  */
-function isObject(value: any): value is Record<string, any> {
-  return value !== null && typeof value === 'object' && !Array.isArray(value);
+
+
+/**
+ * Get platform information
+ */
+export function getPlatform(): string {
+  if (!isBrowser()) return 'server';
+  return navigator.platform;
+}
+
+/**
+ * Get language information
+ */
+export function getLanguage(): string {
+  if (!isBrowser()) return 'en';
+  return navigator.language || (navigator as any).userLanguage || 'en';
+}
+
+/**
+ * Get timezone offset
+ */
+export function getTimezoneOffset(): number {
+  if (!isBrowser()) return 0;
+  return new Date().getTimezoneOffset();
+}
+
+/**
+ * GDPR Utilities
+ */
+
+/**
+ * Check if IP address needs anonymization
+ */
+export function shouldAnonymizeIP(ip: string, settings: { anonymizeIPs: boolean }): boolean {
+  return settings.anonymizeIPs && Boolean(ip) && ip !== '127.0.0.1' && ip !== '::1';
+}
+
+/**
+ * Anonymize IPv4 address
+ */
+export function anonymizeIPv4(ip: string): string {
+  const parts = ip.split('.');
+  if (parts.length === 4) {
+    return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+  }
+  return ip;
+}
+
+/**
+ * Anonymize IPv6 address
+ */
+export function anonymizeIPv6(ip: string): string {
+  const parts = ip.split(':');
+  if (parts.length >= 4) {
+    return `${parts.slice(0, 4).join(':')}::`;
+  }
+  return ip;
+}
+
+/**
+ * Anonymize IP address (auto-detect IPv4/IPv6)
+ */
+export function anonymizeIP(ip: string): string {
+  if (!ip) return ip;
+
+  if (ip.includes(':')) {
+    return anonymizeIPv6(ip);
+  } else {
+    return anonymizeIPv4(ip);
+  }
+}
+
+/**
+ * Check if data should be minimized
+ */
+export function shouldMinimizeData(settings: { dataMinimization: boolean }): boolean {
+  return settings.dataMinimization;
+}
+
+/**
+ * Remove PII from data object
+ */
+export function removePII(data: any): any {
+  if (!data || typeof data !== 'object') return data;
+
+  const piiFields = [
+    'email', 'phone', 'name', 'firstName', 'lastName', 'fullName',
+    'address', 'street', 'city', 'zipCode', 'postalCode',
+    'ssn', 'socialSecurityNumber', 'creditCard', 'bankAccount',
+    'passport', 'driverLicense', 'taxId'
+  ];
+
+  const cleaned = { ...data };
+
+  piiFields.forEach(field => {
+    if (cleaned[field]) {
+      delete cleaned[field];
+    }
+  });
+
+  return cleaned;
+}
+
+/**
+ * Hash sensitive data for privacy
+ */
+export function hashSensitiveData(data: string): string {
+  if (!data) return data;
+
+  // Simple hash function for privacy (in production, use a proper crypto library)
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+
+  return Math.abs(hash).toString(36);
+}
+
+/**
+ * Check if consent is required based on user location (simple heuristic)
+ */
+export function isConsentRequired(): boolean {
+  if (!isBrowser()) return true; // Default to requiring consent on server
+
+  // Check timezone for EU countries (rough heuristic)
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const euTimezones = [
+    'Europe/', 'Atlantic/Azores', 'Atlantic/Madeira', 'Atlantic/Canary'
+  ];
+
+  return euTimezones.some(tz => timezone.startsWith(tz));
+}
+
+/**
+ * Get Do Not Track status
+ */
+export function getDoNotTrackStatus(): boolean {
+  if (!isBrowser()) return false;
+
+  return navigator.doNotTrack === '1' ||
+         (window as any).doNotTrack === '1' ||
+         (navigator as any).msDoNotTrack === '1';
+}
+
+/**
+ * Check if cookies are enabled
+ */
+export function areCookiesEnabled(): boolean {
+  if (!isBrowser()) return false;
+
+  try {
+    document.cookie = 'test_cookie=1';
+    const enabled = document.cookie.indexOf('test_cookie=') !== -1;
+    document.cookie = 'test_cookie=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+    return enabled;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Clear all cookies for domain
+ */
+export function clearAllCookies(domain?: string): void {
+  if (!isBrowser()) return;
+
+  const cookies = document.cookie.split(';');
+
+  cookies.forEach(cookie => {
+    const eqPos = cookie.indexOf('=');
+    const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+    if (name) {
+      // Clear for current domain
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+
+      // Clear for specified domain
+      if (domain) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${domain}`;
+      }
+
+      // Clear for parent domain
+      const hostname = window.location.hostname;
+      if (hostname.includes('.')) {
+        const parentDomain = '.' + hostname.split('.').slice(-2).join('.');
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${parentDomain}`;
+      }
+    }
+  });
+}
+
+/**
+ * Validate email format (basic)
+ */
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Format date for GDPR compliance display
+ */
+export function formatGDPRDate(timestamp: number): string {
+  return new Date(timestamp).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+/**
+ * Calculate data retention expiry
+ */
+export function calculateRetentionExpiry(timestamp: number, retentionDays: number): number {
+  return timestamp + (retentionDays * 24 * 60 * 60 * 1000);
+}
+
+/**
+ * Check if data has expired based on retention policy
+ */
+export function isDataExpired(timestamp: number, retentionDays: number): boolean {
+  const expiry = calculateRetentionExpiry(timestamp, retentionDays);
+  return now() > expiry;
 }
