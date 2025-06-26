@@ -40,10 +40,6 @@ jest.mock('ioredis', () => {
   }));
 });
 
-jest.mock('../middleware/rate-limiter', () => ({
-  checkRateLimit: jest.fn().mockResolvedValue({ allowed: true, remaining: 100 })
-}));
-
 jest.mock('../services/analytics-service', () => ({
   analyticsService: {
     recordMetric: jest.fn(),

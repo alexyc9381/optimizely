@@ -1,38 +1,38 @@
 import express from 'express';
 import request from 'supertest';
 
-// Mock the integration service
-const mockIntegrationService = {
-  createIntegration: jest.fn(),
-  updateIntegration: jest.fn(),
-  deleteIntegration: jest.fn(),
-  getIntegration: jest.fn(),
-  getAllIntegrations: jest.fn(),
-  testConnection: jest.fn(),
-  createWebhook: jest.fn(),
-  triggerWebhook: jest.fn(),
-  createSyncJob: jest.fn(),
-  cancelSyncJob: jest.fn(),
-  getSyncJobs: jest.fn()
-};
-
-// Mock the service module
+// Mock integration service before importing the router
 jest.mock('../services/integration-service', () => ({
-  integrationService: mockIntegrationService
+  integrationService: {
+    getAllIntegrations: jest.fn(),
+    getIntegration: jest.fn(),
+    createIntegration: jest.fn(),
+    updateIntegration: jest.fn(),
+    deleteIntegration: jest.fn(),
+    testConnection: jest.fn(),
+    getSupportedTypes: jest.fn(),
+    createWebhook: jest.fn(),
+    updateWebhook: jest.fn(),
+    deleteWebhook: jest.fn(),
+    triggerWebhook: jest.fn(),
+    getWebhookDeliveries: jest.fn(),
+    getSyncJobs: jest.fn(),
+    createSyncJob: jest.fn(),
+    cancelSyncJob: jest.fn(),
+    retryWebhookDelivery: jest.fn()
+  },
+  IntegrationType: {
+    GOOGLE_ANALYTICS: 'google_analytics',
+    MIXPANEL: 'mixpanel',
+    SEGMENT: 'segment',
+    WEBHOOK: 'webhook'
+  }
 }));
 
 // Mock Redis and other dependencies
 jest.mock('ioredis');
-jest.mock('../middleware/auth', () => ({
-  requireApiKey: () => (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    (req as unknown as { apiKey: unknown }).apiKey = { id: 'test-key', organizationId: 'test-org' };
-    next();
-  },
-  requireAuth: () => (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    (req as unknown as { user: unknown }).user = { id: 'test-user', organizationId: 'test-org' };
-    next();
-  }
-}));
+
+const mockIntegrationService = jest.requireMock('../services/integration-service').integrationService;
 
 describe('Integrations REST API', () => {
   let app: express.Application;
