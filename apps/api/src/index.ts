@@ -182,6 +182,65 @@ app.use(`/api/${apiVersion}/redis`, redisRoutes);
 import { default as eventsRoutes } from './routes/events';
 app.use(`/api/${apiVersion}/events`, eventsRoutes);
 
+// =============================================================================
+// GRAPHQL API SETUP
+// =============================================================================
+
+import { createGraphQLMiddleware, createGraphQLServer } from './graphql/server';
+
+// Initialize GraphQL server variable
+let graphQLServer: any = null;
+
+// Function to setup GraphQL middleware
+async function setupGraphQL() {
+  console.log('🔄 Creating GraphQL server...');
+  graphQLServer = createGraphQLServer();
+
+  await graphQLServer.start();
+  console.log('✅ GraphQL server started');
+
+  // Create and apply GraphQL middleware
+  const graphQLMiddleware = createGraphQLMiddleware(graphQLServer);
+  app.use(`/api/${apiVersion}/graphql`, graphQLMiddleware);
+  console.log(`🔗 GraphQL middleware applied to /api/${apiVersion}/graphql`);
+
+  // Add error handlers AFTER GraphQL middleware
+
+  // 404 handler
+  app.use('*', (req, res) => {
+    res.status(404).json({
+      error: 'Not Found',
+      message: `Endpoint ${req.originalUrl} not found`,
+      availableEndpoints: [
+        'GET /health',
+        'GET /',
+        `GET /api/${apiVersion}/docs`,
+        `POST /api/${apiVersion}/events`,
+        `GET /api/${apiVersion}/events`,
+        `POST /api/${apiVersion}/graphql`,
+        `POST /api/${apiVersion}/tracking/session`,
+        `POST /api/${apiVersion}/tracking/event`,
+        `GET /api/${apiVersion}/analytics/data`
+      ]
+    });
+  });
+
+  // Global error handler
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error('Error:', err);
+
+    res.status(err.status || 500).json({
+      error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
+      message: 'An error occurred processing your request',
+      timestamp: new Date().toISOString(),
+      requestId: req.headers['x-request-id'] || 'unknown'
+    });
+  });
+
+  console.log('🔗 Error handlers applied after GraphQL middleware');
+}
+
 // Universal tracking endpoints (placeholder for future implementation)
 app.post(`/api/${apiVersion}/tracking/session`, (req, res) => {
   res.json({
@@ -212,20 +271,40 @@ app.get(`/api/${apiVersion}/analytics/data`, (req, res) => {
 
 // API documentation endpoint
 app.get(`/api/${apiVersion}/docs`, (req, res) => {
+  const endpoints: any = {
+    health: 'GET /health',
+    rest: {
+      events: {
+        track: 'POST /api/v1/events',
+        list: 'GET /api/v1/events',
+        get: 'GET /api/v1/events/:id',
+        delete: 'DELETE /api/v1/events/:id',
+        health: 'GET /api/v1/events/health'
+      }
+    },
+    tracking: {
+      session: 'POST /api/v1/tracking/session',
+      event: 'POST /api/v1/tracking/event'
+    },
+    analytics: {
+      data: 'GET /api/v1/analytics/data'
+    }
+  };
+
+  // Add GraphQL info if available
+  if (graphQLServer) {
+    endpoints.graphql = {
+      endpoint: 'POST /api/v1/graphql',
+      playground: 'GET /api/v1/graphql',
+      description: 'Full GraphQL API with queries, mutations, and subscriptions'
+    };
+  }
+
   res.json({
     name: 'Optimizely Universal API',
     version: apiVersion,
     description: 'Universal, platform-agnostic API for website optimization and tracking',
-    endpoints: {
-      health: 'GET /health',
-      tracking: {
-        session: 'POST /api/v1/tracking/session',
-        event: 'POST /api/v1/tracking/event'
-      },
-      analytics: {
-        data: 'GET /api/v1/analytics/data'
-      }
-    },
+    endpoints,
     supportedPlatforms: [
       'WordPress', 'Shopify', 'Wix', 'Squarespace',
       'React', 'Vue', 'Angular', 'Static HTML', 'Universal'
@@ -234,37 +313,11 @@ app.get(`/api/${apiVersion}/docs`, (req, res) => {
 });
 
 // =============================================================================
-// ERROR HANDLING MIDDLEWARE
+// GRAPHQL MIDDLEWARE PLACEHOLDER (will be applied in startServer function)
 // =============================================================================
+// GraphQL middleware will be applied here before error handlers
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    error: 'Not Found',
-    message: `Endpoint ${req.originalUrl} not found`,
-    availableEndpoints: [
-      'GET /health',
-      'GET /',
-      `GET /api/${apiVersion}/docs`,
-      `POST /api/${apiVersion}/tracking/session`,
-      `POST /api/${apiVersion}/tracking/event`,
-      `GET /api/${apiVersion}/analytics/data`
-    ]
-  });
-});
-
-// Global error handler
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('Error:', err);
-
-  res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
-    message: 'An error occurred processing your request',
-    timestamp: new Date().toISOString(),
-    requestId: req.headers['x-request-id'] || 'unknown'
-  });
-});
+// Error handlers will be added after GraphQL middleware in startServer()
 
 // =============================================================================
 // SERVER STARTUP WITH DATABASE INITIALIZATION
@@ -284,11 +337,16 @@ async function startServer() {
       console.debug('Database error details:', dbError);
     }
 
+        // Initialize GraphQL BEFORE starting the HTTP server
+    await setupGraphQL();
+
     const server = app.listen(port, () => {
       console.log(`🚀 Universal API server listening at http://localhost:${port}`);
       console.log(`📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`);
       console.log(`🏥 Health check available at http://localhost:${port}/health`);
       console.log(`🌍 Platform-agnostic architecture enabled`);
+      console.log(`📊 GraphQL API available at http://localhost:${port}/api/${apiVersion}/graphql`);
+      console.log(`⚡ GraphQL queries, mutations, and subscriptions ready`);
     });
 
     return server;
@@ -306,6 +364,11 @@ process.on('SIGTERM', async () => {
   console.log('SIGTERM received, shutting down gracefully');
   try {
     const server = await serverPromise;
+
+    // Stop GraphQL server first
+    await graphQLServer.stop();
+    console.log('📴 GraphQL server stopped');
+
     server.close(() => {
       console.log('Process terminated');
     });
