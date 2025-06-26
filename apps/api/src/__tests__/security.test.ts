@@ -350,6 +350,11 @@ describe('Security Tests', () => {
 
       const burstResponses = await Promise.all(burstRequests);
 
+      // Verify that some responses were rate limited
+      expect(burstResponses.length).toBeGreaterThan(0);
+      const rateLimitedCount = burstResponses.filter(res => res.status === 429).length;
+      expect(rateLimitedCount).toBeGreaterThan(0);
+
       // Wait for rate limit window to reset
       await new Promise(resolve => setTimeout(resolve, 2000));
 
