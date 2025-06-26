@@ -115,7 +115,7 @@ export interface TrackerInstance extends EventEmitter {
     config: TrackerConfig;
     session: VisitorSession;
     isInitialized: boolean;
-    init(config: TrackerConfig): void;
+    init(config: TrackerConfig): Promise<void>;
     track(event: string, data?: any): void;
     identify(visitorId: string, traits?: Record<string, any>): void;
     pageView(data?: Partial<PageViewData>): void;
@@ -125,5 +125,43 @@ export interface TrackerInstance extends EventEmitter {
     hasConsent(): boolean;
     flush(): Promise<void>;
     destroy(): void;
+}
+export interface SessionOptions {
+    sessionTimeout: number;
+    enableCrossTabs: boolean;
+    enableFingerprinting: boolean;
+    fingerprintElements: FingerprintElement;
+    sessionValidation: boolean;
+    storagePrefix: string;
+}
+export interface FingerprintElement {
+    screen: boolean;
+    timezone: boolean;
+    language: boolean;
+    platform: boolean;
+    plugins: boolean;
+    canvas: boolean;
+}
+export interface SessionFingerprint {
+    screenResolution: string;
+    timezone: number;
+    language: string;
+    platform: string;
+    browser: string;
+    pluginsHash: string;
+    canvasHash?: string;
+    hash: string;
+}
+export interface SessionValidation {
+    isValid: boolean;
+    reasons: string[];
+    fingerprint: SessionFingerprint;
+    lastValidated: number;
+}
+export interface SessionEvent {
+    type: 'session:created' | 'session:restored' | 'session:expired' | 'session:invalid' | 'session:synchronized';
+    session: VisitorSession;
+    timestamp: number;
+    tabId: string;
 }
 //# sourceMappingURL=index.d.ts.map

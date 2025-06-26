@@ -1,3 +1,4 @@
+import { BehavioralTracker } from '../modules/BehavioralTracker';
 import {
     ConsentData,
     EventData,
@@ -9,18 +10,15 @@ import {
 } from '../types';
 import {
     deepMerge,
-    detectPlatform,
     domReady,
-    generateSessionId,
-    generateVisitorId,
     getCurrentTitle,
     getCurrentUrl,
     getReferrer,
-    getUserAgent,
     isBrowser,
     now
 } from '../utils';
 import { EventEmitter } from './EventEmitter';
+import { SessionManager, SessionOptions } from './SessionManager';
 import { Storage } from './Storage';
 
 /**
@@ -33,6 +31,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
   public isInitialized: boolean = false;
 
   private _storage: Storage;
+  private _sessionManager: SessionManager;
   private _modules: Map<string, ModuleInterface> = new Map();
   private _eventQueue: EventData[] = [];
   private _flushTimer?: number;
@@ -41,6 +40,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
   constructor() {
     super();
     this._storage = new Storage();
+    this._sessionManager = new SessionManager(this._storage);
 
     // Default configuration
     this.config = {
@@ -61,7 +61,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
   /**
    * Initialize the tracker with configuration
    */
-  init(config: TrackerConfig): void {
+  async init(config: TrackerConfig): Promise<void> {
     if (this.isInitialized) {
       if (this.config.debug) {
         console.warn('Tracker already initialized');
@@ -80,8 +80,67 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     // Initialize storage with project-specific prefix
     this._storage = new Storage(`opt_${this.config.projectId}_`);
 
-    // Check for existing session or create new one
-    this._initializeSession();
+    // Initialize session manager with enhanced options
+    const sessionOptions: Partial<SessionOptions> = {
+      sessionTimeout: this.config.sessionTimeout || 30 * 60 * 1000,
+      enableCrossTabs: true,
+      enableFingerprinting: true,
+      sessionValidation: true,
+      storagePrefix: `opt_${this.config.projectId}_session_`
+    };
+
+    this._sessionManager = new SessionManager(this._storage, sessionOptions);
+
+    // Setup session event listeners
+    this._sessionManager.on('session:created', (event) => {
+      this.session = event.session;
+      this.emit('session:created', event);
+      if (this.config.debug) {
+        console.log('New session created:', event);
+      }
+    });
+
+    this._sessionManager.on('session:restored', (event) => {
+      this.session = event.session;
+      this.emit('session:restored', event);
+      if (this.config.debug) {
+        console.log('Session restored:', event);
+      }
+    });
+
+    this._sessionManager.on('session:synchronized', (event) => {
+      this.session = event.session;
+      this.emit('session:synchronized', event);
+      if (this.config.debug) {
+        console.log('Session synchronized across tabs:', event);
+      }
+    });
+
+    this._sessionManager.on('session:invalid', (event) => {
+      this.emit('session:invalid', event);
+      if (this.config.debug) {
+        console.log('Session invalidated:', event);
+      }
+    });
+
+    // Initialize session using the new session manager
+    this.session = await this._sessionManager.initializeSession();
+
+    // Initialize and register behavioral tracking module
+    const behavioralTracker = new BehavioralTracker({
+      enableClickTracking: true,
+      enableScrollTracking: true,
+      enableFormTracking: true,
+      enableMouseTracking: !!this.config.debug, // Only enable mouse tracking in debug mode
+      enableVisibilityTracking: true,
+      enablePerformanceTracking: true
+    });
+
+    // Set tracker reference for behavioral tracker
+    (behavioralTracker as any).setTracker(this);
+
+    // Register the module
+    this.use(behavioralTracker);
 
     // Start automatic flushing
     this._startFlushTimer();
@@ -97,7 +156,12 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     this.emit('initialized', this.config);
 
     if (this.config.debug) {
-      console.log('Tracker initialized', { config: this.config, session: this.session });
+      console.log('Tracker initialized', {
+        config: this.config,
+        session: this.session,
+        fingerprint: this._sessionManager.getFingerprint(),
+        modules: Array.from(this._modules.keys())
+      });
     }
   }
 
@@ -145,7 +209,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
 
     // Update session with new visitor ID
     this.session.visitorId = visitorId;
-    this._saveSession();
+    // Session will be automatically saved by SessionManager on next activity update
 
     this.track('identify', { visitorId, traits });
     this.emit('identify', { visitorId, traits });
@@ -168,10 +232,11 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       ...data
     };
 
-    // Update session
-    this.session.pageViews++;
-    this.session.lastActivity = now();
-    this._saveSession();
+    // Update session activity using session manager
+    this._sessionManager.updateActivity();
+
+    // Get updated session after activity update
+    this.session = this._sessionManager.getCurrentSession() || this.session;
 
     // Track the page view
     this._queueEvent({
@@ -287,6 +352,9 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       // Ignore errors during destruction
     });
 
+    // Destroy session manager
+    this._sessionManager.destroy();
+
     // Destroy modules
     this._modules.forEach(module => {
       if (module.destroy) {
@@ -303,53 +371,6 @@ export class Tracker extends EventEmitter implements TrackerInstance {
   }
 
   /**
-   * Initialize or restore session
-   */
-  private _initializeSession(): void {
-    const existingSession = this._storage.get('session');
-
-    if (existingSession) {
-      try {
-        const sessionData: VisitorSession = JSON.parse(existingSession);
-
-        // Check if session is still valid
-        if (now() - sessionData.lastActivity < this.config.sessionTimeout!) {
-          this.session = sessionData;
-          this.session.lastActivity = now();
-          this._saveSession();
-          return;
-        }
-      } catch {
-        // Invalid session data, create new session
-      }
-    }
-
-    // Create new session
-    this.session = this._createNewSession();
-    this._saveSession();
-  }
-
-  /**
-   * Create a new session
-   */
-  private _createNewSession(): VisitorSession {
-    const visitorId = this._storage.get('visitorId') || generateVisitorId();
-    this._storage.set('visitorId', visitorId);
-
-    return {
-      sessionId: generateSessionId(),
-      visitorId,
-      startTime: now(),
-      lastActivity: now(),
-      pageViews: 0,
-      platform: this.config.platform === 'auto' ? detectPlatform() : this.config.platform!,
-      userAgent: getUserAgent(),
-      referrer: getReferrer(),
-      landingPage: getCurrentUrl()
-    };
-  }
-
-  /**
    * Create empty session for initialization
    */
   private _createEmptySession(): VisitorSession {
@@ -363,13 +384,6 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       userAgent: '',
       landingPage: ''
     };
-  }
-
-  /**
-   * Save session to storage
-   */
-  private _saveSession(): void {
-    this._storage.set('session', JSON.stringify(this.session));
   }
 
   /**

@@ -5,12 +5,13 @@ export declare class Tracker extends EventEmitter implements TrackerInstance {
     session: VisitorSession;
     isInitialized: boolean;
     private _storage;
+    private _sessionManager;
     private _modules;
     private _eventQueue;
     private _flushTimer?;
     private _destroyed;
     constructor();
-    init(config: TrackerConfig): void;
+    init(config: TrackerConfig): Promise<void>;
     track(event: string, data?: any): void;
     identify(visitorId: string, traits?: Record<string, any>): void;
     pageView(data?: Partial<PageViewData>): void;
@@ -20,10 +21,7 @@ export declare class Tracker extends EventEmitter implements TrackerInstance {
     hasConsent(): boolean;
     flush(): Promise<void>;
     destroy(): void;
-    private _initializeSession;
-    private _createNewSession;
     private _createEmptySession;
-    private _saveSession;
     private _queueEvent;
     private _startFlushTimer;
     private _sendEvents;

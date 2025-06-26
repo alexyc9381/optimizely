@@ -4,8 +4,10 @@ import { isBrowser } from './utils';
 
 // Export all types and classes
 export { EventEmitter } from './core/EventEmitter';
+export { SessionManager } from './core/SessionManager';
 export { Storage } from './core/Storage';
 export { Tracker } from './core/Tracker';
+export { BehavioralTracker } from './modules/BehavioralTracker';
 export * from './types';
 export * from './utils';
 
@@ -15,12 +17,12 @@ let globalTracker: Tracker | null = null;
 /**
  * Initialize the global tracker instance
  */
-export function init(config: TrackerConfig): Tracker {
+export async function init(config: TrackerConfig): Promise<Tracker> {
   if (!globalTracker) {
     globalTracker = new Tracker();
   }
 
-  globalTracker.init(config);
+  await globalTracker.init(config);
   return globalTracker;
 }
 
@@ -68,10 +70,20 @@ export function setConsent(consent: any): void {
 }
 
 /**
- * Create a new tracker instance (for advanced use cases)
+ * Create a new tracker instance with behavioral tracking enabled
  */
-export function createTracker(): Tracker {
-  return new Tracker();
+export function createTracker(config?: Partial<TrackerConfig>): Tracker {
+  const tracker = new Tracker();
+
+  if (config && config.apiUrl && config.projectId) {
+    tracker.init(config as TrackerConfig).catch((error) => {
+      if (config.debug) {
+        console.error('Failed to initialize tracker:', error);
+      }
+    });
+  }
+
+  return tracker;
 }
 
 // Auto-initialization for script tag usage
