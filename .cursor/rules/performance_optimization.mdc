@@ -1,0 +1,231 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Performance Optimization Rules
+*Specific patterns from dotcursorrules.com that apply to Next.js + TypeScript + Prisma + Redis*
+
+## ⚡ Next.js Performance Patterns
+
+**Server Components First**
+- Minimize `use client` usage - favor React Server Components (RSC)
+- Use client components only for interactivity (forms, animations, browser APIs)
+- Wrap client components in Suspense with meaningful fallbacks
+
+```typescript
+// ✅ DO: Server Component (default)
+async function UserProfile({ userId }: { userId: string }) {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  return <div>{user.name}</div>;
+}
+
+// ✅ DO: Client component only when needed
+'use client';
+import { useState } from 'react';
+
+function InteractiveButton() {
+  const [clicked, setClicked] = useState(false);
+  return <button onClick={() => setClicked(true)}>Click me</button>;
+}
+```
+
+**Efficient Data Fetching**
+```typescript
+// ✅ DO: Parallel requests when possible
+async function getPageData() {
+  const [user, posts, analytics] = await Promise.all([
+    prisma.user.findUnique({ where: { id } }),
+    prisma.post.findMany({ where: { userId: id } }),
+    redis.hgetall(`analytics:${id}`)
+  ]);
+  return { user, posts, analytics };
+}
+
+// ✅ DO: Strategic caching with revalidation
+export const revalidate = 3600; // 1 hour for static data
+
+async function getStaticData() {
+  const data = await fetch('/api/data', {
+    next: { revalidate: 60 } // Revalidate every minute
+  });
+  return data.json();
+}
+```
+
+## 🗄️ Database & Redis Optimization
+
+**Prisma Query Optimization**
+```typescript
+// ✅ DO: Select only needed fields
+const user = await prisma.user.findUnique({
+  where: { id },
+  select: { id: true, name: true, email: true } // Don't fetch unnecessary data
+});
+
+// ✅ DO: Use proper includes for relations
+const userWithPosts = await prisma.user.findUnique({
+  where: { id },
+  include: {
+    posts: {
+      select: { id: true, title: true },
+      take: 10 // Limit related data
+    }
+  }
+});
+```
+
+**Redis Caching Strategies**
+```typescript
+// ✅ DO: Cache with proper TTL and fallback
+async function getCachedUserData(userId: string) {
+  const cacheKey = `user:${userId}`;
+
+  try {
+    const cached = await redis.get(cacheKey);
+    if (cached) return JSON.parse(cached);
+  } catch (error) {
+    console.warn('Redis cache miss:', error);
+  }
+
+  // Fallback to database
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  // Cache for 1 hour
+  await redis.setex(cacheKey, 3600, JSON.stringify(user));
+  return user;
+}
+```
+
+## 📦 Bundle & Import Optimization
+
+**Efficient Imports**
+```typescript
+// ✅ DO: Specific imports to reduce bundle size
+import { debounce } from 'lodash/debounce';
+import { format } from 'date-fns/format';
+
+// ❌ DON'T: Full library imports
+import * as _ from 'lodash';
+import * as dateFns from 'date-fns';
+```
+
+**Dynamic Loading**
+```typescript
+// ✅ DO: Dynamic imports for large components
+const AdminDashboard = dynamic(() => import('./AdminDashboard'), {
+  loading: () => <div>Loading dashboard...</div>,
+  ssr: false // Client-side only if needed
+});
+
+// ✅ DO: Route-based code splitting
+const DashboardPage = lazy(() => import('./pages/Dashboard'));
+```
+
+## 🎨 Tailwind CSS Performance
+
+**Optimized Class Usage**
+```typescript
+// ✅ DO: Use utility classes efficiently
+const buttonVariants = {
+  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500',
+  secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+  danger: 'bg-red-600 text-white hover:bg-red-700'
+};
+
+// ✅ DO: Conditional classes with clsx
+import clsx from 'clsx';
+
+function Button({ variant, disabled, children }) {
+  return (
+    <button
+      className={clsx(
+        'px-4 py-2 rounded transition-colors duration-200',
+        buttonVariants[variant],
+        disabled && 'opacity-50 cursor-not-allowed'
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+## 📊 Memory Management & Error Prevention
+
+**Cleanup Effects**
+```typescript
+// ✅ DO: Proper cleanup
+useEffect(() => {
+  const controller = new AbortController();
+  const timer = setInterval(pollData, 5000);
+
+  fetch('/api/data', { signal: controller.signal })
+    .then(handleData)
+    .catch(handleError);
+
+  return () => {
+    controller.abort();
+    clearInterval(timer);
+  };
+}, []);
+
+// ✅ DO: Memoize expensive calculations
+const chartData = useMemo(() => {
+  return processAnalyticsData(rawData);
+}, [rawData]);
+```
+
+**Error Handling Patterns**
+```typescript
+// ✅ DO: Early returns and guard clauses
+function processUser(user: User | null): Result {
+  if (!user) return { error: 'User not found' };
+  if (!user.isActive) return { error: 'User inactive' };
+  if (!user.permissions) return { error: 'No permissions' };
+
+  // Happy path at the end
+  return { success: true, data: processActiveUser(user) };
+}
+```
+
+## 🔍 Core Web Vitals Optimization
+
+**Image Optimization**
+```typescript
+// ✅ DO: Use Next.js Image component with proper sizing
+import Image from 'next/image';
+
+function UserAvatar({ src, alt, size = 40 }) {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+      className="rounded-full"
+      priority={false} // Only for above-the-fold images
+    />
+  );
+}
+```
+
+**Performance Monitoring**
+```typescript
+// ✅ DO: Track critical metrics
+const performanceObserver = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    if (entry.entryType === 'measure') {
+      analytics.track('performance_measure', {
+        name: entry.name,
+        duration: entry.duration,
+        startTime: entry.startTime
+      });
+    }
+  }
+});
+
+performanceObserver.observe({ entryTypes: ['measure', 'navigation'] });
+```
+
+Remember: These optimizations are specifically chosen for your Next.js + TypeScript + Prisma + Redis tech stack.

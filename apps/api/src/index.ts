@@ -53,7 +53,7 @@ app.use(cors({
 }));
 
 // Compression for performance
-app.use(compression() as any);
+app.use(compression() as any); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -74,12 +74,13 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 });
-app.use(limiter as any);
+app.use(limiter as any); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 // =============================================================================
 // UNIVERSAL PLATFORM DETECTION MIDDLEWARE
 // =============================================================================
-app.use((req, res, _next) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.use((req: any, res: any, next: any) => {
   // Detect platform from headers or user agent
   const platformHeader = req.headers['x-platform-type'] as string;
   const userAgent = req.headers['user-agent'] as string;
@@ -105,7 +106,7 @@ app.use((req, res, _next) => {
     userAgent: userAgent
   };
 
-  _next();
+  next();
 });
 
 // =============================================================================
@@ -176,6 +177,10 @@ app.use(`/api/${apiVersion}`, (req, res, next) => {
 // Import and mount Redis routes
 import { default as redisRoutes } from './routes/redis';
 app.use(`/api/${apiVersion}/redis`, redisRoutes);
+
+// Import and mount Events routes
+import { default as eventsRoutes } from './routes/events';
+app.use(`/api/${apiVersion}/events`, eventsRoutes);
 
 // Universal tracking endpoints (placeholder for future implementation)
 app.post(`/api/${apiVersion}/tracking/session`, (req, res) => {
@@ -249,6 +254,7 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', err);
 
@@ -271,9 +277,11 @@ async function startServer() {
       await db.connect();
       await db.runMigrations();
       console.log(`🔌 Database connection established`);
-    } catch (_dbError) {
+    } catch (dbError) {
       console.log('⚠️  Database connection failed, continuing without database (degraded mode)');
       console.log('   Database will be available once DATABASE_URL is configured');
+      // Database error is expected in development without configured DATABASE_URL
+      console.debug('Database error details:', dbError);
     }
 
     const server = app.listen(port, () => {

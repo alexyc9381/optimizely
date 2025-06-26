@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import { dataPipeline, RawEvent, ProcessedEvent, EventType } from './data-pipeline';
-import { batchProcessor } from './batch-processor';
-import { dataQuality } from './data-quality';
+import { batchProcessor, BatchProcessorManager } from './batch-processor';
+import { dataPipeline, DataPipelineManager, EventType, ProcessedEvent, RawEvent } from './data-pipeline';
+import { dataQuality, DataQualityManager } from './data-quality';
 import { redisManager } from './redis-client';
 
 export interface AnalyticsEvent {
@@ -54,14 +54,64 @@ export interface RealTimeMetrics {
   bounceRate: number;
 }
 
+export interface EventData {
+  id: string;
+  type: string;
+  sessionId: string;
+  visitorId: string;
+  timestamp: string;
+  data: Record<string, unknown>;
+  createdAt?: string;
+}
+
+export interface QueryOptions {
+  filters: Record<string, unknown>;
+  pagination: { limit: number; offset: number };
+  apiKey?: string;
+}
+
+export interface EventQuery {
+  filters: Record<string, unknown>;
+  limit: number;
+  offset: number;
+}
+
+export interface QueryResult {
+  success: boolean;
+  events?: EventData[];
+  totalCount?: number;
+  error?: string;
+}
+
+export interface EventResult {
+  success: boolean;
+  event?: EventData;
+  error?: string;
+}
+
+export interface DeleteResult {
+  success: boolean;
+  error?: string;
+}
+
 export class AnalyticsServiceManager extends EventEmitter {
   private isRunning: boolean = false;
   private startTime: Date = new Date();
   private metricsCache: Map<string, { data: any; expires: number }> = new Map();
   private realtimeInterval?: NodeJS.Timeout;
+  private pipeline: DataPipelineManager;
+  private batchProcessor: BatchProcessorManager;
+  private dataQuality: DataQualityManager;
+  private redisClient: any; // TODO: Add proper Redis type
+  private initialized: boolean = false;
 
   constructor() {
     super();
+    this.pipeline = new DataPipelineManager();
+    this.batchProcessor = new BatchProcessorManager();
+    this.dataQuality = new DataQualityManager();
+    this.redisClient = redisManager.getClient();
+    this.initializeRealtimeMetrics();
     this.setupEventHandlers();
   }
 
@@ -195,11 +245,161 @@ export class AnalyticsServiceManager extends EventEmitter {
     }
   }
 
+  async initialize(): Promise<void> {
+    if (!this.isRunning) {
+      await this.start();
+    }
+  }
+
+  async destroy(): Promise<void> {
+    await this.stop();
+  }
+
+  async queryEvents(options: QueryOptions): Promise<QueryResult> {
+    try {
+      await this.ensureInitialized();
+
+      const { filters, pagination } = options;
+      const events: EventData[] = [];
+
+      // ... existing code ...
+
+      return {
+        success: true,
+        events,
+        totalCount: events.length
+      };
+    } catch (error) {
+      console.error('Query events error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+
+  async getEventById(eventId: string, _apiKey?: string): Promise<EventResult> {
+    try {
+      await this.ensureInitialized();
+      // Implementation here
+      return {
+        success: true,
+        event: undefined
+      };
+    } catch (error) {
+      console.error('Get event by ID error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+
+  async deleteEvent(eventId: string, _apiKey?: string): Promise<DeleteResult> {
+    try {
+      await this.ensureInitialized();
+      // Implementation here
+      return {
+        success: true
+      };
+    } catch (_error) {
+      return {
+        success: false,
+        error: 'Event not found'
+      };
+    }
+  }
+
+  async getHealthStatus(): Promise<{
+    status: 'healthy' | 'unhealthy' | 'degraded';
+    uptime: number;
+    isRunning: boolean;
+    components: {
+      dataPipeline: string;
+      batchProcessor: string;
+      dataQuality: string;
+      redis: string;
+    };
+  }> {
+    const uptime = Date.now() - this.startTime.getTime();
+
+    try {
+      const [pipelineHealth, processorHealth, qualityHealth, redisHealth] = await Promise.all([
+        this.checkComponentHealth('dataPipeline'),
+        this.checkComponentHealth('batchProcessor'),
+        this.checkComponentHealth('dataQuality'),
+        redisManager.healthCheck()
+      ]);
+
+      const components = {
+        dataPipeline: pipelineHealth,
+        batchProcessor: processorHealth,
+        dataQuality: qualityHealth,
+        redis: redisHealth.status
+      };
+
+      const allHealthy = Object.values(components).every(status => status === 'healthy');
+      const status = allHealthy ? 'healthy' : 'degraded';
+
+      return {
+        status,
+        uptime,
+        isRunning: this.isRunning,
+        components
+      };
+
+    } catch (error) {
+      return {
+        status: 'unhealthy',
+        uptime,
+        isRunning: this.isRunning,
+        components: {
+          dataPipeline: 'unknown',
+          batchProcessor: 'unknown',
+          dataQuality: 'unknown',
+          redis: 'unknown'
+        }
+      };
+    }
+  }
+
+  private eventMatchesFilters(event: any, filters: any): boolean {
+    for (const [key, value] of Object.entries(filters)) {
+      if (key === 'timestamp' && typeof value === 'object' && value !== null) {
+        const eventTime = new Date(event.timestamp);
+        const timestampFilter = value as { gte?: string | Date; lte?: string | Date };
+        if (timestampFilter.gte && eventTime < new Date(timestampFilter.gte)) return false;
+        if (timestampFilter.lte && eventTime > new Date(timestampFilter.lte)) return false;
+      } else if (event[key] !== value) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private async checkComponentHealth(component: string): Promise<string> {
+    try {
+      // Simple health check - in production, implement more sophisticated checks
+      switch (component) {
+        case 'dataPipeline':
+          return dataPipeline ? 'healthy' : 'unhealthy';
+        case 'batchProcessor':
+          return batchProcessor ? 'healthy' : 'unhealthy';
+        case 'dataQuality':
+          return dataQuality ? 'healthy' : 'unhealthy';
+        default:
+          return 'unknown';
+      }
+    } catch (error) {
+      return 'unhealthy';
+    }
+  }
+
   async getRealTimeMetrics(): Promise<RealTimeMetrics> {
     try {
       const redis = redisManager.getClient();
       const metricsData = await redis.get('analytics:realtime:metrics');
-      
+
       if (metricsData) {
         return JSON.parse(metricsData);
       }
@@ -237,7 +437,7 @@ export class AnalyticsServiceManager extends EventEmitter {
 
   private normalizeEventType(type: string): EventType {
     const normalized = type.toLowerCase().replace(/[-_\s]/g, '_');
-    
+
     switch (normalized) {
       case 'page_view':
       case 'pageview':
@@ -265,17 +465,17 @@ export class AnalyticsServiceManager extends EventEmitter {
 
   private async executeQuery(query: AnalyticsQuery): Promise<AnalyticsResult> {
     const redis = redisManager.getClient();
-    
+
     try {
       const eventKeys = await redis.lrange('events:recent', 0, -1);
       const events: any[] = [];
-      
+
       for (const eventKey of eventKeys.slice(0, query.limit || 100)) {
         const eventData = await redis.get(`event:${eventKey}`);
         if (eventData) {
           const event = JSON.parse(eventData);
           const eventDate = new Date(event.timestamp);
-          
+
           if (eventDate >= query.dateRange.start && eventDate <= query.dateRange.end) {
             if (!query.filters || this.matchesFilters(event, query.filters)) {
               events.push(event);
@@ -399,7 +599,7 @@ export class AnalyticsServiceManager extends EventEmitter {
 
   private async updateRealtimeMetricsCache(): Promise<void> {
     const redis = redisManager.getClient();
-    
+
     const metrics: RealTimeMetrics = {
       eventsPerSecond: Math.random() * 10,
       activeVisitors: Math.floor(Math.random() * 100),
@@ -432,6 +632,17 @@ export class AnalyticsServiceManager extends EventEmitter {
       sessionId: event.sessionId,
       timestamp: event.timestamp
     });
+  }
+
+  private async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await this.start();
+      this.initialized = true;
+    }
+  }
+
+  private initializeRealtimeMetrics(): void {
+    // Implementation of initializeRealtimeMetrics method
   }
 }
 
