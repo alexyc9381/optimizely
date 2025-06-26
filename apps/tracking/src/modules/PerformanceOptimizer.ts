@@ -58,12 +58,14 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
   private _memorySnapshots: MemorySnapshot[] = [];
   private _memoryThresholds: { warning: number; critical: number } = { warning: 50, critical: 75 };
   private _detectedLeaks: MemoryLeak[] = [];
+  private _gcInterval?: number;
+  private _lastGC: number = 0;
 
   // CPU Management
   private _cpuProfiles: CpuProfile[] = [];
-  private _taskQueue: Array<{ fn: () => void; priority: number }> = [];
+  private _taskQueue: Array<{ fn: () => void; priority: 'low' | 'normal' | 'high' | 'critical' }> = [];
   private _isThrottling: boolean = false;
-  private _throttleInterval?: number;
+  private _throttleInterval?: number | undefined;
   private _currentThrottle: number = 0;
 
   // Request Batching
@@ -646,7 +648,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
     this.emit('performance:cpu_throttling_changed', { enabled });
   }
 
-  queueTask(task: Function, priority: 'low' | 'normal' | 'high' | 'critical'): void {
+  queueTask(task: () => void, priority: 'low' | 'normal' | 'high' | 'critical'): void {
     this._taskQueue.push({ fn: task, priority });
 
     // Sort by priority
@@ -979,7 +981,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
 
     const optimization: PlatformOptimization = {
       platform,
-      framework,
+      framework: framework || 'unknown',
       optimizations: this._config.crossPlatform.frameworkOptimizations[platform] || {},
       polyfills: [],
       fallbacks: [],

@@ -208,6 +208,8 @@ type RealTimeMetrics {
   activeVisitors: Int!
   sessionsInLast30Min: Int!
   eventsInLast30Min: Int!
+  sessionsToday: Int!
+  eventsLastHour: Int!
 
   # Live data
   topPages: [PageActivity!]!

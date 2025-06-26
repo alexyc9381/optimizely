@@ -99,6 +99,8 @@ export const queryResolvers = {
       activeVisitors: 42,
       sessionsInLast30Min: 25,
       eventsInLast30Min: 150,
+      sessionsToday: 340,
+      eventsLastHour: 89,
       topPages: [
         {
           url: 'https://example.com/',
