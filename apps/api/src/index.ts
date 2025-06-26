@@ -4,10 +4,13 @@ import dotenv from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import { createServer } from 'http';
 import morgan from 'morgan';
+import { analyticsService } from './services/analytics-service';
 import { db } from './services/database';
 import { eventManager } from './services/event-manager';
 import { redisManager } from './services/redis-client';
+import { OptimizelyWebSocketServer } from './services/websocket-server';
 
 // Load environment variables
 dotenv.config();
@@ -288,6 +291,20 @@ app.get(`/api/${apiVersion}/docs`, (req, res) => {
     },
     analytics: {
       data: 'GET /api/v1/analytics/data'
+    },
+    websocket: {
+      endpoint: `ws://localhost:${port}/api/v1/ws`,
+      description: 'Real-time analytics and metrics streaming',
+      authentication: 'URL params: ?token=JWT_TOKEN or ?apiKey=API_KEY',
+      commands: [
+        'subscribe - Subscribe to real-time data rooms',
+        'unsubscribe - Unsubscribe from rooms',
+        'setMetricsFrequency - Configure metrics update frequency',
+        'ping - Keep connection alive'
+      ],
+      rooms: [
+        'realtime-metrics - Live analytics metrics and visitor data'
+      ]
     }
   };
 
@@ -337,19 +354,56 @@ async function startServer() {
       console.debug('Database error details:', dbError);
     }
 
-        // Initialize GraphQL BEFORE starting the HTTP server
+    // Initialize Analytics Service
+    try {
+      await analyticsService.start();
+      console.log('📊 Analytics service started');
+    } catch (analyticsError) {
+      console.log('⚠️  Analytics service failed to start, continuing with limited functionality');
+      console.debug('Analytics error details:', analyticsError);
+    }
+
+    // Initialize GraphQL BEFORE starting the HTTP server
     await setupGraphQL();
 
-    const server = app.listen(port, () => {
+    // Create HTTP server with WebSocket support
+    const httpServer = createServer(app);
+
+    // Initialize WebSocket server
+    const wsServer = new OptimizelyWebSocketServer(analyticsService);
+
+    // Handle WebSocket upgrade requests
+    httpServer.on('upgrade', (request, socket, head) => {
+      const pathname = new URL(request.url || '', `http://${request.headers.host}`).pathname;
+
+      if (pathname === `/api/${apiVersion}/ws`) {
+        wsServer.handleUpgrade(request, socket, head);
+      } else {
+        socket.destroy();
+      }
+    });
+
+    const server = httpServer.listen(port, () => {
       console.log(`🚀 Universal API server listening at http://localhost:${port}`);
       console.log(`📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`);
       console.log(`🏥 Health check available at http://localhost:${port}/health`);
       console.log(`🌍 Platform-agnostic architecture enabled`);
       console.log(`📊 GraphQL API available at http://localhost:${port}/api/${apiVersion}/graphql`);
       console.log(`⚡ GraphQL queries, mutations, and subscriptions ready`);
+      console.log(`🔌 WebSocket server available at ws://localhost:${port}/api/${apiVersion}/ws`);
+      console.log(`📡 Real-time metrics streaming enabled`);
     });
 
-    return server;
+    // Graceful WebSocket server shutdown
+    const originalClose = server.close.bind(server);
+    server.close = function(callback?: (err?: Error) => void) {
+      console.log('🔄 Shutting down WebSocket server...');
+      wsServer.close();
+      console.log('📴 WebSocket server stopped');
+      return originalClose(callback);
+    };
+
+    return { server, wsServer };
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     throw error;
@@ -363,11 +417,24 @@ const serverPromise = startServer();
 process.on('SIGTERM', async () => {
   console.log('SIGTERM received, shutting down gracefully');
   try {
-    const server = await serverPromise;
+    const serverResult = await serverPromise;
+    const { server, wsServer } = serverResult;
 
     // Stop GraphQL server first
     await graphQLServer.stop();
     console.log('📴 GraphQL server stopped');
+
+    // Stop WebSocket server
+    wsServer.close();
+    console.log('📴 WebSocket server stopped');
+
+    // Stop Analytics service
+    try {
+      await analyticsService.stop();
+      console.log('📴 Analytics service stopped');
+    } catch (error) {
+      console.log('⚠️  Error stopping analytics service:', error);
+    }
 
     server.close(() => {
       console.log('Process terminated');

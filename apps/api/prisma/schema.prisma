@@ -185,6 +185,7 @@ model Company {
   name              String
   industry          String?
   size              String?
+  companyType       String?  // Added for IP-to-company service compatibility
   location          String?
   revenue           String?
 
@@ -211,4 +212,22 @@ model CompanyVisitor {
 
   @@unique([companyId, visitorId])
   @@map("company_visitors")
+}
+
+// IP-to-Company caching table for performance optimization
+model IpCache {
+  id                String   @id @default(cuid())
+  ipAddress         String   @unique
+  companyData       String?  // JSON string for company data (SQLite compatible)
+  provider          String?  // Which provider returned the data
+  confidence        Float    @default(0)
+  hitCount          Int      @default(1)
+  lastHit           DateTime @default(now())
+  expiresAt         DateTime
+  isExpired         Boolean  @default(false)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("ip_cache")
 }

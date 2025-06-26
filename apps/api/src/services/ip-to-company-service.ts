@@ -382,7 +382,7 @@ export class IpToCompanyService {
         const dbCached = await db.prisma.ipCache.findFirst({
           where: {
             ipAddress: ip,
-            isValid: true,
+            isExpired: false,
             expiresAt: {
               gt: new Date()
             }
@@ -390,7 +390,7 @@ export class IpToCompanyService {
         });
 
         if (dbCached) {
-          const result = JSON.parse(dbCached.responseData) as IpCompanyData;
+          const result = JSON.parse(dbCached.companyData || '{}') as IpCompanyData;
           result.cached = true;
 
           // Update warm cache for faster subsequent lookups
@@ -425,20 +425,21 @@ export class IpToCompanyService {
         await db.prisma.ipCache.upsert({
           where: { ipAddress: ip },
           update: {
-            responseData: JSON.stringify(result),
+            companyData: JSON.stringify(result),
             provider: result.provider,
             confidence: result.company.confidence,
             lastHit: new Date(),
             hitCount: { increment: 1 },
             expiresAt,
-            isValid: true
+            isExpired: false
           },
           create: {
             ipAddress: ip,
-            responseData: JSON.stringify(result),
+            companyData: JSON.stringify(result),
             provider: result.provider,
             confidence: result.company.confidence,
-            expiresAt
+            expiresAt,
+            isExpired: false
           }
         });
       }
@@ -480,48 +481,21 @@ export class IpToCompanyService {
           name: result.company.name,
           companyType: result.company.type,
           industry: result.company.industry,
-          employeeCount: result.company.employeeCount,
-          description: result.company.description,
-          location: `${result.location.city}, ${result.location.region}, ${result.location.country}`,
-          dataSource: result.provider,
-          dataQuality: result.company.confidence,
-          lastEnriched: new Date()
+          size: result.company.size,
+          location: `${result.location.city || ''}, ${result.location.region || ''}, ${result.location.country || ''}`
         },
         create: {
           domain: result.company.domain,
           name: result.company.name,
           companyType: result.company.type,
           industry: result.company.industry,
-          employeeCount: result.company.employeeCount,
-          description: result.company.description,
-          location: `${result.location.city}, ${result.location.region}, ${result.location.country}`,
-          dataSource: result.provider,
-          dataQuality: result.company.confidence,
-          lastEnriched: new Date()
+          size: result.company.size,
+          location: `${result.location.city || ''}, ${result.location.region || ''}, ${result.location.country || ''}`
         }
       });
 
-      // Store IP range mapping if network info available
-      if (result.network.range) {
-        try {
-          await db.prisma.ipRange.create({
-            data: {
-              companyId: company.id,
-              startIp: result.ip,
-              endIp: result.ip,
-              provider: result.provider,
-              confidence: result.company.confidence,
-              asn: result.network.asn,
-              asnName: result.network.asnName,
-              isp: result.network.isp,
-              network: result.network.range
-            }
-          });
-        } catch (error) {
-          // Ignore duplicate errors, just log
-          console.log('IP range already exists, skipping:', result.ip);
-        }
-      }
+      // Note: IP range mapping removed as the IpRange model is not in our schema
+      // This functionality can be added later if needed
     } catch (error) {
       console.warn('Failed to store company data:', error);
     }
