@@ -103,6 +103,21 @@ export class UniversalPolyfills {
           return this.then(undefined, onRejected);
         }
 
+        finally(onFinally?: (() => void) | null): Promise<any> {
+          return this.then(
+            (value: any) => {
+              if (onFinally) onFinally();
+              return value;
+            },
+            (reason: any) => {
+              if (onFinally) onFinally();
+              throw reason;
+            }
+          );
+        }
+
+        readonly [Symbol.toStringTag]: 'Promise' = 'Promise';
+
         static resolve(value: any): PromisePolyfill {
           return new PromisePolyfill(resolve => resolve(value));
         }
@@ -372,9 +387,9 @@ export class UniversalPolyfills {
       typeof IntersectionObserver !== 'undefined' &&
       typeof PerformanceObserver !== 'undefined' &&
       typeof CustomEvent !== 'undefined' &&
-      Object.assign &&
-      Array.prototype.includes &&
-      String.prototype.includes
+      typeof Object.assign === 'function' &&
+      typeof Array.prototype.includes === 'function' &&
+      typeof String.prototype.includes === 'function'
     );
   }
 

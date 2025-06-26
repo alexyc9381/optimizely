@@ -1,0 +1,1293 @@
+openapi: 3.0.3
+info:
+  title: Universal AI A/B Testing Platform API
+  description: |
+    Comprehensive API for Universal AI A/B Testing Platform - enabling experimentation, analytics, and optimization across all web platforms and frameworks.
+
+    ## Features
+    - **Universal Platform Support**: Works with WordPress, Shopify, React, Vue, Angular, and any web platform
+    - **Real-time Analytics**: Live tracking and reporting of experiments and user behavior
+    - **Third-party Integrations**: Connect with Google Analytics, Adobe Analytics, Mixpanel, Segment, and custom webhooks
+    - **AI-Powered Insights**: Machine learning driven experiment optimization and recommendations
+    - **Enterprise Security**: Comprehensive authentication, rate limiting, and data protection
+
+    ## Authentication
+    This API supports multiple authentication methods:
+    - **API Key Authentication**: Use `X-API-Key` header for service-to-service communication
+    - **JWT Bearer Tokens**: For user authentication and session management
+    - **OAuth 2.0**: For third-party integrations and enterprise SSO
+
+    ## Rate Limiting
+    All endpoints are subject to rate limiting:
+    - **Default Limit**: 100 requests per 15-minute window in production
+    - **Development**: 1000 requests per 15-minute window
+    - **Headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+
+    ## Platform Detection
+    The API automatically detects the requesting platform via:
+    - `X-Platform-Type` header (recommended)
+    - `X-Platform-Version` header for version-specific optimizations
+    - User-Agent parsing as fallback
+
+    ## Response Format
+    All responses follow a consistent format:
+    ```json
+    {
+      "status": "success|error",
+      "data": {...},
+      "message": "Human readable message",
+      "timestamp": "2024-01-01T00:00:00.000Z",
+      "version": "v1"
+    }
+    ```
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@optimizely-universal.com
+    url: https://docs.optimizely-universal.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://optimizely-universal.com/terms
+
+servers:
+  - url: https://api.optimizely-universal.com/api/v1
+    description: Production server
+  - url: https://staging-api.optimizely-universal.com/api/v1
+    description: Staging server
+  - url: http://localhost:4000/api/v1
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Check the health status of the API and all connected services
+      operationId: getHealthStatus
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service is degraded or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /events:
+    post:
+      summary: Track Event
+      description: Track a user event for analytics and experimentation
+      operationId: trackEvent
+      tags:
+        - Events
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        '200':
+          description: Event tracked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '400':
+          description: Invalid event data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: Get Events
+      description: Retrieve tracked events with filtering and pagination
+      operationId: getEvents
+      tags:
+        - Events
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          description: Filter events by user ID
+          schema:
+            type: string
+        - name: sessionId
+          in: query
+          description: Filter events by session ID
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter events by type
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          description: Start date for event range (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for event range (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: page
+          in: query
+          description: Page number (starting from 1)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of events per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Events retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsListResponse'
+
+  /events/batch:
+    post:
+      summary: Track Batch Events
+      description: Track multiple events in a single request for improved performance
+      operationId: trackBatchEvents
+      tags:
+        - Events
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchEventRequest'
+      responses:
+        '200':
+          description: Batch events tracked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchEventResponse'
+        '400':
+          description: Invalid batch data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /charts/analytics:
+    get:
+      summary: Get Analytics Charts
+      description: Retrieve analytics data in various chart formats
+      operationId: getAnalyticsCharts
+      tags:
+        - Analytics
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: Type of chart to generate
+          schema:
+            type: string
+            enum: [line, bar, pie, area, funnel, heatmap]
+        - name: metric
+          in: query
+          required: true
+          description: Metric to analyze
+          schema:
+            type: string
+            enum: [page_views, unique_visitors, conversions, bounce_rate, session_duration, revenue]
+        - name: startDate
+          in: query
+          required: true
+          description: Start date for analysis (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: true
+          description: End date for analysis (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: interval
+          in: query
+          description: Data aggregation interval
+          schema:
+            type: string
+            enum: [hour, day, week, month]
+            default: day
+        - name: filters
+          in: query
+          description: Additional filters as JSON string
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chart data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChartResponse'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /integrations:
+    get:
+      summary: List Integrations
+      description: Get all configured third-party integrations
+      operationId: listIntegrations
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          description: Filter by integration type
+          schema:
+            type: string
+            enum: [google_analytics, adobe_analytics, mixpanel, segment, webhook, custom]
+        - name: enabled
+          in: query
+          description: Filter by enabled status
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Integrations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationsListResponse'
+
+    post:
+      summary: Create Integration
+      description: Create a new third-party integration
+      operationId: createIntegration
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationRequest'
+      responses:
+        '201':
+          description: Integration created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationResponse'
+
+  /integrations/{id}:
+    get:
+      summary: Get Integration
+      description: Get details of a specific integration
+      operationId: getIntegration
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Integration ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Integration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationResponse'
+        '404':
+          description: Integration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update Integration
+      description: Update an existing integration
+      operationId: updateIntegration
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Integration ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationUpdateRequest'
+      responses:
+        '200':
+          description: Integration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationResponse'
+        '400':
+          description: Invalid update data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Integration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete Integration
+      description: Delete an integration
+      operationId: deleteIntegration
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Integration ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Integration deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          description: Integration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /integrations/{id}/test:
+    post:
+      summary: Test Integration
+      description: Test the connection and configuration of an integration
+      operationId: testIntegration
+      tags:
+        - Integrations
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Integration ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Integration test completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationTestResponse'
+        '404':
+          description: Integration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /redis/cache:
+    get:
+      summary: Get Cache Data
+      description: Retrieve data from Redis cache
+      operationId: getCacheData
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: Cache key to retrieve
+          schema:
+            type: string
+        - name: pattern
+          in: query
+          description: Key pattern for bulk retrieval
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cache data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheResponse'
+        '404':
+          description: Cache key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Set Cache Data
+      description: Store data in Redis cache
+      operationId: setCacheData
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CacheSetRequest'
+      responses:
+        '200':
+          description: Cache data stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid cache data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete Cache Data
+      description: Remove data from Redis cache
+      operationId: deleteCacheData
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: Cache key to delete
+          schema:
+            type: string
+        - name: pattern
+          in: query
+          description: Key pattern for bulk deletion
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cache data deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          description: Cache key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service authentication
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for user authentication
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, error]
+          description: Overall system health status
+        message:
+          type: string
+          description: Human-readable status message
+        version:
+          type: string
+          description: API version
+        timestamp:
+          type: string
+          format: date-time
+          description: Response timestamp
+        platform:
+          type: string
+          description: Platform identifier
+        services:
+          type: object
+          properties:
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [connected, disconnected]
+                type:
+                  type: string
+            redis:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [healthy, degraded, error]
+                latency:
+                  type: number
+                  description: Redis response latency in milliseconds
+            events:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [healthy, degraded, error]
+                isListening:
+                  type: boolean
+                activeSubscriptions:
+                  type: number
+      required:
+        - status
+        - message
+        - version
+        - timestamp
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+        message:
+          type: string
+          description: Error message
+        error:
+          type: string
+          description: Detailed error information
+        code:
+          type: string
+          description: Error code for programmatic handling
+        timestamp:
+          type: string
+          format: date-time
+        requestId:
+          type: string
+          description: Unique request identifier for debugging
+      required:
+        - status
+        - message
+
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        message:
+          type: string
+          description: Success message
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - message
+
+    EventRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Event type identifier
+          example: "page_view"
+        userId:
+          type: string
+          description: Unique user identifier
+          example: "user_123"
+        sessionId:
+          type: string
+          description: Session identifier
+          example: "session_456"
+        anonymousId:
+          type: string
+          description: Anonymous user identifier for non-logged-in users
+        timestamp:
+          type: string
+          format: date-time
+          description: Event timestamp (ISO 8601)
+        properties:
+          type: object
+          additionalProperties: true
+          description: Event-specific properties
+          example:
+            page: "/home"
+            title: "Home Page"
+            referrer: "https://google.com"
+        context:
+          type: object
+          properties:
+            platform:
+              type: string
+              description: Platform where event occurred
+            userAgent:
+              type: string
+              description: User agent string
+            ip:
+              type: string
+              description: User IP address
+            location:
+              type: object
+              properties:
+                country:
+                  type: string
+                region:
+                  type: string
+                city:
+                  type: string
+      required:
+        - type
+
+    EventResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        message:
+          type: string
+        eventId:
+          type: string
+          description: Unique event identifier
+        timestamp:
+          type: string
+          format: date-time
+        processed:
+          type: boolean
+          description: Whether event was successfully processed
+      required:
+        - status
+        - eventId
+
+    BatchEventRequest:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventRequest'
+          maxItems: 100
+          description: Array of events to track (max 100 per request)
+        batch_id:
+          type: string
+          description: Optional batch identifier
+      required:
+        - events
+
+    BatchEventResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success, partial]
+        message:
+          type: string
+        batchId:
+          type: string
+          description: Batch identifier
+        processed:
+          type: integer
+          description: Number of successfully processed events
+        failed:
+          type: integer
+          description: Number of failed events
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: Index of failed event in batch
+              error:
+                type: string
+                description: Error message
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - batchId
+        - processed
+        - failed
+
+    EventsListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        filters:
+          type: object
+          description: Applied filters
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique event identifier
+        type:
+          type: string
+          description: Event type
+        userId:
+          type: string
+          description: User identifier
+        sessionId:
+          type: string
+          description: Session identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: Event timestamp
+        properties:
+          type: object
+          additionalProperties: true
+          description: Event properties
+        context:
+          type: object
+          description: Event context
+        processed:
+          type: boolean
+          description: Processing status
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+      required:
+        - id
+        - type
+        - timestamp
+
+    ChartResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Chart type
+            metric:
+              type: string
+              description: Analyzed metric
+            labels:
+              type: array
+              items:
+                type: string
+              description: Chart labels (x-axis)
+            datasets:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: number
+                  backgroundColor:
+                    type: string
+                  borderColor:
+                    type: string
+              description: Chart datasets
+            summary:
+              type: object
+              properties:
+                total:
+                  type: number
+                average:
+                  type: number
+                change:
+                  type: number
+                  description: Percentage change from previous period
+        period:
+          type: object
+          properties:
+            startDate:
+              type: string
+              format: date-time
+            endDate:
+              type: string
+              format: date-time
+            interval:
+              type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    IntegrationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Integration name
+          example: "GA4 Production"
+        type:
+          type: string
+          enum: [google_analytics, adobe_analytics, mixpanel, segment, webhook, custom]
+          description: Integration type
+        enabled:
+          type: boolean
+          description: Whether integration is enabled
+          default: true
+        authentication:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [api_key, oauth2, jwt, basic, hmac, custom]
+              description: Authentication method
+            credentials:
+              type: object
+              additionalProperties: true
+              description: Authentication credentials (encrypted in storage)
+          required:
+            - type
+            - credentials
+        configuration:
+          type: object
+          additionalProperties: true
+          description: Integration-specific configuration
+        rateLimit:
+          type: object
+          properties:
+            requests:
+              type: integer
+              description: Requests per time window
+              default: 100
+            window:
+              type: integer
+              description: Time window in seconds
+              default: 60
+        dataMapping:
+          type: object
+          properties:
+            fields:
+              type: object
+              additionalProperties:
+                type: string
+              description: Field name mappings
+            transformations:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  operation:
+                    type: string
+                    enum: [rename, format, filter, calculate]
+                  value:
+                    type: string
+        tags:
+          type: array
+          items:
+            type: string
+          description: Integration tags for organization
+      required:
+        - name
+        - type
+        - authentication
+
+    IntegrationUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Integration name
+        enabled:
+          type: boolean
+          description: Whether integration is enabled
+        authentication:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [api_key, oauth2, jwt, basic, hmac, custom]
+            credentials:
+              type: object
+              additionalProperties: true
+        configuration:
+          type: object
+          additionalProperties: true
+        rateLimit:
+          type: object
+          properties:
+            requests:
+              type: integer
+            window:
+              type: integer
+        dataMapping:
+          type: object
+          properties:
+            fields:
+              type: object
+              additionalProperties:
+                type: string
+            transformations:
+              type: array
+              items:
+                type: object
+        tags:
+          type: array
+          items:
+            type: string
+
+    IntegrationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          $ref: '#/components/schemas/Integration'
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    IntegrationsListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integration'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    Integration:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique integration identifier
+        name:
+          type: string
+          description: Integration name
+        type:
+          type: string
+          enum: [google_analytics, adobe_analytics, mixpanel, segment, webhook, custom]
+        enabled:
+          type: boolean
+          description: Integration status
+        authentication:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [api_key, oauth2, jwt, basic, hmac, custom]
+            lastValidated:
+              type: string
+              format: date-time
+            isValid:
+              type: boolean
+          required:
+            - type
+        configuration:
+          type: object
+          additionalProperties: true
+        rateLimit:
+          type: object
+          properties:
+            requests:
+              type: integer
+            window:
+              type: integer
+            remaining:
+              type: integer
+            resetTime:
+              type: string
+              format: date-time
+        dataMapping:
+          type: object
+          properties:
+            fields:
+              type: object
+              additionalProperties:
+                type: string
+            transformations:
+              type: array
+              items:
+                type: object
+        statistics:
+          type: object
+          properties:
+            totalEvents:
+              type: integer
+              description: Total events sent to this integration
+            successfulEvents:
+              type: integer
+              description: Successfully processed events
+            failedEvents:
+              type: integer
+              description: Failed events
+            lastEventTime:
+              type: string
+              format: date-time
+              description: Last time an event was sent
+            averageLatency:
+              type: number
+              description: Average response latency in milliseconds
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - type
+        - enabled
+        - authentication
+
+    IntegrationTestResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: object
+          properties:
+            connectionStatus:
+              type: string
+              enum: [success, failed, timeout]
+            responseTime:
+              type: number
+              description: Test response time in milliseconds
+            message:
+              type: string
+              description: Test result message
+            details:
+              type: object
+              additionalProperties: true
+              description: Additional test details
+            recommendations:
+              type: array
+              items:
+                type: string
+              description: Configuration recommendations
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    CacheResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: object
+          properties:
+            key:
+              type: string
+            value:
+              oneOf:
+                - type: string
+                - type: number
+                - type: object
+                - type: array
+            ttl:
+              type: integer
+              description: Time to live in seconds
+            type:
+              type: string
+              description: Redis data type
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - data
+
+    CacheSetRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Cache key
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: object
+            - type: array
+          description: Value to cache
+        ttl:
+          type: integer
+          description: Time to live in seconds
+          minimum: 1
+          default: 3600
+        nx:
+          type: boolean
+          description: Only set if key doesn't exist
+          default: false
+      required:
+        - key
+        - value
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Items per page
+        total:
+          type: integer
+          description: Total number of items
+        pages:
+          type: integer
+          description: Total number of pages
+        hasNext:
+          type: boolean
+          description: Whether there is a next page
+        hasPrev:
+          type: boolean
+          description: Whether there is a previous page
+      required:
+        - page
+        - limit
+        - total
+        - pages
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: Events
+    description: Event tracking and analytics endpoints
+  - name: Analytics
+    description: Analytics data and charts endpoints
+  - name: Integrations
+    description: Third-party integration management
+  - name: Cache
+    description: Redis cache management endpoints
+
+externalDocs:
+  description: Complete API Documentation
+  url: https://docs.optimizely-universal.com

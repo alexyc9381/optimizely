@@ -56,23 +56,23 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
 
   // Memory Management
   private _memorySnapshots: MemorySnapshot[] = [];
-  private _memoryThresholds: { warning: number; critical: number } = { warning: 50, critical: 75 };
+  private memoryThresholds: { warning: number; critical: number } = { warning: 50, critical: 75 };
   private _detectedLeaks: MemoryLeak[] = [];
-  private _gcInterval?: number;
-  private _lastGC: number = 0;
+  private gcInterval?: number;
+  private lastGC: number = 0;
 
   // CPU Management
   private _cpuProfiles: CpuProfile[] = [];
   private _taskQueue: Array<{ fn: () => void; priority: 'low' | 'normal' | 'high' | 'critical' }> = [];
   private _isThrottling: boolean = false;
   private _throttleInterval?: number | undefined;
-  private _currentThrottle: number = 0;
+  private currentThrottle: number = 0;
 
   // Request Batching
   private _requestBatches: Map<string, RequestBatch> = new Map();
   private _pendingRequests: QueuedRequest[] = [];
   private _batchInterval?: number;
-  private _lastFlush: number = 0;
+  private lastFlush: number = 0;
 
   // Core Web Vitals
   private _vitalsObserver?: PerformanceObserver;
@@ -91,13 +91,13 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
   // Cross-Platform
   private _platformOptimizations: Map<string, PlatformOptimization> = new Map();
   private _currentPlatform?: string;
-  private _currentFramework?: string | undefined;
+  private currentFramework?: string | undefined;
 
   // Monitoring
   private _monitoringInterval?: number | undefined;
   private _performanceObserver?: PerformanceObserver;
   private _resizeObserver?: ResizeObserver;
-  private _startTime: number = 0;
+  private startTime: number = 0;
 
   constructor(config: Partial<PerformanceConfig> = {}) {
     super();
@@ -481,7 +481,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
   // Memory Management Implementation
   private _initMemoryManagement(): void {
     if (this._config.memoryManagement.autoCleanup) {
-      this._gcInterval = window.setInterval(() => {
+      this.gcInterval = window.setInterval(() => {
         this._performGarbageCollection();
       }, this._config.memoryManagement.gcInterval);
     }
@@ -582,7 +582,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
     const afterSnapshot = this.getMemoryUsage();
     const freed = beforeSnapshot.heapUsed - afterSnapshot.heapUsed;
 
-    this._lastGC = now();
+    this.lastGC = now();
     this.emit('performance:gc_performed', { freed, before: beforeSnapshot, after: afterSnapshot });
   }
 
@@ -764,7 +764,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
       this._requestBatches.clear();
     }
 
-    this._lastFlush = now();
+    this.lastFlush = now();
   }
 
   private async _sendBatch(batch: RequestBatch): Promise<void> {
@@ -977,7 +977,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
 
   optimizeForPlatform(platform: string, framework?: string): void {
     this._currentPlatform = platform;
-    this._currentFramework = framework || undefined;
+    this.currentFramework = framework || undefined;
 
     const optimization: PlatformOptimization = {
       platform,

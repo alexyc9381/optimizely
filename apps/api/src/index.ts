@@ -194,6 +194,10 @@ app.use(`/api/${apiVersion}/charts`, chartsRoutes);
 import { default as integrationsRoutes } from './routes/integrations';
 app.use(`/api/${apiVersion}/integrations`, integrationsRoutes);
 
+// Import and mount Documentation routes
+import { default as docsRoutes } from './routes/docs';
+app.use(`/api/${apiVersion}/docs`, docsRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -282,7 +286,7 @@ app.get(`/api/${apiVersion}/analytics/data`, (req, res) => {
 });
 
 // API documentation endpoint
-app.get(`/api/${apiVersion}/docs`, (req, res) => {
+app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
   const endpoints: any = {
     health: 'GET /health',
     rest: {
