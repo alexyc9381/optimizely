@@ -1,0 +1,480 @@
+# =============================================================================
+# UNIVERSAL ANALYTICS GRAPHQL SCHEMA
+# =============================================================================
+
+scalar DateTime
+scalar JSON
+
+# =============================================================================
+# CORE ANALYTICS TYPES
+# =============================================================================
+
+type Event {
+  id: ID!
+  type: EventType!
+  sessionId: String!
+  visitorId: String!
+  timestamp: DateTime!
+  data: JSON
+  createdAt: DateTime!
+
+  # Relationships
+  session: Session
+  visitor: Visitor
+}
+
+enum EventType {
+  PAGE_VIEW
+  CLICK
+  FORM_SUBMIT
+  DOWNLOAD
+  CUSTOM
+}
+
+type Session {
+  id: ID!
+  visitorId: String!
+  startTime: DateTime!
+  endTime: DateTime
+  duration: Int
+  pageViews: Int!
+  eventCount: Int!
+  userAgent: String
+  referrer: String
+  initialUrl: String
+  platform: Platform
+
+  # Relationships
+  visitor: Visitor!
+  events(first: Int, after: String, type: EventType): EventConnection!
+}
+
+type Visitor {
+  id: ID!
+  firstSeen: DateTime!
+  lastSeen: DateTime!
+  totalSessions: Int!
+  totalPageViews: Int!
+  totalEvents: Int!
+
+  # Enhanced data
+  company: Company
+  location: Location
+  technology: Technology
+  customAttributes: JSON
+  tags: [String!]!
+
+  # Relationships
+  sessions(first: Int, after: String): SessionConnection!
+  events(first: Int, after: String, type: EventType): EventConnection!
+  recentActivity(limit: Int = 10): [Event!]!
+}
+
+type Company {
+  name: String!
+  domain: String!
+  industry: String
+  size: CompanySize
+  confidence: Float!
+
+  # Analytics
+  visitorCount: Int!
+  sessionCount: Int!
+  firstSeen: DateTime!
+  lastSeen: DateTime!
+}
+
+enum CompanySize {
+  STARTUP
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
+}
+
+type Location {
+  country: String!
+  countryCode: String!
+  region: String
+  city: String
+  latitude: Float
+  longitude: Float
+}
+
+type Technology {
+  browser: String!
+  os: String!
+  device: DeviceType!
+  screenResolution: String
+  platform: Platform!
+}
+
+enum DeviceType {
+  DESKTOP
+  MOBILE
+  TABLET
+}
+
+type Platform {
+  type: PlatformType!
+  version: String
+}
+
+enum PlatformType {
+  WORDPRESS
+  SHOPIFY
+  REACT
+  VUE
+  ANGULAR
+  GENERIC_WEB
+}
+
+# =============================================================================
+# ANALYTICS & REPORTING TYPES
+# =============================================================================
+
+type OverviewMetrics {
+  dateRange: DateRange!
+  totalVisitors: Int!
+  totalSessions: Int!
+  totalPageViews: Int!
+  totalEvents: Int!
+  averageSessionDuration: Float!
+  bounceRate: Float!
+
+  # Trends
+  visitorTrend: [TrendPoint!]!
+  sessionTrend: [TrendPoint!]!
+  eventTrend: [TrendPoint!]!
+}
+
+type EventAnalytics {
+  dateRange: DateRange!
+  totalEvents: Int!
+  eventBreakdown: [EventTypeStats!]!
+  trends: [TrendPoint!]!
+  topEvents: [Event!]!
+}
+
+type EventTypeStats {
+  type: EventType!
+  count: Int!
+  percentage: Float!
+  trend: [TrendPoint!]!
+}
+
+type VisitorAnalytics {
+  dateRange: DateRange!
+  totalVisitors: Int!
+  newVisitors: Int!
+  returningVisitors: Int!
+
+  # Segmentation
+  topCompanies: [CompanyStats!]!
+  technologyBreakdown: TechnologyBreakdown!
+  locationBreakdown: [LocationStats!]!
+}
+
+type CompanyStats {
+  company: Company!
+  visitorCount: Int!
+  sessionCount: Int!
+  eventCount: Int!
+  averageSessionDuration: Float!
+}
+
+type TechnologyBreakdown {
+  browsers: [TechnologyStats!]!
+  operatingSystems: [TechnologyStats!]!
+  devices: [TechnologyStats!]!
+  platforms: [TechnologyStats!]!
+}
+
+type TechnologyStats {
+  name: String!
+  count: Int!
+  percentage: Float!
+}
+
+type LocationStats {
+  location: Location!
+  visitorCount: Int!
+  sessionCount: Int!
+  percentage: Float!
+}
+
+type RealTimeMetrics {
+  timestamp: DateTime!
+  activeVisitors: Int!
+  sessionsInLast30Min: Int!
+  eventsInLast30Min: Int!
+
+  # Live data
+  topPages: [PageActivity!]!
+  recentEvents: [Event!]!
+  activeCountries: [CountryActivity!]!
+}
+
+type PageActivity {
+  url: String!
+  title: String
+  activeVisitors: Int!
+  totalViews: Int!
+}
+
+type CountryActivity {
+  country: String!
+  countryCode: String!
+  activeVisitors: Int!
+}
+
+type TrendPoint {
+  date: DateTime!
+  value: Float!
+}
+
+type DateRange {
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+# =============================================================================
+# DATA EXPORT TYPES
+# =============================================================================
+
+type ExportJob {
+  id: ID!
+  status: ExportStatus!
+  format: ExportFormat!
+  progress: Float!
+  createdAt: DateTime!
+  completedAt: DateTime
+  expiresAt: DateTime
+  downloadUrl: String
+  errorMessage: String
+}
+
+enum ExportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+enum ExportFormat {
+  CSV
+  JSON
+  EXCEL
+}
+
+# =============================================================================
+# CONNECTION TYPES (for pagination)
+# =============================================================================
+
+type EventConnection {
+  edges: [EventEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type EventEdge {
+  node: Event!
+  cursor: String!
+}
+
+type SessionConnection {
+  edges: [SessionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SessionEdge {
+  node: Session!
+  cursor: String!
+}
+
+type VisitorConnection {
+  edges: [VisitorEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type VisitorEdge {
+  node: Visitor!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# =============================================================================
+# INPUT TYPES
+# =============================================================================
+
+input EventInput {
+  type: EventType!
+  sessionId: String!
+  visitorId: String!
+  timestamp: DateTime
+  data: JSON
+}
+
+input SessionInput {
+  visitorId: String!
+  userAgent: String
+  referrer: String
+  initialUrl: String
+  platform: PlatformInput
+}
+
+input PlatformInput {
+  type: PlatformType!
+  version: String
+}
+
+input VisitorUpdateInput {
+  customAttributes: JSON
+  tags: [String!]
+}
+
+input DateRangeInput {
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input EventFilters {
+  types: [EventType!]
+  sessionIds: [String!]
+  visitorIds: [String!]
+  dateRange: DateRangeInput
+}
+
+input SessionFilters {
+  visitorIds: [String!]
+  dateRange: DateRangeInput
+  minDuration: Int
+  maxDuration: Int
+}
+
+input VisitorFilters {
+  companies: [String!]
+  countries: [String!]
+  devices: [DeviceType!]
+  platforms: [PlatformType!]
+  dateRange: DateRangeInput
+}
+
+input ExportInput {
+  format: ExportFormat!
+  dateRange: DateRangeInput!
+  filters: EventFilters
+}
+
+# =============================================================================
+# ROOT TYPES
+# =============================================================================
+
+type Query {
+  # Event queries
+  event(id: ID!): Event
+  events(
+    first: Int = 50
+    after: String
+    filters: EventFilters
+  ): EventConnection!
+
+  # Session queries
+  session(id: ID!): Session
+  sessions(
+    first: Int = 50
+    after: String
+    filters: SessionFilters
+  ): SessionConnection!
+
+  # Visitor queries
+  visitor(id: ID!): Visitor
+  visitors(
+    first: Int = 50
+    after: String
+    filters: VisitorFilters
+  ): VisitorConnection!
+
+  # Analytics queries
+  overviewMetrics(dateRange: DateRangeInput!): OverviewMetrics!
+  eventAnalytics(dateRange: DateRangeInput!, groupBy: String): EventAnalytics!
+  visitorAnalytics(dateRange: DateRangeInput!, segment: String): VisitorAnalytics!
+  realTimeMetrics: RealTimeMetrics!
+
+  # Company & location queries
+  topCompanies(
+    dateRange: DateRangeInput!
+    limit: Int = 10
+  ): [CompanyStats!]!
+
+  topLocations(
+    dateRange: DateRangeInput!
+    limit: Int = 10
+  ): [LocationStats!]!
+
+  # Export queries
+  exportJob(id: ID!): ExportJob
+  exportJobs(first: Int = 20): [ExportJob!]!
+
+  # Search queries
+  searchVisitors(query: String!, limit: Int = 10): [Visitor!]!
+  searchCompanies(query: String!, limit: Int = 10): [Company!]!
+}
+
+type Mutation {
+  # Event mutations
+  trackEvent(input: EventInput!): Event!
+  trackEvents(inputs: [EventInput!]!): [Event!]!
+
+  # Session mutations
+  createSession(input: SessionInput!): Session!
+  updateSession(id: ID!, endTime: DateTime): Session!
+
+  # Visitor mutations
+  updateVisitor(id: ID!, input: VisitorUpdateInput!): Visitor!
+  mergeVisitors(primaryId: ID!, secondaryIds: [ID!]!): Visitor!
+
+  # Export mutations
+  createExport(input: ExportInput!): ExportJob!
+  cancelExport(id: ID!): Boolean!
+
+  # Admin mutations
+  deleteEvent(id: ID!): Boolean!
+  deleteSession(id: ID!): Boolean!
+  deleteVisitor(id: ID!): Boolean!
+}
+
+type Subscription {
+  # Real-time event streaming
+  eventStream(filters: EventFilters): Event!
+
+  # Real-time metrics updates
+  realTimeMetricsUpdated: RealTimeMetrics!
+
+  # Session lifecycle
+  sessionStarted: Session!
+  sessionEnded: Session!
+
+  # Visitor activity
+  visitorActivity(visitorId: ID): Event!
+
+  # Export job updates
+  exportJobUpdated(id: ID!): ExportJob!
+}
+
+# =============================================================================
+# SCHEMA DIRECTIVES (for future use)
+# =============================================================================
+
+directive @auth(requires: String) on FIELD_DEFINITION
+directive @rateLimit(max: Int!, window: Int!) on FIELD_DEFINITION
+directive @deprecated(reason: String) on FIELD_DEFINITION | ENUM_VALUE

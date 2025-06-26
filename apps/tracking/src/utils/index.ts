@@ -30,7 +30,14 @@ function generateRandomId(length: number): string {
  * Generate a unique ID (general purpose)
  */
 export function generateId(): string {
-  return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+  if (isBrowser() && window.crypto && window.crypto.getRandomValues) {
+    const array = new Uint8Array(16);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Fallback for environments without crypto
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
 /**
@@ -43,37 +50,43 @@ export function now(): number {
 /**
  * Debounce function calls
  */
-export function debounce(func: Function, wait: number): Function {
-  let timeout: NodeJS.Timeout | null = null;
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number,
+  immediate = false
+): T {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  return function(this: any, ...args: any[]) {
-    const context = this;
+  return ((...args: Parameters<T>) => {
+    const later = () => {
+      timeout = null;
+      if (!immediate) func(...args);
+    };
 
-    if (timeout) {
-      clearTimeout(timeout);
-    }
+    const callNow = immediate && !timeout;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
 
-    timeout = setTimeout(() => {
-      func.apply(context, args);
-    }, wait);
-  };
+    if (callNow) func(...args);
+  }) as T;
 }
 
 /**
  * Throttle function calls
  */
-export function throttle(func: Function, limit: number): Function {
-  let inThrottle: boolean = false;
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): T {
+  let inThrottle: boolean;
 
-  return function(this: any, ...args: any[]) {
-    const context = this;
-
+  return ((...args: Parameters<T>) => {
     if (!inThrottle) {
-      func.apply(context, args);
+      func(...args);
       inThrottle = true;
       setTimeout(() => inThrottle = false, limit);
     }
-  };
+  }) as T;
 }
 
 /**
@@ -104,7 +117,7 @@ export function safeJsonParse<T = any>(json: string, fallback: T = null as any):
 /**
  * Safe JSON stringifying
  */
-export function safeJsonStringify(obj: any, fallback: string = '{}'): string {
+export function safeJsonStringify(obj: any, fallback = '{}'): string {
   try {
     return JSON.stringify(obj);
   } catch {
@@ -266,15 +279,25 @@ export function simpleHash(str: string): number {
 /**
  * Deep merge objects
  */
-export function deepMerge(target: any, source: any): any {
+export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
   const result = { ...target };
 
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
-      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-        result[key] = deepMerge(result[key] || {}, source[key]);
+      const sourceValue = source[key];
+      const targetValue = result[key];
+
+      if (
+        sourceValue &&
+        typeof sourceValue === 'object' &&
+        !Array.isArray(sourceValue) &&
+        targetValue &&
+        typeof targetValue === 'object' &&
+        !Array.isArray(targetValue)
+      ) {
+        result[key] = deepMerge(targetValue, sourceValue);
       } else {
-        result[key] = source[key];
+        result[key] = sourceValue as T[Extract<keyof T, string>];
       }
     }
   }
@@ -513,3 +536,20 @@ export function isDataExpired(timestamp: number, retentionDays: number): boolean
   const expiry = calculateRetentionExpiry(timestamp, retentionDays);
   return now() > expiry;
 }
+
+// Core utility functions for the tracking library
+
+export function isBot(): boolean {
+  if (!isBrowser()) return false;
+
+  const userAgent = navigator.userAgent.toLowerCase();
+  const botPatterns = [
+    'bot', 'crawler', 'spider', 'crawling', 'facebook', 'google', 'yahoo',
+    'bing', 'duckduckgo', 'baidu', 'yandex', 'twitter', 'whatsapp', 'telegram'
+  ];
+
+  return botPatterns.some(pattern => userAgent.includes(pattern));
+}
+
+// Export UniversalPolyfills
+export { UniversalPolyfills } from './polyfills';

@@ -24,6 +24,7 @@ export interface TrackerConfig {
         timeout?: number;
     };
     gdpr?: GDPRConfig;
+    performance?: PerformanceConfig;
 }
 export interface VisitorSession {
     sessionId: string;
@@ -303,6 +304,16 @@ export interface TrackerInstance extends EventEmitter {
     sendWebSocketEvent(event: string, data?: any, priority?: 'low' | 'normal' | 'high' | 'critical'): Promise<boolean>;
     getWebSocketState(): WebSocketConnectionState | null;
     getWebSocketMetrics(): WebSocketMetrics | null;
+    configurePerformance(config: Partial<PerformanceConfig>): void;
+    getPerformanceMetrics(): PerformanceMetrics;
+    getPerformanceReport(): PerformanceOptimizationReport;
+    startPerformanceMonitoring(): void;
+    stopPerformanceMonitoring(): void;
+    optimizePerformance(): void;
+    preloadCriticalResources(): Promise<void>;
+    enableLazyLoading(): void;
+    enableCodeSplitting(): void;
+    measureCoreWebVitals(): Promise<CoreWebVitalsObserver>;
     flush(): Promise<void>;
     destroy(): void;
 }
@@ -452,5 +463,258 @@ export interface FallbackTransport {
     url: string;
     enabled: boolean;
     retryInterval: number;
+}
+export interface PerformanceConfig {
+    enabled: boolean;
+    lazyLoading?: {
+        enabled: boolean;
+        threshold: number;
+        modules: string[];
+        chunkSize: number;
+    };
+    codesplitting?: {
+        enabled: boolean;
+        splitPoints: string[];
+        dynamicImports: boolean;
+        preloadCritical: boolean;
+    };
+    memoryManagement?: {
+        enabled: boolean;
+        maxMemoryUsage: number;
+        gcInterval: number;
+        leakDetection: boolean;
+        autoCleanup: boolean;
+        memoryThreshold: number;
+    };
+    cpuThrottling?: {
+        enabled: boolean;
+        maxCpuUsage: number;
+        throttleInterval: number;
+        adaptiveThrottling: boolean;
+        priorityQueue: boolean;
+    };
+    requestBatching?: {
+        enabled: boolean;
+        batchSize: number;
+        flushInterval: number;
+        maxBatchAge: number;
+        priorityBatching: boolean;
+        compression: boolean;
+    };
+    coreWebVitals?: {
+        enabled: boolean;
+        lcpThreshold: number;
+        fidThreshold: number;
+        clsThreshold: number;
+        monitoring: boolean;
+        optimization: boolean;
+    };
+    resourcePrioritization?: {
+        enabled: boolean;
+        criticalResources: string[];
+        preloadThreshold: number;
+        deferNonCritical: boolean;
+        adaptivePriority: boolean;
+    };
+    crossPlatform?: {
+        enabled: boolean;
+        frameworkOptimizations: Record<string, any>;
+        universalPolyfills: boolean;
+        adaptiveLoading: boolean;
+    };
+}
+export interface PerformanceMetrics {
+    loadTime: number;
+    domReady: number;
+    firstPaint?: number;
+    firstContentfulPaint?: number;
+    largestContentfulPaint?: number;
+    firstInputDelay?: number;
+    cumulativeLayoutShift?: number;
+    totalBlockingTime?: number;
+    timeToInteractive?: number;
+    memoryUsage?: {
+        used: number;
+        total: number;
+        limit: number;
+    };
+    cpuUsage?: number;
+    networkStats?: {
+        requests: number;
+        bytesTransferred: number;
+        averageLatency: number;
+    };
+    scriptPerformance?: {
+        initTime: number;
+        executionTime: number;
+        moduleLoadTimes: Record<string, number>;
+    };
+}
+export interface PerformanceThresholds {
+    memory: {
+        warning: number;
+        critical: number;
+    };
+    cpu: {
+        warning: number;
+        critical: number;
+    };
+    network: {
+        latency: number;
+        bandwidth: number;
+    };
+    coreWebVitals: {
+        lcp: number;
+        fid: number;
+        cls: number;
+    };
+}
+export interface LazyLoadModule {
+    name: string;
+    size: number;
+    priority: 'low' | 'normal' | 'high' | 'critical';
+    dependencies: string[];
+    loader: () => Promise<any>;
+    loaded: boolean;
+    loadTime?: number;
+}
+export interface CodeSplitPoint {
+    name: string;
+    condition: () => boolean;
+    modules: string[];
+    preload: boolean;
+    critical: boolean;
+}
+export interface MemorySnapshot {
+    timestamp: number;
+    heapUsed: number;
+    heapTotal: number;
+    external: number;
+    rss?: number;
+    leaks?: MemoryLeak[];
+}
+export interface MemoryLeak {
+    type: string;
+    size: number;
+    location: string;
+    stack?: string;
+    timestamp: number;
+}
+export interface CpuProfile {
+    timestamp: number;
+    usage: number;
+    tasks: {
+        name: string;
+        duration: number;
+        cpu: number;
+    }[];
+    throttled: boolean;
+}
+export interface RequestBatch {
+    id: string;
+    requests: QueuedRequest[];
+    size: number;
+    priority: 'low' | 'normal' | 'high' | 'critical';
+    createdAt: number;
+    flushAt: number;
+    compressed: boolean;
+}
+export interface QueuedRequest {
+    id: string;
+    endpoint: string;
+    method: string;
+    data: any;
+    priority: 'low' | 'normal' | 'high' | 'critical';
+    timestamp: number;
+    retries: number;
+    maxRetries: number;
+}
+export interface CoreWebVitalsObserver {
+    lcp?: number;
+    fid?: number;
+    cls?: number;
+    fcp?: number;
+    ttfb?: number;
+    tbt?: number;
+    tti?: number;
+}
+export interface ResourcePriority {
+    resource: string;
+    priority: 'low' | 'normal' | 'high' | 'critical';
+    timing: 'immediate' | 'defer' | 'lazy' | 'preload';
+    condition?: () => boolean;
+}
+export interface PlatformOptimization {
+    platform: string;
+    framework?: string;
+    optimizations: {
+        moduleLoading?: any;
+        eventHandling?: any;
+        rendering?: any;
+        memory?: any;
+        networking?: any;
+    };
+    polyfills?: string[];
+    fallbacks?: string[];
+}
+export interface PerformanceOptimizationModule extends ModuleInterface {
+    configure(config: Partial<PerformanceConfig>): void;
+    getConfig(): PerformanceConfig;
+    registerLazyModule(module: LazyLoadModule): void;
+    loadModule(name: string): Promise<any>;
+    preloadModules(names: string[]): Promise<void>;
+    registerSplitPoint(splitPoint: CodeSplitPoint): void;
+    splitCode(): Promise<void>;
+    preloadCritical(): Promise<void>;
+    getMemoryUsage(): MemorySnapshot;
+    detectMemoryLeaks(): MemoryLeak[];
+    cleanup(): void;
+    forceGarbageCollection(): void;
+    getCpuUsage(): CpuProfile;
+    throttleCpu(enabled: boolean): void;
+    queueTask(task: Function, priority: 'low' | 'normal' | 'high' | 'critical'): void;
+    addRequest(request: Omit<QueuedRequest, 'id' | 'timestamp'>): string;
+    flushBatch(batchId?: string): Promise<void>;
+    getBatchStatus(): RequestBatch[];
+    measureCoreWebVitals(): Promise<CoreWebVitalsObserver>;
+    optimizeCoreWebVitals(): void;
+    getCoreWebVitalsReport(): CoreWebVitalsObserver;
+    prioritizeResource(resource: ResourcePriority): void;
+    preloadCriticalResources(): Promise<void>;
+    deferNonCriticalResources(): void;
+    optimizeForPlatform(platform: string, framework?: string): void;
+    enableUniversalPolyfills(): void;
+    getOptimizationReport(): PerformanceOptimizationReport;
+    startMonitoring(): void;
+    stopMonitoring(): void;
+    getMetrics(): PerformanceMetrics;
+    getThresholds(): PerformanceThresholds;
+    setThresholds(thresholds: Partial<PerformanceThresholds>): void;
+}
+export interface PerformanceOptimizationReport {
+    timestamp: number;
+    metrics: PerformanceMetrics;
+    thresholds: PerformanceThresholds;
+    violations: PerformanceViolation[];
+    optimizations: OptimizationRecommendation[];
+    score: number;
+    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+}
+export interface PerformanceViolation {
+    type: 'memory' | 'cpu' | 'network' | 'core-web-vitals' | 'resource';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+    value: number;
+    threshold: number;
+    timestamp: number;
+    location?: string;
+}
+export interface OptimizationRecommendation {
+    type: 'lazy-loading' | 'code-splitting' | 'memory' | 'cpu' | 'batching' | 'resource-priority';
+    priority: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+    impact: 'low' | 'medium' | 'high';
+    effort: 'low' | 'medium' | 'high';
+    action?: () => void;
 }
 //# sourceMappingURL=index.d.ts.map

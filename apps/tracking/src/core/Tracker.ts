@@ -1,18 +1,23 @@
 import { BehavioralTracker } from '../modules/BehavioralTracker';
+import { PerformanceOptimizer } from '../modules/PerformanceOptimizer';
 import { TechnologyDetector } from '../modules/TechnologyDetector';
 import { WebSocketManager } from '../modules/WebSocketManager';
 import {
     ConsentData,
+    CoreWebVitalsObserver,
     EventData,
     ModuleInterface,
     PageViewData,
+    PerformanceConfig,
+    PerformanceMetrics,
+    PerformanceOptimizationReport,
     TechStackDetection,
     TrackerConfig,
     TrackerInstance,
     VisitorSession,
     WebSocketConfig,
     WebSocketConnectionState,
-    WebSocketMetrics,
+    WebSocketMetrics
 } from '../types';
 import {
     deepMerge,
@@ -21,7 +26,7 @@ import {
     getCurrentUrl,
     getReferrer,
     isBrowser,
-    now,
+    now
 } from '../utils';
 import { EventEmitter } from './EventEmitter';
 import { SessionManager, SessionOptions } from './SessionManager';
@@ -45,6 +50,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
 
   constructor() {
     super();
+
     this._storage = new Storage();
     this._sessionManager = new SessionManager(this._storage);
 
@@ -151,6 +157,19 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     // Initialize and register technology detection module
     const technologyDetector = new TechnologyDetector();
     this.use(technologyDetector);
+
+    // Initialize and register performance optimization module
+    const performanceOptimizer = new PerformanceOptimizer(this.config.performance);
+    this.use(performanceOptimizer);
+
+    // Start performance monitoring if enabled
+    if (this.config.performance?.enabled !== false) {
+      performanceOptimizer.startMonitoring();
+
+      if (this.config.debug) {
+        console.log('Performance monitoring started');
+      }
+    }
 
     // Initialize and register WebSocket manager if enabled
     if (this.config.websocket?.enabled && isBrowser()) {
@@ -394,8 +413,11 @@ export class Tracker extends EventEmitter implements TrackerInstance {
    * Get WebSocket metrics
    */
   getWebSocketMetrics(): WebSocketMetrics | null {
-    const webSocketManager = this.getModule<WebSocketManager>('WebSocketManager');
-    return webSocketManager ? webSocketManager.getMetrics() : null;
+    const wsModule = this.getModule<WebSocketManager>('WebSocketManager');
+    if (wsModule) {
+      return wsModule.getMetrics();
+    }
+    return null;
   }
 
   /**
@@ -683,5 +705,159 @@ export class Tracker extends EventEmitter implements TrackerInstance {
 
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  // Performance Optimization methods
+  configurePerformance(config: Partial<PerformanceConfig>): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      perfModule.configure(config);
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  getPerformanceMetrics(): PerformanceMetrics {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      return perfModule.getMetrics();
+    }
+    // Return default metrics if module not found
+    return {
+      loadTime: 0,
+      domReady: 0,
+      firstPaint: 0,
+      firstContentfulPaint: 0,
+      largestContentfulPaint: 0,
+      firstInputDelay: 0,
+      cumulativeLayoutShift: 0,
+      totalBlockingTime: 0,
+      timeToInteractive: 0,
+      memoryUsage: {
+        used: 0,
+        total: 0,
+        limit: 0,
+      },
+      cpuUsage: 0,
+      networkStats: {
+        requests: 0,
+        bytesTransferred: 0,
+        averageLatency: 0,
+      },
+      scriptPerformance: {
+        initTime: 0,
+        executionTime: 0,
+        moduleLoadTimes: {},
+      },
+    };
+  }
+
+  getPerformanceReport(): PerformanceOptimizationReport {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      return perfModule.getOptimizationReport();
+    }
+    // Return default report if module not found
+    return {
+      timestamp: Date.now(),
+      metrics: this.getPerformanceMetrics(),
+      thresholds: {
+        memory: { warning: 80, critical: 100 },
+        cpu: { warning: 70, critical: 90 },
+        network: { latency: 500, bandwidth: 1024 * 1024 },
+        coreWebVitals: { lcp: 2500, fid: 100, cls: 0.1 },
+      },
+      violations: [],
+      optimizations: [],
+      score: 100,
+      grade: 'A',
+    };
+  }
+
+  startPerformanceMonitoring(): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      perfModule.startMonitoring();
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  stopPerformanceMonitoring(): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      perfModule.stopMonitoring();
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  optimizePerformance(): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      perfModule.optimizeCoreWebVitals();
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  async preloadCriticalResources(): Promise<void> {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      await perfModule.preloadCriticalResources();
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  enableLazyLoading(): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      // Enable lazy loading (already enabled by default in config)
+      perfModule.configure({
+        lazyLoading: {
+          enabled: true,
+          threshold: 50 * 1024, // 50KB
+          modules: [],
+          chunkSize: 100 * 1024, // 100KB
+        }
+      });
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  enableCodeSplitting(): void {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      // Enable code splitting (already enabled by default in config)
+      perfModule.configure({
+        codesplitting: {
+          enabled: true,
+          splitPoints: [],
+          dynamicImports: true,
+          preloadCritical: true,
+        }
+      });
+    } else if (this.config.debug) {
+      console.warn('PerformanceOptimizer module not found');
+    }
+  }
+
+  async measureCoreWebVitals(): Promise<CoreWebVitalsObserver> {
+    const perfModule = this.getModule<PerformanceOptimizer>('PerformanceOptimizer');
+    if (perfModule) {
+      return await perfModule.measureCoreWebVitals();
+    }
+    // Return default values if module not found
+    return {
+      lcp: 0,
+      fid: 0,
+      cls: 0,
+      fcp: 0,
+      ttfb: 0,
+      tbt: 0,
+      tti: 0,
+    };
   }
 }

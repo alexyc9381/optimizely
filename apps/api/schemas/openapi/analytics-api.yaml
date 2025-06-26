@@ -1,0 +1,171 @@
+openapi: 3.0.3
+info:
+  title: Universal Analytics API
+  description: |
+    Comprehensive API-first analytics platform that works universally across all web platforms.
+    Provides real-time tracking, data aggregation, reporting, and visualization capabilities.
+  version: 1.0.0
+  contact:
+    name: Universal Analytics Platform
+    url: https://analytics.universal.ai
+    email: support@universal.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.analytics.universal.ai/v1
+    description: Production server
+  - url: https://staging-api.analytics.universal.ai/v1
+    description: Staging server
+  - url: http://localhost:4000/api/v1
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  # Event Tracking Endpoints
+  /events:
+    post:
+      summary: Track analytics event
+      description: Record a single analytics event with metadata
+      tags: [Events]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        '201':
+          description: Event successfully tracked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+    get:
+      summary: Retrieve events
+      description: Get analytics events with filtering and pagination
+      tags: [Events]
+      parameters:
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/OffsetQuery'
+      responses:
+        '200':
+          description: Events retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    LimitQuery:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 50
+      description: Number of results to return
+
+    OffsetQuery:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Number of results to skip
+
+  schemas:
+    EventRequest:
+      type: object
+      required: [type, sessionId, visitorId]
+      properties:
+        type:
+          type: string
+          enum: [page_view, click, form_submit, download, custom]
+          description: Type of event being tracked
+        sessionId:
+          type: string
+          description: Current session identifier
+        visitorId:
+          type: string
+          description: Unique visitor identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: Event timestamp (ISO 8601)
+        data:
+          type: object
+          description: Event-specific data payload
+          additionalProperties: true
+
+    Event:
+      allOf:
+        - $ref: '#/components/schemas/EventRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Unique event identifier
+            createdAt:
+              type: string
+              format: date-time
+
+    EventResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique event identifier
+        status:
+          type: string
+          enum: [tracked, queued, failed]
+        timestamp:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Human-readable error message
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+tags:
+  - name: Events
+    description: Event tracking and retrieval operations

@@ -616,7 +616,7 @@ export class GDPRCompliance extends EventEmitter implements GDPRComplianceModule
       if (stored) {
         this._consent = JSON.parse(stored);
       }
-    } catch (error) {
+    } catch {
       // Ignore parsing errors
     }
   }

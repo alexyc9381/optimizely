@@ -1,4 +1,4 @@
-import { ConsentData, ModuleInterface, PageViewData, TechStackDetection, TrackerConfig, TrackerInstance, VisitorSession, WebSocketConnectionState, WebSocketMetrics } from '../types';
+import { ConsentData, CoreWebVitalsObserver, ModuleInterface, PageViewData, PerformanceConfig, PerformanceMetrics, PerformanceOptimizationReport, TechStackDetection, TrackerConfig, TrackerInstance, VisitorSession, WebSocketConnectionState, WebSocketMetrics } from '../types';
 import { EventEmitter } from './EventEmitter';
 export declare class Tracker extends EventEmitter implements TrackerInstance {
     config: TrackerConfig;
@@ -43,5 +43,15 @@ export declare class Tracker extends EventEmitter implements TrackerInstance {
     private _queueEvent;
     private _startFlushTimer;
     private _sendEvents;
+    configurePerformance(config: Partial<PerformanceConfig>): void;
+    getPerformanceMetrics(): PerformanceMetrics;
+    getPerformanceReport(): PerformanceOptimizationReport;
+    startPerformanceMonitoring(): void;
+    stopPerformanceMonitoring(): void;
+    optimizePerformance(): void;
+    preloadCriticalResources(): Promise<void>;
+    enableLazyLoading(): void;
+    enableCodeSplitting(): void;
+    measureCoreWebVitals(): Promise<CoreWebVitalsObserver>;
 }
 //# sourceMappingURL=Tracker.d.ts.map
