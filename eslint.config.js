@@ -13,21 +13,24 @@ export default [
         ecmaVersion: 2022,
         sourceType: 'module',
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         ...globals.browser,
-        ...globals.node
-      }
+        ...globals.node,
+      },
     },
     plugins: {
-      '@typescript-eslint': typescript
+      '@typescript-eslint': typescript,
     },
     rules: {
       ...typescript.configs.recommended.rules,
       // Allow unused vars that start with underscore
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
       // Allow any type in development
       '@typescript-eslint/no-explicit-any': 'warn',
       // Allow empty functions
@@ -37,20 +40,28 @@ export default [
       // Disable Function type restriction for callbacks
       '@typescript-eslint/no-unsafe-function-type': 'off',
       // Allow prototype methods
-      'no-prototype-builtins': 'off'
-    }
+      'no-prototype-builtins': 'off',
+    },
   },
   {
     files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
     languageOptions: {
       globals: {
-        ...globals.node
-      }
+        ...globals.node,
+      },
     },
     rules: {
       // Allow require in JS files
-      'no-undef': 'off'
-    }
+      'no-undef': 'off',
+    },
+  },
+  {
+    files: ['**/*.test.{js,ts,tsx}', '**/__tests__/**/*.{js,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
   },
   {
     ignores: [
@@ -65,7 +76,7 @@ export default [
       '.local/',
       'apps/tracking/dist/',
       'apps/web/.next/',
-      'apps/api/dist/'
-    ]
-  }
+      'apps/api/dist/',
+    ],
+  },
 ];

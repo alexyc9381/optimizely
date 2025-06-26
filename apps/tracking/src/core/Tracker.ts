@@ -1,21 +1,23 @@
 import { BehavioralTracker } from '../modules/BehavioralTracker';
+import { TechnologyDetector } from '../modules/TechnologyDetector';
 import {
-    ConsentData,
-    EventData,
-    ModuleInterface,
-    PageViewData,
-    TrackerConfig,
-    TrackerInstance,
-    VisitorSession
+  ConsentData,
+  EventData,
+  ModuleInterface,
+  PageViewData,
+  TechStackDetection,
+  TrackerConfig,
+  TrackerInstance,
+  VisitorSession,
 } from '../types';
 import {
-    deepMerge,
-    domReady,
-    getCurrentTitle,
-    getCurrentUrl,
-    getReferrer,
-    isBrowser,
-    now
+  deepMerge,
+  domReady,
+  getCurrentTitle,
+  getCurrentUrl,
+  getReferrer,
+  isBrowser,
+  now,
 } from '../utils';
 import { EventEmitter } from './EventEmitter';
 import { SessionManager, SessionOptions } from './SessionManager';
@@ -51,7 +53,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       sessionTimeout: 30 * 60 * 1000, // 30 minutes
       batchSize: 10,
       flushInterval: 5000, // 5 seconds
-      platform: 'auto'
+      platform: 'auto',
     };
 
     // Initialize empty session
@@ -86,13 +88,13 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       enableCrossTabs: true,
       enableFingerprinting: true,
       sessionValidation: true,
-      storagePrefix: `opt_${this.config.projectId}_session_`
+      storagePrefix: `opt_${this.config.projectId}_session_`,
     };
 
     this._sessionManager = new SessionManager(this._storage, sessionOptions);
 
     // Setup session event listeners
-    this._sessionManager.on('session:created', (event) => {
+    this._sessionManager.on('session:created', event => {
       this.session = event.session;
       this.emit('session:created', event);
       if (this.config.debug) {
@@ -100,7 +102,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       }
     });
 
-    this._sessionManager.on('session:restored', (event) => {
+    this._sessionManager.on('session:restored', event => {
       this.session = event.session;
       this.emit('session:restored', event);
       if (this.config.debug) {
@@ -108,7 +110,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       }
     });
 
-    this._sessionManager.on('session:synchronized', (event) => {
+    this._sessionManager.on('session:synchronized', event => {
       this.session = event.session;
       this.emit('session:synchronized', event);
       if (this.config.debug) {
@@ -116,7 +118,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       }
     });
 
-    this._sessionManager.on('session:invalid', (event) => {
+    this._sessionManager.on('session:invalid', event => {
       this.emit('session:invalid', event);
       if (this.config.debug) {
         console.log('Session invalidated:', event);
@@ -133,7 +135,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       enableFormTracking: true,
       enableMouseTracking: !!this.config.debug, // Only enable mouse tracking in debug mode
       enableVisibilityTracking: true,
-      enablePerformanceTracking: true
+      enablePerformanceTracking: true,
     });
 
     // Set tracker reference for behavioral tracker
@@ -141,6 +143,10 @@ export class Tracker extends EventEmitter implements TrackerInstance {
 
     // Register the module
     this.use(behavioralTracker);
+
+    // Initialize and register technology detection module
+    const technologyDetector = new TechnologyDetector();
+    this.use(technologyDetector);
 
     // Start automatic flushing
     this._startFlushTimer();
@@ -160,7 +166,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
         config: this.config,
         session: this.session,
         fingerprint: this._sessionManager.getFingerprint(),
-        modules: Array.from(this._modules.keys())
+        modules: Array.from(this._modules.keys()),
       });
     }
   }
@@ -190,7 +196,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       timestamp: now(),
       sessionId: this.session.sessionId,
       visitorId: this.session.visitorId,
-      metadata: data
+      metadata: data,
     };
 
     this._queueEvent(eventData);
@@ -222,6 +228,9 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     if (!this.isInitialized) return;
     if (!this.hasConsent()) return;
 
+    // Get technology stack for this page
+    const techStack = this.getTechnologyStack();
+
     const pageViewData: PageViewData = {
       url: getCurrentUrl(),
       title: getCurrentTitle(),
@@ -229,7 +238,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       sessionId: this.session.sessionId,
       visitorId: this.session.visitorId,
       referrer: getReferrer(),
-      ...data
+      ...data,
     };
 
     // Update session activity using session manager
@@ -238,7 +247,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
     // Get updated session after activity update
     this.session = this._sessionManager.getCurrentSession() || this.session;
 
-    // Track the page view
+    // Track the page view with technology stack information
     this._queueEvent({
       type: 'pageview' as any,
       element: pageViewData.url,
@@ -246,13 +255,16 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       timestamp: pageViewData.timestamp,
       sessionId: pageViewData.sessionId,
       visitorId: pageViewData.visitorId,
-      metadata: pageViewData
+      metadata: {
+        ...pageViewData,
+        techStack,
+      },
     });
 
-    this.emit('pageview', pageViewData);
+    this.emit('pageview', { ...pageViewData, techStack });
 
     if (this.config.debug) {
-      console.log('Page view tracked', pageViewData);
+      console.log('Page view tracked', { ...pageViewData, techStack });
     }
   }
 
@@ -281,6 +293,14 @@ export class Tracker extends EventEmitter implements TrackerInstance {
    */
   getModule<T extends ModuleInterface>(name: string): T | null {
     return (this._modules.get(name) as T) || null;
+  }
+
+  /**
+   * Get detected technology stack for the current site
+   */
+  getTechnologyStack(): TechStackDetection {
+    const techModule = this.getModule<TechnologyDetector>('TechnologyDetector');
+    return techModule ? techModule.getCurrentTechStack() : {};
   }
 
   /**
@@ -382,7 +402,7 @@ export class Tracker extends EventEmitter implements TrackerInstance {
       pageViews: 0,
       platform: '',
       userAgent: '',
-      landingPage: ''
+      landingPage: '',
     };
   }
 

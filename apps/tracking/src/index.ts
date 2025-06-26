@@ -8,6 +8,7 @@ export { SessionManager } from './core/SessionManager';
 export { Storage } from './core/Storage';
 export { Tracker } from './core/Tracker';
 export { BehavioralTracker } from './modules/BehavioralTracker';
+export { TechnologyDetector } from './modules/TechnologyDetector';
 export * from './types';
 export * from './utils';
 
@@ -54,7 +55,10 @@ export function pageView(data?: any): void {
 /**
  * Identify a visitor using the global tracker
  */
-export function identify(visitorId: string, traits?: Record<string, any>): void {
+export function identify(
+  visitorId: string,
+  traits?: Record<string, any>
+): void {
   if (globalTracker) {
     globalTracker.identify(visitorId, traits);
   }
@@ -76,7 +80,7 @@ export function createTracker(config?: Partial<TrackerConfig>): Tracker {
   const tracker = new Tracker();
 
   if (config && config.apiUrl && config.projectId) {
-    tracker.init(config as TrackerConfig).catch((error) => {
+    tracker.init(config as TrackerConfig).catch(error => {
       if (config.debug) {
         console.error('Failed to initialize tracker:', error);
       }
@@ -104,7 +108,7 @@ if (isBrowser()) {
     identify,
     setConsent,
     createTracker,
-    Tracker
+    Tracker,
   };
 }
 
@@ -117,5 +121,5 @@ export default {
   identify,
   setConsent,
   createTracker,
-  Tracker
+  Tracker,
 };
