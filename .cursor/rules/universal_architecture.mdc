@@ -3,3 +3,290 @@ description:
 globs:
 alwaysApply: false
 ---
+# Universal API-First Platform Agnostic Architecture
+
+## Core Principles
+
+- **Universal Compatibility**: All code must work across ANY web platform without dependencies on specific frameworks
+- **API-First Design**: Every feature must be accessible via robust REST/GraphQL APIs
+- **Platform Agnostic**: Zero assumptions about frontend frameworks, CMS, or hosting environments
+- **Maximum Integration Flexibility**: Support both simple script integration and advanced API-based integration
+
+## Implementation Guidelines
+
+### **JavaScript/Frontend Code**
+
+- **✅ DO: Use Vanilla JavaScript**
+  ```javascript
+  // Universal event handling
+  function universalEventListener(element, event, handler) {
+    if (element.addEventListener) {
+      element.addEventListener(event, handler, false);
+    } else if (element.attachEvent) {
+      element.attachEvent('on' + event, handler);
+    }
+  }
+  ```
+
+- **❌ DON'T: Depend on specific frameworks**
+  ```javascript
+  // Framework-specific - AVOID
+  import React from 'react';
+  import { useEffect } from 'react';
+  ```
+
+- **✅ DO: Feature Detection**
+  ```javascript
+  // Check for capability, not browser
+  if ('localStorage' in window && window.localStorage !== null) {
+    // Use localStorage
+  } else {
+    // Fallback to cookies
+  }
+  ```
+
+### **API Design**
+
+- **✅ DO: Comprehensive REST/GraphQL APIs**
+  ```javascript
+  // Universal API endpoints
+  POST /api/v1/tracking/session    // Create session
+  PUT  /api/v1/tracking/event      // Track event
+  GET  /api/v1/analytics/data      // Retrieve data
+  ```
+
+- **✅ DO: Platform-Agnostic Authentication**
+  ```javascript
+  // Multiple auth methods supported
+  headers: {
+    'Authorization': 'Bearer token',     // API key
+    'X-API-Key': 'key',                 // Simple key
+    'Cookie': 'session=value'           // Session-based
+  }
+  ```
+
+### **Integration Patterns**
+
+- **✅ DO: Multiple Integration Methods**
+  ```html
+  <!-- Simple Script Tag Integration -->
+  <script src="https://cdn.example.com/tracker.js" 
+          data-api-key="your-key"
+          data-auto-track="true"></script>
+  
+  <!-- Advanced API Integration -->
+  <script>
+    import { UniversalTracker } from '@company/universal-sdk';
+    const tracker = new UniversalTracker({ 
+      apiKey: 'key',
+      endpoint: 'https://api.example.com'
+    });
+  </script>
+  ```
+
+- **✅ DO: Universal SDK Wrappers**
+  ```javascript
+  // Thin platform-specific wrappers
+  // WordPress Plugin
+  class WordPressTracker extends UniversalCore { ... }
+  
+  // React Hook
+  function useUniversalTracker() { return new UniversalCore(); }
+  
+  // Vue Composable  
+  function useTracker() { return new UniversalCore(); }
+  ```
+
+### **Data Collection**
+
+- **✅ DO: Platform-Independent Data Structures**
+  ```javascript
+  const universalEvent = {
+    timestamp: Date.now(),
+    sessionId: generateSessionId(),
+    eventType: 'page_view',
+    url: window.location.href,
+    userAgent: navigator.userAgent,
+    platform: detectPlatform(), // WordPress, Shopify, etc.
+    metadata: extractUniversalMetadata()
+  };
+  ```
+
+- **❌ DON'T: Framework-Specific Data Collection**
+  ```javascript
+  // React-specific - AVOID
+  const reactEvent = {
+    component: this.constructor.name,
+    props: this.props,
+    state: this.state
+  };
+  ```
+
+### **Configuration Management**
+
+- **✅ DO: Universal Configuration**
+  ```javascript
+  const config = {
+    // Works everywhere
+    apiEndpoint: 'https://api.example.com',
+    trackPageViews: true,
+    trackClicks: true,
+    
+    // Platform detection
+    platform: {
+      detected: detectPlatform(),
+      version: detectPlatformVersion(),
+      theme: detectTheme()
+    },
+    
+    // Universal settings
+    privacy: {
+      respectDNT: true,
+      gdprCompliant: true,
+      ccpaCompliant: true
+    }
+  };
+  ```
+
+### **Error Handling & Fallbacks**
+
+- **✅ DO: Graceful Degradation**
+  ```javascript
+  function universalStorage() {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        return localStorage;
+      }
+    } catch (e) {
+      // Safari private mode fails
+    }
+    
+    // Fallback to cookies
+    return {
+      setItem: (key, value) => setCookie(key, value),
+      getItem: (key) => getCookie(key),
+      removeItem: (key) => deleteCookie(key)
+    };
+  }
+  ```
+
+### **Performance Optimization**
+
+- **✅ DO: Universal Performance Patterns**
+  ```javascript
+  // Lazy loading that works everywhere
+  function universalLazyLoad() {
+    if ('IntersectionObserver' in window) {
+      // Modern browsers
+      return new IntersectionObserver(callback);
+    } else {
+      // Fallback for older browsers
+      return polyfillIntersectionObserver();
+    }
+  }
+  
+  // Universal code splitting
+  async function loadModule(moduleName) {
+    if (typeof import === 'function') {
+      return await import(moduleName);
+    } else {
+      return await loadScriptDynamically(moduleName);
+    }
+  }
+  ```
+
+## Platform Integration Examples
+
+### **WordPress Integration**
+```php
+// WordPress plugin that uses universal APIs
+add_action('wp_head', function() {
+  echo '<script src="https://cdn.example.com/universal-tracker.js" 
+              data-api-key="' . get_option('tracker_api_key') . '"
+              data-platform="wordpress"
+              data-version="' . get_bloginfo('version') . '"></script>';
+});
+```
+
+### **Shopify Integration**
+```liquid
+<!-- Shopify theme that uses universal APIs -->
+<script src="https://cdn.example.com/universal-tracker.js" 
+        data-api-key="{{ settings.tracker_api_key }}"
+        data-platform="shopify"
+        data-store-id="{{ shop.id }}"></script>
+```
+
+### **React Integration**
+```javascript
+// React wrapper around universal core
+import { UniversalTracker } from '@company/universal-core';
+
+export function useUniversalTracker(config) {
+  useEffect(() => {
+    const tracker = new UniversalTracker(config);
+    tracker.init();
+    return () => tracker.destroy();
+  }, [config]);
+}
+```
+
+## Testing Requirements
+
+- **✅ Cross-Platform Testing Matrix**
+  - WordPress (various versions)
+  - Shopify (Plus & Standard)
+  - React/Next.js applications
+  - Vue/Nuxt applications
+  - Angular applications
+  - Static HTML sites
+  - Custom CMS platforms
+
+- **✅ Browser Compatibility**
+  - Modern browsers (ES6+)
+  - Legacy browsers (IE11+ with polyfills)
+  - Mobile browsers (iOS Safari, Chrome Mobile)
+  - Desktop browsers (Chrome, Firefox, Safari, Edge)
+
+## Anti-Patterns to Avoid
+
+- **❌ Framework Dependencies**
+  ```javascript
+  // NEVER do this in universal code
+  import React from 'react';
+  import $ from 'jquery';
+  import Vue from 'vue';
+  ```
+
+- **❌ Platform Assumptions**
+  ```javascript
+  // NEVER assume specific environments
+  if (window.wp) { /* WordPress only logic */ }
+  if (window.Shopify) { /* Shopify only logic */ }
+  ```
+
+- **❌ Hardcoded Platform Logic**
+  ```javascript
+  // AVOID platform-specific hardcoding
+  function trackEvent() {
+    if (isWordPress()) {
+      // WordPress tracking
+    } else if (isShopify()) {
+      // Shopify tracking  
+    }
+    // This doesn't scale - use universal patterns instead
+  }
+  ```
+
+## Success Metrics
+
+- **Integration Time**: < 5 minutes for any platform
+- **Script Size**: < 8KB for core universal tracker
+- **Performance Impact**: Zero degradation to Core Web Vitals
+- **Compatibility**: 99%+ across target platforms and browsers
+- **API Coverage**: 100% of features accessible via APIs
+
+## Related Rules
+
+- See [cursor_rules.mdc](mdc:.cursor/rules/cursor_rules.mdc) for general development guidelines
+- See [self_improve.mdc](mdc:.cursor/rules/self_improve.mdc) for continuous improvement patterns

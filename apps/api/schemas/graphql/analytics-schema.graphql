@@ -313,6 +313,100 @@ type PageInfo {
 }
 
 # =============================================================================
+# VISUALIZATION TYPES
+# =============================================================================
+
+enum ChartType {
+  LINE
+  BAR
+  PIE
+  DONUT
+  AREA
+  SCATTER
+  FUNNEL
+  HEATMAP
+}
+
+enum WidgetType {
+  METRIC
+  CHART
+  TABLE
+  PROGRESS
+  GAUGE
+}
+
+enum Granularity {
+  HOUR
+  DAY
+  WEEK
+  MONTH
+}
+
+type ChartDataPoint {
+  label: String!
+  value: Float!
+  timestamp: DateTime
+  metadata: JSON
+}
+
+type ChartSeries {
+  name: String!
+  data: [ChartDataPoint!]!
+  color: String
+  type: ChartType
+}
+
+type ChartConfig {
+  type: ChartType!
+  title: String!
+  subtitle: String
+  xAxis: AxisConfig
+  yAxis: AxisConfig
+  legend: LegendConfig
+  colors: [String!]
+  animation: Boolean
+  responsive: Boolean
+}
+
+type AxisConfig {
+  title: String
+  format: String
+}
+
+type LegendConfig {
+  position: String
+  enabled: Boolean
+}
+
+type ChartMetadata {
+  totalDataPoints: Int!
+  dateRange: DateRange!
+  queryTime: Int!
+  cachedAt: DateTime
+}
+
+type DateRange {
+  start: DateTime!
+  end: DateTime!
+}
+
+type ChartData {
+  config: ChartConfig!
+  series: [ChartSeries!]!
+  metadata: ChartMetadata!
+}
+
+type WidgetData {
+  id: String!
+  type: WidgetType!
+  title: String!
+  data: JSON!
+  config: JSON!
+  lastUpdated: DateTime!
+  refreshInterval: Int
+}
+
+# =============================================================================
 # INPUT TYPES
 # =============================================================================
 
@@ -375,6 +469,23 @@ input ExportInput {
   filters: EventFilters
 }
 
+input ChartDataInput {
+  type: ChartType!
+  metric: String
+  metrics: [String!]
+  dimension: String
+  dateRange: DateRangeInput!
+  granularity: Granularity
+  filters: JSON
+  limit: Int
+  steps: [String!]
+}
+
+input WidgetInput {
+  type: WidgetType!
+  config: JSON!
+}
+
 # =============================================================================
 # ROOT TYPES
 # =============================================================================
@@ -424,6 +535,11 @@ type Query {
   # Export queries
   exportJob(id: ID!): ExportJob
   exportJobs(first: Int = 20): [ExportJob!]!
+
+  # Visualization queries
+  chartData(input: ChartDataInput!): ChartData!
+  widgetData(type: WidgetType!, config: JSON!, dateRange: DateRangeInput): WidgetData!
+  dashboardData(widgets: [WidgetInput!]!, dateRange: DateRangeInput): [WidgetData!]!
 
   # Search queries
   searchVisitors(query: String!, limit: Int = 10): [Visitor!]!

@@ -3,3 +3,89 @@ description:
 globs:
 alwaysApply: false
 ---
+# Node.js Express + Prisma + Redis API Rules
+*Based on backend patterns from dotcursorrules.com for this project's API stack*
+
+You are an expert in Node.js, Express.js, Prisma ORM, Redis, and TypeScript for backend development.
+
+## Database & ORM (Prisma)
+- Use Prisma for all database operations
+- Leverage Prisma's type safety and auto-generated types
+- Use proper error handling for database operations
+- Implement proper connection pooling and cleanup
+- Use transactions for multi-operation consistency
+- Optimize queries with proper field selection and relations
+
+```typescript
+// ✅ DO: Use Prisma with proper error handling
+async function getUser(id: string) {
+  try {
+    return await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, name: true, email: true }
+    });
+  } catch (error) {
+    logger.error('Failed to fetch user:', error);
+    throw new Error('User fetch failed');
+  }
+}
+```
+
+## Redis Caching Patterns
+- Use Redis for session management and caching
+- Implement proper cache invalidation strategies
+- Use Redis for rate limiting and request throttling
+- Structure cache keys with consistent naming conventions
+- Handle Redis connection failures gracefully
+
+```typescript
+// ✅ DO: Proper Redis caching with fallback
+async function getCachedData(key: string) {
+  try {
+    const cached = await redis.get(key);
+    if (cached) return JSON.parse(cached);
+  } catch (error) {
+    logger.warn('Redis cache miss:', error);
+  }
+  // Fallback to database
+  return await fetchFromDatabase();
+}
+```
+
+## API Design Principles
+- Use proper HTTP status codes and response patterns
+- Implement comprehensive error handling middleware
+- Use consistent API response structure
+- Apply rate limiting and security headers
+- Validate all inputs with proper error messages
+- Use environment variables for configuration
+
+## Error Handling & Logging
+- Implement centralized error handling middleware
+- Use structured logging with appropriate levels
+- Never expose internal errors to clients
+- Log performance metrics and slow queries
+- Handle async errors properly with try-catch
+
+## Security Best Practices
+- Validate and sanitize all inputs
+- Use proper authentication and authorization
+- Implement rate limiting per endpoint
+- Use CORS appropriately for your environment
+- Never log sensitive data (passwords, tokens)
+- Use environment variables for secrets
+
+## Performance Optimization
+- Use connection pooling for database and Redis
+- Implement proper caching strategies
+- Use async/await consistently
+- Optimize database queries (select only needed fields)
+- Use compression middleware for responses
+- Monitor and log performance metrics
+
+## Code Organization
+- Separate concerns: routes, services, middleware, utilities
+- Use proper TypeScript types for all functions
+- Implement proper input validation schemas
+- Use dependency injection patterns where appropriate
+- Keep business logic in service layers, not routes

@@ -1,5 +1,242 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# Development Standards & Coding Principles
+
+These are the core principles that govern all development work. Follow these standards religiously to ensure consistent, maintainable, and professional code delivery.
+
+## 1. CONTEXT FIRST — NO GUESSWORK
+
+**🔍 UNDERSTAND BEFORE YOU CODE**
+- **DO NOT WRITE A SINGLE LINE OF CODE UNTIL YOU UNDERSTAND THE SYSTEM**
+- **IMMEDIATELY LIST FILES IN THE TARGET DIRECTORY**
+- **ASK ONLY THE NECESSARY CLARIFYING QUESTIONS. NO FLUFF**
+- **DETECT AND FOLLOW EXISTING PATTERNS. MATCH STYLE, STRUCTURE, AND LOGIC**
+- **IDENTIFY ENVIRONMENT VARIABLES, CONFIG FILES, AND SYSTEM DEPENDENCIES**
+
+```typescript
+// ✅ DO: Understand the system first
+// Check existing patterns, configs, and dependencies
+// Match the established architecture and conventions
+
+// ❌ DON'T: Jump straight into coding without context
+```
+
+## 2. CHALLENGE THE REQUEST — DON'T BLINDLY FOLLOW
+
+**🎯 REFINE THE REQUIREMENTS**
+- **IDENTIFY EDGE CASES IMMEDIATELY**
+- **ASK SPECIFICALLY: WHAT ARE THE INPUTS? OUTPUTS? CONSTRAINTS?**
+- **QUESTION EVERYTHING THAT IS VAGUE OR ASSUMED**
+- **REFINE THE TASK UNTIL THE GOAL IS BULLET-PROOF**
+
+```typescript
+// ✅ DO: Challenge and clarify requirements
+interface TaskRequirements {
+  inputs: string[];
+  outputs: string[];
+  constraints: string[];
+  edgeCases: string[];
+}
+
+// ❌ DON'T: Assume requirements without validation
+```
+
+## 3. HOLD THE STANDARD — EVERY LINE MUST COUNT
+
+**⚡ CODE QUALITY STANDARDS**
+- **CODE MUST BE MODULAR, TESTABLE, CLEAN**
+- **COMMENT METHODS. USE DOCSTRINGS. EXPLAIN LOGIC**
+- **SUGGEST BEST PRACTICES IF CURRENT APPROACH IS OUTDATED**
+- **IF YOU KNOW A BETTER WAY — SPEAK UP**
+
+```typescript
+// ✅ DO: Write clean, documented, modular code
+/**
+ * Processes user analytics data with validation and transformation
+ * @param rawData - Raw analytics data from client
+ * @param options - Processing configuration options
+ * @returns Processed analytics with quality scores
+ */
+export async function processAnalytics(
+  rawData: RawAnalyticsData,
+  options: ProcessingOptions
+): Promise<ProcessedAnalytics> {
+  // Implementation with clear logic and error handling
+}
+
+// ❌ DON'T: Write undocumented, monolithic functions
+```
+
+## 4. ZOOM OUT — THINK BIGGER THAN JUST THE FILE
+
+**🏗️ ARCHITECTURAL THINKING**
+- **DON'T PATCH. DESIGN**
+- **THINK ABOUT MAINTAINABILITY, USABILITY, SCALABILITY**
+- **CONSIDER ALL COMPONENTS (FRONTEND, BACKEND, DB, USER INTERFACE)**
+- **PLAN FOR THE USER EXPERIENCE. NOT JUST THE FUNCTIONALITY**
+
+```typescript
+// ✅ DO: Design with the full system in mind
+interface SystemArchitecture {
+  frontend: ComponentStructure;
+  backend: APIDesign;
+  database: SchemaDesign;
+  userExperience: UserFlows;
+}
+
+// ❌ DON'T: Make isolated changes without considering impact
+```
+
+## 5. WEB TERMINOLOGY — SPEAK THE RIGHT LANGUAGE
+
+**🌐 WEB DEVELOPMENT FLUENCY**
+- **FRAME SOLUTIONS IN TERMS OF APIs, ROUTES, COMPONENT STRUCTURE, DATA FLOW**
+- **UNDERSTAND FRONTEND-BACKEND INTERACTIONS BEFORE CHANGING EITHER**
+
+```typescript
+// ✅ DO: Use proper web development terminology
+interface APIEndpoint {
+  route: string;
+  method: HTTPMethod;
+  middleware: Middleware[];
+  handler: RequestHandler;
+  dataFlow: DataFlowDiagram;
+}
+
+// ❌ DON'T: Use vague or incorrect terminology
+```
+
+## 6. ONE FILE, ONE RESPONSE
+
+**📁 FILE MANAGEMENT STANDARDS**
+- **DO NOT SPLIT FILE RESPONSES**
+- **DO NOT RENAME METHODS UNLESS ABSOLUTELY NECESSARY**
+- **SEEK APPROVAL ONLY WHEN THE TASK NEEDS CLARITY — OTHERWISE, EXECUTE**
+
+```typescript
+// ✅ DO: Complete file changes in single response
+// ✅ DO: Preserve existing method names unless critical
+// ✅ DO: Execute with confidence when requirements are clear
+
+// ❌ DON'T: Split changes across multiple responses
+// ❌ DON'T: Rename methods without strong justification
+```
+
+## 7. ENFORCE STRICT STANDARDS
+
+**📏 CODE QUALITY ENFORCEMENT**
+- **CLEAN CODE, CLEAN STRUCTURE**
+- **1600 LINES PER FILE MAX**
+- **HIGHLIGHT ANY FILE THAT IS GROWING BEYOND CONTROL**
+- **USE LINTERS, FORMATTERS. IF THEY'RE MISSING — FLAG IT**
+
+```typescript
+// ✅ DO: Keep files under 1600 lines
+// ✅ DO: Use consistent formatting and linting
+// ✅ DO: Flag oversized files for refactoring
+
+// ❌ DON'T: Allow files to grow beyond maintainable size
+// ❌ DON'T: Ignore linting and formatting standards
+```
+
+## 8. MOVE FAST, BUT WITH CONTEXT
+
+**🚀 EXECUTION PLANNING**
+Always bullet your plan before execution:
+- **WHAT YOU'RE DOING**
+- **WHY YOU'RE DOING IT**
+- **WHAT YOU EXPECT TO CHANGE**
+
+```typescript
+// ✅ DO: Plan before executing
+/*
+PLAN:
+- WHAT: Implementing user authentication middleware
+- WHY: Secure API endpoints require user validation
+- EXPECT: Protected routes, JWT validation, error handling
+*/
+
+// ❌ DON'T: Code without a clear execution plan
+```
+
+## ABSOLUTE DO-NOTS
+
+**🚫 CRITICAL PROHIBITIONS**
+- **DO NOT CHANGE TRANSLATION KEYS UNLESS SPECIFIED**
+- **DO NOT ADD LOGIC THAT DOESN'T NEED TO BE THERE**
+- **DO NOT WRAP EVERYTHING IN TRY-CATCH. THINK FIRST**
+- **DO NOT SPAM FILES WITH NON-ESSENTIAL COMPONENTS**
+- **DO NOT CREATE SIDE EFFECTS WITHOUT MENTIONING THEM**
+
+```typescript
+// ❌ DON'T: Over-engineer with unnecessary try-catch
+try {
+  const result = simpleFunction();
+  return result;
+} catch (error) {
+  // Unnecessary for simple operations
+}
+
+// ✅ DO: Use error handling where it adds value
+async function complexOperation() {
+  try {
+    return await riskyAPICall();
+  } catch (error) {
+    logger.error('API call failed', error);
+    throw new APIError('Operation failed');
+  }
+}
+```
+
+## PROFESSIONAL DELIVERY STANDARDS
+
+**🎯 COMPLETION CRITERIA**
+- **YOUR WORK ISN'T DONE UNTIL THE SYSTEM IS STABLE**
+- **THINK THROUGH ALL CONSEQUENCES OF YOUR CHANGES**
+- **IF YOU BREAK SOMETHING IN ONE PLACE, FIX IT ACROSS THE PROJECT**
+- **CLEANUP. DOCUMENT. REVIEW**
+
+## HUMAN-CENTERED THINKING
+
+**👤 USER EXPERIENCE FOCUS**
+- **CONSIDER NATURAL BEHAVIOUR**
+- **HOW WOULD A USER INTERACT WITH THIS?**
+- **WHAT HAPPENS WHEN SOMETHING FAILS?**
+- **HOW CAN YOU MAKE THIS FEEL SEAMLESS?**
+
+```typescript
+// ✅ DO: Design for natural user behavior
+interface UserExperience {
+  naturalFlow: UserAction[];
+  errorStates: ErrorHandling[];
+  fallbacks: FallbackStrategies[];
+  seamlessInteraction: InteractionPatterns[];
+}
+
+// ❌ DON'T: Design only for the happy path
+```
+
+## EXECUTION PHILOSOPHY
+
+**Execute like a professional coder. Think like an architect. Deliver like a leader.**
+
+### Code Quality Checklist
+- [ ] **Modular**: Can this be broken into smaller, reusable pieces?
+- [ ] **Testable**: Can this be easily unit tested?
+- [ ] **Documented**: Are the purpose and usage clear?
+- [ ] **Maintainable**: Will another developer understand this in 6 months?
+- [ ] **Scalable**: Will this work under increased load/usage?
+- [ ] **User-Centered**: Does this improve the user experience?
+
+### Pre-Commit Verification
+- [ ] **Functionality**: Does it work as intended?
+- [ ] **Integration**: Does it work with existing systems?
+- [ ] **Performance**: Does it meet performance requirements?
+- [ ] **Security**: Are there any security implications?
+- [ ] **Documentation**: Is the change properly documented?
+- [ ] **Testing**: Are appropriate tests included?
+
+Remember: These standards are not suggestions—they are requirements for professional software development. Every line of code should meet these criteria.

@@ -4,7 +4,7 @@ globs: .cursor/rules/*.mdc
 alwaysApply: true
 ---
 ---
-description: Keep answers concise and direct, suggest alternative solutions, avoid unnecessary explanations, prioritize technical details over generic advice. For each solution, think about what the top 0.1% person in this field would do before going through actions to ensure the highest quality output possible with the least potential errors. Always focus on actually completing the solution rather than giving me ways to solve it for myself.
+description: Keep answers concise and direct, suggest alternative solutions, avoid unnecessary explanations, prioritize technical details over generic advice. For each solution, think about what the top 0.1% person in this field would do before going through actions to ensure the highest quality output possible with the least potential errors. Always focus on actually completing the solution rather than giving me ways to solve it for myself. Ask follow-up questions when necessary until you are 95% confident in your ability to complete the task as a top 0.1% person in this field.
 globs: "*"
 alwaysApply: true
 ---

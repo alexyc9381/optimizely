@@ -1,4 +1,8 @@
+import { createVisualizationService } from '../../services/visualization-service';
 import { Context, requireAuth } from '../context';
+
+// Create visualization service instance
+let visualizationService: any = null;
 
 export const queryResolvers = {
   // Event queries
@@ -112,5 +116,163 @@ export const queryResolvers = {
         }
       ]
     };
+  },
+
+  // Visualization queries
+  chartData: async (
+    _: any,
+    { input }: { input: any },
+    context: Context
+  ) => {
+    requireAuth(context);
+
+    // Initialize visualization service if not already done
+    if (!visualizationService) {
+      visualizationService = createVisualizationService(context.analyticsService);
+    }
+
+    try {
+      const dateRange = {
+        start: new Date(input.dateRange.startDate),
+        end: new Date(input.dateRange.endDate)
+      };
+
+      let chartData;
+
+      switch (input.type) {
+        case 'LINE':
+        case 'AREA':
+          if (!input.metric) {
+            throw new Error('Metric is required for line/area charts');
+          }
+          chartData = await visualizationService.getTimeSeriesData(
+            input.metric,
+            dateRange,
+            input.granularity?.toLowerCase() || 'day',
+            input.filters
+          );
+          break;
+
+        case 'PIE':
+        case 'DONUT':
+          if (!input.dimension || !input.metric) {
+            throw new Error('Dimension and metric are required for pie/donut charts');
+          }
+          chartData = await visualizationService.getDistributionData(
+            input.dimension,
+            input.metric,
+            dateRange,
+            input.limit || 10,
+            input.filters
+          );
+          break;
+
+        case 'BAR':
+          if (!input.metrics || !input.dimension) {
+            throw new Error('Metrics and dimension are required for bar charts');
+          }
+          chartData = await visualizationService.getComparisonData(
+            input.metrics,
+            input.dimension,
+            dateRange,
+            input.filters
+          );
+          break;
+
+        case 'FUNNEL':
+          if (!input.steps) {
+            throw new Error('Steps are required for funnel charts');
+          }
+          chartData = await visualizationService.getFunnelData(
+            input.steps,
+            dateRange,
+            input.filters
+          );
+          break;
+
+        default:
+          throw new Error(`Unsupported chart type: ${input.type}`);
+      }
+
+      return chartData;
+
+    } catch (error) {
+      console.error('Chart data error:', error);
+      throw new Error(`Failed to generate chart data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  },
+
+  widgetData: async (
+    _: any,
+    { type, config, dateRange }: { type: string; config: any; dateRange?: any },
+    context: Context
+  ) => {
+    requireAuth(context);
+
+    // Initialize visualization service if not already done
+    if (!visualizationService) {
+      visualizationService = createVisualizationService(context.analyticsService);
+    }
+
+    try {
+      let parsedDateRange;
+      if (dateRange) {
+        parsedDateRange = {
+          start: new Date(dateRange.startDate),
+          end: new Date(dateRange.endDate)
+        };
+      }
+
+      const widgetData = await visualizationService.getWidgetData(
+        type.toLowerCase(),
+        config,
+        parsedDateRange
+      );
+
+      return widgetData;
+
+    } catch (error) {
+      console.error('Widget data error:', error);
+      throw new Error(`Failed to generate widget data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  },
+
+  dashboardData: async (
+    _: any,
+    { widgets, dateRange }: { widgets: any[]; dateRange?: any },
+    context: Context
+  ) => {
+    requireAuth(context);
+
+    // Initialize visualization service if not already done
+    if (!visualizationService) {
+      visualizationService = createVisualizationService(context.analyticsService);
+    }
+
+    try {
+      let parsedDateRange;
+      if (dateRange) {
+        parsedDateRange = {
+          start: new Date(dateRange.startDate),
+          end: new Date(dateRange.endDate)
+        };
+      }
+
+      const mappedWidgets = widgets.map(widget => ({
+        type: widget.type.toLowerCase(),
+        config: widget.config
+      }));
+
+      const dashboardData = await visualizationService.getDashboardData(
+        mappedWidgets,
+        parsedDateRange
+      );
+
+      return dashboardData;
+
+    } catch (error) {
+      console.error('Dashboard data error:', error);
+      throw new Error(`Failed to generate dashboard data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 };

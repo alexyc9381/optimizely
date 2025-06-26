@@ -185,6 +185,10 @@ app.use(`/api/${apiVersion}/redis`, redisRoutes);
 import { default as eventsRoutes } from './routes/events';
 app.use(`/api/${apiVersion}/events`, eventsRoutes);
 
+// Import and mount Charts routes
+import { default as chartsRoutes } from './routes/charts';
+app.use(`/api/${apiVersion}/charts`, chartsRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================

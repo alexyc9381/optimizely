@@ -3,3 +3,71 @@ description:
 globs:
 alwaysApply: false
 ---
+# Monorepo + Turborepo Rules
+*Based on monorepo patterns from dotcursorrules.com for workspace management*
+
+You are an expert in monorepo architecture using Turborepo with TypeScript workspaces.
+
+## Workspace Structure
+- Keep apps in `apps/` and shared packages in `packages/`
+- Each workspace should have its own `package.json` with clear dependencies
+- Use workspace references for internal dependencies
+- Maintain consistent script names across workspaces
+
+## Turborepo Configuration
+- Use `turbo.json` for pipeline configuration
+- Define proper task dependencies and caching strategies
+- Use incremental builds with proper cache keys
+- Configure remote caching for team collaboration
+
+```json
+// ✅ DO: Proper turbo.json pipeline
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts"]
+    }
+  }
+}
+```
+
+## Package Management
+- Use npm workspaces with proper version management
+- Keep dependencies at the appropriate level (root vs workspace)
+- Use exact versions for internal workspace dependencies
+- Regularly audit and update dependencies
+
+## Shared Configuration
+- Share ESLint, TypeScript, and Prettier configs from root
+- Use consistent build and dev scripts across workspaces
+- Implement shared utilities and types in packages/
+- Maintain consistent environment variable patterns
+
+## Development Workflow
+- Use `turbo run` for all multi-workspace commands
+- Implement proper hot reloading across dependent workspaces
+- Use `--filter` for workspace-specific operations
+- Set up proper CI/CD pipelines with Turborepo caching
+
+## Cross-Workspace Dependencies
+- Use proper import paths for workspace dependencies
+- Implement shared types and interfaces in common packages
+- Use build outputs, not source files, for workspace imports
+- Manage API contracts between frontend and backend workspaces
+
+## Performance Optimization
+- Enable Turborepo remote caching
+- Use proper dependency graphs to optimize build times
+- Implement incremental type checking
+- Cache test results and build artifacts appropriately
+
+## Code Organization
+- Keep workspace-specific code within workspace boundaries
+- Share common utilities in `packages/` workspace
+- Use consistent directory structures across workspaces
+- Implement proper workspace-level testing strategies
