@@ -546,6 +546,13 @@ type Query {
   # Search queries
   searchVisitors(query: String!, limit: Int = 10): [Visitor!]!
   searchCompanies(query: String!, limit: Int = 10): [Company!]!
+
+  # Integration queries
+  integrations(type: IntegrationType, enabled: Boolean): [Integration!]!
+  integration(id: ID!): Integration
+  integrationTypes: [IntegrationTypeInfo!]!
+  syncJobs(integrationId: ID, status: SyncJobStatus): [SyncJob!]!
+  syncJob(id: ID!): SyncJob
 }
 
 type Mutation {
@@ -569,6 +576,16 @@ type Mutation {
   deleteEvent(id: ID!): Boolean!
   deleteSession(id: ID!): Boolean!
   deleteVisitor(id: ID!): Boolean!
+
+  # Integration mutations
+  createIntegration(input: IntegrationInput!): Integration!
+  updateIntegration(id: ID!, input: IntegrationUpdateInput!): Integration!
+  deleteIntegration(id: ID!): Boolean!
+  testIntegration(id: ID!): IntegrationTestResult!
+  createWebhook(input: WebhookInput!): Webhook!
+  triggerWebhook(id: ID!, event: String!, payload: JSON!): WebhookDelivery!
+  createSyncJob(input: SyncJobInput!): SyncJob!
+  cancelSyncJob(id: ID!): Boolean!
 }
 
 type Subscription {
@@ -587,6 +604,240 @@ type Subscription {
 
   # Export job updates
   exportJobUpdated(id: ID!): ExportJob!
+}
+
+# =============================================================================
+# INTEGRATION TYPES
+# =============================================================================
+
+enum IntegrationType {
+  GOOGLE_ANALYTICS
+  ADOBE_ANALYTICS
+  MIXPANEL
+  SEGMENT
+  HUBSPOT
+  SALESFORCE
+  SLACK
+  WEBHOOK
+  CUSTOM
+}
+
+enum AuthenticationType {
+  API_KEY
+  OAUTH2
+  JWT
+  BASIC
+  CUSTOM
+}
+
+enum SyncJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum SyncJobType {
+  FULL
+  INCREMENTAL
+  CUSTOM
+}
+
+enum SyncDirection {
+  INBOUND
+  OUTBOUND
+  BIDIRECTIONAL
+}
+
+enum WebhookStatus {
+  PENDING
+  DELIVERED
+  FAILED
+  RETRYING
+}
+
+type Integration {
+  id: ID!
+  name: String!
+  type: IntegrationType!
+  enabled: Boolean!
+  authentication: Authentication!
+  settings: JSON!
+  rateLimit: RateLimit
+  dataMapping: DataMapping
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lastSyncAt: DateTime
+  status: String!
+}
+
+type Authentication {
+  type: AuthenticationType!
+  credentials: JSON!
+  expiresAt: DateTime
+  isValid: Boolean!
+}
+
+type RateLimit {
+  requestsPerMinute: Int!
+  requestsPerHour: Int!
+  requestsPerDay: Int!
+  burstLimit: Int!
+  retryAfter: Int!
+}
+
+type DataMapping {
+  fieldMappings: JSON!
+  transformations: [Transformation!]!
+  filters: [Filter!]!
+}
+
+type Transformation {
+  field: String!
+  type: String!
+  operation: String!
+  parameters: JSON
+}
+
+type Filter {
+  field: String!
+  operator: String!
+  value: JSON!
+}
+
+type IntegrationTypeInfo {
+  type: IntegrationType!
+  name: String!
+  category: String!
+  description: String
+  configurationSchema: JSON
+}
+
+type SyncJob {
+  id: ID!
+  integrationId: ID!
+  integration: Integration!
+  type: SyncJobType!
+  direction: SyncDirection!
+  status: SyncJobStatus!
+  progress: Float!
+  totalRecords: Int!
+  processedRecords: Int!
+  errorCount: Int!
+  startTime: DateTime!
+  endTime: DateTime
+  configuration: JSON!
+  errors: [SyncError!]!
+}
+
+type SyncError {
+  recordId: String
+  message: String!
+  timestamp: DateTime!
+  retryable: Boolean!
+}
+
+type Webhook {
+  id: ID!
+  url: String!
+  events: [String!]!
+  timeout: Int!
+  retryAttempts: Int!
+  retryBackoff: String!
+  signatureMethod: String!
+  createdAt: DateTime!
+}
+
+type WebhookDelivery {
+  id: ID!
+  webhookId: ID!
+  event: String!
+  payload: JSON!
+  status: WebhookStatus!
+  attempts: Int!
+  createdAt: DateTime!
+  deliveredAt: DateTime
+  error: String
+  responseStatus: Int
+}
+
+type IntegrationTestResult {
+  success: Boolean!
+  message: String!
+  details: JSON
+  timestamp: DateTime!
+}
+
+# Integration Input Types
+input IntegrationInput {
+  name: String!
+  type: IntegrationType!
+  enabled: Boolean = true
+  authentication: AuthenticationInput!
+  settings: JSON!
+  rateLimit: RateLimitInput
+  dataMapping: DataMappingInput
+}
+
+input IntegrationUpdateInput {
+  name: String
+  enabled: Boolean
+  authentication: AuthenticationInput
+  settings: JSON
+  rateLimit: RateLimitInput
+  dataMapping: DataMappingInput
+}
+
+input AuthenticationInput {
+  type: AuthenticationType!
+  credentials: JSON!
+  expiresAt: DateTime
+}
+
+input RateLimitInput {
+  requestsPerMinute: Int!
+  requestsPerHour: Int!
+  requestsPerDay: Int!
+  burstLimit: Int!
+  retryAfter: Int!
+}
+
+input DataMappingInput {
+  fieldMappings: JSON!
+  transformations: [TransformationInput!]
+  filters: [FilterInput!]
+}
+
+input TransformationInput {
+  field: String!
+  type: String!
+  operation: String!
+  parameters: JSON
+}
+
+input FilterInput {
+  field: String!
+  operator: String!
+  value: JSON!
+}
+
+input WebhookInput {
+  url: String!
+  secret: String!
+  events: [String!]!
+  headers: JSON
+  timeout: Int = 5000
+  retryAttempts: Int = 3
+  retryBackoff: String = "exponential"
+  signatureMethod: String = "hmac-sha256"
+}
+
+input SyncJobInput {
+  integrationId: ID!
+  type: SyncJobType!
+  direction: SyncDirection!
+  configuration: JSON!
 }
 
 # =============================================================================

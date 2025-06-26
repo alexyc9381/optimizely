@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import { analyticsService } from './services/analytics-service';
 import { db } from './services/database';
 import { eventManager } from './services/event-manager';
+import { integrationService } from './services/integration-service';
 import { redisManager } from './services/redis-client';
 import { OptimizelyWebSocketServer } from './services/websocket-server';
 
@@ -189,6 +190,10 @@ app.use(`/api/${apiVersion}/events`, eventsRoutes);
 import { default as chartsRoutes } from './routes/charts';
 app.use(`/api/${apiVersion}/charts`, chartsRoutes);
 
+// Import and mount Integration routes
+import { default as integrationsRoutes } from './routes/integrations';
+app.use(`/api/${apiVersion}/integrations`, integrationsRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -287,6 +292,37 @@ app.get(`/api/${apiVersion}/docs`, (req, res) => {
         get: 'GET /api/v1/events/:id',
         delete: 'DELETE /api/v1/events/:id',
         health: 'GET /api/v1/events/health'
+      },
+      charts: {
+        timeseries: 'GET /api/v1/charts/timeseries',
+        distribution: 'GET /api/v1/charts/distribution',
+        funnel: 'GET /api/v1/charts/funnel',
+        comparison: 'GET /api/v1/charts/comparison',
+        widgets: 'GET /api/v1/charts/widgets/:type',
+        dashboard: 'POST /api/v1/charts/dashboard',
+        export: 'POST /api/v1/charts/export',
+        health: 'GET /api/v1/charts/health',
+        metrics: 'GET /api/v1/charts/metrics'
+      },
+      integrations: {
+        list: 'GET /api/v1/integrations',
+        create: 'POST /api/v1/integrations',
+        get: 'GET /api/v1/integrations/:id',
+        update: 'PUT /api/v1/integrations/:id',
+        delete: 'DELETE /api/v1/integrations/:id',
+        test: 'POST /api/v1/integrations/:id/test',
+        types: 'GET /api/v1/integrations/types',
+        health: 'GET /api/v1/integrations/health',
+        webhooks: {
+          create: 'POST /api/v1/integrations/webhooks',
+          trigger: 'POST /api/v1/integrations/webhooks/:id/trigger'
+        },
+        syncJobs: {
+          list: 'GET /api/v1/integrations/sync-jobs',
+          create: 'POST /api/v1/integrations/sync-jobs',
+          get: 'GET /api/v1/integrations/sync-jobs/:id',
+          cancel: 'POST /api/v1/integrations/sync-jobs/:id/cancel'
+        }
       }
     },
     tracking: {
@@ -365,6 +401,25 @@ async function startServer() {
     } catch (analyticsError) {
       console.log('⚠️  Analytics service failed to start, continuing with limited functionality');
       console.debug('Analytics error details:', analyticsError);
+    }
+
+    // Initialize Integration Service
+    try {
+      await integrationService.initialize();
+
+      // Connect analytics events to integration forwarding
+      analyticsService.on('analytics:event:processed', async (event: any) => {
+        try {
+          await integrationService.forwardEvent(event);
+        } catch (error) {
+          console.error('Error forwarding event to integrations:', error);
+        }
+      });
+
+      console.log('🔗 Integration service started and connected to analytics pipeline');
+    } catch (integrationError) {
+      console.log('⚠️  Integration service failed to start, continuing without integrations');
+      console.debug('Integration error details:', integrationError);
     }
 
     // Initialize GraphQL BEFORE starting the HTTP server

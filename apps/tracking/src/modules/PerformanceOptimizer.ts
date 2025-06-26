@@ -91,10 +91,10 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
   // Cross-Platform
   private _platformOptimizations: Map<string, PlatformOptimization> = new Map();
   private _currentPlatform?: string;
-  private _currentFramework?: string;
+  private _currentFramework?: string | undefined;
 
   // Monitoring
-  private _monitoringInterval?: number;
+  private _monitoringInterval?: number | undefined;
   private _performanceObserver?: PerformanceObserver;
   private _resizeObserver?: ResizeObserver;
   private _startTime: number = 0;
@@ -977,7 +977,7 @@ export class PerformanceOptimizer extends EventEmitter implements PerformanceOpt
 
   optimizeForPlatform(platform: string, framework?: string): void {
     this._currentPlatform = platform;
-    this._currentFramework = framework;
+    this._currentFramework = framework || undefined;
 
     const optimization: PlatformOptimization = {
       platform,

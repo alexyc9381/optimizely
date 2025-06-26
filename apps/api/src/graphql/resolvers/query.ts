@@ -1,3 +1,4 @@
+import { integrationService } from '../../services/integration-service';
 import { createVisualizationService } from '../../services/visualization-service';
 import { Context, requireAuth } from '../context';
 
@@ -276,5 +277,130 @@ export const queryResolvers = {
       console.error('Dashboard data error:', error);
       throw new Error(`Failed to generate dashboard data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+  },
+
+  // =============================================================================
+  // INTEGRATION RESOLVERS
+  // =============================================================================
+
+  integrations: async (_: any, { type, enabled }: any, context: Context) => {
+    requireAuth(context);
+
+    let integrations = integrationService.getAllIntegrations();
+
+    if (type) {
+      integrations = integrations.filter(i => i.type === type);
+    }
+
+    if (enabled !== undefined) {
+      integrations = integrations.filter(i => i.enabled === enabled);
+    }
+
+    return integrations.map(integration => ({
+      ...integration,
+      status: 'active' // Simplified status
+    }));
+  },
+
+  integration: async (_: any, { id }: any, context: Context) => {
+    requireAuth(context);
+
+    const integration = integrationService.getIntegration(id);
+    if (!integration) {
+      throw new Error('Integration not found');
+    }
+
+    return {
+      ...integration,
+      status: 'active' // Simplified status
+    };
+  },
+
+  integrationTypes: async (_: any, __: any, context: Context) => {
+    requireAuth(context);
+
+    return [
+      {
+        type: 'GOOGLE_ANALYTICS',
+        name: 'Google Analytics 4',
+        category: 'analytics',
+        description: 'Send events to Google Analytics 4 using Measurement Protocol',
+        configurationSchema: {
+          measurementId: { type: 'string', required: true },
+          apiSecret: { type: 'string', required: true }
+        }
+      },
+      {
+        type: 'ADOBE_ANALYTICS',
+        name: 'Adobe Analytics',
+        category: 'analytics',
+        description: 'Send events to Adobe Analytics via Data Insertion API',
+        configurationSchema: {
+          reportSuiteId: { type: 'string', required: true },
+          trackingServer: { type: 'string', required: true }
+        }
+      },
+      {
+        type: 'MIXPANEL',
+        name: 'Mixpanel',
+        category: 'analytics',
+        description: 'Send events to Mixpanel via Events API',
+        configurationSchema: {
+          projectToken: { type: 'string', required: true }
+        }
+      },
+      {
+        type: 'SEGMENT',
+        name: 'Segment',
+        category: 'analytics',
+        description: 'Send events to Segment via Track API',
+        configurationSchema: {
+          writeKey: { type: 'string', required: true }
+        }
+      },
+      {
+        type: 'WEBHOOK',
+        name: 'Generic Webhook',
+        category: 'webhook',
+        description: 'Send events to any HTTP endpoint',
+        configurationSchema: {
+          url: { type: 'string', required: true },
+          headers: { type: 'object', required: false }
+        }
+      }
+    ];
+  },
+
+  syncJobs: async (_: any, { integrationId, status }: any, context: Context) => {
+    requireAuth(context);
+
+    let syncJobs = integrationService.getAllSyncJobs();
+
+    if (integrationId) {
+      syncJobs = syncJobs.filter(job => job.integrationId === integrationId);
+    }
+
+    if (status) {
+      syncJobs = syncJobs.filter(job => job.status === status);
+    }
+
+    return syncJobs.map(job => ({
+      ...job,
+      integration: integrationService.getIntegration(job.integrationId)
+    }));
+  },
+
+  syncJob: async (_: any, { id }: any, context: Context) => {
+    requireAuth(context);
+
+    const syncJob = integrationService.getSyncJob(id);
+    if (!syncJob) {
+      throw new Error('Sync job not found');
+    }
+
+    return {
+      ...syncJob,
+      integration: integrationService.getIntegration(syncJob.integrationId)
+    };
   }
 };
