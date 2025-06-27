@@ -25,36 +25,43 @@ const apiVersion = 'v1';
 // =============================================================================
 
 // Security middleware
-app.use(helmet({
-  crossOriginEmbedderPolicy: false, // Allow universal embedding
-  contentSecurityPolicy: {
-    directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "script-src": ["'self'", "'unsafe-inline'", "https:"], // Universal script support
-      "connect-src": ["'self'", "https:", "wss:"] // Universal API connections
-    }
-  }
-}));
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false, // Allow universal embedding
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", "'unsafe-inline'", 'https:'], // Universal script support
+        'connect-src': ["'self'", 'https:', 'wss:'], // Universal API connections
+      },
+    },
+  })
+);
 
 // CORS - Universal platform support
-app.use(cors({
-  origin: function (origin: string | undefined, callback: (err: Error | null, origin?: boolean) => void) {
-    // Allow all origins for universal platform compatibility
-    // In production, implement dynamic origin validation
-    callback(null, true);
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-API-Key',
-    'X-Platform-Type',
-    'X-Platform-Version',
-    'X-Session-ID'
-  ],
-  exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: function (
+      origin: string | undefined,
+      callback: (err: Error | null, origin?: boolean) => void
+    ) {
+      // Allow all origins for universal platform compatibility
+      // In production, implement dynamic origin validation
+      callback(null, true);
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-API-Key',
+      'X-Platform-Type',
+      'X-Platform-Version',
+      'X-Session-ID',
+    ],
+    exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+    credentials: true,
+  })
+);
 
 // Compression for performance
 app.use(compression() as any); // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -73,10 +80,10 @@ const limiter = rateLimit({
   message: {
     error: 'Too many requests',
     message: 'Please try again later',
-    retryAfter: '15 minutes'
+    retryAfter: '15 minutes',
   },
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
 });
 app.use(limiter as any); // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -97,7 +104,8 @@ app.use((req: any, res: any, next: any) => {
     if (userAgent.includes('WordPress')) detectedPlatform = 'wordpress';
     else if (userAgent.includes('Shopify')) detectedPlatform = 'shopify';
     else if (userAgent.includes('Wix')) detectedPlatform = 'wix';
-    else if (userAgent.includes('Squarespace')) detectedPlatform = 'squarespace';
+    else if (userAgent.includes('Squarespace'))
+      detectedPlatform = 'squarespace';
     else if (userAgent.includes('React')) detectedPlatform = 'react';
     else if (userAgent.includes('Vue')) detectedPlatform = 'vue';
     else if (userAgent.includes('Angular')) detectedPlatform = 'angular';
@@ -106,8 +114,8 @@ app.use((req: any, res: any, next: any) => {
 
   req.platform = {
     type: detectedPlatform,
-    version: req.headers['x-platform-version'] as string || 'unknown',
-    userAgent: userAgent
+    version: (req.headers['x-platform-version'] as string) || 'unknown',
+    userAgent: userAgent,
   };
 
   next();
@@ -123,7 +131,7 @@ app.get('/health', async (req, res) => {
     const [dbHealthy, redisHealth, eventHealth] = await Promise.all([
       db.healthCheck(),
       redisManager.healthCheck(),
-      eventManager.healthCheck()
+      eventManager.healthCheck(),
     ]);
 
     const overallHealthy = dbHealthy && redisHealth.status === 'healthy';
@@ -137,18 +145,18 @@ app.get('/health', async (req, res) => {
       services: {
         database: {
           status: dbHealthy ? 'connected' : 'disconnected',
-          type: 'postgresql'
+          type: 'postgresql',
         },
         redis: {
           status: redisHealth.status,
-          latency: redisHealth.latency
+          latency: redisHealth.latency,
         },
         events: {
           status: eventHealth.status,
           isListening: eventHealth.isListening,
-          activeSubscriptions: eventHealth.activeSubscriptions
-        }
-      }
+          activeSubscriptions: eventHealth.activeSubscriptions,
+        },
+      },
     });
   } catch (error) {
     res.status(503).json({
@@ -156,7 +164,7 @@ app.get('/health', async (req, res) => {
       message: 'Service health check failed',
       version: apiVersion,
       timestamp: new Date().toISOString(),
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -167,7 +175,7 @@ app.get('/', (req, res) => {
     status: 'ok',
     message: 'API is running!',
     version: apiVersion,
-    documentation: `/api/${apiVersion}/docs`
+    documentation: `/api/${apiVersion}/docs`,
   });
 });
 
@@ -232,11 +240,18 @@ app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
 
 // Import and mount Competitive Intelligence routes
 import { default as competitiveIntelligenceRoutes } from './routes/competitive-intelligence';
-app.use(`/api/${apiVersion}/competitive-intelligence`, competitiveIntelligenceRoutes);
+app.use(
+  `/api/${apiVersion}/competitive-intelligence`,
+  competitiveIntelligenceRoutes
+);
 
 // Import and mount Confidence Scoring routes
 import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
 app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
+
+// Import and mount Accuracy Tracking routes
+import { default as accuracyTrackingRoutes } from './routes/accuracy-tracking';
+app.use(`/api/${apiVersion}/accuracy`, accuracyTrackingRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
@@ -276,23 +291,33 @@ async function setupGraphQL() {
         `POST /api/${apiVersion}/graphql`,
         `POST /api/${apiVersion}/tracking/session`,
         `POST /api/${apiVersion}/tracking/event`,
-        `GET /api/${apiVersion}/analytics/data`
-      ]
+        `GET /api/${apiVersion}/analytics/data`,
+      ],
     });
   });
 
   // Global error handler
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
-    console.error('Error:', err);
+  app.use(
+    (
+      err: any,
+      req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ) => {
+      console.error('Error:', err);
 
-    res.status(err.status || 500).json({
-      error: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
-      message: 'An error occurred processing your request',
-      timestamp: new Date().toISOString(),
-      requestId: req.headers['x-request-id'] || 'unknown'
-    });
-  });
+      res.status(err.status || 500).json({
+        error:
+          process.env.NODE_ENV === 'production'
+            ? 'Internal Server Error'
+            : err.message,
+        message: 'An error occurred processing your request',
+        timestamp: new Date().toISOString(),
+        requestId: req.headers['x-request-id'] || 'unknown',
+      });
+    }
+  );
 
   console.log('🔗 Error handlers applied after GraphQL middleware');
 }
@@ -303,7 +328,7 @@ app.post(`/api/${apiVersion}/tracking/session`, (req, res) => {
     success: true,
     message: 'Session tracking endpoint ready',
     platform: req.platform,
-    sessionId: `session_${Date.now()}`
+    sessionId: `session_${Date.now()}`,
   });
 });
 
@@ -312,7 +337,7 @@ app.post(`/api/${apiVersion}/tracking/event`, (req, res) => {
     success: true,
     message: 'Event tracking endpoint ready',
     platform: req.platform,
-    eventId: `event_${Date.now()}`
+    eventId: `event_${Date.now()}`,
   });
 });
 
@@ -321,7 +346,7 @@ app.get(`/api/${apiVersion}/analytics/data`, (req, res) => {
     success: true,
     message: 'Analytics data endpoint ready',
     platform: req.platform,
-    data: []
+    data: [],
   });
 });
 
@@ -335,7 +360,7 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
         list: 'GET /api/v1/events',
         get: 'GET /api/v1/events/:id',
         delete: 'DELETE /api/v1/events/:id',
-        health: 'GET /api/v1/events/health'
+        health: 'GET /api/v1/events/health',
       },
       charts: {
         timeseries: 'GET /api/v1/charts/timeseries',
@@ -346,7 +371,7 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
         dashboard: 'POST /api/v1/charts/dashboard',
         export: 'POST /api/v1/charts/export',
         health: 'GET /api/v1/charts/health',
-        metrics: 'GET /api/v1/charts/metrics'
+        metrics: 'GET /api/v1/charts/metrics',
       },
       integrations: {
         list: 'GET /api/v1/integrations',
@@ -359,22 +384,22 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
         health: 'GET /api/v1/integrations/health',
         webhooks: {
           create: 'POST /api/v1/integrations/webhooks',
-          trigger: 'POST /api/v1/integrations/webhooks/:id/trigger'
+          trigger: 'POST /api/v1/integrations/webhooks/:id/trigger',
         },
         syncJobs: {
           list: 'GET /api/v1/integrations/sync-jobs',
           create: 'POST /api/v1/integrations/sync-jobs',
           get: 'GET /api/v1/integrations/sync-jobs/:id',
-          cancel: 'POST /api/v1/integrations/sync-jobs/:id/cancel'
-        }
-      }
+          cancel: 'POST /api/v1/integrations/sync-jobs/:id/cancel',
+        },
+      },
     },
     tracking: {
       session: 'POST /api/v1/tracking/session',
-      event: 'POST /api/v1/tracking/event'
+      event: 'POST /api/v1/tracking/event',
     },
     analytics: {
-      data: 'GET /api/v1/analytics/data'
+      data: 'GET /api/v1/analytics/data',
     },
     websocket: {
       endpoint: `ws://localhost:${port}/api/v1/ws`,
@@ -384,12 +409,10 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
         'subscribe - Subscribe to real-time data rooms',
         'unsubscribe - Unsubscribe from rooms',
         'setMetricsFrequency - Configure metrics update frequency',
-        'ping - Keep connection alive'
+        'ping - Keep connection alive',
       ],
-      rooms: [
-        'realtime-metrics - Live analytics metrics and visitor data'
-      ]
-    }
+      rooms: ['realtime-metrics - Live analytics metrics and visitor data'],
+    },
   };
 
   // Add GraphQL info if available
@@ -397,19 +420,28 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
     endpoints.graphql = {
       endpoint: 'POST /api/v1/graphql',
       playground: 'GET /api/v1/graphql',
-      description: 'Full GraphQL API with queries, mutations, and subscriptions'
+      description:
+        'Full GraphQL API with queries, mutations, and subscriptions',
     };
   }
 
   res.json({
     name: 'Optimizely Universal API',
     version: apiVersion,
-    description: 'Universal, platform-agnostic API for website optimization and tracking',
+    description:
+      'Universal, platform-agnostic API for website optimization and tracking',
     endpoints,
     supportedPlatforms: [
-      'WordPress', 'Shopify', 'Wix', 'Squarespace',
-      'React', 'Vue', 'Angular', 'Static HTML', 'Universal'
-    ]
+      'WordPress',
+      'Shopify',
+      'Wix',
+      'Squarespace',
+      'React',
+      'Vue',
+      'Angular',
+      'Static HTML',
+      'Universal',
+    ],
   });
 });
 
@@ -432,8 +464,12 @@ async function startServer() {
       await db.runMigrations();
       console.log(`🔌 Database connection established`);
     } catch (dbError) {
-      console.log('⚠️  Database connection failed, continuing without database (degraded mode)');
-      console.log('   Database will be available once DATABASE_URL is configured');
+      console.log(
+        '⚠️  Database connection failed, continuing without database (degraded mode)'
+      );
+      console.log(
+        '   Database will be available once DATABASE_URL is configured'
+      );
       // Database error is expected in development without configured DATABASE_URL
       console.debug('Database error details:', dbError);
     }
@@ -443,7 +479,9 @@ async function startServer() {
       await analyticsService.start();
       console.log('📊 Analytics service started');
     } catch (analyticsError) {
-      console.log('⚠️  Analytics service failed to start, continuing with limited functionality');
+      console.log(
+        '⚠️  Analytics service failed to start, continuing with limited functionality'
+      );
       console.debug('Analytics error details:', analyticsError);
     }
 
@@ -460,9 +498,13 @@ async function startServer() {
         }
       });
 
-      console.log('🔗 Integration service started and connected to analytics pipeline');
+      console.log(
+        '🔗 Integration service started and connected to analytics pipeline'
+      );
     } catch (integrationError) {
-      console.log('⚠️  Integration service failed to start, continuing without integrations');
+      console.log(
+        '⚠️  Integration service failed to start, continuing without integrations'
+      );
       console.debug('Integration error details:', integrationError);
     }
 
@@ -477,7 +519,10 @@ async function startServer() {
 
     // Handle WebSocket upgrade requests
     httpServer.on('upgrade', (request, socket, head) => {
-      const pathname = new URL(request.url || '', `http://${request.headers.host}`).pathname;
+      const pathname = new URL(
+        request.url || '',
+        `http://${request.headers.host}`
+      ).pathname;
 
       if (pathname === `/api/${apiVersion}/ws`) {
         wsServer.handleUpgrade(request, socket, head);
@@ -487,19 +532,29 @@ async function startServer() {
     });
 
     const server = httpServer.listen(port, () => {
-      console.log(`🚀 Universal API server listening at http://localhost:${port}`);
-      console.log(`📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`);
-      console.log(`🏥 Health check available at http://localhost:${port}/health`);
+      console.log(
+        `🚀 Universal API server listening at http://localhost:${port}`
+      );
+      console.log(
+        `📚 API documentation available at http://localhost:${port}/api/${apiVersion}/docs`
+      );
+      console.log(
+        `🏥 Health check available at http://localhost:${port}/health`
+      );
       console.log(`🌍 Platform-agnostic architecture enabled`);
-      console.log(`📊 GraphQL API available at http://localhost:${port}/api/${apiVersion}/graphql`);
+      console.log(
+        `📊 GraphQL API available at http://localhost:${port}/api/${apiVersion}/graphql`
+      );
       console.log(`⚡ GraphQL queries, mutations, and subscriptions ready`);
-      console.log(`🔌 WebSocket server available at ws://localhost:${port}/api/${apiVersion}/ws`);
+      console.log(
+        `🔌 WebSocket server available at ws://localhost:${port}/api/${apiVersion}/ws`
+      );
       console.log(`📡 Real-time metrics streaming enabled`);
     });
 
     // Graceful WebSocket server shutdown
     const originalClose = server.close.bind(server);
-    server.close = function(callback?: (err?: Error) => void) {
+    server.close = function (callback?: (err?: Error) => void) {
       console.log('🔄 Shutting down WebSocket server...');
       wsServer.close();
       console.log('📴 WebSocket server stopped');

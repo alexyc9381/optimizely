@@ -49,12 +49,15 @@ export class RealTimePredictionService extends EventEmitter {
       const cached = this.getCachedPrediction(leadId);
 
       if (cached && !options.forceRefresh) {
-        this.emit('prediction_cache_hit', { leadId, latency: Date.now() - startTime });
+        this.emit('prediction_cache_hit', {
+          leadId,
+          latency: Date.now() - startTime,
+        });
         return {
           prediction: cached.result,
           source: 'cache',
           latency: Date.now() - startTime,
-          streamingEnabled: options.enableStreaming || false
+          streamingEnabled: options.enableStreaming || false,
         };
       }
 
@@ -67,7 +70,7 @@ export class RealTimePredictionService extends EventEmitter {
         prediction,
         source: 'fresh',
         latency,
-        streamingEnabled: options.enableStreaming || false
+        streamingEnabled: options.enableStreaming || false,
       };
     } catch (error) {
       this.emit('prediction_error', { leadId, error });
@@ -91,7 +94,7 @@ export class RealTimePredictionService extends EventEmitter {
       const chunks = this.chunkArray(requests, concurrency);
 
       for (const chunk of chunks) {
-        const chunkPromises = chunk.map(async (request) => {
+        const chunkPromises = chunk.map(async request => {
           try {
             const result = await this.getPredictionRealTime(
               request.leadId,
@@ -102,14 +105,16 @@ export class RealTimePredictionService extends EventEmitter {
           } catch (error) {
             errors.push({
               leadId: request.leadId,
-              error: error instanceof Error ? error.message : 'Unknown error'
+              error: error instanceof Error ? error.message : 'Unknown error',
             });
             return null;
           }
         });
 
         const chunkResults = await Promise.all(chunkPromises);
-        results.push(...chunkResults.filter(r => r !== null) as PredictionBatchResult[]);
+        results.push(
+          ...(chunkResults.filter(r => r !== null) as PredictionBatchResult[])
+        );
       }
 
       const response: BatchPredictionResponse = {
@@ -118,7 +123,7 @@ export class RealTimePredictionService extends EventEmitter {
         totalProcessed: requests.length,
         successCount: results.length,
         errorCount: errors.length,
-        processingTime: Date.now() - startTime
+        processingTime: Date.now() - startTime,
       };
 
       this.emit('batch_prediction_completed', response);
@@ -135,10 +140,12 @@ export class RealTimePredictionService extends EventEmitter {
   public async startPredictionStream(
     leadId: string,
     clientId: string,
-    options: StreamingOptions = {}
+    _options: StreamingOptions = {}
   ): Promise<void> {
     this.emit('streaming_started', { leadId, clientId });
-    console.log(`Started prediction stream for ${leadId} to client ${clientId}`);
+    console.log(
+      `Started prediction stream for ${leadId} to client ${clientId}`
+    );
   }
 
   /**
@@ -146,17 +153,20 @@ export class RealTimePredictionService extends EventEmitter {
    */
   public async updateModelIncremental(
     feedbackData: ModelFeedback[],
-    options: IncrementalLearningOptions = {}
+    _options: IncrementalLearningOptions = {}
   ): Promise<IncrementalUpdateResult> {
-    this.emit('incremental_learning_started', { feedbackCount: feedbackData.length });
+    this.emit('incremental_learning_started', {
+      feedbackCount: feedbackData.length,
+    });
 
     try {
       const validFeedback = this.validateFeedback(feedbackData);
       const result: IncrementalUpdateResult = {
         feedbackProcessed: validFeedback.length,
         modelUpdated: validFeedback.length > 0,
-        performanceImprovement: validFeedback.length > 0 ? Math.random() * 5 : 0,
-        updatedAt: new Date()
+        performanceImprovement:
+          validFeedback.length > 0 ? Math.random() * 5 : 0,
+        updatedAt: new Date(),
       };
 
       if (result.modelUpdated) {
@@ -176,18 +186,28 @@ export class RealTimePredictionService extends EventEmitter {
    */
   public getUniversalAPIInterface(): UniversalAPIInterface {
     return {
-      predict: async (leadData: LeadData, options?: any) => {
+      predict: async (
+        leadData: LeadData,
+        options?: RealTimePredictionOptions
+      ) => {
         const leadId = this.generateLeadId(leadData);
         return this.getPredictionRealTime(leadId, leadData, options);
       },
-      startStream: (leadId: string, clientId: string, options?: StreamingOptions) =>
-        this.startPredictionStream(leadId, clientId, options),
-      batchPredict: (requests: BatchPredictionRequest[], options?: BatchOptions) =>
-        this.batchPredict(requests, options),
-      updateModel: (feedback: ModelFeedback[], options?: IncrementalLearningOptions) =>
-        this.updateModelIncremental(feedback, options),
+      startStream: (
+        leadId: string,
+        clientId: string,
+        options?: StreamingOptions
+      ) => this.startPredictionStream(leadId, clientId, options),
+      batchPredict: (
+        requests: BatchPredictionRequest[],
+        options?: BatchOptions
+      ) => this.batchPredict(requests, options),
+      updateModel: (
+        feedback: ModelFeedback[],
+        options?: IncrementalLearningOptions
+      ) => this.updateModelIncremental(feedback, options),
       getStatus: () => this.getServiceStatus(),
-      getMetrics: () => this.getRealtimeMetrics()
+      getMetrics: () => this.getRealtimeMetrics(),
     };
   }
 
@@ -200,14 +220,18 @@ export class RealTimePredictionService extends EventEmitter {
     return null;
   }
 
-  private cachePrediction(leadId: string, prediction: ScoringResult, leadData: LeadData): void {
+  private cachePrediction(
+    leadId: string,
+    prediction: ScoringResult,
+    leadData: LeadData
+  ): void {
     const cached: CachedPrediction = {
       leadId,
       result: prediction,
       leadData,
       cachedAt: new Date(),
       ttl: 300000,
-      version: '1.0'
+      version: '1.0',
     };
     this.predictionCache.set(leadId, cached);
   }
@@ -217,13 +241,14 @@ export class RealTimePredictionService extends EventEmitter {
   }
 
   private validateFeedback(feedback: ModelFeedback[]): ModelFeedback[] {
-    return feedback.filter(f =>
-      f.leadId &&
-      f.leadId.length > 0 &&
-      typeof f.predictedScore === 'number' &&
-      f.predictedScore > 0 &&
-      typeof f.actualOutcome === 'number' &&
-      f.feedbackType
+    return feedback.filter(
+      f =>
+        f.leadId &&
+        f.leadId.length > 0 &&
+        typeof f.predictedScore === 'number' &&
+        f.predictedScore > 0 &&
+        typeof f.actualOutcome === 'number' &&
+        f.feedbackType
     );
   }
 
@@ -253,7 +278,7 @@ export class RealTimePredictionService extends EventEmitter {
       mlServiceStatus: this.mlService,
       redisConnected: false,
       wsServerRunning: false,
-      uptime: Date.now() - this.startTime
+      uptime: Date.now() - this.startTime,
     };
   }
 
@@ -264,7 +289,7 @@ export class RealTimePredictionService extends EventEmitter {
       cacheHitRate: this.predictionCache.size > 0 ? 0.8 : 0,
       activeConnections: 0,
       modelAccuracy: 0.85,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 }
@@ -346,10 +371,23 @@ interface IncrementalUpdateResult {
 }
 
 interface UniversalAPIInterface {
-  predict: (leadData: LeadData, options?: any) => Promise<RealTimePredictionResult>;
-  startStream: (leadId: string, clientId: string, options?: StreamingOptions) => Promise<void>;
-  batchPredict: (requests: BatchPredictionRequest[], options?: BatchOptions) => Promise<BatchPredictionResponse>;
-  updateModel: (feedback: ModelFeedback[], options?: IncrementalLearningOptions) => Promise<IncrementalUpdateResult>;
+  predict: (
+    leadData: LeadData,
+    options?: RealTimePredictionOptions
+  ) => Promise<RealTimePredictionResult>;
+  startStream: (
+    leadId: string,
+    clientId: string,
+    options?: StreamingOptions
+  ) => Promise<void>;
+  batchPredict: (
+    requests: BatchPredictionRequest[],
+    options?: BatchOptions
+  ) => Promise<BatchPredictionResponse>;
+  updateModel: (
+    feedback: ModelFeedback[],
+    options?: IncrementalLearningOptions
+  ) => Promise<IncrementalUpdateResult>;
   getStatus: () => ServiceStatus;
   getMetrics: () => RealtimeMetrics;
 }
@@ -358,7 +396,7 @@ interface ServiceStatus {
   isInitialized: boolean;
   activeStreams: number;
   cacheSize: number;
-  mlServiceStatus: any;
+  mlServiceStatus: MLScoringService;
   redisConnected: boolean;
   wsServerRunning: boolean;
   uptime: number;
