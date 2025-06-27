@@ -253,6 +253,10 @@ app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
 import { default as accuracyTrackingRoutes } from './routes/accuracy-tracking';
 app.use(`/api/${apiVersion}/accuracy`, accuracyTrackingRoutes);
 
+// Import and mount Revenue Attribution routes
+import { default as revenueAttributionRoutes } from './routes/revenue-attribution';
+app.use(`/api/${apiVersion}/attribution`, revenueAttributionRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
