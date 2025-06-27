@@ -330,6 +330,10 @@ app.use(`/api/${apiVersion}/territory-management`, territoryManagementRoutes);
 import { default as automatedLeadRoutingRoutes } from './routes/automated-lead-routing';
 app.use(`/api/${apiVersion}/lead-routing`, automatedLeadRoutingRoutes);
 
+// Import and mount Real-time Notifications routes
+import { default as realTimeNotificationsRoutes } from './routes/real-time-notifications';
+app.use(`/api/${apiVersion}/notifications`, realTimeNotificationsRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
