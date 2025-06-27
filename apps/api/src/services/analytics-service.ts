@@ -1,8 +1,5 @@
 import { EventEmitter } from 'events';
-import { batchProcessor, BatchProcessorManager } from './batch-processor';
-import { dataPipeline, DataPipelineManager, EventType, ProcessedEvent, RawEvent } from './data-pipeline';
-import { dataQuality, DataQualityManager } from './data-quality';
-import { redisManager } from './redis-client';
+import { Redis } from 'ioredis';
 
 export interface AnalyticsEvent {
   type: string;
@@ -94,556 +91,960 @@ export interface DeleteResult {
   error?: string;
 }
 
-export class AnalyticsServiceManager extends EventEmitter {
-  private isRunning: boolean = false;
-  private startTime: Date = new Date();
-  private metricsCache: Map<string, { data: any; expires: number }> = new Map();
-  private realtimeInterval?: NodeJS.Timeout;
-  private pipeline: DataPipelineManager;
-  private batchProcessor: BatchProcessorManager;
-  private dataQuality: DataQualityManager;
-  private redisClient: any; // TODO: Add proper Redis type
-  private initialized: boolean = false;
+interface TestMetrics {
+  testId: string;
+  testName: string;
+  status: 'active' | 'completed' | 'paused' | 'draft';
+  startDate: Date;
+  endDate?: Date;
+  variations: VariationMetrics[];
+  totalVisitors: number;
+  totalConversions: number;
+  conversionRate: number;
+  statisticalSignificance: number;
+  confidence: number;
+  winner?: string;
+  psychographicBreakdown: PsychographicMetrics[];
+  revenueAttribution: RevenueMetrics;
+  performance: PerformanceMetrics;
+}
 
-  constructor() {
+interface VariationMetrics {
+  id: string;
+  name: string;
+  visitors: number;
+  conversions: number;
+  conversionRate: number;
+  revenue: number;
+  revenuePerVisitor: number;
+  confidence: number;
+  lift: number;
+  isControl: boolean;
+  psychographicPerformance: Record<string, {
+    visitors: number;
+    conversions: number;
+    conversionRate: number;
+    lift: number;
+  }>;
+}
+
+interface PsychographicMetrics {
+  profile: string;
+  visitors: number;
+  conversions: number;
+  conversionRate: number;
+  averageRevenue: number;
+  preferredVariations: Array<{
+    variationId: string;
+    preference: number;
+    performance: number;
+  }>;
+  insights: string[];
+}
+
+interface RevenueMetrics {
+  totalRevenue: number;
+  revenuePerVisitor: number;
+  revenuePerConversion: number;
+  incrementalRevenue: number;
+  roi: number;
+  projectedAnnualImpact: number;
+  costPerAcquisition: number;
+  lifetimeValueImpact: number;
+}
+
+interface PerformanceMetrics {
+  averageLoadTime: number;
+  coreWebVitals: {
+    lcp: number; // Largest Contentful Paint
+    fid: number; // First Input Delay
+    cls: number; // Cumulative Layout Shift
+  };
+  errorRate: number;
+  bounceRate: number;
+  engagementRate: number;
+  pageViews: number;
+  sessionDuration: number;
+}
+
+interface ExecutiveSummary {
+  totalActiveTests: number;
+  totalCompletedTests: number;
+  overallLift: number;
+  totalRevenueImpact: number;
+  averageTestDuration: number;
+  successRate: number;
+  topPerformingSegments: Array<{
+    segment: string;
+    averageLift: number;
+    testCount: number;
+  }>;
+  keyInsights: string[];
+  recommendations: string[];
+}
+
+interface DashboardFilters {
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+  testStatus?: string[];
+  psychographicProfiles?: string[];
+  revenueThreshold?: number;
+  significanceThreshold?: number;
+  testTypes?: string[];
+}
+
+interface RealTimeAlert {
+  id: string;
+  type: 'winner_detected' | 'underperforming' | 'significance_achieved' | 'anomaly' | 'budget_alert';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  testId: string;
+  message: string;
+  timestamp: Date;
+  acknowledged: boolean;
+  actionRequired: boolean;
+  recommendedActions?: string[];
+}
+
+export class AnalyticsService extends EventEmitter {
+  private redis: Redis;
+  private cache: Map<string, any> = new Map();
+  private cacheTimeout: number = 5 * 60 * 1000; // 5 minutes
+  private realTimeSubscriptions: Set<string> = new Set();
+  private updateInterval: any;
+  private alerts: Map<string, RealTimeAlert> = new Map();
+
+  constructor(redisClient: Redis) {
     super();
-    this.pipeline = new DataPipelineManager();
-    this.batchProcessor = new BatchProcessorManager();
-    this.dataQuality = new DataQualityManager();
-    this.redisClient = redisManager.getClient();
-    this.initializeRealtimeMetrics();
-    this.setupEventHandlers();
+    this.redis = redisClient;
+    this.startRealTimeUpdates();
   }
 
-  async start(): Promise<void> {
-    if (this.isRunning) {
-      console.log('📊 Analytics service is already running');
-      return;
-    }
+  /**
+   * Get comprehensive executive summary for dashboard overview
+   */
+  async getExecutiveSummary(filters?: DashboardFilters): Promise<ExecutiveSummary> {
+    const cacheKey = `executive_summary_${JSON.stringify(filters || {})}`;
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
 
     try {
-      this.isRunning = true;
-      this.startTime = new Date();
+      const tests = await this.getTestList(filters);
+      const activeTests = tests.filter(t => t.status === 'active');
+      const completedTests = tests.filter(t => t.status === 'completed');
 
-      await Promise.all([
-        dataPipeline.start(),
-        batchProcessor.start(),
-        dataQuality.start()
-      ]);
+      // Calculate overall metrics
+      const overallLift = this.calculateOverallLift(completedTests);
+      const totalRevenueImpact = completedTests.reduce((sum, test) =>
+        sum + test.revenueAttribution.incrementalRevenue, 0);
 
-      this.startRealtimeMetrics();
+      const averageTestDuration = this.calculateAverageTestDuration(completedTests);
+      const successRate = this.calculateSuccessRate(completedTests);
 
-      console.log('🚀 Analytics service started successfully');
-      this.emit('service:started');
+      // Identify top performing segments
+      const segmentPerformance = await this.analyzeSegmentPerformance(tests);
+      const topPerformingSegments = segmentPerformance
+        .sort((a, b) => b.averageLift - a.averageLift)
+        .slice(0, 5);
 
+      // Generate insights and recommendations
+      const keyInsights = await this.generateKeyInsights(tests);
+      const recommendations = await this.generateRecommendations(tests, segmentPerformance);
+
+      const summary: ExecutiveSummary = {
+        totalActiveTests: activeTests.length,
+        totalCompletedTests: completedTests.length,
+        overallLift,
+        totalRevenueImpact,
+        averageTestDuration,
+        successRate,
+        topPerformingSegments,
+        keyInsights,
+        recommendations
+      };
+
+      this.setCache(cacheKey, summary);
+      return summary;
     } catch (error) {
-      this.isRunning = false;
-      console.error('❌ Failed to start analytics service:', error);
+      this.emit('analytics_error', { error, operation: 'getExecutiveSummary' });
       throw error;
     }
   }
 
-  async stop(): Promise<void> {
-    if (!this.isRunning) return;
+  /**
+   * Get detailed metrics for a specific test
+   */
+  async getTestMetrics(testId: string): Promise<TestMetrics | null> {
+    const cacheKey = `test_metrics_${testId}`;
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
 
     try {
-      this.isRunning = false;
-
-      if (this.realtimeInterval) {
-        clearInterval(this.realtimeInterval);
+      const testData = await this.redis.hgetall(`test:${testId}`);
+      if (!testData || Object.keys(testData).length === 0) {
+        return null;
       }
 
-      await Promise.all([
-        dataPipeline.stop(),
-        batchProcessor.stop(),
-        dataQuality.stop()
-      ]);
+      const variations = await this.getVariationMetrics(testId);
+      const psychographicBreakdown = await this.getPsychographicBreakdown(testId);
+      const revenueAttribution = await this.getRevenueAttribution(testId);
+      const performance = await this.getPerformanceMetrics(testId);
 
-      console.log('⏹️ Analytics service stopped');
-      this.emit('service:stopped');
+      const totalVisitors = variations.reduce((sum, v) => sum + v.visitors, 0);
+      const totalConversions = variations.reduce((sum, v) => sum + v.conversions, 0);
+      const conversionRate = totalVisitors > 0 ? totalConversions / totalVisitors : 0;
 
+      const metrics: TestMetrics = {
+        testId,
+        testName: testData.name || 'Unknown Test',
+        status: testData.status as any || 'draft',
+        startDate: new Date(testData.startDate || Date.now()),
+        endDate: testData.endDate ? new Date(testData.endDate) : undefined,
+        variations,
+        totalVisitors,
+        totalConversions,
+        conversionRate,
+        statisticalSignificance: parseFloat(testData.statisticalSignificance || '0'),
+        confidence: parseFloat(testData.confidence || '0'),
+        winner: testData.winner,
+        psychographicBreakdown,
+        revenueAttribution,
+        performance
+      };
+
+      this.setCache(cacheKey, metrics);
+      return metrics;
     } catch (error) {
-      console.error('❌ Error stopping analytics service:', error);
+      this.emit('analytics_error', { error, operation: 'getTestMetrics', testId });
       throw error;
     }
   }
 
-  async ingestEvent(event: AnalyticsEvent): Promise<{
-    success: boolean;
-    eventId?: string;
-    processingTime?: number;
-    qualityScore?: number;
-    violations?: string[];
-  }> {
-    const startTime = Date.now();
+  /**
+   * Get list of all tests with basic metrics
+   */
+  async getTestList(filters?: DashboardFilters): Promise<TestMetrics[]> {
+    const cacheKey = `test_list_${JSON.stringify(filters || {})}`;
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
 
     try {
-      const rawEvent: RawEvent = {
-        type: this.normalizeEventType(event.type),
-        sessionId: event.sessionId,
-        visitorId: event.visitorId,
-        timestamp: event.timestamp || new Date(),
-        data: event.data,
-        metadata: {
-          source: 'api',
-          ip: event.metadata?.ip,
-          userAgent: event.metadata?.userAgent,
-          referrer: event.metadata?.referrer,
-          quality: { completeness: 1, accuracy: 1, freshness: 1, overall: 1 },
-          enrichments: {}
-        },
-        platform: event.metadata?.platform ? {
-          type: event.metadata.platform
-        } : undefined
-      };
+      const testKeys = await this.redis.keys('test:*');
+      const tests: TestMetrics[] = [];
 
-      const qualityResult = await dataQuality.validateEvent(rawEvent);
-      const processedEvent = await dataPipeline.processEvent(rawEvent);
-      const processingTime = Date.now() - startTime;
-
-      this.updateRealtimeMetrics(processedEvent);
-
-      return {
-        success: true,
-        eventId: processedEvent.id,
-        processingTime,
-        qualityScore: qualityResult.qualityScore,
-        violations: qualityResult.violations.map(v => v.message)
-      };
-
-    } catch (error) {
-      const processingTime = Date.now() - startTime;
-      console.error('❌ Error ingesting event:', error);
-      return {
-        success: false,
-        processingTime
-      };
-    }
-  }
-
-  async query(query: AnalyticsQuery): Promise<AnalyticsResult> {
-    const startTime = Date.now();
-
-    try {
-      const cacheKey = this.generateCacheKey(query);
-      const cached = this.getCachedResult(cacheKey);
-      if (cached) {
-        return cached;
-      }
-
-      const result = await this.executeQuery(query);
-      this.cacheResult(cacheKey, result, 300000);
-
-      const executionTime = Date.now() - startTime;
-      result.metadata.executionTime = executionTime;
-
-      return result;
-
-    } catch (error) {
-      console.error('❌ Error executing query:', error);
-      throw error;
-    }
-  }
-
-  async initialize(): Promise<void> {
-    if (!this.isRunning) {
-      await this.start();
-    }
-  }
-
-  async destroy(): Promise<void> {
-    await this.stop();
-  }
-
-  async queryEvents(options: QueryOptions): Promise<QueryResult> {
-    try {
-      await this.ensureInitialized();
-
-      const { filters, pagination } = options;
-      const events: EventData[] = [];
-
-      // ... existing code ...
-
-      return {
-        success: true,
-        events,
-        totalCount: events.length
-      };
-    } catch (error) {
-      console.error('Query events error:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }
-
-  async getEventById(eventId: string, _apiKey?: string): Promise<EventResult> {
-    try {
-      await this.ensureInitialized();
-      // Implementation here
-      return {
-        success: true,
-        event: undefined
-      };
-    } catch (error) {
-      console.error('Get event by ID error:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }
-
-  async deleteEvent(eventId: string, _apiKey?: string): Promise<DeleteResult> {
-    try {
-      await this.ensureInitialized();
-      // Implementation here
-      return {
-        success: true
-      };
-    } catch (_error) {
-      return {
-        success: false,
-        error: 'Event not found'
-      };
-    }
-  }
-
-  async getHealthStatus(): Promise<{
-    status: 'healthy' | 'unhealthy' | 'degraded';
-    uptime: number;
-    isRunning: boolean;
-    components: {
-      dataPipeline: string;
-      batchProcessor: string;
-      dataQuality: string;
-      redis: string;
-    };
-  }> {
-    const uptime = Date.now() - this.startTime.getTime();
-
-    try {
-      const [pipelineHealth, processorHealth, qualityHealth, redisHealth] = await Promise.all([
-        this.checkComponentHealth('dataPipeline'),
-        this.checkComponentHealth('batchProcessor'),
-        this.checkComponentHealth('dataQuality'),
-        redisManager.healthCheck()
-      ]);
-
-      const components = {
-        dataPipeline: pipelineHealth,
-        batchProcessor: processorHealth,
-        dataQuality: qualityHealth,
-        redis: redisHealth.status
-      };
-
-      const allHealthy = Object.values(components).every(status => status === 'healthy');
-      const status = allHealthy ? 'healthy' : 'degraded';
-
-      return {
-        status,
-        uptime,
-        isRunning: this.isRunning,
-        components
-      };
-
-    } catch (error) {
-      return {
-        status: 'unhealthy',
-        uptime,
-        isRunning: this.isRunning,
-        components: {
-          dataPipeline: 'unknown',
-          batchProcessor: 'unknown',
-          dataQuality: 'unknown',
-          redis: 'unknown'
+      for (const key of testKeys) {
+        const testId = key.replace('test:', '');
+        const metrics = await this.getTestMetrics(testId);
+        if (metrics && this.matchesFilters(metrics, filters)) {
+          tests.push(metrics);
         }
-      };
-    }
-  }
-
-  private eventMatchesFilters(event: any, filters: any): boolean {
-    for (const [key, value] of Object.entries(filters)) {
-      if (key === 'timestamp' && typeof value === 'object' && value !== null) {
-        const eventTime = new Date(event.timestamp);
-        const timestampFilter = value as { gte?: string | Date; lte?: string | Date };
-        if (timestampFilter.gte && eventTime < new Date(timestampFilter.gte)) return false;
-        if (timestampFilter.lte && eventTime > new Date(timestampFilter.lte)) return false;
-      } else if (event[key] !== value) {
-        return false;
       }
-    }
-    return true;
-  }
 
-  private async checkComponentHealth(component: string): Promise<string> {
-    try {
-      // Simple health check - in production, implement more sophisticated checks
-      switch (component) {
-        case 'dataPipeline':
-          return dataPipeline ? 'healthy' : 'unhealthy';
-        case 'batchProcessor':
-          return batchProcessor ? 'healthy' : 'unhealthy';
-        case 'dataQuality':
-          return dataQuality ? 'healthy' : 'unhealthy';
-        default:
-          return 'unknown';
-      }
+      // Sort by most recent first
+      tests.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+
+      this.setCache(cacheKey, tests);
+      return tests;
     } catch (error) {
-      return 'unhealthy';
-    }
-  }
-
-  async getRealTimeMetrics(): Promise<RealTimeMetrics> {
-    try {
-      const redis = redisManager.getClient();
-      const metricsData = await redis.get('analytics:realtime:metrics');
-
-      if (metricsData) {
-        return JSON.parse(metricsData);
-      }
-
-      return {
-        eventsPerSecond: 0,
-        activeVisitors: 0,
-        activeSessions: 0,
-        topPages: [],
-        topEvents: [],
-        conversionRate: 0,
-        avgSessionDuration: 0,
-        bounceRate: 0
-      };
-
-    } catch (error) {
-      console.error('❌ Error getting real-time metrics:', error);
+      this.emit('analytics_error', { error, operation: 'getTestList' });
       throw error;
     }
   }
 
-  private setupEventHandlers(): void {
-    dataPipeline.on('event:processed', (event) => {
-      this.emit('analytics:event:processed', event);
-    });
+  /**
+   * Get real-time performance data for active tests
+   */
+  async getRealTimeMetrics(): Promise<{
+    activeTests: number;
+    totalVisitors: number;
+    totalConversions: number;
+    averageConversionRate: number;
+    revenueToday: number;
+    alerts: RealTimeAlert[];
+  }> {
+    try {
+      const activeTests = await this.getTestList({ testStatus: ['active'] });
 
-    dataPipeline.on('event:failed', (data) => {
-      this.emit('analytics:event:failed', data);
-    });
+      const totalVisitors = activeTests.reduce((sum, test) => sum + test.totalVisitors, 0);
+      const totalConversions = activeTests.reduce((sum, test) => sum + test.totalConversions, 0);
+      const averageConversionRate = totalVisitors > 0 ? totalConversions / totalVisitors : 0;
 
-    dataQuality.on('quality:violation', (violation) => {
-      this.emit('analytics:quality:violation', violation);
-    });
-  }
+      // Get today's revenue
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const revenueToday = await this.getRevenueForDate(today);
 
-  private normalizeEventType(type: string): EventType {
-    const normalized = type.toLowerCase().replace(/[-_\s]/g, '_');
+      // Get active alerts
+      const alerts = Array.from(this.alerts.values())
+        .filter(alert => !alert.acknowledged)
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
-    switch (normalized) {
-      case 'page_view':
-      case 'pageview':
-      case 'page_load':
-        return EventType.PAGE_VIEW;
-      case 'click':
-      case 'button_click':
-      case 'link_click':
-        return EventType.CLICK;
-      case 'form_submit':
-      case 'form_submission':
-      case 'submit':
-        return EventType.FORM_SUBMIT;
-      case 'download':
-      case 'file_download':
-        return EventType.DOWNLOAD;
-      case 'session_start':
-        return EventType.SESSION_START;
-      case 'session_end':
-        return EventType.SESSION_END;
-      default:
-        return EventType.CUSTOM;
+      return {
+        activeTests: activeTests.length,
+        totalVisitors,
+        totalConversions,
+        averageConversionRate,
+        revenueToday,
+        alerts
+      };
+    } catch (error) {
+      this.emit('analytics_error', { error, operation: 'getRealTimeMetrics' });
+      throw error;
     }
   }
 
-  private async executeQuery(query: AnalyticsQuery): Promise<AnalyticsResult> {
-    const redis = redisManager.getClient();
+  /**
+   * Get psychographic insights across all tests
+   */
+  async getPsychographicInsights(filters?: DashboardFilters): Promise<{
+    profilePerformance: Array<{
+      profile: string;
+      totalTests: number;
+      averageLift: number;
+      preferredElements: string[];
+      insights: string[];
+    }>;
+    crossTestPatterns: Array<{
+      pattern: string;
+      frequency: number;
+      averageImpact: number;
+      recommendation: string;
+    }>;
+  }> {
+    const cacheKey = `psychographic_insights_${JSON.stringify(filters || {})}`;
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
 
     try {
-      const eventKeys = await redis.lrange('events:recent', 0, -1);
-      const events: any[] = [];
+      const tests = await this.getTestList(filters);
+      const profileAnalysis = new Map<string, {
+        tests: TestMetrics[];
+        totalLift: number;
+        elements: string[];
+      }>();
 
-      for (const eventKey of eventKeys.slice(0, query.limit || 100)) {
-        const eventData = await redis.get(`event:${eventKey}`);
-        if (eventData) {
-          const event = JSON.parse(eventData);
-          const eventDate = new Date(event.timestamp);
+      // Analyze each psychographic profile
+      for (const test of tests) {
+        for (const breakdown of test.psychographicBreakdown) {
+          if (!profileAnalysis.has(breakdown.profile)) {
+            profileAnalysis.set(breakdown.profile, {
+              tests: [],
+              totalLift: 0,
+              elements: []
+            });
+          }
 
-          if (eventDate >= query.dateRange.start && eventDate <= query.dateRange.end) {
-            if (!query.filters || this.matchesFilters(event, query.filters)) {
-              events.push(event);
-            }
+          const profile = profileAnalysis.get(breakdown.profile)!;
+          profile.tests.push(test);
+
+          // Calculate lift for this profile
+          const controlVariation = test.variations.find(v => v.isControl);
+          const bestVariation = test.variations
+            .filter(v => !v.isControl)
+            .sort((a, b) => b.conversionRate - a.conversionRate)[0];
+
+          if (controlVariation && bestVariation) {
+            const lift = (bestVariation.conversionRate - controlVariation.conversionRate) / controlVariation.conversionRate;
+            profile.totalLift += lift;
           }
         }
       }
 
-      const data = this.processQueryResults(events, query);
-
-      return {
-        data,
-        metadata: {
-          totalCount: events.length,
-          processedCount: data.length,
-          executionTime: 0
-        }
-      };
-
-    } catch (error) {
-      console.error('❌ Error executing query:', error);
-      return {
-        data: [],
-        metadata: {
-          totalCount: 0,
-          processedCount: 0,
-          executionTime: 0
-        }
-      };
-    }
-  }
-
-  private matchesFilters(event: any, filters: Record<string, any>): boolean {
-    for (const [key, value] of Object.entries(filters)) {
-      const eventValue = event[key] || event.data?.[key];
-      if (eventValue !== value) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private processQueryResults(events: any[], query: AnalyticsQuery): any[] {
-    let results = [...events];
-
-    if (query.groupBy && query.groupBy.length > 0) {
-      const grouped = this.groupEvents(results, query.groupBy);
-      results = Object.entries(grouped).map(([key, group]) => ({
-        groupKey: key,
-        count: (group as any[]).length,
-        events: group
+      // Generate profile performance summary
+      const profilePerformance = Array.from(profileAnalysis.entries()).map(([profile, data]) => ({
+        profile,
+        totalTests: data.tests.length,
+        averageLift: data.totalLift / data.tests.length,
+        preferredElements: this.extractPreferredElements(data.tests),
+        insights: this.generateProfileInsights(profile, data.tests)
       }));
+
+      // Identify cross-test patterns
+      const crossTestPatterns = this.identifyPatterns(tests);
+
+      const result = {
+        profilePerformance,
+        crossTestPatterns
+      };
+
+      this.setCache(cacheKey, result);
+      return result;
+    } catch (error) {
+      this.emit('analytics_error', { error, operation: 'getPsychographicInsights' });
+      throw error;
     }
-
-    if (query.orderBy && query.orderBy.length > 0) {
-      results.sort((a, b) => {
-        for (const order of query.orderBy!) {
-          const aVal = a[order.field];
-          const bVal = b[order.field];
-          const comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
-          if (comparison !== 0) {
-            return order.direction === 'desc' ? -comparison : comparison;
-          }
-        }
-        return 0;
-      });
-    }
-
-    const offset = query.offset || 0;
-    const limit = query.limit || results.length;
-    results = results.slice(offset, offset + limit);
-
-    return results;
   }
 
-  private groupEvents(events: any[], groupBy: string[]): Record<string, any[]> {
-    return events.reduce((groups, event) => {
-      const key = groupBy.map(field => event[field] || event.data?.[field] || 'unknown').join('|');
-      if (!groups[key]) {
-        groups[key] = [];
+  /**
+   * Get revenue attribution analysis
+   */
+  async getRevenueAttribution(testId?: string): Promise<RevenueMetrics> {
+    const cacheKey = `revenue_attribution_${testId || 'all'}`;
+    const cached = this.getFromCache(cacheKey);
+    if (cached) return cached;
+
+    try {
+      let tests: TestMetrics[];
+      if (testId) {
+        const test = await this.getTestMetrics(testId);
+        tests = test ? [test] : [];
+      } else {
+        tests = await this.getTestList({ testStatus: ['active', 'completed'] });
       }
-      groups[key].push(event);
-      return groups;
-    }, {} as Record<string, any[]>);
+
+      const totalRevenue = tests.reduce((sum, test) => sum + test.revenueAttribution.totalRevenue, 0);
+      const totalVisitors = tests.reduce((sum, test) => sum + test.totalVisitors, 0);
+      const totalConversions = tests.reduce((sum, test) => sum + test.totalConversions, 0);
+      const incrementalRevenue = tests.reduce((sum, test) => sum + test.revenueAttribution.incrementalRevenue, 0);
+
+      const revenuePerVisitor = totalVisitors > 0 ? totalRevenue / totalVisitors : 0;
+      const revenuePerConversion = totalConversions > 0 ? totalRevenue / totalConversions : 0;
+      const roi = this.calculateROI(tests);
+      const projectedAnnualImpact = this.calculateProjectedAnnualImpact(tests);
+      const costPerAcquisition = this.calculateCostPerAcquisition(tests);
+      const lifetimeValueImpact = this.calculateLifetimeValueImpact(tests);
+
+      const metrics: RevenueMetrics = {
+        totalRevenue,
+        revenuePerVisitor,
+        revenuePerConversion,
+        incrementalRevenue,
+        roi,
+        projectedAnnualImpact,
+        costPerAcquisition,
+        lifetimeValueImpact
+      };
+
+      this.setCache(cacheKey, metrics);
+      return metrics;
+    } catch (error) {
+      this.emit('analytics_error', { error, operation: 'getRevenueAttribution', testId });
+      throw error;
+    }
   }
 
-  private generateCacheKey(query: AnalyticsQuery): string {
-    return `query:${JSON.stringify(query)}`;
+  /**
+   * Start real-time updates for dashboard
+   */
+  private startRealTimeUpdates(): void {
+    this.updateInterval = setInterval(async () => {
+      try {
+        await this.checkForAlerts();
+        await this.updateRealTimeMetrics();
+        this.emit('metrics_updated');
+      } catch (error) {
+        this.emit('analytics_error', { error, operation: 'realTimeUpdates' });
+      }
+    }, 30000); // Update every 30 seconds
   }
 
-  private getCachedResult(cacheKey: string): AnalyticsResult | null {
-    const cached = this.metricsCache.get(cacheKey);
-    if (cached && cached.expires > Date.now()) {
+  /**
+   * Check for new alerts and anomalies
+   */
+  private async checkForAlerts(): Promise<void> {
+    const activeTests = await this.getTestList({ testStatus: ['active'] });
+
+    for (const test of activeTests) {
+      // Check for statistical significance
+      if (test.statisticalSignificance >= 0.95 && !test.winner) {
+        this.createAlert({
+          type: 'significance_achieved',
+          severity: 'medium',
+          testId: test.testId,
+          message: `Test "${test.testName}" has achieved statistical significance`,
+          actionRequired: true,
+          recommendedActions: ['Review results', 'Consider ending test', 'Implement winning variation']
+        });
+      }
+
+      // Check for clear winner
+      const bestVariation = test.variations
+        .filter(v => !v.isControl)
+        .sort((a, b) => b.conversionRate - a.conversionRate)[0];
+
+      if (bestVariation && bestVariation.lift > 0.20) {
+        this.createAlert({
+          type: 'winner_detected',
+          severity: 'high',
+          testId: test.testId,
+          message: `Strong winner detected in "${test.testName}" with ${(bestVariation.lift * 100).toFixed(1)}% lift`,
+          actionRequired: true,
+          recommendedActions: ['End test early', 'Implement winning variation']
+        });
+      }
+
+      // Check for underperforming variations
+      const underperforming = test.variations.filter(v => !v.isControl && v.lift < -0.10);
+      if (underperforming.length > 0) {
+        this.createAlert({
+          type: 'underperforming',
+          severity: 'medium',
+          testId: test.testId,
+          message: `${underperforming.length} underperforming variation(s) in "${test.testName}"`,
+          actionRequired: true,
+          recommendedActions: ['Remove underperforming variations', 'Reallocate traffic']
+        });
+      }
+    }
+  }
+
+  /**
+   * Create new alert
+   */
+  private createAlert(alertData: Omit<RealTimeAlert, 'id' | 'timestamp' | 'acknowledged'>): void {
+    const alert: RealTimeAlert = {
+      ...alertData,
+      id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      timestamp: new Date(),
+      acknowledged: false
+    };
+
+    this.alerts.set(alert.id, alert);
+    this.emit('new_alert', alert);
+  }
+
+  /**
+   * Update real-time metrics cache
+   */
+  private async updateRealTimeMetrics(): Promise<void> {
+    const metrics = await this.getRealTimeMetrics();
+    this.setCache('real_time_metrics', metrics);
+    this.emit('real_time_update', metrics);
+  }
+
+  // Helper methods
+  private getFromCache(key: string): any {
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
       return cached.data;
     }
     return null;
   }
 
-  private cacheResult(cacheKey: string, result: AnalyticsResult, ttl: number): void {
-    this.metricsCache.set(cacheKey, {
-      data: result,
-      expires: Date.now() + ttl
+  private setCache(key: string, data: any): void {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now()
     });
-
-    for (const [key, value] of this.metricsCache.entries()) {
-      if (value.expires <= Date.now()) {
-        this.metricsCache.delete(key);
-      }
-    }
   }
 
-  private startRealtimeMetrics(): void {
-    this.realtimeInterval = setInterval(async () => {
+  private async getVariationMetrics(testId: string): Promise<VariationMetrics[]> {
+    const variationKeys = await this.redis.keys(`test:${testId}:variation:*`);
+    const variations: VariationMetrics[] = [];
+
+    for (const key of variationKeys) {
+      const variationData = await this.redis.hgetall(key);
+      const variationId = key.split(':').pop()!;
+
+      variations.push({
+        id: variationId,
+        name: variationData.name || `Variation ${variationId}`,
+        visitors: parseInt(variationData.visitors || '0'),
+        conversions: parseInt(variationData.conversions || '0'),
+        conversionRate: parseFloat(variationData.conversionRate || '0'),
+        revenue: parseFloat(variationData.revenue || '0'),
+        revenuePerVisitor: parseFloat(variationData.revenuePerVisitor || '0'),
+        confidence: parseFloat(variationData.confidence || '0'),
+        lift: parseFloat(variationData.lift || '0'),
+        isControl: variationData.isControl === 'true',
+        psychographicPerformance: JSON.parse(variationData.psychographicPerformance || '{}')
+      });
+    }
+
+    return variations;
+  }
+
+  private async getPsychographicBreakdown(testId: string): Promise<PsychographicMetrics[]> {
+    const psychographicData = await this.redis.hgetall(`test:${testId}:psychographic`);
+    const breakdown: PsychographicMetrics[] = [];
+
+    for (const [profile, data] of Object.entries(psychographicData)) {
       try {
-        await this.updateRealtimeMetricsCache();
+        const parsed = JSON.parse(data);
+        breakdown.push({
+          profile,
+          visitors: parsed.visitors || 0,
+          conversions: parsed.conversions || 0,
+          conversionRate: parsed.conversionRate || 0,
+          averageRevenue: parsed.averageRevenue || 0,
+          preferredVariations: parsed.preferredVariations || [],
+          insights: parsed.insights || []
+        });
       } catch (error) {
-        console.error('❌ Error updating real-time metrics:', error);
+        // Skip invalid data
+        continue;
       }
-    }, 10000);
+    }
+
+    return breakdown;
   }
 
-  private async updateRealtimeMetricsCache(): Promise<void> {
-    const redis = redisManager.getClient();
+  private async getPerformanceMetrics(testId: string): Promise<PerformanceMetrics> {
+    const performanceData = await this.redis.hgetall(`test:${testId}:performance`);
 
-    const metrics: RealTimeMetrics = {
-      eventsPerSecond: Math.random() * 10,
-      activeVisitors: Math.floor(Math.random() * 100),
-      activeSessions: Math.floor(Math.random() * 50),
-      topPages: [
-        { page: '/home', views: 45 },
-        { page: '/products', views: 32 },
-        { page: '/about', views: 28 }
-      ],
-      topEvents: [
-        { type: 'page_view', count: 105 },
-        { type: 'click', count: 67 },
-        { type: 'form_submit', count: 23 }
-      ],
-      conversionRate: 0.15,
-      avgSessionDuration: 240,
-      bounceRate: 0.45
+    return {
+      averageLoadTime: parseFloat(performanceData.averageLoadTime || '0'),
+      coreWebVitals: {
+        lcp: parseFloat(performanceData.lcp || '0'),
+        fid: parseFloat(performanceData.fid || '0'),
+        cls: parseFloat(performanceData.cls || '0')
+      },
+      errorRate: parseFloat(performanceData.errorRate || '0'),
+      bounceRate: parseFloat(performanceData.bounceRate || '0'),
+      engagementRate: parseFloat(performanceData.engagementRate || '0'),
+      pageViews: parseInt(performanceData.pageViews || '0'),
+      sessionDuration: parseFloat(performanceData.sessionDuration || '0')
     };
-
-    await redis.setex(
-      'analytics:realtime:metrics',
-      60,
-      JSON.stringify(metrics)
-    );
   }
 
-  private updateRealtimeMetrics(event: ProcessedEvent): void {
-    this.emit('realtime:event', {
-      type: event.type,
-      sessionId: event.sessionId,
-      timestamp: event.timestamp
+  private matchesFilters(test: TestMetrics, filters?: DashboardFilters): boolean {
+    if (!filters) return true;
+
+    if (filters.dateRange) {
+      if (test.startDate < filters.dateRange.start || test.startDate > filters.dateRange.end) {
+        return false;
+      }
+    }
+
+    if (filters.testStatus && !filters.testStatus.includes(test.status)) {
+      return false;
+    }
+
+    if (filters.revenueThreshold && test.revenueAttribution.totalRevenue < filters.revenueThreshold) {
+      return false;
+    }
+
+    if (filters.significanceThreshold && test.statisticalSignificance < filters.significanceThreshold) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private calculateOverallLift(tests: TestMetrics[]): number {
+    if (tests.length === 0) return 0;
+
+    const totalLift = tests.reduce((sum, test) => {
+      const controlVariation = test.variations.find(v => v.isControl);
+      const bestVariation = test.variations
+        .filter(v => !v.isControl)
+        .sort((a, b) => b.conversionRate - a.conversionRate)[0];
+
+      if (controlVariation && bestVariation && controlVariation.conversionRate > 0) {
+        return sum + ((bestVariation.conversionRate - controlVariation.conversionRate) / controlVariation.conversionRate);
+      }
+      return sum;
+    }, 0);
+
+    return totalLift / tests.length;
+  }
+
+  private calculateAverageTestDuration(tests: TestMetrics[]): number {
+    const completedTests = tests.filter(t => t.endDate);
+    if (completedTests.length === 0) return 0;
+
+    const totalDuration = completedTests.reduce((sum, test) => {
+      return sum + (test.endDate!.getTime() - test.startDate.getTime());
+    }, 0);
+
+    return totalDuration / completedTests.length / (1000 * 60 * 60 * 24); // Convert to days
+  }
+
+  private calculateSuccessRate(tests: TestMetrics[]): number {
+    if (tests.length === 0) return 0;
+
+    const successfulTests = tests.filter(test => {
+      return test.statisticalSignificance >= 0.95 && test.winner;
     });
+
+    return successfulTests.length / tests.length;
   }
 
-  private async ensureInitialized(): Promise<void> {
-    if (!this.initialized) {
-      await this.start();
-      this.initialized = true;
+  private async analyzeSegmentPerformance(tests: TestMetrics[]): Promise<Array<{
+    segment: string;
+    averageLift: number;
+    testCount: number;
+  }>> {
+    const segmentMap = new Map<string, { totalLift: number; testCount: number }>();
+
+    for (const test of tests) {
+      for (const breakdown of test.psychographicBreakdown) {
+        if (!segmentMap.has(breakdown.profile)) {
+          segmentMap.set(breakdown.profile, { totalLift: 0, testCount: 0 });
+        }
+
+        const segment = segmentMap.get(breakdown.profile)!;
+
+        // Calculate lift for this segment
+        const controlVariation = test.variations.find(v => v.isControl);
+        if (controlVariation && controlVariation.psychographicPerformance[breakdown.profile]) {
+          const controlRate = controlVariation.psychographicPerformance[breakdown.profile].conversionRate;
+          const lift = (breakdown.conversionRate - controlRate) / controlRate;
+          segment.totalLift += lift;
+          segment.testCount += 1;
+        }
+      }
+    }
+
+    return Array.from(segmentMap.entries()).map(([segment, data]) => ({
+      segment,
+      averageLift: data.totalLift / data.testCount,
+      testCount: data.testCount
+    }));
+  }
+
+  private async generateKeyInsights(tests: TestMetrics[]): Promise<string[]> {
+    const insights: string[] = [];
+
+    // Analyze overall performance
+    const completedTests = tests.filter(t => t.status === 'completed');
+    if (completedTests.length > 0) {
+      const successRate = this.calculateSuccessRate(completedTests);
+      if (successRate > 0.7) {
+        insights.push(`High success rate of ${(successRate * 100).toFixed(1)}% across completed tests`);
+      }
+
+      const overallLift = this.calculateOverallLift(completedTests);
+      if (overallLift > 0.1) {
+        insights.push(`Strong average lift of ${(overallLift * 100).toFixed(1)}% across all tests`);
+      }
+    }
+
+    // Analyze psychographic patterns
+    const psychographicPerformance = new Map<string, number[]>();
+    for (const test of tests) {
+      for (const breakdown of test.psychographicBreakdown) {
+        if (!psychographicPerformance.has(breakdown.profile)) {
+          psychographicPerformance.set(breakdown.profile, []);
+        }
+        psychographicPerformance.get(breakdown.profile)!.push(breakdown.conversionRate);
+      }
+    }
+
+    // Find best performing segments
+    let bestSegment = '';
+    let bestRate = 0;
+    for (const [profile, rates] of psychographicPerformance.entries()) {
+      const avgRate = rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+      if (avgRate > bestRate) {
+        bestRate = avgRate;
+        bestSegment = profile;
+      }
+    }
+
+    if (bestSegment) {
+      insights.push(`${bestSegment} segment shows highest conversion rate at ${(bestRate * 100).toFixed(1)}%`);
+    }
+
+    return insights;
+  }
+
+  private async generateRecommendations(tests: TestMetrics[], segmentPerformance: any[]): Promise<string[]> {
+    const recommendations: string[] = [];
+
+    // Test duration recommendations
+    const avgDuration = this.calculateAverageTestDuration(tests.filter(t => t.status === 'completed'));
+    if (avgDuration > 30) {
+      recommendations.push('Consider reducing test duration - current average of ' + avgDuration.toFixed(1) + ' days may be too long');
+    }
+
+    // Segment targeting recommendations
+    const topSegment = segmentPerformance.sort((a, b) => b.averageLift - a.averageLift)[0];
+    if (topSegment && topSegment.averageLift > 0.15) {
+      recommendations.push(`Focus more tests on ${topSegment.segment} segment - showing ${(topSegment.averageLift * 100).toFixed(1)}% average lift`);
+    }
+
+    // Statistical significance recommendations
+    const lowSignificanceTests = tests.filter(t => t.status === 'active' && t.statisticalSignificance < 0.8);
+    if (lowSignificanceTests.length > 0) {
+      recommendations.push(`${lowSignificanceTests.length} active tests need more traffic to reach statistical significance`);
+    }
+
+    return recommendations;
+  }
+
+  private extractPreferredElements(tests: TestMetrics[]): string[] {
+    const elementCount = new Map<string, number>();
+
+    for (const test of tests) {
+      const winningVariation = test.variations
+        .filter(v => !v.isControl)
+        .sort((a, b) => b.conversionRate - a.conversionRate)[0];
+
+      if (winningVariation && winningVariation.lift > 0) {
+        // Extract elements from test name or variations
+        const elements = test.testName.toLowerCase().split(' ');
+        for (const element of elements) {
+          elementCount.set(element, (elementCount.get(element) || 0) + 1);
+        }
+      }
+    }
+
+    return Array.from(elementCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([element]) => element);
+  }
+
+  private generateProfileInsights(profile: string, tests: TestMetrics[]): string[] {
+    const insights: string[] = [];
+
+    const avgConversionRate = tests.reduce((sum, test) => {
+      const breakdown = test.psychographicBreakdown.find(p => p.profile === profile);
+      return sum + (breakdown?.conversionRate || 0);
+    }, 0) / tests.length;
+
+    if (avgConversionRate > 0.05) {
+      insights.push(`High engagement with ${(avgConversionRate * 100).toFixed(1)}% average conversion rate`);
+    }
+
+    // Add more profile-specific insights based on test patterns
+    const successfulTests = tests.filter(test => {
+      const breakdown = test.psychographicBreakdown.find(p => p.profile === profile);
+      return breakdown && breakdown.conversionRate > 0.03;
+    });
+
+    if (successfulTests.length > tests.length * 0.7) {
+      insights.push('Responds well to most test variations');
+    }
+
+    return insights;
+  }
+
+  private identifyPatterns(tests: TestMetrics[]): Array<{
+    pattern: string;
+    frequency: number;
+    averageImpact: number;
+    recommendation: string;
+  }> {
+    const patterns: Array<{
+      pattern: string;
+      frequency: number;
+      averageImpact: number;
+      recommendation: string;
+    }> = [];
+
+    // Analyze common winning elements
+    const winningElements = new Map<string, { count: number; totalLift: number }>();
+
+    for (const test of tests) {
+      const winningVariation = test.variations
+        .filter(v => !v.isControl)
+        .sort((a, b) => b.conversionRate - a.conversionRate)[0];
+
+      if (winningVariation && winningVariation.lift > 0) {
+        const elements = ['headline', 'cta', 'color', 'layout', 'pricing'].filter(element =>
+          test.testName.toLowerCase().includes(element)
+        );
+
+        for (const element of elements) {
+          if (!winningElements.has(element)) {
+            winningElements.set(element, { count: 0, totalLift: 0 });
+          }
+          const data = winningElements.get(element)!;
+          data.count += 1;
+          data.totalLift += winningVariation.lift;
+        }
+      }
+    }
+
+    // Convert to patterns
+    for (const [element, data] of winningElements.entries()) {
+      if (data.count >= 3) { // Need at least 3 occurrences to identify a pattern
+        patterns.push({
+          pattern: `${element} optimization`,
+          frequency: data.count,
+          averageImpact: data.totalLift / data.count,
+          recommendation: `Continue testing ${element} variations - showing consistent positive results`
+        });
+      }
+    }
+
+    return patterns.sort((a, b) => b.averageImpact - a.averageImpact);
+  }
+
+  private async getRevenueForDate(date: Date): Promise<number> {
+    const dateKey = date.toISOString().split('T')[0];
+    const revenue = await this.redis.get(`revenue:${dateKey}`);
+    return parseFloat(revenue || '0');
+  }
+
+  private calculateROI(tests: TestMetrics[]): number {
+    const totalRevenue = tests.reduce((sum, test) => sum + test.revenueAttribution.totalRevenue, 0);
+    const totalCost = tests.length * 1000; // Assume $1000 per test cost
+    return totalCost > 0 ? (totalRevenue - totalCost) / totalCost : 0;
+  }
+
+  private calculateProjectedAnnualImpact(tests: TestMetrics[]): number {
+    const totalIncrementalRevenue = tests.reduce((sum, test) => sum + test.revenueAttribution.incrementalRevenue, 0);
+    const avgTestDuration = this.calculateAverageTestDuration(tests);
+    const testsPerYear = 365 / (avgTestDuration || 30);
+    return totalIncrementalRevenue * testsPerYear;
+  }
+
+  private calculateCostPerAcquisition(tests: TestMetrics[]): number {
+    const totalCost = tests.length * 1000; // Assume $1000 per test
+    const totalConversions = tests.reduce((sum, test) => sum + test.totalConversions, 0);
+    return totalConversions > 0 ? totalCost / totalConversions : 0;
+  }
+
+  private calculateLifetimeValueImpact(tests: TestMetrics[]): number {
+    const avgLift = this.calculateOverallLift(tests);
+    const avgLTV = 500; // Assume $500 average LTV
+    return avgLift * avgLTV;
+  }
+
+  /**
+   * Acknowledge an alert
+   */
+  async acknowledgeAlert(alertId: string): Promise<void> {
+    const alert = this.alerts.get(alertId);
+    if (alert) {
+      alert.acknowledged = true;
+      this.emit('alert_acknowledged', alert);
     }
   }
 
-  private initializeRealtimeMetrics(): void {
-    // Implementation of initializeRealtimeMetrics method
+  /**
+   * Get analytics service status
+   */
+  getServiceStatus(): {
+    status: 'healthy' | 'degraded' | 'error';
+    cacheSize: number;
+    activeSubscriptions: number;
+    lastUpdate: Date;
+    alerts: number;
+  } {
+    return {
+      status: 'healthy',
+      cacheSize: this.cache.size,
+      activeSubscriptions: this.realTimeSubscriptions.size,
+      lastUpdate: new Date(),
+      alerts: Array.from(this.alerts.values()).filter(a => !a.acknowledged).length
+    };
+  }
+
+  /**
+   * Clear cache
+   */
+  clearCache(): void {
+    this.cache.clear();
+    this.emit('cache_cleared');
+  }
+
+  /**
+   * Cleanup resources
+   */
+  destroy(): void {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+    this.cache.clear();
+    this.alerts.clear();
+    this.realTimeSubscriptions.clear();
+    this.removeAllListeners();
   }
 }
 
-export const analyticsService = new AnalyticsServiceManager();
+export default AnalyticsService;

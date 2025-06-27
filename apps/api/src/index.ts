@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { createServer } from 'http';
 import morgan from 'morgan';
-import { analyticsService } from './services/analytics-service';
+import AnalyticsService from './services/analytics-service';
 import { db } from './services/database';
 import { eventManager } from './services/event-manager';
 import { integrationService } from './services/integration-service';
@@ -19,6 +19,9 @@ dotenv.config();
 const app = express();
 const port = process.env.API_PORT || process.env.PORT || 4000;
 const apiVersion = 'v1';
+
+// Initialize analytics service
+let analyticsService: AnalyticsService;
 
 // =============================================================================
 // MIDDLEWARE CONFIGURATION - Universal Architecture Compliant
@@ -272,9 +275,14 @@ app.use(`/api/${apiVersion}/autonomous-ab-testing`, autonomousABTestingRoutes);
 
 // Import and mount Multi-Dimensional Testing routes
 import { default as multiDimensionalTestingRoutes } from './routes/multi-dimensional-testing';
-app.use(`/api/${apiVersion}/multi-dimensional-testing`, multiDimensionalTestingRoutes);
 import { default as statisticalMonitoringRoutes } from './routes/statistical-monitoring';
+app.use(`/api/${apiVersion}/multi-dimensional-testing`, multiDimensionalTestingRoutes);
 app.use(`/api/${apiVersion}/statistical-monitoring`, statisticalMonitoringRoutes);
+
+// Import and mount Analytics routes
+import analyticsRoutes, { initializeAnalyticsService } from './routes/analytics';
+app.use(`/api/${apiVersion}/analytics`, analyticsRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -498,7 +506,9 @@ async function startServer() {
 
     // Initialize Analytics Service
     try {
-      await analyticsService.start();
+      analyticsService = new AnalyticsService(redisManager.getClient());
+      // Initialize the analytics routes service
+      initializeAnalyticsService(redisManager.getClient());
       console.log('📊 Analytics service started');
     } catch (analyticsError) {
       console.log(
@@ -610,7 +620,7 @@ process.on('SIGTERM', async () => {
 
     // Stop Analytics service
     try {
-      await analyticsService.stop();
+      analyticsService.destroy();
       console.log('📴 Analytics service stopped');
     } catch (error) {
       console.log('⚠️  Error stopping analytics service:', error);

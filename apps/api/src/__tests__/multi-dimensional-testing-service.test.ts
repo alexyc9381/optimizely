@@ -362,6 +362,7 @@ describe('MultiDimensionalTestingService', () => {
       const test1 = { ...mockABTest, id: 'test_001' };
 
       // High contamination test (same elements + same segments)
+      const highRiskTest = {
         ...mockABTest,
         id: 'high_risk_test',
         targetAudience: {
@@ -370,6 +371,7 @@ describe('MultiDimensionalTestingService', () => {
       };
 
       await testingFramework.deployTest(test1);
+      await testingFramework.deployTest(highRiskTest);
 
       // This should be detected as high risk due to overlap
       const analytics = testingFramework.getDetailedAnalytics();
