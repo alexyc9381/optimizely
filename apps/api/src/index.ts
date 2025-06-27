@@ -307,8 +307,12 @@ import revenueForecastingRoutes from './routes/revenue-forecasting';
 app.use(`/api/${apiVersion}/forecast`, revenueForecastingRoutes);
 
 // Import and mount Account Intelligence routes
-import accountIntelligenceRoutes from './routes/account-intelligence';
+import { default as accountIntelligenceRoutes } from './routes/account-intelligence';
 app.use(`/api/${apiVersion}/accounts`, accountIntelligenceRoutes);
+
+// Import and mount Executive KPI routes
+import { default as executiveKPIRoutes } from './routes/executive-kpi';
+app.use(`/api/${apiVersion}/executive-kpi`, executiveKPIRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
@@ -670,6 +674,21 @@ async function startServer() {
         '⚠️  Account Intelligence service failed to start, continuing with limited functionality'
       );
       console.debug('Intelligence error details:', intelligenceError);
+    }
+
+    // Initialize Executive KPI Service
+    try {
+      const { initializeExecutiveKPIService } = await import('./routes/executive-kpi');
+
+      // Initialize executive KPI service
+      initializeExecutiveKPIService(redisManager.getClient());
+
+      console.log('🏆 Executive KPI Service started successfully');
+    } catch (executiveKPIError) {
+      console.log(
+        '⚠️  Executive KPI service failed to start, continuing with limited functionality'
+      );
+      console.debug('Executive KPI error details:', executiveKPIError);
     }
 
     // Initialize Competitive Intelligence Service
