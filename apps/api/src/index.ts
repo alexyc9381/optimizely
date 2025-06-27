@@ -214,6 +214,10 @@ app.use(`/api/${apiVersion}/behavioral`, behavioralRoutes);
 import { default as intentRoutes } from './routes/intent';
 app.use(`/api/${apiVersion}/intent`, intentRoutes);
 
+// Import and mount Timing Factor routes
+import { default as timingRoutes } from './routes/timing';
+app.use(`/api/${apiVersion}/timing`, timingRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
