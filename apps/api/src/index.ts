@@ -295,6 +295,10 @@ app.use(`/api/${apiVersion}/universal`, universalAPIRoutes);
 import pipelineVisualizationRoutes from './routes/pipeline-visualization';
 app.use(`/api/${apiVersion}/pipeline`, pipelineVisualizationRoutes);
 
+// Import and mount Revenue Forecasting routes
+import revenueForecastingRoutes from './routes/revenue-forecasting';
+app.use(`/api/${apiVersion}/forecast`, revenueForecastingRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -551,6 +555,34 @@ async function startServer() {
         '⚠️  Pipeline Visualization service failed to start, continuing with limited functionality'
       );
       console.debug('Pipeline error details:', pipelineError);
+    }
+
+    // Initialize Revenue Forecasting Service
+    try {
+            const { createRevenueForecastingService } = await import('./services/revenue-forecasting-service');
+      const { VisualizationService } = await import('./services/visualization-service');
+      const { PipelineVisualizationService } = await import('./services/pipeline-visualization-service');
+      const { default: RevenueAttributionService } = await import('./services/revenue-attribution-service');
+
+      // Create service dependencies
+      const visualizationService = new VisualizationService(analyticsService);
+      const revenueAttributionService = new RevenueAttributionService(redisManager.getClient());
+      const pipelineService = new PipelineVisualizationService(
+        visualizationService,
+        analyticsService,
+        revenueAttributionService
+      );
+      const forecastingService = createRevenueForecastingService(analyticsService, pipelineService, visualizationService);
+
+      // Store service in app for routes to access
+      app.set('forecastingService', forecastingService);
+
+      console.log('📈 Revenue Forecasting service started');
+    } catch (forecastError) {
+      console.log(
+        '⚠️  Revenue Forecasting service failed to start, continuing with limited functionality'
+      );
+      console.debug('Forecast error details:', forecastError);
     }
 
     // Initialize Integration Service

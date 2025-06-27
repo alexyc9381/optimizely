@@ -418,7 +418,7 @@ export const queryResolvers: IResolvers<any, Context> = {
 
   sdkCode: async (
     _: any,
-    { platform, config }: { platform: string; config?: any },
+    { platform, _config }: { platform: string; _config?: any },
     context: Context
   ) => {
     requireAuth(context);

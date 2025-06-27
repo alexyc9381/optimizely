@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express';
-import { body, query, validationResult } from 'express-validator';
+import { query, validationResult } from 'express-validator';
 import { Redis } from 'ioredis';
 import { AnalyticsService } from '../services/analytics-service';
+import { createPipelineVisualizationService, PipelineFilters } from '../services/pipeline-visualization-service';
 import { RevenueAttributionService } from '../services/revenue-attribution-service';
 import { createVisualizationService } from '../services/visualization-service';
-import { createPipelineVisualizationService, PipelineFilters } from '../services/pipeline-visualization-service';
 
 const router = Router();
 
@@ -49,7 +49,7 @@ const setCORSHeaders = (req: Request, res: Response, next: any) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-Key');
-  
+
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
     return;
