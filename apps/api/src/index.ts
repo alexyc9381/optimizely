@@ -226,6 +226,10 @@ app.use(`/api/${apiVersion}/industry-models`, industryModelRoutes);
 import { default as buyerProfileRoutes } from './routes/buyer-profiles';
 app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
 
+// Import and mount Competitive Intelligence routes
+import { default as competitiveIntelligenceRoutes } from './routes/competitive-intelligence';
+app.use(`/api/${apiVersion}/competitive-intelligence`, competitiveIntelligenceRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
