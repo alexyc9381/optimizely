@@ -314,6 +314,18 @@ app.use(`/api/${apiVersion}/accounts`, accountIntelligenceRoutes);
 import { default as executiveKPIRoutes } from './routes/executive-kpi';
 app.use(`/api/${apiVersion}/executive-kpi`, executiveKPIRoutes);
 
+// Import and mount Hot Accounts routes
+import { default as hotAccountsRoutes } from './routes/hot-accounts';
+app.use(`/api/${apiVersion}/hot-accounts`, hotAccountsRoutes);
+
+// Import and mount Visitor Intelligence routes
+import { default as visitorIntelligenceRoutes } from './routes/visitor-intelligence';
+app.use(`/api/${apiVersion}/visitor-intelligence`, visitorIntelligenceRoutes);
+
+// Import and mount Territory Management routes
+import { default as territoryManagementRoutes } from './routes/territory-management';
+app.use(`/api/${apiVersion}/territory-management`, territoryManagementRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================

@@ -1,4 +1,5 @@
 import express from 'express';
+import { redisManager } from '../services/redis-client';
 import { RevenueAttributionService } from '../services/revenue-attribution-service';
 
 const router = express.Router();
@@ -7,7 +8,7 @@ let attributionService: RevenueAttributionService;
 // Initialize service
 const initializeService = async () => {
   if (!attributionService) {
-    attributionService = new RevenueAttributionService();
+    attributionService = new RevenueAttributionService(redisManager.getClient());
     await attributionService.initialize();
   }
   return attributionService;
@@ -133,8 +134,7 @@ router.post('/analyze', async (req, res) => {
     const { modelType, options } = req.body;
 
     const analysisResult = await service.runAttributionAnalysis(
-      modelType || 'multi-touch',
-      options || {}
+      modelType || 'multi-touch'
     );
 
     res.json({

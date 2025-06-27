@@ -497,7 +497,7 @@ export class PerformanceOptimizer extends EventEmitter {
   }
 
   private hashProfileData(profileData: any): string {
-    return this.hashString(JSON.stringify(profileData));
+    return this.hashString(JSON.stringify(profileData)).toString();
   }
 
   private hashString(str: string): number {
