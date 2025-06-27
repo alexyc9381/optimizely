@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { AnalyticsServiceManager } from './analytics-service';
+import { AnalyticsService } from './analytics-service';
 import { redisManager } from './redis-client';
 
 export interface ChartDataPoint {
@@ -78,12 +78,12 @@ export interface ExportOptions {
 }
 
 export class VisualizationService extends EventEmitter {
-  private analyticsService: AnalyticsServiceManager;
+  private analyticsService: AnalyticsService;
   private redisClient: any;
   private cachePrefix = 'viz:';
   private defaultCacheTTL = 300; // 5 minutes
 
-  constructor(analyticsService: AnalyticsServiceManager) {
+  constructor(analyticsService: AnalyticsService) {
     super();
     this.analyticsService = analyticsService;
     this.redisClient = redisManager.getClient();
@@ -793,6 +793,6 @@ export class VisualizationService extends EventEmitter {
   }
 }
 
-export const createVisualizationService = (analyticsService: AnalyticsServiceManager): VisualizationService => {
+export const createVisualizationService = (analyticsService: AnalyticsService): VisualizationService => {
   return new VisualizationService(analyticsService);
 };

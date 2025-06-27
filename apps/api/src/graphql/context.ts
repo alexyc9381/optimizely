@@ -1,13 +1,18 @@
 import { Request, Response } from 'express';
-import { AnalyticsServiceManager } from '../services/analytics-service';
+import { AnalyticsService } from '../services/analytics-service';
 
 // Initialize analytics service for GraphQL context
-const analyticsService = new AnalyticsServiceManager();
+let analyticsService: AnalyticsService | null = null;
+
+// Setter for analytics service (called by main app)
+export const setAnalyticsService = (service: AnalyticsService) => {
+  analyticsService = service;
+};
 
 export interface Context {
   req: Request;
   res: Response;
-  analyticsService: AnalyticsServiceManager;
+  analyticsService: AnalyticsService | null;
   user: {
     id: string;
     apiKey: string;
@@ -57,12 +62,7 @@ export const createContext = async ({ req, res }: CreateContextParams): Promise<
   // Authenticate the request
   const user = authenticateRequest(req);
 
-  // Ensure analytics service is initialized
-  try {
-    await analyticsService.start();
-  } catch (error) {
-    console.warn('Analytics service initialization warning:', error);
-  }
+  // Note: Analytics service should be initialized by main app before GraphQL server starts
 
   return {
     req,

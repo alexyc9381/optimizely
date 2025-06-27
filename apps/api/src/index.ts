@@ -283,6 +283,10 @@ app.use(`/api/${apiVersion}/statistical-monitoring`, statisticalMonitoringRoutes
 import analyticsRoutes, { initializeAnalyticsService } from './routes/analytics';
 app.use(`/api/${apiVersion}/analytics`, analyticsRoutes);
 
+// Import and mount Universal API routes
+import universalAPIRoutes from './routes/universal-api';
+app.use(`/api/${apiVersion}/universal`, universalAPIRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -517,6 +521,18 @@ async function startServer() {
       console.debug('Analytics error details:', analyticsError);
     }
 
+    // Initialize Universal API Service
+    try {
+      const { initializeUniversalAPIService } = await import('./routes/universal-api');
+      initializeUniversalAPIService(redisManager.getClient(), analyticsService);
+      console.log('🌐 Universal API service started');
+    } catch (universalAPIError) {
+      console.log(
+        '⚠️  Universal API service failed to start, continuing with limited functionality'
+      );
+      console.debug('Universal API error details:', universalAPIError);
+    }
+
     // Initialize Integration Service
     try {
       await integrationService.initialize();
@@ -646,3 +662,5 @@ declare module 'express-serve-static-core' {
     };
   }
 }
+
+

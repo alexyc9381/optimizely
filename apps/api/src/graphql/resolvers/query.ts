@@ -1,14 +1,46 @@
 import { integrationService } from '../../services/integration-service';
 import { createVisualizationService } from '../../services/visualization-service';
 import { Context, requireAuth } from '../context';
+import { IResolvers } from '@graphql-tools/utils';
+import { GraphQLContext } from '../context';
 
 // Create visualization service instance
 let visualizationService: any = null;
 
-export const queryResolvers = {
+export const queryResolvers: IResolvers<any, GraphQLContext> = {
+  Query: {
+    getEvent: async (_, { id }, context) => {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
+      const result = await context.analyticsService.getEventById(id);
+      return result;
+    },
+
+    searchEvents: async (_, { query, filters, sort, limit, offset }, context) => {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
+
+      const eventQuery = {
+        query,
+        filters,
+        sort,
+        limit: limit || 100,
+        offset: offset || 0
+      };
+
+      const result = await context.analyticsService.queryEvents(eventQuery);
+      return result;
+    },
+
   // Event queries
   event: async (_: any, { id }: { id: string }, context: Context) => {
     requireAuth(context);
+
+    if (!context.analyticsService) {
+      throw new Error('Analytics service not available');
+    }
 
     const result = await context.analyticsService.getEventById(id);
     if (!result.success) {
@@ -24,12 +56,14 @@ export const queryResolvers = {
   ) => {
     requireAuth(context);
 
+    if (!context.analyticsService) {
+      throw new Error('Analytics service not available');
+    }
+
     const result = await context.analyticsService.queryEvents({
       filters: filters || {},
-      pagination: {
-        limit: Math.min(first, 100), // Cap at 100
-        offset: after ? parseInt(Buffer.from(after, 'base64').toString()) : 0
-      }
+      limit: Math.min(first, 100), // Cap at 100
+      offset: after ? parseInt(Buffer.from(after, 'base64').toString()) : 0
     });
 
     if (!result.success) {
@@ -131,6 +165,9 @@ export const queryResolvers = {
 
     // Initialize visualization service if not already done
     if (!visualizationService) {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
       visualizationService = createVisualizationService(context.analyticsService);
     }
 
@@ -171,23 +208,40 @@ export const queryResolvers = {
           break;
 
         case 'BAR':
-          if (!input.metrics || !input.dimension) {
-            throw new Error('Metrics and dimension are required for bar charts');
+        case 'COLUMN':
+          if (!input.dimension || !input.metric) {
+            throw new Error('Dimension and metric are required for bar/column charts');
           }
-          chartData = await visualizationService.getComparisonData(
-            input.metrics,
+          chartData = await visualizationService.getCategoryData(
             input.dimension,
+            input.metric,
             dateRange,
+            input.limit || 20,
             input.filters
           );
           break;
 
-        case 'FUNNEL':
-          if (!input.steps) {
-            throw new Error('Steps are required for funnel charts');
+        case 'SCATTER':
+          if (!input.xMetric || !input.yMetric) {
+            throw new Error('X and Y metrics are required for scatter charts');
           }
-          chartData = await visualizationService.getFunnelData(
-            input.steps,
+          chartData = await visualizationService.getScatterData(
+            input.xMetric,
+            input.yMetric,
+            dateRange,
+            input.limit || 100,
+            input.filters
+          );
+          break;
+
+        case 'HEATMAP':
+          if (!input.xDimension || !input.yDimension || !input.metric) {
+            throw new Error('X dimension, Y dimension, and metric are required for heatmap');
+          }
+          chartData = await visualizationService.getHeatmapData(
+            input.xDimension,
+            input.yDimension,
+            input.metric,
             dateRange,
             input.filters
           );
@@ -197,85 +251,117 @@ export const queryResolvers = {
           throw new Error(`Unsupported chart type: ${input.type}`);
       }
 
-      return chartData;
+      return {
+        success: true,
+        type: input.type,
+        config: input,
+        data: chartData,
+        generatedAt: new Date().toISOString()
+      };
 
     } catch (error) {
-      console.error('Chart data error:', error);
-      throw new Error(`Failed to generate chart data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      return {
+        success: false,
+        type: input.type,
+        config: input,
+        data: null,
+        error: errorMessage,
+        generatedAt: new Date().toISOString()
+      };
     }
   },
 
-  widgetData: async (
+  dashboard: async (
     _: any,
-    { type, config, dateRange }: { type: string; config: any; dateRange?: any },
+    { input }: { input: any },
     context: Context
   ) => {
     requireAuth(context);
 
     // Initialize visualization service if not already done
     if (!visualizationService) {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
       visualizationService = createVisualizationService(context.analyticsService);
     }
 
     try {
-      let parsedDateRange;
-      if (dateRange) {
-        parsedDateRange = {
-          start: new Date(dateRange.startDate),
-          end: new Date(dateRange.endDate)
-        };
-      }
+      const dateRange = {
+        start: new Date(input.dateRange.startDate),
+        end: new Date(input.dateRange.endDate)
+      };
 
-      const widgetData = await visualizationService.getWidgetData(
-        type.toLowerCase(),
-        config,
-        parsedDateRange
+      const dashboardData = await visualizationService.generateDashboard(
+        input.widgets || [],
+        dateRange,
+        input.filters
       );
 
-      return widgetData;
+      return {
+        success: true,
+        config: input,
+        widgets: dashboardData,
+        generatedAt: new Date().toISOString()
+      };
 
     } catch (error) {
-      console.error('Widget data error:', error);
-      throw new Error(`Failed to generate widget data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      return {
+        success: false,
+        config: input,
+        widgets: [],
+        error: errorMessage,
+        generatedAt: new Date().toISOString()
+      };
     }
   },
 
-  dashboardData: async (
+  exportData: async (
     _: any,
-    { widgets, dateRange }: { widgets: any[]; dateRange?: any },
+    { input }: { input: any },
     context: Context
   ) => {
     requireAuth(context);
 
     // Initialize visualization service if not already done
     if (!visualizationService) {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
       visualizationService = createVisualizationService(context.analyticsService);
     }
 
     try {
-      let parsedDateRange;
-      if (dateRange) {
-        parsedDateRange = {
-          start: new Date(dateRange.startDate),
-          end: new Date(dateRange.endDate)
-        };
-      }
+      const dateRange = {
+        start: new Date(input.dateRange.startDate),
+        end: new Date(input.dateRange.endDate)
+      };
 
-      const mappedWidgets = widgets.map(widget => ({
-        type: widget.type.toLowerCase(),
-        config: widget.config
-      }));
-
-      const dashboardData = await visualizationService.getDashboardData(
-        mappedWidgets,
-        parsedDateRange
+      const exportData = await visualizationService.exportData(
+        input.type,
+        input.format || 'JSON',
+        dateRange,
+        input.filters
       );
 
-      return dashboardData;
+      return {
+        success: true,
+        format: input.format || 'JSON',
+        data: exportData,
+        generatedAt: new Date().toISOString()
+      };
 
     } catch (error) {
-      console.error('Dashboard data error:', error);
-      throw new Error(`Failed to generate dashboard data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      return {
+        success: false,
+        format: input.format || 'JSON',
+        data: null,
+        error: errorMessage,
+        generatedAt: new Date().toISOString()
+      };
     }
   },
 
@@ -283,37 +369,59 @@ export const queryResolvers = {
   // INTEGRATION RESOLVERS
   // =============================================================================
 
-  integrations: async (_: any, { type, enabled }: any, context: Context) => {
+  integrations: async (_: any, __: any, context: Context) => {
     requireAuth(context);
 
-    let integrations = integrationService.getAllIntegrations();
-
-    if (type) {
-      integrations = integrations.filter(i => i.type === type);
+    try {
+      const integrations = await integrationService.listIntegrations();
+      return integrations;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch integrations';
+      throw new Error(errorMessage);
     }
-
-    if (enabled !== undefined) {
-      integrations = integrations.filter(i => i.enabled === enabled);
-    }
-
-    return integrations.map(integration => ({
-      ...integration,
-      status: 'active' // Simplified status
-    }));
   },
 
-  integration: async (_: any, { id }: any, context: Context) => {
+  integration: async (_: any, { id }: { id: string }, context: Context) => {
     requireAuth(context);
 
-    const integration = integrationService.getIntegration(id);
-    if (!integration) {
-      throw new Error('Integration not found');
+    try {
+      const integration = await integrationService.getIntegration(id);
+      if (!integration) {
+        throw new Error('Integration not found');
+      }
+      return integration;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch integration';
+      throw new Error(errorMessage);
     }
+  },
 
-    return {
-      ...integration,
-      status: 'active' // Simplified status
-    };
+  integrationStatus: async (_: any, { id }: { id: string }, context: Context) => {
+    requireAuth(context);
+
+    try {
+      const status = await integrationService.getIntegrationStatus(id);
+      return status;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch integration status';
+      throw new Error(errorMessage);
+    }
+  },
+
+  sdkCode: async (
+    _: any,
+    { platform, config }: { platform: string; config?: any },
+    context: Context
+  ) => {
+    requireAuth(context);
+
+    try {
+      const sdkCode = await integrationService.generateSDK(platform, config);
+      return sdkCode;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate SDK code';
+      throw new Error(errorMessage);
+    }
   },
 
   integrationTypes: async (_: any, __: any, context: Context) => {

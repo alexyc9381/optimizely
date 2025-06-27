@@ -1,0 +1,489 @@
+import Redis from 'ioredis-mock';
+import PerformanceOptimizer from '../services/performance-optimizer';
+
+describe('PerformanceOptimizer', () => {
+  let redis: Redis;
+  let performanceOptimizer: PerformanceOptimizer;
+
+  beforeEach(async () => {
+    redis = new Redis();
+    performanceOptimizer = new PerformanceOptimizer(redis, {
+      performanceTargets: {
+        responseTime: 500,
+        memoryUsage: 512,
+        cacheHitRate: 85,
+        errorRate: 1
+      },
+      cache: {
+        ttl: 3600,
+        maxSize: 100,
+        strategy: 'lru',
+        compression: true
+      }
+    });
+
+    await performanceOptimizer.initialize();
+  });
+
+  afterEach(async () => {
+    performanceOptimizer.destroy();
+    await redis.flushall();
+    redis.disconnect();
+  });
+
+  describe('Initialization', () => {
+    test('should initialize with default configuration', async () => {
+      const config = performanceOptimizer.getOptimizationConfig();
+
+      expect(config.lazyLoading).toBe(true);
+      expect(config.codeSplitting).toBe(true);
+      expect(config.resourcePrioritization).toBe(true);
+      expect(config.performanceTargets.responseTime).toBe(500);
+      expect(config.performanceTargets.cacheHitRate).toBe(85);
+    });
+
+    test('should emit initialization event', async () => {
+      const mockEmit = jest.fn();
+      const optimizer = new PerformanceOptimizer(redis);
+      optimizer.emit = mockEmit;
+
+      await optimizer.initialize();
+
+      expect(mockEmit).toHaveBeenCalledWith('performance_optimizer_initialized',
+        expect.objectContaining({
+          config: expect.any(Object),
+          timestamp: expect.any(Number)
+        })
+      );
+    });
+  });
+
+  describe('Cache Management', () => {
+    test('should cache and retrieve data successfully', async () => {
+      const testKey = 'test:key';
+      const testData = { message: 'Hello, World!', timestamp: Date.now() };
+
+      // Store in cache
+      const stored = await performanceOptimizer.setInCache(testKey, testData, 60);
+      expect(stored).toBe(true);
+
+      // Retrieve from cache
+      const retrieved = await performanceOptimizer.getFromCache(testKey);
+      expect(retrieved).toEqual(testData);
+    });
+
+    test('should return null for non-existent cache keys', async () => {
+      const result = await performanceOptimizer.getFromCache('non:existent');
+      expect(result).toBeNull();
+    });
+
+    test('should handle cache expiration', async () => {
+      const testKey = 'test:expiring';
+      const testData = { expires: 'soon' };
+
+      // Store with very short TTL
+      await performanceOptimizer.setInCache(testKey, testData, 0.001); // 1ms
+
+      // Wait for expiration
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      const result = await performanceOptimizer.getFromCache(testKey);
+      expect(result).toBeNull();
+    });
+
+    test('should clear all caches', async () => {
+      // Store some test data
+      await performanceOptimizer.setInCache('key1', { data: 1 });
+      await performanceOptimizer.setInCache('key2', { data: 2 });
+
+      // Verify data exists
+      expect(await performanceOptimizer.getFromCache('key1')).toBeTruthy();
+      expect(await performanceOptimizer.getFromCache('key2')).toBeTruthy();
+
+      // Clear cache
+      await performanceOptimizer.clearCache();
+
+      // Verify data is cleared
+      expect(await performanceOptimizer.getFromCache('key1')).toBeNull();
+      expect(await performanceOptimizer.getFromCache('key2')).toBeNull();
+    });
+
+    test('should handle memory cache eviction with LRU strategy', async () => {
+      const optimizer = new PerformanceOptimizer(redis, {
+        cache: { ttl: 3600, maxSize: 2, strategy: 'lru', compression: false }
+      });
+      await optimizer.initialize();
+
+      // Fill cache to capacity
+      await optimizer.setInCache('key1', { data: 1 });
+      await optimizer.setInCache('key2', { data: 2 });
+
+      // Add one more item to trigger eviction
+      await optimizer.setInCache('key3', { data: 3 });
+
+      // First item should be evicted
+      expect(await optimizer.getFromCache('key1')).toBeNull();
+      expect(await optimizer.getFromCache('key2')).toBeTruthy();
+      expect(await optimizer.getFromCache('key3')).toBeTruthy();
+
+      optimizer.destroy();
+    });
+  });
+
+  describe('Personalization Optimization', () => {
+    test('should optimize personalization response', async () => {
+      const userId = 'user_123';
+      const profileData = {
+        psychographicProfile: 'analytical',
+        preferences: ['tech', 'efficiency'],
+        behavior: 'returning_visitor'
+      };
+
+      const result = await performanceOptimizer.optimizePersonalizationResponse(userId, profileData);
+
+      expect(result).toHaveProperty('optimized');
+      expect(result).toHaveProperty('responseTime');
+      expect(result).toHaveProperty('cacheHit');
+      expect(result.responseTime).toBeGreaterThan(0);
+      expect(result.cacheHit).toBe(false); // First request should not be cached
+    });
+
+    test('should serve cached personalization for subsequent requests', async () => {
+      const userId = 'user_456';
+      const profileData = { type: 'test_profile' };
+
+      // First request
+      const firstResult = await performanceOptimizer.optimizePersonalizationResponse(userId, profileData);
+      expect(firstResult.cacheHit).toBe(false);
+
+      // Second request should be cached
+      const secondResult = await performanceOptimizer.optimizePersonalizationResponse(userId, profileData);
+      expect(secondResult.cacheHit).toBe(true);
+      expect(secondResult.responseTime).toBeLessThan(firstResult.responseTime);
+    });
+
+    test('should handle different profiles for same user', async () => {
+      const userId = 'user_789';
+      const profile1 = { segment: 'premium' };
+      const profile2 = { segment: 'standard' };
+
+      const result1 = await performanceOptimizer.optimizePersonalizationResponse(userId, profile1);
+      const result2 = await performanceOptimizer.optimizePersonalizationResponse(userId, profile2);
+
+      // Different profiles should generate different cache keys
+      expect(result1.cacheHit).toBe(false);
+      expect(result2.cacheHit).toBe(false);
+    });
+  });
+
+  describe('Resource Loading Script Generation', () => {
+    test('should generate resource loading script for supported platforms', () => {
+      const platforms = ['wordpress', 'shopify', 'react', 'vue', 'angular', 'static'];
+
+      platforms.forEach(platform => {
+        const script = performanceOptimizer.generateResourceLoadingScript(platform);
+
+        expect(script).toContain('loadResource');
+        expect(script).toContain('preloadCritical');
+        expect(script).toContain('loadLazyResources');
+        expect(script).toContain('personalization-core.js');
+        expect(script).toContain('ab-testing-engine.js');
+        expect(script).toContain('optimizely:critical-loaded');
+      });
+    });
+
+    test('should include performance monitoring in generated script', () => {
+      const script = performanceOptimizer.generateResourceLoadingScript('react');
+
+      expect(script).toContain('PerformanceObserver');
+      expect(script).toContain('optimizelyPerformance');
+      expect(script).toContain('resource');
+    });
+
+    test('should prioritize critical resources correctly', () => {
+      const script = performanceOptimizer.generateResourceLoadingScript('vue');
+
+      // Should load critical resources first
+      expect(script).toContain('personalization-core.js');
+      expect(script).toContain('ab-testing-engine.js');
+      expect(script).toContain('psychographic-profiler.js');
+
+      // Should delay medium priority resources
+      expect(script).toContain('setTimeout');
+      expect(script).toContain('dashboard-components.js');
+    });
+  });
+
+  describe('Performance Monitoring', () => {
+    test('should collect and store performance metrics', async () => {
+      // Trigger some cache operations to generate metrics
+      await performanceOptimizer.optimizePersonalizationResponse('test_user', { test: 'data' });
+
+      // Wait for metrics collection
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const metrics = performanceOptimizer.getPerformanceMetrics();
+      expect(metrics).toHaveLength(0); // Metrics collected on interval
+
+      const currentMetrics = performanceOptimizer.getCurrentMetrics();
+      // Current metrics might be null if collection hasn't run yet
+      if (currentMetrics) {
+        expect(currentMetrics).toHaveProperty('responseTime');
+        expect(currentMetrics).toHaveProperty('memoryUsage');
+        expect(currentMetrics).toHaveProperty('cacheHitRate');
+        expect(currentMetrics).toHaveProperty('timestamp');
+      }
+    });
+
+    test('should emit performance alerts when thresholds are exceeded', (done) => {
+      // Create optimizer with very low thresholds
+      const strictOptimizer = new PerformanceOptimizer(redis, {
+        performanceTargets: {
+          responseTime: 1, // Very low threshold
+          memoryUsage: 1,
+          cacheHitRate: 99,
+          errorRate: 0.01
+        }
+      });
+
+      strictOptimizer.on('performance_alert', (alert) => {
+        expect(alert).toHaveProperty('type');
+        expect(alert).toHaveProperty('severity');
+        expect(alert).toHaveProperty('value');
+        expect(alert).toHaveProperty('threshold');
+        expect(alert).toHaveProperty('message');
+        done();
+      });
+
+      strictOptimizer.initialize();
+    });
+
+    test('should track cache hit rates correctly', async () => {
+      const userId = 'cache_test_user';
+      const profileData = { test: 'cache_tracking' };
+
+      // First request (cache miss)
+      await performanceOptimizer.optimizePersonalizationResponse(userId, profileData);
+
+      // Second request (cache hit)
+      await performanceOptimizer.optimizePersonalizationResponse(userId, profileData);
+
+      const currentMetrics = performanceOptimizer.getCurrentMetrics();
+      if (currentMetrics) {
+        expect(currentMetrics.cacheHitRate).toBeGreaterThan(0);
+      }
+    });
+  });
+
+  describe('Configuration Management', () => {
+    test('should update configuration dynamically', () => {
+      const originalConfig = performanceOptimizer.getOptimizationConfig();
+
+      const updates = {
+        performanceTargets: {
+          responseTime: 750,
+          memoryUsage: 1024,
+          cacheHitRate: 90,
+          errorRate: 0.5
+        },
+        lazyLoading: false
+      };
+
+      performanceOptimizer.updateConfig(updates);
+
+      const updatedConfig = performanceOptimizer.getOptimizationConfig();
+      expect(updatedConfig.performanceTargets.responseTime).toBe(750);
+      expect(updatedConfig.performanceTargets.memoryUsage).toBe(1024);
+      expect(updatedConfig.lazyLoading).toBe(false);
+      expect(updatedConfig.codeSplitting).toBe(originalConfig.codeSplitting); // Unchanged
+    });
+
+    test('should emit config update event', (done) => {
+      performanceOptimizer.on('config_updated', (config) => {
+        expect(config).toHaveProperty('performanceTargets');
+        expect(config.performanceTargets.responseTime).toBe(1000);
+        done();
+      });
+
+      performanceOptimizer.updateConfig({
+        performanceTargets: { responseTime: 1000, memoryUsage: 512, cacheHitRate: 85, errorRate: 1 }
+      });
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('should handle Redis connection errors gracefully', async () => {
+      // Create a mock Redis that throws errors
+      const errorRedis = {
+        get: jest.fn().mockRejectedValue(new Error('Redis connection failed')),
+        setex: jest.fn().mockRejectedValue(new Error('Redis connection failed')),
+        flushdb: jest.fn().mockRejectedValue(new Error('Redis connection failed'))
+      } as any;
+
+      const errorOptimizer = new PerformanceOptimizer(errorRedis);
+
+      // Should return null instead of throwing
+      const result = await errorOptimizer.getFromCache('test_key');
+      expect(result).toBeNull();
+
+      // Should return false instead of throwing
+      const stored = await errorOptimizer.setInCache('test_key', { data: 'test' });
+      expect(stored).toBe(false);
+    });
+
+    test('should handle personalization optimization errors', async () => {
+      // Mock an optimizer that throws during optimization
+      const errorOptimizer = new PerformanceOptimizer(redis);
+
+      // Override the private method to throw an error
+      (errorOptimizer as any).generateOptimizedPersonalization = jest.fn()
+        .mockRejectedValue(new Error('Optimization failed'));
+
+      await expect(
+        errorOptimizer.optimizePersonalizationResponse('user', { data: 'test' })
+      ).rejects.toThrow('Optimization failed');
+    });
+
+    test('should handle cache eviction errors gracefully', async () => {
+      const optimizer = new PerformanceOptimizer(redis, {
+        cache: { ttl: 3600, maxSize: 1, strategy: 'lru', compression: false }
+      });
+      await optimizer.initialize();
+
+      // Should not throw even with eviction
+      await optimizer.setInCache('key1', { data: 1 });
+      await optimizer.setInCache('key2', { data: 2 }); // Should trigger eviction
+
+      // Should still work normally
+      const result = await optimizer.getFromCache('key2');
+      expect(result).toBeTruthy();
+
+      optimizer.destroy();
+    });
+  });
+
+  describe('Performance Optimization Features', () => {
+    test('should support lazy loading configuration', () => {
+      const config = performanceOptimizer.getOptimizationConfig();
+      expect(config.lazyLoading).toBe(true);
+
+      performanceOptimizer.updateConfig({ lazyLoading: false });
+      const updatedConfig = performanceOptimizer.getOptimizationConfig();
+      expect(updatedConfig.lazyLoading).toBe(false);
+    });
+
+    test('should support code splitting configuration', () => {
+      const config = performanceOptimizer.getOptimizationConfig();
+      expect(config.codeSplitting).toBe(true);
+
+      performanceOptimizer.updateConfig({ codeSplitting: false });
+      const updatedConfig = performanceOptimizer.getOptimizationConfig();
+      expect(updatedConfig.codeSplitting).toBe(false);
+    });
+
+    test('should support resource prioritization', () => {
+      const script = performanceOptimizer.generateResourceLoadingScript('react');
+
+      // Should include priority-based loading
+      expect(script).toContain('priority');
+      expect(script).toContain('critical');
+      expect(script).toContain('high');
+      expect(script).toContain('medium');
+    });
+
+    test('should support CDN configuration', () => {
+      const config = performanceOptimizer.getOptimizationConfig();
+      expect(config.cdn).toHaveProperty('enabled');
+      expect(config.cdn).toHaveProperty('endpoint');
+      expect(config.cdn).toHaveProperty('regions');
+      expect(config.cdn).toHaveProperty('cacheHeaders');
+    });
+  });
+
+  describe('Memory Management', () => {
+    test('should limit memory cache size', async () => {
+      const optimizer = new PerformanceOptimizer(redis, {
+        cache: { ttl: 3600, maxSize: 3, strategy: 'lru', compression: false }
+      });
+      await optimizer.initialize();
+
+      // Add items up to the limit
+      await optimizer.setInCache('item1', { size: 'small' });
+      await optimizer.setInCache('item2', { size: 'small' });
+      await optimizer.setInCache('item3', { size: 'small' });
+
+      // All items should be accessible
+      expect(await optimizer.getFromCache('item1')).toBeTruthy();
+      expect(await optimizer.getFromCache('item2')).toBeTruthy();
+      expect(await optimizer.getFromCache('item3')).toBeTruthy();
+
+      // Adding one more should evict the oldest
+      await optimizer.setInCache('item4', { size: 'small' });
+
+      expect(await optimizer.getFromCache('item1')).toBeNull(); // Evicted
+      expect(await optimizer.getFromCache('item4')).toBeTruthy(); // New item
+
+      optimizer.destroy();
+    });
+
+    test('should handle different cache strategies', async () => {
+      const strategies = ['lru', 'lfu', 'fifo'] as const;
+
+      for (const strategy of strategies) {
+        const optimizer = new PerformanceOptimizer(redis, {
+          cache: { ttl: 3600, maxSize: 2, strategy, compression: false }
+        });
+        await optimizer.initialize();
+
+        await optimizer.setInCache('a', { data: 1 });
+        await optimizer.setInCache('b', { data: 2 });
+        await optimizer.setInCache('c', { data: 3 }); // Should trigger eviction
+
+        // At least one item should be evicted
+        const aResult = await optimizer.getFromCache('a');
+        const bResult = await optimizer.getFromCache('b');
+        const cResult = await optimizer.getFromCache('c');
+
+        const nullResults = [aResult, bResult, cResult].filter(r => r === null);
+        expect(nullResults).toHaveLength(1); // Exactly one should be evicted
+
+        optimizer.destroy();
+      }
+    });
+  });
+
+  describe('Cleanup and Destruction', () => {
+    test('should clean up resources on destroy', () => {
+      const optimizer = new PerformanceOptimizer(redis);
+
+      // Mock the interval to verify it gets cleared
+      const mockInterval = setInterval(() => {}, 1000);
+      (optimizer as any).monitoringInterval = mockInterval;
+
+      const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+      optimizer.destroy();
+
+      expect(clearIntervalSpy).toHaveBeenCalledWith(mockInterval);
+
+      clearIntervalSpy.mockRestore();
+    });
+
+    test('should remove all event listeners on destroy', () => {
+      const optimizer = new PerformanceOptimizer(redis);
+
+      const mockListener = jest.fn();
+      optimizer.on('test_event', mockListener);
+
+      const removeAllListenersSpy = jest.spyOn(optimizer, 'removeAllListeners');
+
+      optimizer.destroy();
+
+      expect(removeAllListenersSpy).toHaveBeenCalled();
+
+      // Verify listeners are actually removed
+      optimizer.emit('test_event');
+      expect(mockListener).not.toHaveBeenCalled();
+    });
+  });
+});

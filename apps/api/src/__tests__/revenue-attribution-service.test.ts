@@ -1,13 +1,22 @@
 import { LeadData } from '../services/ml-types';
 import { RevenueAttributionService } from '../services/revenue-attribution-service';
 
+// Mock Redis
+const mockRedis = {
+  setex: jest.fn().mockResolvedValue('OK'),
+  get: jest.fn().mockResolvedValue(null),
+  del: jest.fn().mockResolvedValue(1),
+  exists: jest.fn().mockResolvedValue(0),
+  keys: jest.fn().mockResolvedValue([]),
+} as any;
+
 describe('RevenueAttributionService', () => {
   let service: RevenueAttributionService;
   let mockLeadData: LeadData;
   let mockRevenueOutcome: any;
 
   beforeEach(async () => {
-    service = new RevenueAttributionService();
+    service = new RevenueAttributionService(mockRedis);
 
     // Mock lead data for testing
     mockLeadData = {
@@ -97,12 +106,12 @@ describe('RevenueAttributionService', () => {
 
   describe('Service Initialization', () => {
     test('should initialize successfully', async () => {
-      const newService = new RevenueAttributionService();
+      const newService = new RevenueAttributionService(mockRedis);
       await expect(newService.initialize()).resolves.not.toThrow();
     });
 
     test('should emit initialization events', async () => {
-      const newService = new RevenueAttributionService();
+      const newService = new RevenueAttributionService(mockRedis);
       const initializingSpy = jest.fn();
       const initializedSpy = jest.fn();
 
@@ -157,7 +166,7 @@ describe('RevenueAttributionService', () => {
     });
 
     test('should throw error if service not initialized', async () => {
-      const uninitializedService = new RevenueAttributionService();
+      const uninitializedService = new RevenueAttributionService(mockRedis);
 
       await expect(
         uninitializedService.recordRevenueOutcome(

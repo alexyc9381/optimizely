@@ -11,7 +11,7 @@ describe('MultiDimensionalTestingService', () => {
     id: 'test_001',
     name: 'Homepage CTA Test',
     description: 'Testing different call-to-action buttons',
-    hypothesis: 'Changing CTA from "Learn More" to "Get Started" will increase conversions',
+    _hypothesis: 'Changing CTA from "Learn More" to "Get Started" will increase conversions',
     targetAudience: {
       segments: ['analytical', 'decision-maker'],
       psychographicProfiles: ['analytical'],
@@ -169,7 +169,7 @@ describe('MultiDimensionalTestingService', () => {
       const result = await testingFramework.deployTest(mockABTest);
 
       expect(result.success).toBe(true);
-      expect(result.slotId).toBeDefined();
+      expect(result._slotId).toBeDefined();
       expect(result.trafficAllocation).toBeDefined();
       expect(result.warnings).toBeDefined();
       expect(result.conflicts).toBeDefined();
@@ -185,7 +185,7 @@ describe('MultiDimensionalTestingService', () => {
       const result = await testingFramework.deployTest(mockABTest, preferredSlot);
 
       expect(result.success).toBe(true);
-      expect(result.slotId).toBe(preferredSlot);
+      expect(result._slotId).toBe(preferredSlot);
     });
 
     test('should find alternative slot when preferred is unavailable', async () => {
@@ -197,13 +197,13 @@ describe('MultiDimensionalTestingService', () => {
       const result = await testingFramework.deployTest(secondTest, 'slot_01');
 
       expect(result.success).toBe(true);
-      expect(result.slotId).not.toBe('slot_01'); // Should use different slot
+      expect(result._slotId).not.toBe('slot_01'); // Should use different slot
     });
 
     test('should emit test_deployed event', (done) => {
       testingFramework.on('test_deployed', (data) => {
         expect(data.testId).toBe(mockABTest.id);
-        expect(data.slotId).toBeDefined();
+        expect(data._slotId).toBeDefined();
         expect(data.trafficAllocation).toBeDefined();
         expect(data.contaminationRisk).toMatch(/low|medium|high/);
         done();
@@ -257,7 +257,7 @@ describe('MultiDimensionalTestingService', () => {
       expect(result.trafficAllocation!.percentage).toBeGreaterThan(0);
       expect(result.trafficAllocation!.percentage).toBeLessThanOrEqual(10);
       expect(result.trafficAllocation!.segment).toBe('analytical'); // First segment from test
-      expect(result.trafficAllocation!.testSlots).toContain(result.slotId);
+      expect(result.trafficAllocation!.testSlots).toContain(result._slotId);
     });
 
     test('should track total traffic allocation', async () => {

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Redis } from 'ioredis';
-import AnalyticsService from '../services/analytics-service';
+import { AnalyticsService } from '../services/analytics-service';
 
 const router = Router();
 
@@ -722,5 +722,4 @@ function convertToCSV(data: any[]): string {
   return csvRows.join('\n');
 }
 
-export { initializeAnalyticsService };
 export default router;

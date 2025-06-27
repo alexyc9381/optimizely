@@ -35,7 +35,7 @@ describe('StatisticalMonitoringService', () => {
 
     // Create mock test metrics with realistic data
     const controlVariation: VariationMetrics = {
-      variationId: 'control',
+      _variationId: 'control',
       name: 'Control',
       visitors: 1000,
       conversions: 100,
@@ -45,7 +45,7 @@ describe('StatisticalMonitoringService', () => {
     };
 
     const treatmentVariation: VariationMetrics = {
-      variationId: 'treatment',
+      _variationId: 'treatment',
       name: 'Treatment',
       visitors: 1000,
       conversions: 120,
@@ -180,14 +180,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 1000,
             conversions: 100,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 1000,
             conversions: 150, // 50% increase - should be significant
@@ -217,14 +217,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 100,
             conversions: 10,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 100,
             conversions: 11, // Small difference with low sample size
@@ -367,14 +367,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 50,
             conversions: 5,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 50,
             conversions: 6,
@@ -406,14 +406,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 5000, // Much higher than normal
             conversions: 500,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 5000,
             conversions: 600,
@@ -446,14 +446,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 1000,
             conversions: 50, // 5% conversion rate
             conversionRate: 0.05
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 1000,
             conversions: 200, // 20% conversion rate - very high variance
@@ -515,14 +515,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 2000,
             conversions: 200,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 2000,
             conversions: 320, // 60% improvement - highly significant
@@ -553,14 +553,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 20, // Very small sample
             conversions: 2,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 20,
             conversions: 2,
@@ -591,14 +591,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 10000, // Large traffic spike
             conversions: 1000,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 10000,
             conversions: 1200,
@@ -693,14 +693,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 2000,
             conversions: 200,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 2000,
             conversions: 300,
@@ -727,14 +727,14 @@ describe('StatisticalMonitoringService', () => {
         ...mockTestMetrics,
         variations: [
           {
-            variationId: 'control',
+            _variationId: 'control',
             name: 'Control',
             visitors: 100,
             conversions: 10,
             conversionRate: 0.10
           },
           {
-            variationId: 'treatment',
+            _variationId: 'treatment',
             name: 'Treatment',
             visitors: 100,
             conversions: 11,
@@ -756,6 +756,8 @@ describe('StatisticalMonitoringService', () => {
       expect(analysisData.recommendedAction).toBe('continue');
     });
   });
+
+
 });
 
 describe('Statistical Utility Functions', () => {
@@ -775,14 +777,14 @@ describe('Statistical Utility Functions', () => {
       testId: 'test-edge-case',
       variations: [
         {
-          variationId: 'control',
+          _variationId: 'control',
           name: 'Control',
           visitors: 100,
           conversions: 0,
           conversionRate: 0
         },
         {
-          variationId: 'treatment',
+          _variationId: 'treatment',
           name: 'Treatment',
           visitors: 100,
           conversions: 1,
@@ -806,14 +808,14 @@ describe('Statistical Utility Functions', () => {
       testId: 'test-small-sample',
       variations: [
         {
-          variationId: 'control',
+          _variationId: 'control',
           name: 'Control',
           visitors: 5,
           conversions: 1,
           conversionRate: 0.2
         },
         {
-          variationId: 'treatment',
+          _variationId: 'treatment',
           name: 'Treatment',
           visitors: 5,
           conversions: 2,

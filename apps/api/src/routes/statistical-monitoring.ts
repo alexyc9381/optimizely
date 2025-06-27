@@ -72,7 +72,7 @@ router.post('/start', async (req: Request, res: Response) => {
 
     // Validate each variation
     for (const variation of testMetrics.variations) {
-      if (!variation.variationId || typeof variation.visitors !== 'number' || typeof variation.conversions !== 'number') {
+      if (!variation._variationId || typeof variation.visitors !== 'number' || typeof variation.conversions !== 'number') {
         return res.status(400).json({
           error: 'Invalid variation data',
           message: 'Each variation must have variationId, visitors, and conversions'

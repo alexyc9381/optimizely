@@ -3,7 +3,7 @@ import { IncomingMessage } from 'http';
 import jwt from 'jsonwebtoken';
 import { parse } from 'url';
 import { WebSocket, WebSocketServer } from 'ws';
-import { AnalyticsServiceManager } from './analytics-service';
+import { AnalyticsService } from './analytics-service';
 
 interface AuthenticatedWebSocket extends WebSocket {
   userId?: string;
@@ -40,7 +40,7 @@ interface RealTimeMetricsData {
 
 export class OptimizelyWebSocketServer extends EventEmitter {
   private wss: WebSocketServer;
-  private analyticsService: AnalyticsServiceManager;
+  private analyticsService: AnalyticsService;
   private clients: Map<string, AuthenticatedWebSocket> = new Map();
   private rooms: Map<string, Set<string>> = new Map();
   private metricsInterval: NodeJS.Timeout | null = null;
@@ -48,7 +48,7 @@ export class OptimizelyWebSocketServer extends EventEmitter {
   private defaultMetricsFrequency = 5000; // 5 seconds default
   private userMetricsPreferences = new Map<string, number>(); // userId -> frequency
 
-  constructor(analyticsService: AnalyticsServiceManager) {
+  constructor(analyticsService: AnalyticsService) {
     super();
     this.analyticsService = analyticsService;
 

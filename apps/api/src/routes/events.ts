@@ -1,17 +1,24 @@
 import express, { Request, Response } from 'express';
-import { AnalyticsServiceManager } from '../services/analytics-service';
+import { Redis } from 'ioredis';
+import { AnalyticsService } from '../services/analytics-service';
 import { DataQualityManager } from '../services/data-quality';
 
 const router = express.Router();
-const analyticsService = new AnalyticsServiceManager();
+let analyticsService: AnalyticsService;
 const dataQuality = new DataQualityManager();
+
+// Factory function to initialize with Redis
+export const initializeEventsRoutes = (redis: Redis): express.Router => {
+  analyticsService = new AnalyticsService(redis);
+  return router;
+};
 
 // Initialize services
 let servicesInitialized = false;
 
 async function ensureServicesInitialized() {
-  if (!servicesInitialized) {
-    await analyticsService.initialize();
+  if (!servicesInitialized && analyticsService) {
+    // Service is already initialized with Redis
     servicesInitialized = true;
   }
 }
@@ -133,7 +140,7 @@ router.post('/', authenticateApiKey, validateEventRequest, async (req: Authentic
 
     if (result.success) {
       res.status(201).json({
-        id: result.eventId,
+        id: result.event?.id,
         status: 'tracked',
         timestamp: new Date().toISOString()
       });
@@ -184,8 +191,8 @@ router.get('/', authenticateApiKey, async (req: AuthenticatedRequest, res: Respo
     // Query events through analytics service
     const queryResult = await analyticsService.queryEvents({
       filters,
-      pagination: { limit, offset },
-      apiKey: req.apiKey
+      limit,
+      offset
     });
 
     if (queryResult.success) {

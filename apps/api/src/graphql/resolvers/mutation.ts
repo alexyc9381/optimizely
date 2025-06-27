@@ -20,6 +20,10 @@ export const mutationResolvers = {
         data: input.data || {}
       };
 
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
+
       const result = await context.analyticsService.ingestEvent(eventData);
 
       if (!result.success) {
@@ -27,7 +31,7 @@ export const mutationResolvers = {
       }
 
       return {
-        id: result.eventId || `event_${Date.now()}`,
+        id: result.event?.id || `event_${Date.now()}`,
         type: input.type,
         sessionId: input.sessionId,
         visitorId: input.visitorId,
@@ -60,11 +64,15 @@ export const mutationResolvers = {
           data: input.data || {}
         };
 
+        if (!context.analyticsService) {
+          throw new Error('Analytics service not available');
+        }
+
         const result = await context.analyticsService.ingestEvent(eventData);
 
         if (result.success) {
           trackedEvents.push({
-            id: result.eventId || `event_${Date.now()}`,
+            id: result.event?.id || `event_${Date.now()}`,
             type: input.type,
             sessionId: input.sessionId,
             visitorId: input.visitorId,
@@ -224,6 +232,10 @@ export const mutationResolvers = {
     requirePermission(context, 'admin');
 
     try {
+      if (!context.analyticsService) {
+        throw new Error('Analytics service not available');
+      }
+
       const result = await context.analyticsService.deleteEvent(id);
       return result.success;
     } catch (error) {

@@ -40,10 +40,9 @@ router.get('/framework/status', async (req: Request, res: Response) => {
       data: status,
       timestamp: new Date()
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -62,10 +61,9 @@ router.get('/framework/analytics', async (req: Request, res: Response) => {
       data: analytics,
       timestamp: new Date()
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -92,7 +90,7 @@ router.post('/deploy', async (req: Request, res: Response) => {
       res.json({
         success: true,
         data: result,
-        message: `Test ${test.id} deployed successfully to slot ${result.slotId}`
+        message: `Test ${test.id} deployed successfully to slot ${result._slotId}`
       });
     } else {
       res.status(400).json({
@@ -101,10 +99,9 @@ router.post('/deploy', async (req: Request, res: Response) => {
         error: 'Failed to deploy test'
       });
     }
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -132,10 +129,9 @@ router.delete('/remove/:testId', async (req: Request, res: Response) => {
         error: `Test ${testId} not found in framework`
       });
     }
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -186,10 +182,9 @@ router.get('/slots', async (req: Request, res: Response) => {
         }
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -214,10 +209,9 @@ router.get('/traffic-allocation', async (req: Request, res: Response) => {
         recommendations: generateTrafficRecommendations(status.totalTrafficAllocated)
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -238,14 +232,22 @@ router.post('/schedule', async (req: Request, res: Response) => {
       });
     }
 
-    // Validate schedule format
+    const { slotId, startTime, endTime, priority, dependencies, autoStart } = schedule;
+
+    if (!slotId || !startTime || !endTime) {
+      return res.status(400).json({
+        success: false,
+        error: 'slotId, startTime, and endTime are required'
+      });
+    }
+
     const testSchedule = {
-      slotId: schedule.slotId,
-      startTime: new Date(schedule.startTime),
-      endTime: new Date(schedule.endTime),
-      priority: schedule.priority || 2,
-      dependencies: schedule.dependencies || [],
-      autoStart: schedule.autoStart !== false
+      _slotId: slotId,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      priority: priority || 1,
+      dependencies: dependencies || [],
+      autoStart: autoStart !== false
     };
 
     testingFramework.scheduleTest(testId, testSchedule);
@@ -255,10 +257,9 @@ router.post('/schedule', async (req: Request, res: Response) => {
       message: `Test ${testId} scheduled successfully`,
       data: { testId, schedule: testSchedule }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -294,10 +295,9 @@ router.get('/cross-test-effects', async (req: Request, res: Response) => {
         }
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -321,10 +321,9 @@ router.get('/performance-metrics', async (req: Request, res: Response) => {
         alerts: generatePerformanceAlerts(resourceUsage)
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -352,10 +351,9 @@ router.put('/configuration', async (req: Request, res: Response) => {
       message: 'Configuration updated successfully',
       data: { updatedFields: Object.keys(configuration) }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -397,10 +395,9 @@ router.get('/simulation', async (req: Request, res: Response) => {
       success: true,
       data: simulation
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
@@ -422,7 +419,6 @@ router.post('/bulk-deploy', async (req: Request, res: Response) => {
     }
 
     const results = [];
-    const errors = [];
 
     for (const test of tests) {
       try {
@@ -430,31 +426,33 @@ router.post('/bulk-deploy', async (req: Request, res: Response) => {
         results.push({
           testId: test.id,
           success: result.success,
-          slotId: result.slotId,
+          slotId: result._slotId,
           warnings: result.warnings || []
         });
-      } catch (error) {
-        errors.push({
+      } catch (testError: unknown) {
+        results.push({
           testId: test.id,
-          error: error.message
+          success: false,
+          error: testError instanceof Error ? testError.message : 'Unknown deployment error'
         });
       }
     }
 
+    const successful = results.filter(r => r.success);
+    const failed = results.filter(r => !r.success);
+
     res.json({
-      success: errors.length === 0,
+      success: failed.length === 0,
       data: {
-        deployed: results.filter(r => r.success).length,
-        failed: errors.length,
-        results,
-        errors
+        deployed: successful.length,
+        failed: failed.length,
+        results
       },
-      message: `Bulk deployment completed: ${results.filter(r => r.success).length}/${tests.length} tests deployed`
+      message: `Bulk deployment completed: ${successful.length}/${tests.length} tests deployed`
     });
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).json({
-      success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });

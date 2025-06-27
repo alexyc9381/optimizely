@@ -95,9 +95,9 @@ describe('MultiDimensionalTestingService - Core Functionality', () => {
   describe('Test Scheduling', () => {
     test('should schedule test for future deployment', () => {
       const schedule = {
-        slotId: 'slot_01',
+        _slotId: 'slot_01',
         startTime: new Date(Date.now() + 60000),
-        endTime: new Date(Date.now() + 86400000),
+        endTime: new Date(Date.now() + 3600000),
         priority: 1,
         dependencies: [],
         autoStart: true
@@ -106,7 +106,7 @@ describe('MultiDimensionalTestingService - Core Functionality', () => {
       let eventEmitted = false;
       testingFramework.on('test_scheduled', (data) => {
         expect(data.testId).toBe('test_001');
-        expect(data.schedule.slotId).toBe(schedule.slotId);
+        expect(data.schedule._slotId).toBe(schedule._slotId);
         eventEmitted = true;
       });
 

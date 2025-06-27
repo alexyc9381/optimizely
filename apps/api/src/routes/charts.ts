@@ -1,10 +1,20 @@
 import { Request, Response, Router } from 'express';
 import { body, query, validationResult } from 'express-validator';
-import { analyticsService } from '../services/analytics-service';
+import { Redis } from 'ioredis';
+import { AnalyticsService } from '../services/analytics-service';
 import { createVisualizationService } from '../services/visualization-service';
 
 const router = Router();
-const visualizationService = createVisualizationService(analyticsService);
+
+// Charts service instance
+let analyticsService: AnalyticsService;
+let visualizationService: any;
+
+// Initialize charts service (called by main app)
+export const initializeChartsService = (redis: Redis) => {
+  analyticsService = new AnalyticsService(redis);
+  visualizationService = createVisualizationService(analyticsService);
+};
 
 // Validation middleware
 const validateRequest = (req: Request, res: Response, next: any) => {
