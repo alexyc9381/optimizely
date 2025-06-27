@@ -665,6 +665,21 @@ async function startServer() {
       console.debug('Intelligence error details:', intelligenceError);
     }
 
+    // Initialize Competitive Intelligence Service
+    try {
+      const { initializeCompetitiveIntelligenceService } = await import('./routes/competitive-intelligence');
+
+      // Initialize competitive intelligence service
+      initializeCompetitiveIntelligenceService(redisManager.getClient(), analyticsService);
+
+      console.log('🏆 Competitive Intelligence Service started successfully');
+    } catch (competitiveError) {
+      console.log(
+        '⚠️  Competitive Intelligence service failed to start, continuing with limited functionality'
+      );
+      console.debug('Competitive Intelligence error details:', competitiveError);
+    }
+
     // Initialize GraphQL BEFORE starting the HTTP server
     await setupGraphQL();
 

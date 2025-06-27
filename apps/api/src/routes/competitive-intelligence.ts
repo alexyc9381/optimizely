@@ -1,606 +1,494 @@
-import { Request, Response, Router } from 'express';
-import CompetitiveIntelligenceService, {
-    CompetitiveContext,
-    CompetitorProfile
-} from '../services/competitive-intelligence-service';
-import { LeadData } from '../services/ml-types';
+import express from 'express';
+import { query, validationResult } from 'express-validator';
+import AnalyticsService from '../services/analytics-service';
+import { CompetitiveIntelligenceService } from '../services/competitive-intelligence-service';
+import { redisManager } from '../services/redis-client';
 
-const router = Router();
-const competitiveService = new CompetitiveIntelligenceService();
+const router = express.Router();
 
-/**
- * POST /analyze
- * Analyze competitive landscape for a lead
- */
-router.post('/analyze', async (req: Request, res: Response) => {
-  try {
-    const { leadData, context }: { leadData: LeadData; context?: CompetitiveContext } = req.body;
+// Service initialization
+let competitiveIntelligenceService: CompetitiveIntelligenceService;
 
-    if (!leadData) {
-      return res.status(400).json({
-        error: 'Lead data is required',
-        message: 'Please provide lead data for competitive analysis'
-      });
+// Initialize service
+export function initializeCompetitiveIntelligenceService(redisClient: any, analyticsService: AnalyticsService) {
+  competitiveIntelligenceService = new CompetitiveIntelligenceService(redisClient);
+  console.log('🏆 Competitive Intelligence Service initialized');
+}
+
+// Lazy initialization fallback
+function getService() {
+  if (!competitiveIntelligenceService) {
+    try {
+      const analyticsService = new AnalyticsService(redisManager.getClient());
+      competitiveIntelligenceService = new CompetitiveIntelligenceService(redisManager.getClient());
+    } catch (error) {
+      console.error('Failed to initialize Competitive Intelligence Service:', error);
+      throw new Error('Service not available');
     }
-
-    const landscape = await competitiveService.analyzeCompetitiveLandscape(leadData, context);
-
-    res.json({
-      success: true,
-      data: landscape,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        analysisType: 'competitive_landscape',
-        leadId: 'unknown' // LeadData doesn't have an id property
-      }
-    });
-  } catch (error) {
-    console.error('Competitive analysis error:', error);
-    res.status(500).json({
-      error: 'Analysis failed',
-      message: 'Failed to analyze competitive landscape'
-    });
   }
+  return competitiveIntelligenceService;
+}
+
+// Universal CORS headers middleware
+router.use((req, res, next) => {
+  // Universal platform compatibility headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key, X-Platform-Type');
+  res.setHeader('X-API-Platform', 'universal');
+  res.setHeader('X-Service-Type', 'competitive-intelligence');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  next();
 });
 
-/**
- * POST /scoring
- * Calculate competitive scoring adjustment for lead scoring
- */
-router.post('/scoring', async (req: Request, res: Response) => {
-  try {
-    const {
-      baseScore,
-      leadData,
-      context
-    }: {
-      baseScore: number;
-      leadData: LeadData;
-      context?: CompetitiveContext
-    } = req.body;
+// Authentication middleware (placeholder for actual implementation)
+const authMiddleware = (req: any, res: any, next: any) => {
+  // In production, implement proper authentication
+  // For now, allow all requests for development
+  next();
+};
 
-    if (!baseScore || !leadData) {
-      return res.status(400).json({
-        error: 'Missing required parameters',
-        message: 'Base score and lead data are required'
-      });
-    }
-
-    if (baseScore < 0 || baseScore > 100) {
-      return res.status(400).json({
-        error: 'Invalid base score',
-        message: 'Base score must be between 0 and 100'
-      });
-    }
-
-    const scoring = await competitiveService.calculateCompetitiveScoring(baseScore, leadData, context);
-
-    res.json({
-      success: true,
-      data: scoring,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        originalScore: baseScore,
-        adjustedScore: scoring.finalScore,
-        adjustment: scoring.competitiveAdjustment
-      }
-    });
-  } catch (error) {
-    console.error('Competitive scoring error:', error);
-    res.status(500).json({
-      error: 'Scoring failed',
-      message: 'Failed to calculate competitive scoring'
+// Validation error handler
+const handleValidationErrors = (req: any, res: any, next: any) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: 'Validation failed',
+      details: errors.array(),
+      timestamp: new Date().toISOString(),
     });
   }
-});
+  next();
+};
+
+// =============================================================================
+// COMPETITIVE INTELLIGENCE ROUTES
+// =============================================================================
 
 /**
- * POST /batch-scoring
- * Calculate competitive scoring for multiple leads
+ * GET /api/v1/competitive-intelligence/overview
+ * Get comprehensive competitive intelligence overview
  */
-router.post('/batch-scoring', async (req: Request, res: Response) => {
-  try {
-    const {
-      leads,
-      context
-    }: {
-      leads: Array<{ baseScore: number; leadData: LeadData }>;
-      context?: CompetitiveContext
-    } = req.body;
+router.get(
+  '/overview',
+  [
+    query('competitorIds').optional().isString().withMessage('Competitor IDs must be comma-separated string'),
+    query('industries').optional().isString().withMessage('Industries must be comma-separated string'),
+    query('sizes').optional().isString().withMessage('Company sizes must be comma-separated string'),
+    query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
+    query('offset').optional().isInt({ min: 0 }).withMessage('Offset must be non-negative'),
+  ],
+  handleValidationErrors,
+  authMiddleware,
+  async (req: any, res: any) => {
+    try {
+      const service = getService();
+      const {
+        competitorIds,
+        industries,
+        sizes,
+        limit = 10,
+        offset = 0,
+      } = req.query;
 
-    if (!leads || !Array.isArray(leads)) {
-      return res.status(400).json({
-        error: 'Invalid input',
-        message: 'Leads array is required'
+      // Parse filters
+      const filters: any = {};
+      if (competitorIds) filters.competitorIds = competitorIds.split(',');
+      if (industries) filters.industries = industries.split(',');
+      if (sizes) filters.sizes = sizes.split(',');
+
+      const data = await service.getCompetitiveIntelligence(filters);
+
+      // Apply pagination to competitors
+      const paginatedCompetitors = data.competitors.slice(offset, offset + limit);
+
+      // Calculate summary statistics
+      const summary = {
+        totalCompetitors: data.competitors.length,
+        totalAlerts: data.alerts.length,
+        activeThreats: data.competitors.filter(c => c.threatLevel === 'high').length,
+        winRate: data.winLossRecords.length > 0
+          ? (data.winLossRecords.filter(r => r.outcome === 'won').length / data.winLossRecords.length) * 100
+          : 0,
+        marketShareCoverage: data.marketShareData.reduce((sum, share) => sum + share.percentage, 0),
+      };
+
+      res.json({
+        success: true,
+        data: {
+          ...data,
+          competitors: paginatedCompetitors,
+          summary,
+          pagination: {
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            total: data.competitors.length,
+            hasMore: offset + limit < data.competitors.length,
+          },
+        },
+        timestamp: new Date().toISOString(),
+        platform: 'universal',
+      });
+    } catch (error) {
+      console.error('Error fetching competitive intelligence overview:', error);
+      res.status(500).json({
+        error: 'Internal server error',
+        message: 'Failed to fetch competitive intelligence overview',
+        timestamp: new Date().toISOString(),
       });
     }
+  }
+);
 
-    if (leads.length > 100) {
-      return res.status(400).json({
-        error: 'Batch too large',
-        message: 'Maximum 100 leads allowed per batch'
-      });
-    }
+/**
+ * GET /api/v1/competitive-intelligence/competitors
+ * Get detailed competitor information
+ */
+router.get(
+  '/competitors',
+  [
+    query('competitorIds').optional().isString().withMessage('Competitor IDs must be comma-separated string'),
+    query('industries').optional().isString().withMessage('Industries must be comma-separated string'),
+    query('sizes').optional().isString().withMessage('Company sizes must be comma-separated string'),
+    query('threatLevels').optional().isString().withMessage('Threat levels must be comma-separated string'),
+    query('search').optional().isString().withMessage('Search term must be a string'),
+    query('sortBy').optional().isIn(['name', 'marketShare', 'threatLevel', 'lastUpdate']).withMessage('Invalid sort field'),
+    query('sortOrder').optional().isIn(['asc', 'desc']).withMessage('Sort order must be asc or desc'),
+    query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
+    query('offset').optional().isInt({ min: 0 }).withMessage('Offset must be non-negative'),
+  ],
+  handleValidationErrors,
+  authMiddleware,
+  async (req: any, res: any) => {
+    try {
+      const service = getService();
+      const {
+        competitorIds,
+        industries,
+        sizes,
+        threatLevels,
+        search,
+        sortBy = 'name',
+        sortOrder = 'asc',
+        limit = 20,
+        offset = 0,
+      } = req.query;
 
-    const results = await Promise.all(
-      leads.map(async ({ baseScore, leadData }) => {
-        try {
-          const scoring = await competitiveService.calculateCompetitiveScoring(baseScore, leadData, context);
-          return {
-            leadId: 'unknown', // LeadData doesn't have an id property
-            success: true,
-            scoring
-          };
-        } catch (error) {
-          return {
-            leadId: 'unknown', // LeadData doesn't have an id property
-            success: false,
-            error: 'Scoring failed for this lead'
-          };
+      // Parse filters
+      const filters: any = {};
+      if (competitorIds) filters.competitorIds = competitorIds.split(',');
+      if (industries) filters.industries = industries.split(',');
+      if (sizes) filters.sizes = sizes.split(',');
+      if (threatLevels) filters.threatLevels = threatLevels.split(',');
+
+      const competitors = await service.getCompetitors(filters);
+
+      // Apply search filter
+      let filteredCompetitors = competitors;
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredCompetitors = competitors.filter(competitor =>
+          competitor.name.toLowerCase().includes(searchLower) ||
+          competitor.description.toLowerCase().includes(searchLower) ||
+          competitor.industries.some(industry => industry.toLowerCase().includes(searchLower))
+        );
+      }
+
+      // Apply sorting
+      filteredCompetitors.sort((a, b) => {
+        let valueA: any, valueB: any;
+
+        switch (sortBy) {
+          case 'name':
+            valueA = a.name.toLowerCase();
+            valueB = b.name.toLowerCase();
+            break;
+          case 'marketShare':
+            valueA = a.marketShare;
+            valueB = b.marketShare;
+            break;
+          case 'threatLevel':
+            const threatOrder = { 'low': 1, 'medium': 2, 'high': 3 };
+            valueA = threatOrder[a.threatLevel as keyof typeof threatOrder];
+            valueB = threatOrder[b.threatLevel as keyof typeof threatOrder];
+            break;
+          case 'lastUpdate':
+            valueA = new Date(a.lastUpdate).getTime();
+            valueB = new Date(b.lastUpdate).getTime();
+            break;
+          default:
+            valueA = a.name.toLowerCase();
+            valueB = b.name.toLowerCase();
         }
-      })
-    );
 
-    const successful = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success).length;
+        if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
+        if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
 
-    res.json({
-      success: true,
-      data: results,
-      metadata: {
+      // Apply pagination
+      const paginatedCompetitors = filteredCompetitors.slice(offset, offset + limit);
+
+      res.json({
+        success: true,
+        data: paginatedCompetitors,
+        meta: {
+          total: filteredCompetitors.length,
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          hasMore: offset + limit < filteredCompetitors.length,
+          sortBy,
+          sortOrder,
+          search: search || null,
+        },
         timestamp: new Date().toISOString(),
-        totalLeads: leads.length,
-        successful,
-        failed,
-        batchId: `batch_${Date.now()}`
-      }
-    });
-  } catch (error) {
-    console.error('Batch competitive scoring error:', error);
-    res.status(500).json({
-      error: 'Batch scoring failed',
-      message: 'Failed to process competitive scoring batch'
-    });
-  }
-});
-
-/**
- * GET /competitors
- * Get list of all competitors in database
- */
-router.get('/competitors', async (req: Request, res: Response) => {
-  try {
-    const { industry, targetSegment, limit } = req.query;
-
-    // Get all competitors from the service
-    const allCompetitors = await competitiveService.getCompetitorIntelligence([]);
-
-    let filteredCompetitors = allCompetitors;
-
-    // Filter by industry if provided
-    if (industry) {
-      filteredCompetitors = filteredCompetitors.filter(comp =>
-        comp.industry === industry
-      );
-    }
-
-    // Filter by target segment if provided
-    if (targetSegment) {
-      filteredCompetitors = filteredCompetitors.filter(comp =>
-        comp.targetSegments.includes(targetSegment as string)
-      );
-    }
-
-    // Apply limit if provided
-    if (limit) {
-      const limitNum = parseInt(limit as string, 10);
-      if (limitNum > 0) {
-        filteredCompetitors = filteredCompetitors.slice(0, limitNum);
-      }
-    }
-
-    res.json({
-      success: true,
-      data: {
-        competitors: filteredCompetitors,
-        total: filteredCompetitors.length,
-        available_industries: [...new Set(allCompetitors.map(c => c.industry))],
-        available_segments: [...new Set(allCompetitors.flatMap(c => c.targetSegments))]
-      },
-      metadata: {
+        platform: 'universal',
+      });
+    } catch (error) {
+      console.error('Error fetching competitors:', error);
+      res.status(500).json({
+        error: 'Internal server error',
+        message: 'Failed to fetch competitors',
         timestamp: new Date().toISOString(),
-        filters: { industry, targetSegment, limit }
-      }
-    });
-  } catch (error) {
-    console.error('Get competitors error:', error);
-    res.status(500).json({
-      error: 'Failed to retrieve competitors',
-      message: 'Unable to fetch competitor data'
-    });
-  }
-});
-
-/**
- * GET /competitors/:id
- * Get detailed information about a specific competitor
- */
-router.get('/competitors/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const competitors = await competitiveService.getCompetitorIntelligence([id]);
-
-    if (competitors.length === 0) {
-      return res.status(404).json({
-        error: 'Competitor not found',
-        message: `No competitor found with ID: ${id}`
       });
     }
-
-    const competitor = competitors[0];
-
-    res.json({
-      success: true,
-      data: competitor,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        competitorId: id
-      }
-    });
-  } catch (error) {
-    console.error('Get competitor error:', error);
-    res.status(500).json({
-      error: 'Failed to retrieve competitor',
-      message: 'Unable to fetch competitor details'
-    });
   }
-});
+);
 
 /**
- * POST /competitors
- * Add a new competitor to the database
+ * GET /api/v1/competitive-intelligence/alerts
+ * Get competitive intelligence alerts
  */
-router.post('/competitors', async (req: Request, res: Response) => {
-  try {
-    const competitor: CompetitorProfile = req.body;
+router.get(
+  '/alerts',
+  [
+    query('types').optional().isString().withMessage('Alert types must be comma-separated string'),
+    query('competitorIds').optional().isString().withMessage('Competitor IDs must be comma-separated string'),
+    query('severity').optional().isIn(['low', 'medium', 'high', 'critical']).withMessage('Invalid severity level'),
+    query('acknowledged').optional().isBoolean().withMessage('Acknowledged must be boolean'),
+    query('startDate').optional().isISO8601().withMessage('Start date must be valid ISO 8601 date'),
+    query('endDate').optional().isISO8601().withMessage('End date must be valid ISO 8601 date'),
+    query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
+    query('offset').optional().isInt({ min: 0 }).withMessage('Offset must be non-negative'),
+  ],
+  handleValidationErrors,
+  authMiddleware,
+  async (req: any, res: any) => {
+    try {
+      const service = getService();
+      const {
+        types,
+        competitorIds,
+        severity,
+        acknowledged,
+        startDate,
+        endDate,
+        limit = 20,
+        offset = 0,
+      } = req.query;
 
-    // Validate required fields
-    const requiredFields = ['id', 'name', 'domain', 'industry', 'marketShare', 'pricingTier', 'targetSegments'];
-    const missingFields = requiredFields.filter(field => !competitor[field as keyof CompetitorProfile]);
+      // Parse filters
+      const filters: any = {};
+      if (types) filters.types = types.split(',');
+      if (competitorIds) filters.competitorIds = competitorIds.split(',');
+      if (severity) filters.severity = severity;
+      if (acknowledged !== undefined) filters.acknowledged = acknowledged === 'true';
+      if (startDate) filters.startDate = new Date(startDate);
+      if (endDate) filters.endDate = new Date(endDate);
 
-    if (missingFields.length > 0) {
-      return res.status(400).json({
-        error: 'Missing required fields',
-        message: `The following fields are required: ${missingFields.join(', ')}`
+      const alerts = await service.getCompetitiveAlerts(filters);
+
+      // Apply date range filter
+      let filteredAlerts = alerts;
+      if (startDate || endDate) {
+        filteredAlerts = alerts.filter(alert => {
+          const alertDate = new Date(alert.timestamp);
+          if (startDate && alertDate < new Date(startDate)) return false;
+          if (endDate && alertDate > new Date(endDate)) return false;
+          return true;
+        });
+      }
+
+      // Apply pagination
+      const paginatedAlerts = filteredAlerts.slice(offset, offset + limit);
+
+      // Calculate alert statistics
+      const stats = {
+        total: filteredAlerts.length,
+        bySeverity: {
+          low: filteredAlerts.filter(a => a.severity === 'low').length,
+          medium: filteredAlerts.filter(a => a.severity === 'medium').length,
+          high: filteredAlerts.filter(a => a.severity === 'high').length,
+          critical: filteredAlerts.filter(a => a.severity === 'critical').length,
+        },
+        byType: {
+          'pricing-change': filteredAlerts.filter(a => a.type === 'pricing-change').length,
+          'product-launch': filteredAlerts.filter(a => a.type === 'product-launch').length,
+          'win-loss': filteredAlerts.filter(a => a.type === 'win-loss').length,
+        },
+        acknowledged: filteredAlerts.filter(a => a.acknowledged).length,
+        unacknowledged: filteredAlerts.filter(a => !a.acknowledged).length,
+      };
+
+      res.json({
+        success: true,
+        data: paginatedAlerts,
+        stats,
+        meta: {
+          total: filteredAlerts.length,
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          hasMore: offset + limit < filteredAlerts.length,
+        },
+        timestamp: new Date().toISOString(),
+        platform: 'universal',
+      });
+    } catch (error) {
+      console.error('Error fetching competitive alerts:', error);
+      res.status(500).json({
+        error: 'Internal server error',
+        message: 'Failed to fetch competitive alerts',
+        timestamp: new Date().toISOString(),
       });
     }
-
-    await competitiveService.addCompetitor(competitor);
-
-    res.status(201).json({
-      success: true,
-      data: competitor,
-      message: 'Competitor added successfully',
-      metadata: {
-        timestamp: new Date().toISOString(),
-        competitorId: competitor.id
-      }
-    });
-  } catch (error) {
-    console.error('Add competitor error:', error);
-    res.status(500).json({
-      error: 'Failed to add competitor',
-      message: 'Unable to add new competitor'
-    });
   }
-});
+);
 
 /**
- * PUT /competitors/:id
- * Update existing competitor information
+ * GET /api/v1/competitive-intelligence/battlecards
+ * Get competitive battlecards
  */
-router.put('/competitors/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const updates: Partial<CompetitorProfile> = req.body;
+router.get(
+  '/battlecards',
+  [
+    query('competitorIds').optional().isString().withMessage('Competitor IDs must be comma-separated string'),
+    query('scenarios').optional().isString().withMessage('Scenarios must be comma-separated string'),
+    query('search').optional().isString().withMessage('Search term must be a string'),
+    query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('Limit must be between 1 and 50'),
+    query('offset').optional().isInt({ min: 0 }).withMessage('Offset must be non-negative'),
+  ],
+  handleValidationErrors,
+  authMiddleware,
+  async (req: any, res: any) => {
+    try {
+      const service = getService();
+      const {
+        competitorIds,
+        scenarios,
+        search,
+        limit = 10,
+        offset = 0,
+      } = req.query;
 
-    // Verify competitor exists first
-    const existingCompetitors = await competitiveService.getCompetitorIntelligence([id]);
-    if (existingCompetitors.length === 0) {
-      return res.status(404).json({
-        error: 'Competitor not found',
-        message: `No competitor found with ID: ${id}`
+      // Parse filters
+      const filters: any = {};
+      if (competitorIds) filters.competitorIds = competitorIds.split(',');
+      if (scenarios) filters.scenarios = scenarios.split(',');
+
+      const battlecards = await service.getBattlecards(filters);
+
+      // Apply search filter
+      let filteredBattlecards = battlecards;
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredBattlecards = battlecards.filter(card =>
+          card.competitorName.toLowerCase().includes(searchLower) ||
+          card.strengths.some(strength => strength.toLowerCase().includes(searchLower)) ||
+          card.weaknesses.some(weakness => weakness.toLowerCase().includes(searchLower)) ||
+          card.keyMessages.some(message => message.toLowerCase().includes(searchLower))
+        );
+      }
+
+      // Apply pagination
+      const paginatedBattlecards = filteredBattlecards.slice(offset, offset + limit);
+
+      res.json({
+        success: true,
+        data: paginatedBattlecards,
+        meta: {
+          total: filteredBattlecards.length,
+          limit: parseInt(limit),
+          offset: parseInt(offset),
+          hasMore: offset + limit < filteredBattlecards.length,
+          search: search || null,
+        },
+        timestamp: new Date().toISOString(),
+        platform: 'universal',
+      });
+    } catch (error) {
+      console.error('Error fetching battlecards:', error);
+      res.status(500).json({
+        error: 'Internal server error',
+        message: 'Failed to fetch battlecards',
+        timestamp: new Date().toISOString(),
       });
     }
-
-    await competitiveService.updateCompetitiveData(id, updates);
-
-    // Get updated competitor data
-    const updatedCompetitors = await competitiveService.getCompetitorIntelligence([id]);
-
-    res.json({
-      success: true,
-      data: updatedCompetitors[0],
-      message: 'Competitor updated successfully',
-      metadata: {
-        timestamp: new Date().toISOString(),
-        competitorId: id,
-        updatedFields: Object.keys(updates)
-      }
-    });
-  } catch (error) {
-    console.error('Update competitor error:', error);
-    res.status(500).json({
-      error: 'Failed to update competitor',
-      message: 'Unable to update competitor information'
-    });
   }
-});
+);
 
 /**
- * GET /win-loss-analysis
- * Get win/loss analysis data
+ * GET /api/v1/competitive-intelligence/health
+ * Get service health status
  */
-router.get('/win-loss-analysis', async (req: Request, res: Response) => {
+router.get('/health', async (req: any, res: any) => {
   try {
-    const { industry, timeframe } = req.query;
+    const service = getService();
 
-    const analysis = await competitiveService.getWinLossAnalysis(
-      industry as string,
-      timeframe as string
-    );
-
-    res.json({
-      success: true,
-      data: analysis,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        filters: { industry, timeframe }
-      }
-    });
-  } catch (error) {
-    console.error('Win/loss analysis error:', error);
-    res.status(500).json({
-      error: 'Failed to retrieve win/loss analysis',
-      message: 'Unable to fetch win/loss data'
-    });
-  }
-});
-
-/**
- * GET /news
- * Get competitor news and updates
- */
-router.get('/news', async (req: Request, res: Response) => {
-  try {
-    const { competitorId, category, sentiment, limit } = req.query;
-
-    let news = await competitiveService.monitorCompetitorNews();
-
-    // Filter by competitor ID if provided
-    if (competitorId) {
-      news = news.filter(item => item.competitorId === competitorId);
-    }
-
-    // Filter by category if provided
-    if (category) {
-      news = news.filter(item => item.category === category);
-    }
-
-    // Filter by sentiment if provided
-    if (sentiment) {
-      news = news.filter(item => item.sentiment === sentiment);
-    }
-
-    // Apply limit if provided
-    if (limit) {
-      const limitNum = parseInt(limit as string, 10);
-      if (limitNum > 0) {
-        news = news.slice(0, limitNum);
-      }
-    }
-
-    // Sort by publish date (newest first)
-    news.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
-
-    res.json({
-      success: true,
-      data: {
-        news,
-        total: news.length,
-        available_categories: ['funding', 'product', 'leadership', 'partnership', 'acquisition', 'regulatory'],
-        available_sentiments: ['positive', 'negative', 'neutral']
-      },
-      metadata: {
-        timestamp: new Date().toISOString(),
-        filters: { competitorId, category, sentiment, limit }
-      }
-    });
-  } catch (error) {
-    console.error('Competitor news error:', error);
-    res.status(500).json({
-      error: 'Failed to retrieve competitor news',
-      message: 'Unable to fetch competitor news'
-    });
-  }
-});
-
-/**
- * POST /insights
- * Get competitive insights for a specific lead
- */
-router.post('/insights', async (req: Request, res: Response) => {
-  try {
-    const { leadData }: { leadData: LeadData } = req.body;
-
-    if (!leadData) {
-      return res.status(400).json({
-        error: 'Lead data is required',
-        message: 'Please provide lead data for competitive insights'
-      });
-    }
-
-    const insights = await competitiveService.getCompetitiveInsights(leadData);
-
-    res.json({
-      success: true,
-      data: insights,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        leadId: 'unknown' // LeadData doesn't have an id property
-      }
-    });
-  } catch (error) {
-    console.error('Competitive insights error:', error);
-    res.status(500).json({
-      error: 'Failed to generate insights',
-      message: 'Unable to generate competitive insights'
-    });
-  }
-});
-
-/**
- * GET /health
- * Health check endpoint for competitive intelligence service
- */
-router.get('/health', async (req: Request, res: Response) => {
-  try {
-    // Perform basic service health checks
-    const competitors = await competitiveService.getCompetitorIntelligence([]);
-    const competitorCount = competitors.length;
-
-    res.json({
-      success: true,
+    // Basic health check
+    const healthStatus = {
       status: 'healthy',
-      data: {
-        service: 'competitive-intelligence',
-        version: '1.0.0',
-        competitors_loaded: competitorCount,
-        capabilities: [
-          'landscape_analysis',
-          'competitive_scoring',
-          'win_loss_analysis',
-          'competitor_intelligence',
-          'market_positioning',
-          'news_monitoring'
-        ]
+      service: 'competitive-intelligence',
+      timestamp: new Date().toISOString(),
+      version: '1.0.0',
+      uptime: process.uptime(),
+      checks: {
+        service: true,
+        redis: false,
+        data: false,
       },
-      metadata: {
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime()
-      }
-    });
-  } catch (error) {
-    console.error('Health check error:', error);
-    res.status(500).json({
-      success: false,
-      status: 'unhealthy',
-      error: 'Service health check failed'
-    });
-  }
-});
-
-/**
- * GET /market-trends
- * Get market trend analysis
- */
-router.get('/market-trends', async (req: Request, res: Response) => {
-  try {
-    const { industry } = req.query;
-
-    // Mock lead data for trend analysis
-    const mockLeadData: LeadData = {
-      firmographic: {
-        industry: industry as string || 'technology',
-        companySize: 'mid_market',
-        employees: 250,
-        revenue: 50000000,
-        techStack: ['React', 'Node.js'],
-        companyMaturity: 'growth',
-        geolocation: {
-          country: 'US',
-          region: 'North America',
-          timezone: 'America/New_York'
-        }
-      },
-      behavioral: {
-        sessionCount: 10,
-        avgSessionDuration: 300,
-        pageViewsPerSession: 3.5,
-        contentEngagement: {
-          documentsDownloaded: 2,
-          videosWatched: 1,
-          formsCompleted: 1,
-          pricingPageViews: 3,
-          featurePageViews: 5
-        },
-        technicalDepth: {
-          integrationDocsViewed: true,
-          apiDocsViewed: false,
-          technicalResourcesAccessed: 2
-        },
-        timeOnSite: 300,
-        returnVisitorPattern: 'frequent'
-      },
-      intent: {
-        searchKeywords: ['analytics', 'business intelligence'],
-        competitorResearch: true,
-        buyingStageSignals: {
-          awareness: 0.7,
-          consideration: 0.8,
-          decision: 0.6,
-          purchase: 0.3
-        },
-        contentTopicsEngaged: ['analytics', 'optimization'],
-        urgencyIndicators: {
-          fastTrackRequests: false,
-          demoRequests: 1,
-          contactFormSubmissions: 2,
-          salesInquiries: 1
-        },
-        socialProof: {
-          testimonialViews: 3,
-          caseStudyDownloads: 1,
-          customerSuccessStories: 2
-        }
-      },
-      timing: {
-        dayOfWeek: 2,
-        hourOfDay: 14,
-        monthOfYear: 11,
-        quarterOfYear: 4,
-        seasonality: 'high',
-        recentActivity: true,
-        engagementVelocity: 1.1,
-        lastVisitDays: 2,
-        accountAge: 14
-      }
     };
 
-    const landscape = await competitiveService.analyzeCompetitiveLandscape(mockLeadData);
+    // Check Redis connection
+    try {
+      await redisManager.getClient().ping();
+      healthStatus.checks.redis = true;
+    } catch (error) {
+      console.warn('Redis health check failed:', error);
+    }
 
-    res.json({
+    // Check data availability
+    try {
+      const testData = await service.getCompetitors({ limit: 1 });
+      healthStatus.checks.data = Array.isArray(testData) && testData.length >= 0;
+    } catch (error) {
+      console.warn('Data health check failed:', error);
+    }
+
+    // Determine overall health
+    const allChecksPass = Object.values(healthStatus.checks).every(check => check === true);
+    if (!allChecksPass) {
+      healthStatus.status = 'degraded';
+    }
+
+    res.status(healthStatus.status === 'healthy' ? 200 : 503).json({
       success: true,
-      data: {
-        market_trends: landscape.marketTrends,
-        industry: industry || 'technology',
-        market_leader: landscape.marketLeader,
-        emerging_threats: landscape.emergingThreats,
-        total_competitors: landscape.totalCompetitors,
-        direct_competitors: landscape.directCompetitors.length,
-        indirect_competitors: landscape.indirectCompetitors.length
-      },
-      metadata: {
-        timestamp: new Date().toISOString(),
-        analysis_scope: industry || 'all_industries'
-      }
+      data: healthStatus,
+      timestamp: new Date().toISOString(),
+      platform: 'universal',
     });
   } catch (error) {
-    console.error('Market trends error:', error);
+    console.error('Health check failed:', error);
     res.status(500).json({
-      error: 'Failed to retrieve market trends',
-      message: 'Unable to fetch market trend analysis'
+      success: false,
+      error: 'Health check failed',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString(),
     });
   }
 });
