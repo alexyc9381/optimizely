@@ -1,6 +1,15 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import Redis from 'ioredis';
 import PerformanceOptimizer from '../services/performance-optimizer';
+
+// Extend Express Request interface
+declare global {
+  namespace Express {
+    interface Request {
+      performanceOptimizer?: PerformanceOptimizer;
+    }
+  }
+}
 
 const router = Router();
 
@@ -12,7 +21,6 @@ const initializePerformanceOptimizer = () => {
     const redis = new Redis({
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379'),
-      retryDelayOnFailover: 100,
       maxRetriesPerRequest: 3,
     });
 
@@ -31,7 +39,7 @@ const initializePerformanceOptimizer = () => {
 };
 
 // Middleware to ensure performance optimizer is initialized
-const ensurePerformanceOptimizer = (req: any, res: any, next: any) => {
+const ensurePerformanceOptimizer = (req: Request, res: Response, next: NextFunction) => {
   req.performanceOptimizer = initializePerformanceOptimizer();
   next();
 };
@@ -44,7 +52,7 @@ router.use(ensurePerformanceOptimizer);
  * @desc Get current performance metrics
  * @access Public
  */
-router.get('/metrics', async (req, res) => {
+router.get('/metrics', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const currentMetrics = optimizer.getCurrentMetrics();
@@ -82,7 +90,7 @@ router.get('/metrics', async (req, res) => {
  * @desc Get current optimization configuration
  * @access Public
  */
-router.get('/config', async (req, res) => {
+router.get('/config', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const config = optimizer.getOptimizationConfig();
@@ -105,7 +113,7 @@ router.get('/config', async (req, res) => {
  * @desc Update optimization configuration
  * @access Public
  */
-router.put('/config', async (req, res) => {
+router.put('/config', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const updates = req.body;
@@ -150,7 +158,7 @@ router.put('/config', async (req, res) => {
  * @desc Optimize personalization response
  * @access Public
  */
-router.post('/personalization/optimize', async (req, res) => {
+router.post('/personalization/optimize', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const { userId, profileData } = req.body;
@@ -182,7 +190,7 @@ router.post('/personalization/optimize', async (req, res) => {
  * @desc Generate optimized resource loading script for platform
  * @access Public
  */
-router.get('/resource-script/:platform', async (req, res) => {
+router.get('/resource-script/:platform', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const { platform } = req.params;
@@ -217,7 +225,7 @@ router.get('/resource-script/:platform', async (req, res) => {
  * @desc Get cache performance statistics
  * @access Public
  */
-router.get('/cache/stats', async (req, res) => {
+router.get('/cache/stats', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const metrics = optimizer.getCurrentMetrics();
@@ -250,7 +258,7 @@ router.get('/cache/stats', async (req, res) => {
  * @desc Clear all performance caches
  * @access Public
  */
-router.post('/cache/clear', async (req, res) => {
+router.post('/cache/clear', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     await optimizer.clearCache();
@@ -274,7 +282,7 @@ router.post('/cache/clear', async (req, res) => {
  * @desc Get performance health status
  * @access Public
  */
-router.get('/health', async (req, res) => {
+router.get('/health', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const metrics = optimizer.getCurrentMetrics();
@@ -350,7 +358,7 @@ router.get('/health', async (req, res) => {
  * @desc Generate comprehensive optimization report
  * @access Public
  */
-router.get('/optimization-report', async (req, res) => {
+router.get('/optimization-report', async (req: Request, res: Response) => {
   try {
     const optimizer = req.performanceOptimizer as PerformanceOptimizer;
     const metrics = optimizer.getPerformanceMetrics();

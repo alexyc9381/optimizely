@@ -1,9 +1,18 @@
-import express from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { redisManager } from '../services/redis-client';
 import { TerritoryManagementService } from '../services/territory-management-service';
 
-const router = express.Router();
+// Extend Express Request interface
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { id: string; role: string };
+    }
+  }
+}
+
+const router = Router();
 let territoryService: TerritoryManagementService;
 
 // Initialize service
@@ -15,14 +24,14 @@ const initializeService = async () => {
 };
 
 // Authentication middleware placeholder
-const authenticateRequest = (req: any, res: any, next: any) => {
+const authenticateRequest = (req: Request, res: Response, next: NextFunction) => {
   // In production, implement proper JWT/API key validation
   req.user = { id: 'user_123', role: 'admin' };
   next();
 };
 
 // Validation middleware
-const handleValidationErrors = (req: any, res: any, next: any) => {
+const handleValidationErrors = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -176,7 +185,7 @@ router.post('/territories', [
   body('name').notEmpty().trim(),
   body('type').isIn(['geographic', 'industry', 'account_size', 'named_accounts', 'hybrid']),
   body('assignedRep').notEmpty().trim()
-], handleValidationErrors, async (req, res) => {
+], handleValidationErrors, async (req: Request, res: Response) => {
   try {
     const service = await initializeService();
 
@@ -235,7 +244,7 @@ router.post('/assignments', [
   body('accountId').notEmpty().trim(),
   body('territoryId').notEmpty().trim(),
   body('reason').notEmpty().trim()
-], handleValidationErrors, async (req, res) => {
+], handleValidationErrors, async (req: Request, res: Response) => {
   try {
     const service = await initializeService();
     const { accountId, territoryId, reason } = req.body;

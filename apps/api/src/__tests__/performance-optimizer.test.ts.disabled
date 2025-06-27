@@ -2,12 +2,12 @@ import Redis from 'ioredis-mock';
 import PerformanceOptimizer from '../services/performance-optimizer';
 
 describe('PerformanceOptimizer', () => {
-  let redis: Redis;
-  let performanceOptimizer: PerformanceOptimizer;
+  let redis: typeof Redis;
+  let optimizer: PerformanceOptimizer;
 
   beforeEach(async () => {
     redis = new Redis();
-    performanceOptimizer = new PerformanceOptimizer(redis, {
+    optimizer = new PerformanceOptimizer(redis, {
       performanceTargets: {
         responseTime: 500,
         memoryUsage: 512,
@@ -22,18 +22,18 @@ describe('PerformanceOptimizer', () => {
       }
     });
 
-    await performanceOptimizer.initialize();
+    await optimizer.initialize();
   });
 
   afterEach(async () => {
-    performanceOptimizer.destroy();
+    optimizer.destroy();
     await redis.flushall();
     redis.disconnect();
   });
 
   describe('Initialization', () => {
     test('should initialize with default configuration', async () => {
-      const config = performanceOptimizer.getOptimizationConfig();
+      const config = optimizer.getOptimizationConfig();
 
       expect(config.lazyLoading).toBe(true);
       expect(config.codeSplitting).toBe(true);
@@ -64,11 +64,11 @@ describe('PerformanceOptimizer', () => {
       const testData = { message: 'Hello, World!', timestamp: Date.now() };
 
       // Store in cache
-      const stored = await performanceOptimizer.setInCache(testKey, testData, 60);
+      const stored = await optimizer.setInCache(testKey, testData, 60);
       expect(stored).toBe(true);
 
       // Retrieve from cache
-      const retrieved = await performanceOptimizer.getFromCache(testKey);
+      const retrieved = await optimizer.getFromCache(testKey);
       expect(retrieved).toEqual(testData);
     });
 

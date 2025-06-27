@@ -326,6 +326,10 @@ app.use(`/api/${apiVersion}/visitor-intelligence`, visitorIntelligenceRoutes);
 import { default as territoryManagementRoutes } from './routes/territory-management';
 app.use(`/api/${apiVersion}/territory-management`, territoryManagementRoutes);
 
+// Import and mount Automated Lead Routing routes
+import { default as automatedLeadRoutingRoutes } from './routes/automated-lead-routing';
+app.use(`/api/${apiVersion}/lead-routing`, automatedLeadRoutingRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
