@@ -198,6 +198,14 @@ app.use(`/api/${apiVersion}/integrations`, integrationsRoutes);
 import { default as docsRoutes } from './routes/docs';
 app.use(`/api/${apiVersion}/docs`, docsRoutes);
 
+// Import and mount ML Scoring routes
+import { default as mlScoringRoutes } from './routes/ml-scoring';
+app.use(`/api/${apiVersion}/ml`, mlScoringRoutes);
+
+// Import and mount Firmographic routes
+import { default as firmographicRoutes } from './routes/firmographic';
+app.use(`/api/${apiVersion}/firmographic`, firmographicRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
