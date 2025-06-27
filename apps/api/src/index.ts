@@ -299,6 +299,10 @@ app.use(`/api/${apiVersion}/pipeline`, pipelineVisualizationRoutes);
 import revenueForecastingRoutes from './routes/revenue-forecasting';
 app.use(`/api/${apiVersion}/forecast`, revenueForecastingRoutes);
 
+// Import and mount Account Intelligence routes
+import accountIntelligenceRoutes from './routes/account-intelligence';
+app.use(`/api/${apiVersion}/accounts`, accountIntelligenceRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -632,6 +636,33 @@ async function startServer() {
         '⚠️  Enterprise Infrastructure service failed to start, continuing with basic monitoring'
       );
       console.debug('Infrastructure error details:', infrastructureError);
+    }
+
+    // Initialize Account Intelligence Service
+    try {
+      const { createAccountIntelligenceService } = await import('./services/account-intelligence-service');
+
+      // Create account intelligence service
+      const intelligenceService = createAccountIntelligenceService(analyticsService, redisManager);
+
+      // Store service in app for routes to access
+      app.set('intelligenceService', intelligenceService);
+
+      // Log intelligence events
+      intelligenceService.on('accountIntelligenceUpdate', (event: any) => {
+        console.log(`🧠 Account intelligence updated for account ${event.accountId}`);
+      });
+
+      intelligenceService.on('forceCollection', () => {
+        console.log('🔄 Account intelligence metrics collection forced');
+      });
+
+      console.log('🧠 Account Intelligence Service started successfully');
+    } catch (intelligenceError) {
+      console.log(
+        '⚠️  Account Intelligence service failed to start, continuing with limited functionality'
+      );
+      console.debug('Intelligence error details:', intelligenceError);
     }
 
     // Initialize GraphQL BEFORE starting the HTTP server

@@ -124,7 +124,7 @@ class RedisManager {
       const start = Date.now();
       await this.client.ping();
       const latency = Date.now() - start;
-      
+
       return {
         status: 'healthy',
         latency
@@ -154,4 +154,5 @@ class RedisManager {
   }
 }
 
-export const redisManager = RedisManager.getInstance(); 
+export const redisManager = RedisManager.getInstance();
+export { RedisManager };
