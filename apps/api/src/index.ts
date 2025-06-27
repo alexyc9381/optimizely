@@ -210,6 +210,10 @@ app.use(`/api/${apiVersion}/firmographic`, firmographicRoutes);
 import { default as behavioralRoutes } from './routes/behavioral';
 app.use(`/api/${apiVersion}/behavioral`, behavioralRoutes);
 
+// Import and mount Intent Detection routes
+import { default as intentRoutes } from './routes/intent';
+app.use(`/api/${apiVersion}/intent`, intentRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
