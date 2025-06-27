@@ -261,6 +261,14 @@ app.use(`/api/${apiVersion}/attribution`, revenueAttributionRoutes);
 import { default as psychographicProfilingRoutes } from './routes/psychographic-profiling';
 app.use(`/api/${apiVersion}/psychographic`, psychographicProfilingRoutes);
 
+// Import and mount Dynamic Personalization routes
+import { default as dynamicPersonalizationRoutes } from './routes/dynamic-personalization';
+app.use(`/api/${apiVersion}/personalization`, dynamicPersonalizationRoutes);
+
+// Import and mount Autonomous A/B Testing routes
+import { default as autonomousABTestingRoutes } from './routes/autonomous-ab-testing';
+app.use(`/api/${apiVersion}/autonomous-ab-testing`, autonomousABTestingRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
