@@ -249,6 +249,13 @@ app.use(
   competitiveIntelligenceRoutes
 );
 
+// Import and mount Campaign Attribution routes
+import { default as campaignAttributionRoutes } from './routes/campaign-attribution';
+app.use(
+  `/api/${apiVersion}/campaign-attribution`,
+  campaignAttributionRoutes
+);
+
 // Import and mount Confidence Scoring routes
 import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
 app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
@@ -678,6 +685,21 @@ async function startServer() {
         '⚠️  Competitive Intelligence service failed to start, continuing with limited functionality'
       );
       console.debug('Competitive Intelligence error details:', competitiveError);
+    }
+
+    // Initialize Campaign Attribution Service
+    try {
+      const { initializeCampaignAttributionService } = await import('./routes/campaign-attribution');
+
+      // Initialize campaign attribution service
+      initializeCampaignAttributionService(redisManager.getClient());
+
+      console.log('📊 Campaign Attribution Service started successfully');
+    } catch (attributionError) {
+      console.log(
+        '⚠️  Campaign Attribution service failed to start, continuing with limited functionality'
+      );
+      console.debug('Campaign Attribution error details:', attributionError);
     }
 
     // Initialize GraphQL BEFORE starting the HTTP server
