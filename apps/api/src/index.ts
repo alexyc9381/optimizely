@@ -257,6 +257,10 @@ app.use(`/api/${apiVersion}/accuracy`, accuracyTrackingRoutes);
 import { default as revenueAttributionRoutes } from './routes/revenue-attribution';
 app.use(`/api/${apiVersion}/attribution`, revenueAttributionRoutes);
 
+// Import and mount Psychographic Profiling routes
+import { default as psychographicProfilingRoutes } from './routes/psychographic-profiling';
+app.use(`/api/${apiVersion}/psychographic`, psychographicProfilingRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
@@ -301,7 +305,7 @@ async function setupGraphQL() {
   });
 
   // Global error handler
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   app.use(
     (
       err: any,
