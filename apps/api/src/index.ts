@@ -261,6 +261,10 @@ app.use(`/api/${apiVersion}/accuracy`, accuracyTrackingRoutes);
 import { default as revenueAttributionRoutes } from './routes/revenue-attribution';
 app.use(`/api/${apiVersion}/attribution`, revenueAttributionRoutes);
 
+// Import and mount Enterprise Infrastructure routes
+import { default as enterpriseInfrastructureRoutes } from './routes/enterprise-infrastructure';
+app.use(`/api/${apiVersion}/enterprise-infrastructure`, enterpriseInfrastructureRoutes);
+
 // Import and mount Psychographic Profiling routes
 import { default as psychographicProfilingRoutes } from './routes/psychographic-profiling';
 app.use(`/api/${apiVersion}/psychographic`, psychographicProfilingRoutes);
@@ -286,6 +290,10 @@ app.use(`/api/${apiVersion}/analytics`, analyticsRoutes);
 // Import and mount Universal API routes
 import universalAPIRoutes from './routes/universal-api';
 app.use(`/api/${apiVersion}/universal`, universalAPIRoutes);
+
+// Import and mount Pipeline Visualization routes
+import pipelineVisualizationRoutes from './routes/pipeline-visualization';
+app.use(`/api/${apiVersion}/pipeline`, pipelineVisualizationRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
@@ -533,6 +541,18 @@ async function startServer() {
       console.debug('Universal API error details:', universalAPIError);
     }
 
+    // Initialize Pipeline Visualization Service
+    try {
+      const { initializePipelineVisualizationService } = await import('./routes/pipeline-visualization');
+      initializePipelineVisualizationService(redisManager.getClient());
+      console.log('📊 Pipeline Visualization service started');
+    } catch (pipelineError) {
+      console.log(
+        '⚠️  Pipeline Visualization service failed to start, continuing with limited functionality'
+      );
+      console.debug('Pipeline error details:', pipelineError);
+    }
+
     // Initialize Integration Service
     try {
       await integrationService.initialize();
@@ -554,6 +574,32 @@ async function startServer() {
         '⚠️  Integration service failed to start, continuing without integrations'
       );
       console.debug('Integration error details:', integrationError);
+    }
+
+    // Initialize Enterprise Infrastructure Service
+    try {
+      const { enterpriseInfrastructure } = await import('./services/enterprise-infrastructure-service');
+      await enterpriseInfrastructure.initialize();
+
+      // Log infrastructure events
+      enterpriseInfrastructure.on('infrastructure:initialized', () => {
+        console.log('🏗️  Enterprise infrastructure monitoring activated');
+      });
+
+      enterpriseInfrastructure.on('scaling:up', (event: any) => {
+        console.log(`🔼 Auto-scaled up to ${event.toInstances} instances`);
+      });
+
+      enterpriseInfrastructure.on('scaling:down', (event: any) => {
+        console.log(`🔽 Auto-scaled down to ${event.toInstances} instances`);
+      });
+
+      console.log('🏗️  Enterprise Infrastructure Service started successfully');
+    } catch (infrastructureError) {
+      console.log(
+        '⚠️  Enterprise Infrastructure service failed to start, continuing with basic monitoring'
+      );
+      console.debug('Infrastructure error details:', infrastructureError);
     }
 
     // Initialize GraphQL BEFORE starting the HTTP server
@@ -640,6 +686,15 @@ process.on('SIGTERM', async () => {
       console.log('📴 Analytics service stopped');
     } catch (error) {
       console.log('⚠️  Error stopping analytics service:', error);
+    }
+
+    // Stop Enterprise Infrastructure service
+    try {
+      const { enterpriseInfrastructure } = await import('./services/enterprise-infrastructure-service');
+      await enterpriseInfrastructure.shutdown();
+      console.log('📴 Enterprise Infrastructure service stopped');
+    } catch (error) {
+      console.log('⚠️  Error stopping enterprise infrastructure service:', error);
     }
 
     server.close(() => {
