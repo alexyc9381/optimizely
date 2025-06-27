@@ -230,6 +230,10 @@ app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
 import { default as competitiveIntelligenceRoutes } from './routes/competitive-intelligence';
 app.use(`/api/${apiVersion}/competitive-intelligence`, competitiveIntelligenceRoutes);
 
+// Import and mount Confidence Scoring routes
+import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
+app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
