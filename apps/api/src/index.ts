@@ -218,6 +218,10 @@ app.use(`/api/${apiVersion}/intent`, intentRoutes);
 import { default as timingRoutes } from './routes/timing';
 app.use(`/api/${apiVersion}/timing`, timingRoutes);
 
+// Import and mount Industry Model routes
+import { default as industryModelRoutes } from './routes/industry-models';
+app.use(`/api/${apiVersion}/industry-models`, industryModelRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
