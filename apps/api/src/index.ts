@@ -198,6 +198,10 @@ app.use(`/api/${apiVersion}/integrations`, integrationsRoutes);
 import { default as docsRoutes } from './routes/docs';
 app.use(`/api/${apiVersion}/docs`, docsRoutes);
 
+// Import and mount Real-Time Predictions routes
+import { default as realTimePredictionsRoutes } from './routes/real-time-predictions';
+app.use(`/api/${apiVersion}/real-time-predictions`, realTimePredictionsRoutes);
+
 // Import and mount ML Scoring routes
 import { default as mlScoringRoutes } from './routes/ml-scoring';
 app.use(`/api/${apiVersion}/ml`, mlScoringRoutes);
