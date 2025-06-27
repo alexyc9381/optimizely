@@ -5,7 +5,7 @@ export interface ABTest {
   id: string;
   name: string;
   description: string;
-  hypothesis: string;
+  _hypothesis: string;
   targetAudience: ABTestAudience;
   variations: ABTestVariation[];
   trafficAllocation: TrafficAllocation;
@@ -173,7 +173,7 @@ export class AutonomousABTestService extends EventEmitter {
   private optimizationOpportunities: OptimizationOpportunity[] = [];
   private generationConfig: TestGenerationConfig;
   private isAnalyzing: boolean = false;
-  private analysisInterval?: NodeJS.Timeout;
+  private analysisInterval?: any;
   private analysisCache?: OptimizationOpportunity[];
   private lastAnalysisTime?: number;
 
@@ -271,10 +271,10 @@ export class AutonomousABTestService extends EventEmitter {
   }
 
   /**
-   * Generate test hypothesis based on data analysis
+   * Generate test _hypothesis based on data analysis
    */
   async generateTestHypothesis(opportunity: OptimizationOpportunity): Promise<TestHypothesis> {
-    const hypothesis: TestHypothesis = {
+    const _hypothesis: TestHypothesis = {
       element: opportunity.element,
       currentPerformance: {
         conversionRate: opportunity.supportingData?.conversionRate || 0,
@@ -291,42 +291,42 @@ export class AutonomousABTestService extends EventEmitter {
       priority: this.calculateHypothesisPriority(opportunity)
     };
 
-    return hypothesis;
+    return _hypothesis;
   }
 
   /**
-   * Automatically create A/B test from hypothesis
+   * Automatically create A/B test from _hypothesis
    */
-  async createABTestFromHypothesis(hypothesis: TestHypothesis): Promise<ABTest> {
+  async createABTestFromHypothesis(_hypothesis: TestHypothesis): Promise<ABTest> {
     const testId = this.generateTestId();
-    const variations = await this.generateTestVariations(hypothesis);
+    const variations = await this.generateTestVariations(_hypothesis);
 
     const abTest: ABTest = {
       id: testId,
-      name: `Auto-Generated: ${hypothesis.element} Optimization`,
-      description: `AI-generated test to optimize ${hypothesis.element} based on performance analysis`,
-      hypothesis: hypothesis.expectedImpact.reasoning,
-      targetAudience: this.generateTargetAudience(hypothesis),
+      name: `Auto-Generated: ${_hypothesis.element} Optimization`,
+      description: `AI-generated test to optimize ${_hypothesis.element} based on performance analysis`,
+      _hypothesis: _hypothesis.expectedImpact.reasoning,
+      targetAudience: this.generateTargetAudience(_hypothesis),
       variations,
       trafficAllocation: this.calculateOptimalTrafficAllocation(variations.length),
-      successMetrics: this.generateSuccessMetrics(hypothesis),
+      successMetrics: this.generateSuccessMetrics(_hypothesis),
       status: 'draft',
       confidenceThreshold: this.generationConfig.constraints.requiredConfidenceLevel,
-      minimumSampleSize: this.calculateMinimumSampleSize(hypothesis),
+      minimumSampleSize: this.calculateMinimumSampleSize(_hypothesis),
       createdAt: new Date(),
       generatedBy: 'ai',
-      priority: hypothesis.priority,
+      priority: _hypothesis.priority,
       estimatedImpact: {
-        conversionLift: hypothesis.expectedImpact.conversionLift,
-        revenueImpact: this.estimateRevenueImpact(hypothesis),
-        confidence: hypothesis.expectedImpact.confidenceLevel
+        conversionLift: _hypothesis.expectedImpact.conversionLift,
+        revenueImpact: this.estimateRevenueImpact(_hypothesis),
+        confidence: _hypothesis.expectedImpact.confidenceLevel
       }
     };
 
     this.activeTests.set(testId, abTest);
     this.performanceMetrics.testsGenerated++;
 
-    this.emit('test_generated', { test: abTest, hypothesis });
+    this.emit('test_generated', { test: abTest, _hypothesis });
 
     return abTest;
   }
@@ -719,8 +719,8 @@ export class AutonomousABTestService extends EventEmitter {
 
   private async generateHypothesesFromOpportunities(): Promise<void> {
     for (const opportunity of this.optimizationOpportunities.slice(0, 3)) {
-      const hypothesis = await this.generateTestHypothesis(opportunity);
-      this.hypothesesQueue.push(hypothesis);
+      const _hypothesis = await this.generateTestHypothesis(opportunity);
+      this.hypothesesQueue.push(_hypothesis);
     }
 
     // Sort hypotheses by priority
@@ -782,11 +782,11 @@ export class AutonomousABTestService extends EventEmitter {
     return (impactScore + confidenceScore + severityScore) * 100;
   }
 
-  private async generateTestVariations(hypothesis: TestHypothesis): Promise<ABTestVariation[]> {
+  private async generateTestVariations(_hypothesis: TestHypothesis): Promise<ABTestVariation[]> {
     const variations: ABTestVariation[] = [];
 
     // Calculate equal traffic allocation
-    const totalVariations = 1 + hypothesis.proposedChanges.length; // Control + proposed changes
+    const totalVariations = 1 + _hypothesis.proposedChanges.length; // Control + proposed changes
     const trafficPerVariation = 100 / totalVariations;
 
     // Control variation
@@ -808,8 +808,8 @@ export class AutonomousABTestService extends EventEmitter {
     });
 
     // Generate variation for each proposed change
-    for (let i = 0; i < hypothesis.proposedChanges.length; i++) {
-      const change = hypothesis.proposedChanges[i];
+    for (let i = 0; i < _hypothesis.proposedChanges.length; i++) {
+      const change = _hypothesis.proposedChanges[i];
       variations.push({
         id: `variation_${i + 1}`,
         name: `${change.changeType} Optimization`,
@@ -838,10 +838,10 @@ export class AutonomousABTestService extends EventEmitter {
     return variations;
   }
 
-  private generateTargetAudience(hypothesis: TestHypothesis): ABTestAudience {
+  private generateTargetAudience(_hypothesis: TestHypothesis): ABTestAudience {
     return {
       segments: ['all'],
-      psychographicProfiles: hypothesis.psychographicInsights.length > 0
+      psychographicProfiles: _hypothesis.psychographicInsights.length > 0
         ? ['analytical', 'intuitive', 'consensus']
         : undefined,
       deviceTypes: ['desktop', 'mobile', 'tablet'],
@@ -864,7 +864,7 @@ export class AutonomousABTestService extends EventEmitter {
     };
   }
 
-  private generateSuccessMetrics(hypothesis: TestHypothesis): SuccessMetric[] {
+  private generateSuccessMetrics(_hypothesis: TestHypothesis): SuccessMetric[] {
     return [
       {
         name: 'Conversion Rate',
@@ -881,22 +881,22 @@ export class AutonomousABTestService extends EventEmitter {
     ];
   }
 
-  private calculateMinimumSampleSize(hypothesis: TestHypothesis): number {
+  private calculateMinimumSampleSize(__hypothesis: TestHypothesis): number {
     // Statistical calculation for minimum sample size
-    const baseConversion = hypothesis.currentPerformance.conversionRate;
-    const expectedLift = hypothesis.expectedImpact.conversionLift;
-    const alpha = 1 - this.generationConfig.constraints.requiredConfidenceLevel;
-    const power = 0.8;
+    // const baseConversion = _hypothesis.currentPerformance.conversionRate;
+    const expectedLift = __hypothesis.expectedImpact.conversionLift;
+    // const alpha = 1 - this.generationConfig.constraints.requiredConfidenceLevel;
+    // const power = 0.8;
 
     // Simplified sample size calculation
     // In practice, would use proper statistical formulas
     return Math.max(1000, Math.ceil(16 / (expectedLift * expectedLift)));
   }
 
-  private estimateRevenueImpact(hypothesis: TestHypothesis): number {
+  private estimateRevenueImpact(_hypothesis: TestHypothesis): number {
     // Estimate potential revenue impact based on current performance and expected lift
-    const currentRevenue = hypothesis.currentPerformance.revenuePerVisitor;
-    const expectedLift = hypothesis.expectedImpact.conversionLift;
+    const currentRevenue = _hypothesis.currentPerformance.revenuePerVisitor;
+    const expectedLift = _hypothesis.expectedImpact.conversionLift;
     return currentRevenue * expectedLift * 1000; // Assuming 1000 visitors/month
   }
 

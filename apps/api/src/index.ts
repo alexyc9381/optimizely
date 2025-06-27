@@ -198,6 +198,7 @@ app.use(`/api/${apiVersion}/events`, eventsRoutes);
 import { default as chartsRoutes } from './routes/charts';
 app.use(`/api/${apiVersion}/charts`, chartsRoutes);
 
+
 // Import and mount Integration routes
 import { default as integrationsRoutes } from './routes/integrations';
 app.use(`/api/${apiVersion}/integrations`, integrationsRoutes);
@@ -269,6 +270,11 @@ app.use(`/api/${apiVersion}/personalization`, dynamicPersonalizationRoutes);
 import { default as autonomousABTestingRoutes } from './routes/autonomous-ab-testing';
 app.use(`/api/${apiVersion}/autonomous-ab-testing`, autonomousABTestingRoutes);
 
+// Import and mount Multi-Dimensional Testing routes
+import { default as multiDimensionalTestingRoutes } from './routes/multi-dimensional-testing';
+app.use(`/api/${apiVersion}/multi-dimensional-testing`, multiDimensionalTestingRoutes);
+import { default as statisticalMonitoringRoutes } from './routes/statistical-monitoring';
+app.use(`/api/${apiVersion}/statistical-monitoring`, statisticalMonitoringRoutes);
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
