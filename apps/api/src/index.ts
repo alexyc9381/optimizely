@@ -206,6 +206,10 @@ app.use(`/api/${apiVersion}/ml`, mlScoringRoutes);
 import { default as firmographicRoutes } from './routes/firmographic';
 app.use(`/api/${apiVersion}/firmographic`, firmographicRoutes);
 
+// Import and mount Behavioral routes
+import { default as behavioralRoutes } from './routes/behavioral';
+app.use(`/api/${apiVersion}/behavioral`, behavioralRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
