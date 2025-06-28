@@ -345,7 +345,10 @@ app.use(`/api/${apiVersion}/sales-velocity`, salesVelocityRoutes);
 // Import and mount OAuth routes
 import { default as oauthRoutes } from './routes/oauth';
 app.use(`/api/${apiVersion}/oauth`, oauthRoutes);
-app.use(`/api/${apiVersion}/oauth`, oauthRoutes);
+
+// Import and mount Real-time Scoring routes
+import { default as realtimeScoringRoutes } from './routes/realtime-scoring';
+app.use(`/api/${apiVersion}/realtime-scoring`, realtimeScoringRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
