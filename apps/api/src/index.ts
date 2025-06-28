@@ -405,6 +405,10 @@ app.use(`/api/${apiVersion}/email-automation`, universalAutomatedEmailSequenceRo
 import { default as universalSalesAlertNotificationRoutes } from './routes/universal-sales-alert-notification';
 app.use(`/api/${apiVersion}/alerts`, universalSalesAlertNotificationRoutes);
 
+// Import and mount Universal Analytics Platform Integration routes
+import { default as universalAnalyticsPlatformIntegrationRoutes } from './routes/universal-analytics-platform-integration';
+app.use(`/api/${apiVersion}/analytics-platforms`, universalAnalyticsPlatformIntegrationRoutes);
+
 // Import and mount Universal Performance Tracking and Analytics Dashboard routes
 import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
 app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
