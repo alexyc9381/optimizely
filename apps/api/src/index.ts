@@ -362,6 +362,10 @@ app.use(`/api/${apiVersion}/field-mapping`, customFieldMappingRoutes);
 import { default as syncEngineRoutes } from './routes/sync-engine';
 app.use(`/api/${apiVersion}/sync-engine`, syncEngineRoutes);
 
+// Import and mount Duplicate Detection routes
+import { default as duplicateDetectionRoutes } from './routes/duplicate-detection';
+app.use(`/api/${apiVersion}/duplicate-detection`, duplicateDetectionRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
