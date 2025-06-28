@@ -334,6 +334,14 @@ app.use(`/api/${apiVersion}/lead-routing`, automatedLeadRoutingRoutes);
 import { default as realTimeNotificationsRoutes } from './routes/real-time-notifications';
 app.use(`/api/${apiVersion}/notifications`, realTimeNotificationsRoutes);
 
+// Import and mount Lead Qualification routes
+import { default as leadQualificationRoutes } from './routes/lead-qualification';
+app.use(`/api/${apiVersion}/qualification`, leadQualificationRoutes);
+
+// Import and mount Sales Velocity routes
+import { default as salesVelocityRoutes } from './routes/sales-velocity';
+app.use(`/api/${apiVersion}/sales-velocity`, salesVelocityRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
