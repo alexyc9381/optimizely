@@ -354,6 +354,14 @@ app.use(`/api/${apiVersion}/realtime-scoring`, realtimeScoringRoutes);
 import { default as contactEnrichmentRoutes } from './routes/contact-enrichment';
 app.use(`/api/${apiVersion}/contact-enrichment`, contactEnrichmentRoutes);
 
+// Import and mount Custom Field Mapping routes
+import { default as customFieldMappingRoutes } from './routes/custom-field-mapping';
+app.use(`/api/${apiVersion}/field-mapping`, customFieldMappingRoutes);
+
+// Import and mount Sync Engine routes
+import { default as syncEngineRoutes } from './routes/sync-engine';
+app.use(`/api/${apiVersion}/sync-engine`, syncEngineRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
