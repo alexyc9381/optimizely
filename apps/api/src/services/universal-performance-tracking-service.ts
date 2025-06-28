@@ -953,6 +953,17 @@ class PerformanceAnalyzer {
   async analyze(data: any): Promise<any> {
     // Base analysis implementation
   }
+
+  async analyzeTrend(metric: string, timeframe: 'hour' | 'day' | 'week' | 'month'): Promise<PerformanceTrend> {
+    // Default implementation for base class
+    return {
+      metric,
+      timeframe,
+      data: [],
+      trend: 'stable',
+      changePercentage: 0
+    };
+  }
 }
 
 class TrendAnalyzer extends PerformanceAnalyzer {

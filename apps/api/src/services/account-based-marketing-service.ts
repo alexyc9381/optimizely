@@ -600,6 +600,39 @@ class WorkflowExecutor extends EventEmitter {
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  public async executeWorkflow(workflow: AutomationWorkflow, account: AccountProfile): Promise<void> {
+    try {
+      // Check if workflow conditions are met
+      if (!this.evaluateConditions(workflow.conditions, account)) {
+        return; // Skip execution if conditions not met
+      }
+
+      // Execute all workflow actions
+      for (const action of workflow.actions) {
+        // Check action-specific conditions if they exist
+        if (action.conditions && !this.evaluateConditions(action.conditions, account)) {
+          continue; // Skip this action if conditions not met
+        }
+
+        // Apply delay if specified
+        if (action.delay && action.delay > 0) {
+          await this.delay(action.delay * 60 * 1000); // Convert minutes to milliseconds
+        }
+
+        // Execute the action
+        await this.executeAction(action, account);
+      }
+
+      // Emit workflow execution event
+      this.emit('workflow:executed', { workflow, account });
+
+    } catch (error) {
+      // Emit workflow error event
+      this.emit('workflow:error', { workflow, account, error });
+      throw error;
+    }
+  }
 }
 
 class AutomationScheduler extends EventEmitter {

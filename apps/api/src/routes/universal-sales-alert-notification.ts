@@ -494,7 +494,7 @@ router.post('/bulk/statistical-analysis', async (req: Request, res: Response) =>
           test.variantData
         );
         results.push({ testId: test.testId, status: 'success' });
-      } catch (error) {
+      } catch (error: any) {
         results.push({ testId: test.testId, status: 'error', error: error.message });
       }
     }
@@ -540,7 +540,7 @@ router.post('/bulk/winner-detection', async (req: Request, res: Response) => {
           test.variantResults
         );
         results.push({ testId: test.testId, status: 'success' });
-      } catch (error) {
+      } catch (error: any) {
         results.push({ testId: test.testId, status: 'error', error: error.message });
       }
     }

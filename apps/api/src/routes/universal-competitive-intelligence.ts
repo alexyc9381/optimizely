@@ -205,14 +205,7 @@ router.delete('/competitors/:id', [
   param('id').isString().notEmpty(),
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
-    const deleted = await service.deleteCompetitor(req.params.id);
-
-    if (!deleted) {
-      return res.status(404).json({
-        success: false,
-        message: 'Competitor not found',
-      });
-    }
+    await service.deleteCompetitor(req.params.id);
 
     res.json({
       success: true,
@@ -233,43 +226,45 @@ router.delete('/competitors/:id', [
 // ============================================================================
 
 /**
- * @route POST /api/v1/competitive-intelligence/intelligence/query
+ * @route GET /api/v1/competitive-intelligence/intelligence
  * @desc Query intelligence data with advanced filtering
  * @access Public
  */
-router.post('/intelligence/query', [
-  body('competitorIds').optional().isArray(),
-  body('types').optional().isArray(),
-  body('sources').optional().isArray(),
-  body('dateRange').optional().isObject(),
-  body('sentiment').optional().isArray(),
-  body('importance').optional().isArray(),
-  body('tags').optional().isArray(),
-  body('keywords').optional().isArray(),
-  body('limit').optional().isInt({ min: 1, max: 1000 }),
-  body('offset').optional().isInt({ min: 0 }),
-  body('sortBy').optional().isString(),
-  body('sortOrder').optional().isIn(['asc', 'desc']),
+router.get('/intelligence', [
+  query('competitorId').optional().isString(),
+  query('category').optional().isArray(),
+  query('type').optional().isArray(),
+  query('severity').optional().isArray(),
+  query('limit').optional().isInt({ min: 1, max: 100 }),
+  query('offset').optional().isInt({ min: 0 }),
+  query('startDate').optional().isISO8601(),
+  query('endDate').optional().isISO8601(),
+  query('tags').optional().isArray(),
+  query('platform').optional().isString(),
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
-    const query = req.body;
-
-    // Convert date strings to Date objects if present
-    if (query.dateRange) {
-      if (query.dateRange.start) query.dateRange.start = new Date(query.dateRange.start);
-      if (query.dateRange.end) query.dateRange.end = new Date(query.dateRange.end);
-    }
+    const query = {
+      ...req.query,
+      startDate: req.query.startDate ? new Date(req.query.startDate as string) : undefined,
+      endDate: req.query.endDate ? new Date(req.query.endDate as string) : undefined,
+    };
 
     const result = await service.queryIntelligence(query);
 
+    // Since queryIntelligence returns an array directly, we need to handle pagination manually
+    const limit = parseInt(req.query.limit as string) || 50;
+    const offset = parseInt(req.query.offset as string) || 0;
+    const total = result.length;
+    const paginatedResults = result.slice(offset, offset + limit);
+
     res.json({
       success: true,
-      data: result.items,
+      data: paginatedResults,
       pagination: {
-        total: result.total,
-        limit: query.limit || 50,
-        offset: query.offset || 0,
-        hasMore: result.hasMore,
+        total,
+        limit,
+        offset,
+        hasMore: offset + limit < total,
       },
     });
   } catch (error) {
@@ -374,7 +369,7 @@ router.post('/scoring/calculate', [
   try {
     const { competitorId, metrics = {}, forceRecalculation = false } = req.body;
 
-    const score = await service.calculateCompetitiveScore(competitorId, metrics, forceRecalculation);
+    const score = await service.calculateCompetitiveScore(competitorId);
 
     res.json({
       success: true,
@@ -437,7 +432,8 @@ router.get('/alerts', [
   query('offset').optional().isInt({ min: 0 }),
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
-    const alerts = await service.listAlerts(req.query);
+    const active = req.query.status === 'active' ? true : undefined;
+    const alerts = await service.listAlerts(active);
 
     res.json({
       success: true,
@@ -469,7 +465,8 @@ router.get('/data-sources', [
   query('offset').optional().isInt({ min: 0 }),
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
-    const dataSources = await service.listDataSources(req.query);
+    const active = req.query.active === 'true' ? true : undefined;
+    const dataSources = await service.listDataSources(active);
 
     res.json({
       success: true,
@@ -575,9 +572,8 @@ router.get('/analytics/trends', [
     // Get analytics data (this would be implemented in the service)
     const trendsData = await service.getTrends({
       competitorIds: competitorIds as string[],
-      metrics: metrics as string[],
-      period: period as string,
-      granularity: granularity as string || 'day',
+      timeframe: period as string,
+      limit: 50
     });
 
     res.json({
@@ -672,7 +668,7 @@ router.post('/reports/generate', [
  * @desc Health check for competitive intelligence service
  * @access Public
  */
-router.get('/health', readLimiter, async (req: express.Request, res: express.Response) => {
+router.get('/health', competitiveIntelligenceRateLimit as any, async (req: express.Request, res: express.Response) => {
   try {
     const healthStatus = await service.getHealthStatus();
 

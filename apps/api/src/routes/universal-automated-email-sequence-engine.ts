@@ -36,6 +36,7 @@ router.post('/templates', async (req, res) => {
   try {
     const {
       name,
+      type,
       subject,
       htmlContent,
       textContent,
@@ -62,10 +63,14 @@ router.post('/templates', async (req, res) => {
 
     const template = await emailSequenceEngine.createTemplate({
       name,
+      type: type || 'custom',
       subject,
       htmlContent: htmlContent || '',
       textContent: textContent || '',
-      variables,
+      variables: variables || [],
+      personalizationRules: [],
+      version: 1,
+      status: 'active',
       metadata: metadata || {
         category: EmailCategory.NURTURE,
         industry: [],
@@ -73,11 +78,12 @@ router.post('/templates', async (req, res) => {
         complexity: 'simple',
         estimatedOpenRate: 0,
         estimatedClickRate: 0,
-        language: 'en'
+        language: 'en',
+        lastModified: new Date(),
+        createdBy: createdBy || 'api'
       },
-      tags,
-      isActive,
-      createdBy: createdBy || 'api'
+      tags: tags || [],
+      isActive: isActive !== undefined ? isActive : true
     });
 
     res.json({
@@ -321,14 +327,16 @@ router.post('/sequences', async (req, res) => {
     const sequence = await emailSequenceEngine.createSequence({
       name,
       description: description || '',
+      type: 'drip',
+      status: 'active',
       isActive,
       steps,
       triggers: triggers || [],
-      segmentation: segmentation || {
-        includeRules: [],
-        excludeRules: [],
-        dynamicSegmentation: false,
-        segmentRefreshInterval: 3600
+      audience: {
+        criteria: [],
+        size: 0,
+        estimatedSize: 0,
+        lastCalculated: new Date()
       },
       settings: settings || {
         timezone: 'UTC',
@@ -360,7 +368,7 @@ router.post('/sequences', async (req, res) => {
           dynamicContent: false
         }
       },
-      abTesting: abTesting || {
+      abTest: abTesting || {
         enabled: false,
         testType: 'subject',
         variants: [],
@@ -372,7 +380,29 @@ router.post('/sequences', async (req, res) => {
         minSampleSize: 100,
         significanceLevel: 0.95
       },
-      createdBy: createdBy || 'api'
+      metadata: {
+        createdDate: new Date(),
+        lastModified: new Date(),
+        createdBy: createdBy || 'api',
+        tags: [],
+        category: 'general'
+      },
+      analytics: {
+        enrolled: 0,
+        active: 0,
+        completed: 0,
+        unsubscribed: 0,
+        totalSent: 0,
+        totalDelivered: 0,
+        totalOpened: 0,
+        totalClicked: 0,
+        totalConverted: 0,
+        totalRevenue: 0,
+        averageEngagement: 0,
+        completionRate: 0,
+        conversionRate: 0,
+        revenuePerContact: 0
+      }
     });
 
     res.json({
@@ -645,15 +675,20 @@ router.post('/contacts', async (req, res) => {
       email,
       firstName,
       lastName,
-      customFields,
-      tags,
-      segments,
-      subscriptionStatus,
-      timezone,
+      properties: customFields || {},
+      customFields: customFields || {},
+      tags: tags || [],
+      subscriptionStatus: subscriptionStatus || 'subscribed',
       preferences: preferences || {
         frequency: 'weekly',
         categories: []
-      }
+      },
+      engagement: {
+        totalOpens: 0,
+        totalClicks: 0,
+        engagementScore: 0
+      },
+      sequences: []
     });
 
     res.json({
@@ -829,7 +864,7 @@ router.put('/contacts/:id', async (req, res) => {
 router.get('/sequences/:id/analytics', async (req, res) => {
   try {
     const { id } = req.params;
-    const sequence = emailSequenceEngine.getSequence(id);
+    const sequence = await emailSequenceEngine.getSequence(id);
 
     if (!sequence) {
       return res.status(404).json({

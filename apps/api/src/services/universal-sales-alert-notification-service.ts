@@ -5,7 +5,7 @@
 // Handles test results, conversion events, and performance alerts
 
 import { EventEmitter } from 'events';
-import { RedisManager } from './redis-client';
+import { redisManager } from './redis-client';
 
 // =============================================================================
 // CORE INTERFACES FOR A/B TESTING ALERTS
@@ -249,7 +249,7 @@ export class UniversalSalesAlertNotificationService extends EventEmitter {
 
   constructor() {
     super();
-    this.redis = RedisManager.getClient();
+    this.redis = redisManager;
     this.initializeDefaultRules();
     this.initializeDefaultChannels();
     this.startBatchProcessor();
@@ -1135,7 +1135,13 @@ export class UniversalSalesAlertNotificationService extends EventEmitter {
 
   getHealthStatus(): {
     status: 'healthy' | 'degraded' | 'unhealthy';
-    metrics: typeof this.metrics;
+    metrics: {
+      alertsProcessed: number;
+      alertsDelivered: number;
+      alertsFailed: number;
+      averageProcessingTime: number;
+      channelStats: Map<string, { sent: number; failed: number; avgTime: number }>;
+    };
     queueLength: number;
     lastProcessed: Date;
   } {

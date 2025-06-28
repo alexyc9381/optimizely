@@ -747,7 +747,7 @@ router.get('/analytics', [
   query('timeframe').optional().isIn(['7d', '30d', '90d']).withMessage('Valid timeframe is required'),
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
-    const timeframe = req.query.timeframe || '30d';
+    const timeframe = (req.query.timeframe as string) || '30d';
     const analytics = await abmService.getABMAnalytics(timeframe);
     res.json({
       success: true,
@@ -785,7 +785,7 @@ router.get('/analytics/automation', [
 
 /**
  * @route GET /api/v1/abm/analytics/performance
- * @desc Get performance analytics
+ * @desc Get performance analytics (alias for ABM analytics)
  * @access Public
  */
 router.get('/analytics/performance', [
@@ -794,7 +794,7 @@ router.get('/analytics/performance', [
 ], handleValidationErrors, async (req: express.Request, res: express.Response) => {
   try {
     const timeframe = (req.query.timeframe as string) || '30d';
-    const analytics = await abmService.getPerformanceAnalytics(timeframe);
+    const analytics = await abmService.getABMAnalytics(timeframe);
     res.json({
       success: true,
       data: analytics,

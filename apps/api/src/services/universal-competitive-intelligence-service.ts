@@ -1336,6 +1336,161 @@ export class UniversalCompetitiveIntelligenceEngine extends EventEmitter {
     return this.healthCheck();
   }
 
+  // Additional missing methods for route compatibility
+  async getTrends(options: {
+    timeframe?: string;
+    competitorIds?: string[];
+    categories?: string[];
+    limit?: number
+  }): Promise<any> {
+    const timeframeDays = options.timeframe === 'week' ? 7 : options.timeframe === 'month' ? 30 : 90;
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - timeframeDays);
+
+    let intelligence = this.getAllIntelligence().filter(intel => intel.timestamp >= startDate);
+
+    if (options.competitorIds && options.competitorIds.length > 0) {
+      intelligence = intelligence.filter(intel => options.competitorIds!.includes(intel.competitorId));
+    }
+
+    if (options.categories && options.categories.length > 0) {
+      intelligence = intelligence.filter(intel => options.categories!.includes(intel.category));
+    }
+
+    // Group by category and calculate trends
+    const trends = intelligence.reduce((acc, intel) => {
+      const category = intel.category;
+      if (!acc[category]) {
+        acc[category] = { count: 0, items: [] };
+      }
+      acc[category].count++;
+      acc[category].items.push(intel);
+      return acc;
+    }, {} as Record<string, { count: number; items: CompetitiveIntelligence[] }>);
+
+    const result = Object.entries(trends).map(([category, data]) => ({
+      category,
+      count: data.count,
+      trend: data.count > 5 ? 'increasing' : data.count > 2 ? 'stable' : 'decreasing',
+      recentItems: data.items.slice(0, 5)
+    }));
+
+    return options.limit ? result.slice(0, options.limit) : result;
+  }
+
+  async generateInsights(query: any): Promise<any> {
+    const intelligence = this.getAllIntelligence();
+    const competitors = this.getAllCompetitors();
+
+    const insights = {
+      summary: {
+        totalIntelligence: intelligence.length,
+        totalCompetitors: competitors.length,
+        recentActivity: intelligence.filter(i => {
+          const lastWeek = new Date();
+          lastWeek.setDate(lastWeek.getDate() - 7);
+          return i.timestamp >= lastWeek;
+        }).length
+      },
+      topCompetitors: competitors.slice(0, 10).map(c => ({
+        id: c.id,
+        name: c.name,
+        domain: c.domain,
+        activityCount: intelligence.filter(i => i.competitorId === c.id).length
+      })),
+      categoryBreakdown: intelligence.reduce((acc, intel) => {
+        acc[intel.category] = (acc[intel.category] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      severityDistribution: intelligence.reduce((acc, intel) => {
+        acc[intel.severity] = (acc[intel.severity] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      recentHighImpact: intelligence
+        .filter(i => i.impact.competitive >= 8)
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+        .slice(0, 10)
+    };
+
+    return insights;
+  }
+
+  async generateReport(config: {
+    competitorIds?: string[];
+    dateRange?: { start: Date; end: Date };
+    categories?: string[];
+    format?: 'summary' | 'detailed';
+    includeCharts?: boolean;
+  }): Promise<any> {
+    let intelligence = this.getAllIntelligence();
+
+    // Apply filters
+    if (config.competitorIds && config.competitorIds.length > 0) {
+      intelligence = intelligence.filter(i => config.competitorIds!.includes(i.competitorId));
+    }
+
+    if (config.dateRange) {
+      intelligence = intelligence.filter(i =>
+        i.timestamp >= config.dateRange!.start && i.timestamp <= config.dateRange!.end
+      );
+    }
+
+    if (config.categories && config.categories.length > 0) {
+      intelligence = intelligence.filter(i => config.categories!.includes(i.category));
+    }
+
+    const competitors = this.getAllCompetitors().filter(c =>
+      !config.competitorIds || config.competitorIds.includes(c.id)
+    );
+
+    const report = {
+      metadata: {
+        generatedAt: new Date(),
+        timeframe: config.dateRange ? {
+          start: config.dateRange.start,
+          end: config.dateRange.end
+        } : 'all_time',
+        competitorsAnalyzed: competitors.length,
+        intelligenceItemsAnalyzed: intelligence.length
+      },
+      executiveSummary: {
+        keyFindings: [
+          `Analyzed ${intelligence.length} intelligence items across ${competitors.length} competitors`,
+          `Most active competitor: ${competitors.reduce((max, c) => {
+            const count = intelligence.filter(i => i.competitorId === c.id).length;
+            const maxCount = intelligence.filter(i => i.competitorId === max.id).length;
+            return count > maxCount ? c : max;
+          }, competitors[0])?.name || 'N/A'}`,
+          `Primary activity category: ${Object.entries(intelligence.reduce((acc, i) => {
+            acc[i.category] = (acc[i.category] || 0) + 1;
+            return acc;
+          }, {} as Record<string, number>)).sort(([,a], [,b]) => b - a)[0]?.[0] || 'N/A'}`
+        ],
+        riskLevel: intelligence.filter(i => i.severity === 'critical').length > 5 ? 'high' :
+                  intelligence.filter(i => i.severity === 'high').length > 10 ? 'medium' : 'low'
+      },
+      competitorProfiles: competitors.map(c => ({
+        ...c,
+        activityLevel: intelligence.filter(i => i.competitorId === c.id).length,
+        lastActivity: intelligence
+          .filter(i => i.competitorId === c.id)
+          .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())[0]?.timestamp
+      })),
+      intelligenceHighlights: intelligence
+        .filter(i => i.impact.competitive >= 7)
+        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+        .slice(0, 20),
+      recommendations: [
+        'Monitor high-activity competitors more closely',
+        'Focus on critical and high-severity intelligence items',
+        'Develop counter-strategies for competitive threats',
+        'Leverage identified opportunities in the market'
+      ]
+    };
+
+    return report;
+  }
+
   async shutdown(): Promise<void> {
     console.log('🔄 Shutting down Universal Competitive Intelligence Engine...');
 

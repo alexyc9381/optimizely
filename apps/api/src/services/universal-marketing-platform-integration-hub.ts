@@ -781,15 +781,15 @@ export class UniversalMarketingPlatformIntegrationHub extends EventEmitter {
   }
 
   private async savePlatform(platform: MarketingPlatformConfig): Promise<void> {
-    await redisManager.setHash(
+    await redisManager.getClient().setex(
       `marketing:platform:${platform.id}`,
-      platform,
-      3600 * 24 * 30 // 30 days
+      3600 * 24 * 30, // 30 days
+      JSON.stringify(platform)
     );
   }
 
   private async removePlatform(id: string): Promise<void> {
-    await redisManager.delete(`marketing:platform:${id}`);
+    await redisManager.getClient().del(`marketing:platform:${id}`);
   }
 
   private async loadPlatforms(): Promise<void> {
@@ -895,7 +895,7 @@ export class UniversalMarketingPlatformIntegrationHub extends EventEmitter {
         this.emit('platform:health:recovered', { platformId, result });
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(`❌ Health check error for platform ${platformId}:`, error);
       if (platform.status === 'active') {
         platform.status = 'error';

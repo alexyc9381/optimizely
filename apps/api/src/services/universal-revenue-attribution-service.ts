@@ -451,7 +451,7 @@ export class UniversalRevenueAttributionService extends EventEmitter {
 
   private async calculateAttribution(revenueEvent: RevenueEvent, model: AttributionModel): Promise<Record<string, number>> {
     const touchpoints = revenueEvent.touchpoints;
-    const attribution: Record<string, number> = {};
+    let attribution: Record<string, number> = {};
 
     if (touchpoints.length === 0) {
       return attribution;
