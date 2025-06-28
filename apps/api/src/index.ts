@@ -249,6 +249,13 @@ app.use(
   competitiveIntelligenceRoutes
 );
 
+// Import and mount Universal Competitive Intelligence routes
+import { default as universalCompetitiveIntelligenceRoutes } from './routes/universal-competitive-intelligence';
+app.use(
+  `/api/${apiVersion}/competitive-intelligence`,
+  universalCompetitiveIntelligenceRoutes
+);
+
 // Import and mount Campaign Attribution routes
 import { default as campaignAttributionRoutes } from './routes/campaign-attribution';
 app.use(
@@ -263,10 +270,6 @@ app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
 // Import and mount Accuracy Tracking routes
 import { default as accuracyTrackingRoutes } from './routes/accuracy-tracking';
 app.use(`/api/${apiVersion}/accuracy`, accuracyTrackingRoutes);
-
-// Import and mount Revenue Attribution routes
-import { default as revenueAttributionRoutes } from './routes/revenue-attribution';
-app.use(`/api/${apiVersion}/attribution`, revenueAttributionRoutes);
 
 // Import and mount Enterprise Infrastructure routes
 import { default as enterpriseInfrastructureRoutes } from './routes/enterprise-infrastructure';
@@ -365,6 +368,50 @@ app.use(`/api/${apiVersion}/sync-engine`, syncEngineRoutes);
 // Import and mount Duplicate Detection routes
 import { default as duplicateDetectionRoutes } from './routes/duplicate-detection';
 app.use(`/api/${apiVersion}/duplicate-detection`, duplicateDetectionRoutes);
+
+// Import and mount Webhook Processing routes
+import { default as webhookProcessingRoutes } from './routes/webhook-processing';
+app.use(`/api/${apiVersion}/webhook-processing`, webhookProcessingRoutes);
+
+// Import and mount Universal Error Handling routes
+import { default as universalErrorHandlingRoutes } from './routes/universal-error-handling';
+app.use(`/api/${apiVersion}/error-handling`, universalErrorHandlingRoutes);
+
+// Import and mount Universal Audit Logging routes
+import { default as universalAuditLoggingRoutes } from './routes/universal-audit-logging';
+app.use(`/api/${apiVersion}/audit`, universalAuditLoggingRoutes);
+
+// Import and mount Enterprise Prospect Detection routes
+import { createEnterpriseProspectDetectionRouter } from './routes/enterprise-prospect-detection';
+app.use(`/api/${apiVersion}/prospects`, createEnterpriseProspectDetectionRouter(redisManager.getClient()));
+
+// Import and mount Account-Based Marketing routes
+import { default as accountBasedMarketingRoutes } from './routes/account-based-marketing';
+app.use(`/api/${apiVersion}/abm`, accountBasedMarketingRoutes);
+
+// Import and mount Universal Revenue Attribution routes
+import { default as universalRevenueAttributionRoutes } from './routes/universal-revenue-attribution';
+app.use(`/api/${apiVersion}/attribution`, universalRevenueAttributionRoutes);
+
+// Import and mount Universal Marketing Platform Integration Hub routes
+import { default as universalMarketingPlatformIntegrationHubRoutes } from './routes/universal-marketing-platform-integration-hub';
+app.use(`/api/${apiVersion}/marketing-platform-hub`, universalMarketingPlatformIntegrationHubRoutes);
+
+// Import and mount Universal Automated Email Sequence Engine routes
+import { default as universalAutomatedEmailSequenceRoutes } from './routes/universal-automated-email-sequence';
+app.use(`/api/${apiVersion}/email-automation`, universalAutomatedEmailSequenceRoutes);
+
+// Import and mount Universal Sales Alert and Notification System routes
+import { default as universalSalesAlertNotificationRoutes } from './routes/universal-sales-alert-notification';
+app.use(`/api/${apiVersion}/alerts`, universalSalesAlertNotificationRoutes);
+
+// Import and mount Universal Performance Tracking and Analytics Dashboard routes
+import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
+app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
+
+// Import and mount Universal Rule Customization Engine routes
+import { default as universalRuleCustomizationRoutes } from './routes/universal-rule-customization';
+app.use(`/api/${apiVersion}/rule-customization`, universalRuleCustomizationRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
