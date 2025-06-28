@@ -342,6 +342,11 @@ app.use(`/api/${apiVersion}/qualification`, leadQualificationRoutes);
 import { default as salesVelocityRoutes } from './routes/sales-velocity';
 app.use(`/api/${apiVersion}/sales-velocity`, salesVelocityRoutes);
 
+// Import and mount OAuth routes
+import { default as oauthRoutes } from './routes/oauth';
+app.use(`/api/${apiVersion}/oauth`, oauthRoutes);
+app.use(`/api/${apiVersion}/oauth`, oauthRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
