@@ -350,6 +350,10 @@ app.use(`/api/${apiVersion}/oauth`, oauthRoutes);
 import { default as realtimeScoringRoutes } from './routes/realtime-scoring';
 app.use(`/api/${apiVersion}/realtime-scoring`, realtimeScoringRoutes);
 
+// Import and mount Contact Enrichment routes
+import { default as contactEnrichmentRoutes } from './routes/contact-enrichment';
+app.use(`/api/${apiVersion}/contact-enrichment`, contactEnrichmentRoutes);
+
 // =============================================================================
 // GRAPHQL API SETUP
 // =============================================================================
