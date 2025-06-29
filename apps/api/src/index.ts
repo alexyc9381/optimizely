@@ -238,6 +238,10 @@ app.use(`/api/${apiVersion}/timing`, timingRoutes);
 import { default as industryModelRoutes } from './routes/industry-models';
 app.use(`/api/${apiVersion}/industry-models`, industryModelRoutes);
 
+// Import and mount Industry Metrics routes
+import { default as industryMetricsRoutes } from './routes/industry-metrics';
+app.use(`/api/${apiVersion}/industry-metrics`, industryMetricsRoutes);
+
 // Import and mount Buyer Profile routes
 import { default as buyerProfileRoutes } from './routes/buyer-profiles';
 app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
