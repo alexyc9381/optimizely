@@ -287,6 +287,22 @@ app.use(`/api/${apiVersion}/personalization`, dynamicPersonalizationRoutes);
 import { default as autonomousABTestingRoutes } from './routes/autonomous-ab-testing';
 app.use(`/api/${apiVersion}/autonomous-ab-testing`, autonomousABTestingRoutes);
 
+// Import and mount A/B Test Template routes
+import { default as abTestTemplateRoutes } from './routes/ab-test-templates';
+app.use(`/api/${apiVersion}/ab-test-templates`, abTestTemplateRoutes);
+
+// Import and mount A/B Test Prioritization routes
+import { default as abTestPrioritizationRoutes } from './routes/ab-test-prioritization';
+app.use(`/api/${apiVersion}/ab-test-prioritization`, abTestPrioritizationRoutes);
+
+// A/B Test Monitoring and Optimization Routes
+import { default as abTestMonitoringRoutes } from './routes/ab-test-monitoring';
+app.use(`/api/${apiVersion}/ab-test-monitoring`, abTestMonitoringRoutes);
+
+// A/B Test Auto Configuration Routes
+import { default as abTestAutoConfigurationRoutes } from './routes/ab-test-auto-configuration';
+app.use(`/api/${apiVersion}/ab-test-auto-configuration`, abTestAutoConfigurationRoutes);
+
 // Import and mount Multi-Dimensional Testing routes
 import { default as multiDimensionalTestingRoutes } from './routes/multi-dimensional-testing';
 import { default as statisticalMonitoringRoutes } from './routes/statistical-monitoring';
@@ -421,6 +437,10 @@ app.use(`/api/${apiVersion}/attribution-modeling`, universalAttributionModelingR
 import { default as universalFullFunnelAttributionRoutes } from './routes/universal-full-funnel-attribution';
 app.use(`/api/${apiVersion}/full-funnel-attribution`, universalFullFunnelAttributionRoutes);
 
+// Import and mount Universal Content Performance Analysis routes
+import { default as universalContentPerformanceRoutes } from './routes/universal-content-performance';
+app.use(`/api/${apiVersion}/content-performance`, universalContentPerformanceRoutes);
+
 // Import and mount Universal Performance Tracking and Analytics Dashboard routes
 import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
 app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
@@ -428,6 +448,14 @@ app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
 // Import and mount Universal Rule Customization Engine routes
 import { default as universalRuleCustomizationRoutes } from './routes/universal-rule-customization';
 app.use(`/api/${apiVersion}/rule-customization`, universalRuleCustomizationRoutes);
+
+// Import and mount Universal Marketing Reporting routes
+import { default as universalMarketingReportingRoutes } from './routes/universal-marketing-reporting';
+app.use(`/api/${apiVersion}/marketing-reporting`, universalMarketingReportingRoutes);
+
+// Import and mount Smart Onboarding routes
+import { default as smartOnboardingRoutes } from './routes/smart-onboarding';
+app.use(`/api/${apiVersion}/smart-onboarding`, smartOnboardingRoutes);
 
 // =============================================================================
 // GRAPHQL API SETUP
