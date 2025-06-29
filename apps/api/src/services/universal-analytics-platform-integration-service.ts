@@ -106,7 +106,7 @@ export class UniversalAnalyticsPlatformIntegrationService extends EventEmitter {
   private platforms: Map<string, AnalyticsPlatform> = new Map();
   private pipelines: Map<string, DataPipeline> = new Map();
   private adapters: Map<string, AnalyticsAdapter> = new Map();
-  private syncIntervals: Map<string, NodeJS.Timeout> = new Map();
+  private syncIntervals: Map<string, any> = new Map();
   private cachePrefix = 'universal_analytics';
   private cacheTTL = 300; // 5 minutes
 
@@ -559,12 +559,12 @@ class GoogleAnalyticsAdapter extends AnalyticsAdapter {
     }
   }
 
-  async fetchData(platform: AnalyticsPlatform): Promise<any[]> {
+  async fetchData(_platform: AnalyticsPlatform): Promise<any[]> {
     // Implementation for fetching data from Google Analytics API
     return [];
   }
 
-  transformToUniversal(data: any, mapping: DataMappingConfig): UniversalAnalyticsData {
+  transformToUniversal(data: any, _mapping: DataMappingConfig): UniversalAnalyticsData {
     return {
       platformId: '',
       dataType: 'pageview',
@@ -584,11 +584,11 @@ class AdobeAnalyticsAdapter extends AnalyticsAdapter {
     }
   }
 
-  async fetchData(platform: AnalyticsPlatform): Promise<any[]> {
+  async fetchData(_platform: AnalyticsPlatform): Promise<any[]> {
     return [];
   }
 
-  transformToUniversal(data: any, mapping: DataMappingConfig): UniversalAnalyticsData {
+  transformToUniversal(data: any, _mapping: DataMappingConfig): UniversalAnalyticsData {
     return {
       platformId: '',
       dataType: 'pageview',
@@ -608,11 +608,11 @@ class FacebookAnalyticsAdapter extends AnalyticsAdapter {
     }
   }
 
-  async fetchData(platform: AnalyticsPlatform): Promise<any[]> {
+  async fetchData(_platform: AnalyticsPlatform): Promise<any[]> {
     return [];
   }
 
-  transformToUniversal(data: any, mapping: DataMappingConfig): UniversalAnalyticsData {
+  transformToUniversal(data: any, _mapping: DataMappingConfig): UniversalAnalyticsData {
     return {
       platformId: '',
       dataType: 'event',

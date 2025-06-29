@@ -409,6 +409,18 @@ app.use(`/api/${apiVersion}/alerts`, universalSalesAlertNotificationRoutes);
 import { default as universalAnalyticsPlatformIntegrationRoutes } from './routes/universal-analytics-platform-integration';
 app.use(`/api/${apiVersion}/analytics-platforms`, universalAnalyticsPlatformIntegrationRoutes);
 
+// Import and mount Universal Audience Segmentation Engine routes
+import { default as universalAudienceSegmentationRoutes } from './routes/universal-audience-segmentation';
+app.use(`/api/${apiVersion}/audience-segmentation`, universalAudienceSegmentationRoutes);
+
+// Import and mount Universal Attribution Modeling Framework routes
+import { default as universalAttributionModelingRoutes } from './routes/universal-attribution-modeling';
+app.use(`/api/${apiVersion}/attribution-modeling`, universalAttributionModelingRoutes);
+
+// Import and mount Universal Full-Funnel Attribution Tracking routes
+import { default as universalFullFunnelAttributionRoutes } from './routes/universal-full-funnel-attribution';
+app.use(`/api/${apiVersion}/full-funnel-attribution`, universalFullFunnelAttributionRoutes);
+
 // Import and mount Universal Performance Tracking and Analytics Dashboard routes
 import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
 app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
