@@ -246,4 +246,173 @@ router.get('/health', async (req: express.Request, res: express.Response) => {
   }
 });
 
+// GET /ab-test-auto-configuration/validate/:testId
+// Validate test safety before manual launch
+router.get('/validate/:testId', autoConfigRateLimit, async (req: express.Request, res: express.Response) => {
+  try {
+    const { testId } = req.params;
+
+    if (!testId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Test ID is required'
+      });
+    }
+
+    const validation = await service.validateTestSafety(testId);
+
+    res.json({
+      success: true,
+      data: {
+        testId,
+        validation,
+        canLaunch: validation.isValid,
+        safetyStatus: validation.isValid ? 'safe' : 'blocked'
+      }
+    });
+  } catch (error: any) {
+    console.error('Error validating test safety:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to validate test safety'
+    });
+  }
+});
+
+// GET /ab-test-auto-configuration/safety-warnings/:testId
+// Get safety warnings for a test
+router.get('/safety-warnings/:testId', autoConfigRateLimit, async (req: express.Request, res: express.Response) => {
+  try {
+    const { testId } = req.params;
+
+    if (!testId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Test ID is required'
+      });
+    }
+
+    const warnings = await service.getSafetyWarnings(testId);
+
+    res.json({
+      success: true,
+      data: {
+        testId,
+        warnings,
+        warningCount: warnings.length
+      }
+    });
+  } catch (error: any) {
+    console.error('Error getting safety warnings:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to get safety warnings'
+    });
+  }
+});
+
+// GET /ab-test-auto-configuration/monitoring/:testId
+// Get monitoring status for a test
+router.get('/monitoring/:testId', autoConfigRateLimit, async (req: express.Request, res: express.Response) => {
+  try {
+    const { testId } = req.params;
+
+    if (!testId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Test ID is required'
+      });
+    }
+
+    const monitoring = await service.getMonitoringStatus(testId);
+
+    res.json({
+      success: true,
+      data: {
+        testId,
+        monitoring,
+        isMonitored: monitoring !== null
+      }
+    });
+  } catch (error: any) {
+    console.error('Error getting monitoring status:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to get monitoring status'
+    });
+  }
+});
+
+// POST /ab-test-auto-configuration/rollback/:testId
+// Enhanced rollback with safety metadata
+router.post('/rollback/:testId', autoConfigRateLimit, async (req: express.Request, res: express.Response) => {
+  try {
+    const { testId } = req.params;
+    const { reason, automatic = false } = req.body;
+
+    if (!testId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Test ID is required'
+      });
+    }
+
+    if (!reason) {
+      return res.status(400).json({
+        success: false,
+        error: 'Rollback reason is required'
+      });
+    }
+
+    const result = await service.rollbackTestWithSafety(testId, reason, automatic);
+
+    res.json({
+      success: result.success,
+      data: {
+        testId,
+        rollbackResult: result
+      },
+      message: result.message
+    });
+  } catch (error: any) {
+    console.error('Error rolling back test:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to rollback test'
+    });
+  }
+});
+
+// GET /ab-test-auto-configuration/rollback-metadata/:testId
+// Get rollback metadata for a test
+router.get('/rollback-metadata/:testId', autoConfigRateLimit, async (req: express.Request, res: express.Response) => {
+  try {
+    const { testId } = req.params;
+
+    if (!testId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Test ID is required'
+      });
+    }
+
+    const metadata = await service.getRollbackMetadata(testId);
+
+    res.json({
+      success: true,
+      data: {
+        testId,
+        rollbackMetadata: metadata,
+        wasRolledBack: metadata !== null
+      }
+    });
+  } catch (error: any) {
+    console.error('Error getting rollback metadata:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to get rollback metadata'
+    });
+  }
+});
+
 export default router;
