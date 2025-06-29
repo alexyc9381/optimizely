@@ -246,6 +246,10 @@ app.use(`/api/${apiVersion}/industry-metrics`, industryMetricsRoutes);
 import { default as adaptiveLayoutRoutes } from './routes/adaptive-layout';
 app.use(`/api/${apiVersion}/layouts`, adaptiveLayoutRoutes);
 
+// Import and mount Smart Widget Recommendation routes
+import { default as smartWidgetRecommendationRoutes } from './routes/smart-widget-recommendations';
+app.use(`/api/${apiVersion}/widget-recommendations`, smartWidgetRecommendationRoutes);
+
 // Import and mount Buyer Profile routes
 import { default as buyerProfileRoutes } from './routes/buyer-profiles';
 app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
