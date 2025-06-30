@@ -157,7 +157,7 @@ export class DeepCustomerProfilingEngine {
   /**
    * Build basic customer information with enrichment
    */
-  private async buildBasicInfo(customerId: string): Promise<CustomerBasicInfo> {
+  private async buildBasicInfo(_customerId: string): Promise<CustomerBasicInfo> {
     // This would integrate with data enrichment services like Clearbit, ZoomInfo, etc.
     // For now, returning a comprehensive mock data structure
     return {
