@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
+import React from 'react';
 import { afterEach, vi } from 'vitest';
 
 // Clean up after each test
@@ -41,4 +42,4 @@ Object.defineProperty(window, 'process', {
 export const renderWithProviders = (ui: React.ReactElement) => {
   // Add any global providers here (Theme, Router, etc.)
   return ui;
-}; 
+};
