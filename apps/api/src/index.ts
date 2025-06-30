@@ -461,6 +461,10 @@ app.use(`/api/${apiVersion}/content-performance`, universalContentPerformanceRou
 import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
 app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
 
+// Import and mount Dashboard Management routes
+import { default as dashboardManagementRoutes } from './routes/dashboard-management';
+app.use(`/api/${apiVersion}/dashboards`, dashboardManagementRoutes);
+
 // Import and mount Universal Rule Customization Engine routes
 import { default as universalRuleCustomizationRoutes } from './routes/universal-rule-customization';
 app.use(`/api/${apiVersion}/rule-customization`, universalRuleCustomizationRoutes);
@@ -589,6 +593,24 @@ app.get(`/api/${apiVersion}/docs-legacy`, (req, res) => {
         comparison: 'GET /api/v1/charts/comparison',
         widgets: 'GET /api/v1/charts/widgets/:type',
         dashboard: 'POST /api/v1/charts/dashboard',
+    dashboards: {
+      create: 'POST /api/v1/dashboards',
+      list: 'GET /api/v1/dashboards',
+      get: 'GET /api/v1/dashboards/:id',
+      update: 'PUT /api/v1/dashboards/:id',
+      delete: 'DELETE /api/v1/dashboards/:id',
+      widgets: {
+        add: 'POST /api/v1/dashboards/:id/widgets',
+        update: 'PUT /api/v1/dashboards/:id/widgets/:widgetId',
+        remove: 'DELETE /api/v1/dashboards/:id/widgets/:widgetId'
+      },
+      filters: {
+        add: 'POST /api/v1/dashboards/:id/filters',
+        apply: 'POST /api/v1/dashboards/:id/filters/apply'
+      },
+      templates: 'GET /api/v1/dashboard-templates',
+      export: 'POST /api/v1/dashboards/:id/export'
+    },
         export: 'POST /api/v1/charts/export',
         health: 'GET /api/v1/charts/health',
         metrics: 'GET /api/v1/charts/metrics',
