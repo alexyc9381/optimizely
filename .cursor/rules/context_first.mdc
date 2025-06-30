@@ -3,3 +3,74 @@ description:
 globs:
 alwaysApply: false
 ---
+# Context-First Development Rule
+
+## 🚨 CRITICAL: Reference Context File First
+
+**Before making ANY changes to this codebase, you MUST:**
+
+1. **Read `.cursor-context.md` completely** - This file contains:
+   - Current project architecture and patterns
+   - Service dependencies and initialization order
+   - Common issues and their solutions
+   - Current implementation status
+   - Critical safeguards and protocols
+
+2. **Check current task status** with Taskmaster to understand what you're working on
+
+3. **Verify the change aligns** with the universal API-first, platform-agnostic architecture
+
+## Why This Rule Exists
+
+This project is a complex enterprise-grade AI platform with:
+- **51 services** and **56 API routes** with intricate dependencies
+- **Universal platform-agnostic design** that must work with ANY web platform
+- **Critical safeguards** to prevent work loss and maintain stability
+- **Specific patterns** for service architecture, database connections, and error handling
+
+## Context File Benefits
+
+The `.cursor-context.md` file provides:
+- **Complete project overview** - Understand the big picture before making changes
+- **Technical patterns** - Follow established conventions for consistency
+- **Service relationships** - Understand dependencies to avoid breaking changes
+- **Common solutions** - Quickly resolve typical issues (Prisma, Redis, TypeScript errors)
+- **Current status** - Know what's been completed and what's next
+- **Safety protocols** - Prevent accidental file loss or breaking changes
+
+## Implementation Workflow
+
+```bash
+# 1. Always start by reading the context
+cat .cursor-context.md
+
+# 2. Update context with current info
+npm run update-context
+
+# 3. Check current task
+task-master next
+
+# 4. Make your changes following established patterns
+
+# 5. Run safety checks
+npm run safe-commit
+```
+
+## Emergency Recovery
+
+If you encounter issues:
+1. **Check the context file** for common solutions
+2. **Run safety checks**: `npm run safety-check`
+3. **Check git status**: `git status`
+4. **Emergency recovery**: `npm run emergency-recovery`
+
+## Context File Updates
+
+The context file is automatically updated by:
+- `npm run update-context` - Updates project statistics and git status
+- `npm run safe-commit` - Includes context update in safe commit process
+- Manual updates when new patterns or important information is discovered
+
+---
+
+**Remember: The context file is your roadmap to understanding this complex project. Use it every time.**

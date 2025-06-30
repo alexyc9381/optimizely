@@ -427,10 +427,10 @@ export class IndustrySpecificAnalytics extends EventEmitter {
   }
 
   // Private helper methods
-  private async genericAnalyze(
+    private async genericAnalyze(
     customerId: string,
     profile: CustomerIndustryProfile,
-    behaviorData: any
+    _behaviorData: any
   ): Promise<IndustryInsight[]> {
     // Generic analysis for unsupported industries
     return [{
@@ -481,7 +481,7 @@ export class IndustrySpecificAnalytics extends EventEmitter {
     return 5;
   }
 
-  private async calculateGenericMetrics(customerId: string, industryType: IndustryType): Promise<IndustryMetric[]> {
+  private async calculateGenericMetrics(customerId: string, _industryType: IndustryType): Promise<IndustryMetric[]> {
     // Basic metrics for unsupported industries
     return [
       {
@@ -496,10 +496,10 @@ export class IndustrySpecificAnalytics extends EventEmitter {
     ];
   }
 
-  private async detectGenericPatterns(
+    private async detectGenericPatterns(
     customerId: string,
     industryType: IndustryType,
-    behaviorData: any
+    _behaviorData: any
   ): Promise<BehavioralPattern[]> {
     return [
       {
@@ -602,7 +602,7 @@ class CollegeConsultingAnalyzer {
     ];
   }
 
-  async detectPatterns(customerId: string, behaviorData: any): Promise<BehavioralPattern[]> {
+  async detectPatterns(customerId: string, _behaviorData: any): Promise<BehavioralPattern[]> {
     return [
       {
         id: `college_pattern_${customerId}`,
@@ -616,7 +616,7 @@ class CollegeConsultingAnalyzer {
     ];
   }
 
-  async generateRecommendations(insights: IndustryInsight[]): Promise<Array<{
+  async generateRecommendations(_insights: IndustryInsight[]): Promise<Array<{
     category: string;
     action: string;
     reasoning: string;
@@ -636,7 +636,7 @@ class CollegeConsultingAnalyzer {
     ];
   }
 
-  private async analyzePipelineProgress(customerId: string, collegeData: any): Promise<IndustryInsight> {
+  private async analyzePipelineProgress(customerId: string, _collegeData: any): Promise<IndustryInsight> {
     return {
       id: `pipeline_${customerId}_${Date.now()}`,
       industryType: 'college_consulting',
@@ -653,7 +653,7 @@ class CollegeConsultingAnalyzer {
     };
   }
 
-  private async analyzeParentInvolvement(customerId: string, collegeData: any): Promise<IndustryInsight> {
+  private async analyzeParentInvolvement(customerId: string, _collegeData: any): Promise<IndustryInsight> {
     return {
       id: `parent_${customerId}_${Date.now()}`,
       industryType: 'college_consulting',
@@ -670,7 +670,7 @@ class CollegeConsultingAnalyzer {
     };
   }
 
-  private async analyzeAcademicTimeline(customerId: string, collegeData: any): Promise<IndustryInsight> {
+  private async analyzeAcademicTimeline(customerId: string, _collegeData: any): Promise<IndustryInsight> {
     return {
       id: `timeline_${customerId}_${Date.now()}`,
       industryType: 'college_consulting',
@@ -694,7 +694,7 @@ class CollegeConsultingAnalyzer {
 class SaaSAnalyzer {
   async analyze(
     customerId: string,
-    profile: CustomerIndustryProfile,
+    _profile: CustomerIndustryProfile,
     behaviorData: any
   ): Promise<IndustryInsight[]> {
     const insights: IndustryInsight[] = [];
@@ -741,7 +741,7 @@ class SaaSAnalyzer {
     ];
   }
 
-  async detectPatterns(customerId: string, behaviorData: any): Promise<BehavioralPattern[]> {
+  async detectPatterns(customerId: string, _behaviorData: any): Promise<BehavioralPattern[]> {
     return [
       {
         id: `saas_pattern_${customerId}`,
@@ -755,7 +755,7 @@ class SaaSAnalyzer {
     ];
   }
 
-  async generateRecommendations(insights: IndustryInsight[]): Promise<Array<{
+  async generateRecommendations(_insights: IndustryInsight[]): Promise<Array<{
     category: string;
     action: string;
     reasoning: string;
@@ -775,7 +775,7 @@ class SaaSAnalyzer {
     ];
   }
 
-  private async analyzeSubscriptionHealth(customerId: string, saasData: any): Promise<IndustryInsight> {
+  private async analyzeSubscriptionHealth(customerId: string, _saasData: any): Promise<IndustryInsight> {
     return {
       id: `subscription_${customerId}_${Date.now()}`,
       industryType: 'saas',
@@ -792,7 +792,7 @@ class SaaSAnalyzer {
     };
   }
 
-  private async analyzeFeatureAdoption(customerId: string, saasData: any): Promise<IndustryInsight> {
+  private async analyzeFeatureAdoption(customerId: string, _saasData: any): Promise<IndustryInsight> {
     return {
       id: `features_${customerId}_${Date.now()}`,
       industryType: 'saas',
@@ -809,7 +809,7 @@ class SaaSAnalyzer {
     };
   }
 
-  private async analyzeChurnRisk(customerId: string, saasData: any): Promise<IndustryInsight> {
+  private async analyzeChurnRisk(customerId: string, _saasData: any): Promise<IndustryInsight> {
     return {
       id: `churn_${customerId}_${Date.now()}`,
       industryType: 'saas',
@@ -833,7 +833,7 @@ class SaaSAnalyzer {
 class EcommerceAnalyzer {
   async analyze(
     customerId: string,
-    profile: CustomerIndustryProfile,
+    _profile: CustomerIndustryProfile,
     behaviorData: any
   ): Promise<IndustryInsight[]> {
     const insights: IndustryInsight[] = [];
@@ -880,7 +880,7 @@ class EcommerceAnalyzer {
     ];
   }
 
-  async detectPatterns(customerId: string, behaviorData: any): Promise<BehavioralPattern[]> {
+  async detectPatterns(customerId: string, _behaviorData: any): Promise<BehavioralPattern[]> {
     return [
       {
         id: `ecommerce_pattern_${customerId}`,
@@ -894,7 +894,7 @@ class EcommerceAnalyzer {
     ];
   }
 
-  async generateRecommendations(insights: IndustryInsight[]): Promise<Array<{
+  async generateRecommendations(_insights: IndustryInsight[]): Promise<Array<{
     category: string;
     action: string;
     reasoning: string;
@@ -914,7 +914,7 @@ class EcommerceAnalyzer {
     ];
   }
 
-  private async analyzePurchaseBehavior(customerId: string, ecommerceData: any): Promise<IndustryInsight> {
+  private async analyzePurchaseBehavior(customerId: string, _ecommerceData: any): Promise<IndustryInsight> {
     return {
       id: `purchase_${customerId}_${Date.now()}`,
       industryType: 'ecommerce',
@@ -931,7 +931,7 @@ class EcommerceAnalyzer {
     };
   }
 
-  private async analyzeCartAbandonment(customerId: string, ecommerceData: any): Promise<IndustryInsight> {
+  private async analyzeCartAbandonment(customerId: string, _ecommerceData: any): Promise<IndustryInsight> {
     return {
       id: `cart_${customerId}_${Date.now()}`,
       industryType: 'ecommerce',
@@ -948,7 +948,7 @@ class EcommerceAnalyzer {
     };
   }
 
-  private async analyzeSeasonalPatterns(customerId: string, ecommerceData: any): Promise<IndustryInsight> {
+  private async analyzeSeasonalPatterns(customerId: string, _ecommerceData: any): Promise<IndustryInsight> {
     return {
       id: `seasonal_${customerId}_${Date.now()}`,
       industryType: 'ecommerce',

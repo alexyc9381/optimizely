@@ -10,7 +10,9 @@ module.exports = {
     '**/src/**/*.test.tsx'
   ],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': ['ts-jest', {
+      useESM: true
+    }],
   },
   setupFiles: ['<rootDir>/src/test-setup.ts'],
   collectCoverageFrom: [
@@ -25,9 +27,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   extensionsToTreatAsEsm: ['.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true
-    }
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons']
   }
 };

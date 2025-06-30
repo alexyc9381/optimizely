@@ -1,9 +1,9 @@
 import {
-  IndustrySpecificAnalytics,
-  IndustryType,
-  CustomerIndustryProfile,
-  IndustryInsight,
-  IndustryMetric
+    CustomerIndustryProfile,
+    IndustryInsight,
+    IndustryMetric,
+    IndustrySpecificAnalytics,
+    IndustryType
 } from '../industry-specific-analytics';
 
 describe('IndustrySpecificAnalytics', () => {
@@ -13,7 +13,7 @@ describe('IndustrySpecificAnalytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
-    
+
     analytics = new IndustrySpecificAnalytics({
       industryType: 'saas',
       enablePredictiveAnalytics: true,
@@ -92,7 +92,7 @@ describe('IndustrySpecificAnalytics', () => {
       expect(insights).toBeDefined();
       expect(Array.isArray(insights)).toBe(true);
       expect(insights.length).toBeGreaterThan(0);
-      
+
       const firstInsight = insights[0];
       expect(firstInsight).toHaveProperty('id');
       expect(firstInsight).toHaveProperty('industryType', 'saas');
@@ -175,7 +175,7 @@ describe('IndustrySpecificAnalytics', () => {
       analytics.on('industry_analysis_error', listener);
 
       await expect(analytics.analyzeCustomer(
-        null as any,
+        null as unknown as string,
         mockCustomerProfile,
         {}
       )).rejects.toThrow();
@@ -209,7 +209,7 @@ describe('IndustrySpecificAnalytics', () => {
 
     test('should cache metrics for performance', async () => {
       const startTime = Date.now();
-      
+
       await analytics.getIndustryMetrics('customer-123', 'saas');
       const firstCallTime = Date.now() - startTime;
 
@@ -325,8 +325,8 @@ describe('IndustrySpecificAnalytics', () => {
       const invalidProfile = {
         customerId: '',
         industryType: 'invalid_industry' as IndustryType,
-        companySize: 'unknown' as any,
-        customFields: null
+        companySize: 'unknown' as unknown as CustomerIndustryProfile['companySize'],
+        customFields: {}
       };
 
       await expect(analytics.analyzeCustomer(
@@ -397,7 +397,7 @@ describe('IndustrySpecificAnalytics', () => {
   describe('Event Emission', () => {
     test('should emit events for major operations', async () => {
       const events: string[] = [];
-      
+
       analytics.on('industry_analysis_completed', () => events.push('analysis_completed'));
       analytics.on('periodic_update', () => events.push('periodic_update'));
 
@@ -409,8 +409,8 @@ describe('IndustrySpecificAnalytics', () => {
     });
 
     test('should provide detailed event data', async () => {
-      let eventData: any = null;
-      
+      let eventData: unknown = null;
+
       analytics.on('industry_analysis_completed', (data) => {
         eventData = data;
       });

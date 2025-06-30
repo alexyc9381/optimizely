@@ -524,7 +524,7 @@ describe('RealTimeAnalyticsEngine', () => {
 
       try {
         await engine.ingestEvent(problematicEvent);
-      } catch (error) {
+      } catch (_error) {
         // Expected to fail
       }
 

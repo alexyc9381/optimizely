@@ -1,0 +1,513 @@
+openapi: 3.0.3
+info:
+  title: Customer Analytics API
+  description: |
+    Comprehensive customer analytics API providing industry-specific insights, behavioral analysis,
+    and revenue predictions for B2B companies across multiple verticals including SaaS, E-commerce,
+    and College Consulting.
+
+    ## Features
+    - Industry-specific analytics modules
+    - Real-time behavioral tracking
+    - AI-powered insights generation
+    - Revenue prediction algorithms
+    - Comprehensive benchmarking
+    - Universal platform integration
+
+    ## Authentication
+    API key required in Authorization header: `Bearer YOUR_API_KEY` or as query parameter `?api_key=YOUR_API_KEY`
+
+    ## Rate Limiting
+    - Default: 100 requests per minute
+    - Premium: 1000 requests per minute
+  version: 1.0.0
+  contact:
+    name: Optimizely Customer Analytics
+    email: support@optimizely.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.optimizely.com/v1
+    description: Production server
+  - url: https://staging-api.optimizely.com/v1
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Customer Analytics
+    description: Core customer analytics endpoints
+  - name: Industry Specific
+    description: Industry-specific analytics and insights
+  - name: Behavioral Analysis
+    description: Customer behavioral pattern analysis
+  - name: Recommendations
+    description: AI-powered recommendations and insights
+  - name: Benchmarking
+    description: Industry benchmarking and performance comparison
+
+paths:
+  /customer-analytics:
+    get:
+      tags:
+        - Customer Analytics
+      summary: Get comprehensive customer analytics
+      description: |
+        Retrieve detailed analytics for a specific customer including behavioral metrics,
+        industry-specific insights, and AI-generated recommendations.
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          description: Unique identifier for the customer
+          schema:
+            type: string
+            example: "cust_123456"
+        - name: industry
+          in: query
+          required: false
+          description: Industry type for specialized analytics
+          schema:
+            $ref: '#/components/schemas/IndustryType'
+        - name: metrics
+          in: query
+          required: false
+          description: Specific metrics to include in response
+          schema:
+            type: string
+            enum: [all, basic, advanced, industry_specific]
+            default: all
+      responses:
+        '200':
+          description: Customer analytics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAnalyticsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Customer Analytics
+      summary: Process customer events and update analytics
+      description: |
+        Submit customer behavioral events for real-time analytics processing and
+        receive updated insights and scoring.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerEventRequest'
+      responses:
+        '200':
+          description: Events processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventProcessingResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /customer-analytics/insights/{customerId}:
+    get:
+      tags:
+        - Customer Analytics
+      summary: Get customer insights
+      description: Retrieve AI-generated insights and recommendations for a specific customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: Unique identifier for the customer
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          description: Filter insights by category
+          schema:
+            type: string
+            enum: [engagement, conversion, retention, revenue, behavior]
+      responses:
+        '200':
+          description: Customer insights retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+                  insights:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IndustryInsight'
+                  generatedAt:
+                    type: string
+                    format: date-time
+
+  /customer-analytics/industry/{industry}/benchmarks:
+    get:
+      tags:
+        - Industry Specific
+        - Benchmarking
+      summary: Get industry benchmarks
+      description: Retrieve performance benchmarks and metrics for a specific industry
+      parameters:
+        - name: industry
+          in: path
+          required: true
+          description: Industry type
+          schema:
+            $ref: '#/components/schemas/IndustryType'
+      responses:
+        '200':
+          description: Industry benchmarks retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndustryBenchmarks'
+
+  /customer-analytics/industry/{industry}/metrics/{customerId}:
+    get:
+      tags:
+        - Industry Specific
+      summary: Get industry-specific metrics for customer
+      description: Retrieve specialized metrics and analytics tailored to the customer's industry
+      parameters:
+        - name: industry
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/IndustryType'
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Industry metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+                  industry:
+                    $ref: '#/components/schemas/IndustryType'
+                  metrics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IndustryMetric'
+
+  /customer-analytics/recommendations/{customerId}:
+    get:
+      tags:
+        - Recommendations
+      summary: Get AI-powered recommendations
+      description: Retrieve personalized recommendations based on customer analytics and industry best practices
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recommendations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+                  recommendations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Recommendation'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: api_key
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    IndustryType:
+      type: string
+      enum:
+        - college_consulting
+        - saas
+        - ecommerce
+        - fintech
+        - healthcare
+        - manufacturing
+        - real_estate
+        - education
+        - nonprofit
+      example: saas
+
+    CustomerAnalyticsResponse:
+      type: object
+      properties:
+        customerId:
+          type: string
+          example: "cust_123456"
+        profile:
+          $ref: '#/components/schemas/CustomerProfile'
+        behaviorData:
+          $ref: '#/components/schemas/BehaviorData'
+        industryAnalytics:
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/IndustryMetric'
+            - type: "null"
+        insights:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndustryInsight'
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+        metadata:
+          type: object
+          properties:
+            generatedAt:
+              type: string
+              format: date-time
+            industry:
+              type: string
+            metricsRequested:
+              type: string
+
+    CustomerProfile:
+      type: object
+      properties:
+        customerId:
+          type: string
+        industryType:
+          $ref: '#/components/schemas/IndustryType'
+        companySize:
+          type: string
+          enum: [startup, small, medium, large, enterprise]
+        customFields:
+          type: object
+          additionalProperties: true
+
+    BehaviorData:
+      type: object
+      properties:
+        pageViews:
+          type: integer
+        sessionDuration:
+          type: integer
+        engagementScore:
+          type: number
+          format: float
+        conversionEvents:
+          type: integer
+
+    IndustryMetric:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        value:
+          type: number
+        unit:
+          type: string
+        trend:
+          type: string
+          enum: [increasing, decreasing, stable]
+        benchmark:
+          type: number
+        percentile:
+          type: number
+        confidence:
+          type: number
+        industrySpecific:
+          type: boolean
+
+    IndustryInsight:
+      type: object
+      properties:
+        id:
+          type: string
+        industryType:
+          $ref: '#/components/schemas/IndustryType'
+        category:
+          type: string
+          enum: [engagement, conversion, retention, revenue, behavior]
+        title:
+          type: string
+        description:
+          type: string
+        recommendation:
+          type: string
+        confidence:
+          type: number
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        impactScore:
+          type: number
+        timestamp:
+          type: string
+          format: date-time
+
+    Recommendation:
+      type: object
+      properties:
+        category:
+          type: string
+        action:
+          type: string
+        reasoning:
+          type: string
+        expectedImpact:
+          type: string
+        timeframe:
+          type: string
+        effort:
+          type: string
+          enum: [low, medium, high]
+
+    IndustryBenchmarks:
+      type: object
+      properties:
+        industry:
+          $ref: '#/components/schemas/IndustryType'
+        metrics:
+          type: object
+          additionalProperties: true
+        lastUpdated:
+          type: string
+          format: date-time
+
+    CustomerEventRequest:
+      type: object
+      required:
+        - customerId
+      properties:
+        customerId:
+          type: string
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+              properties:
+                type: object
+                additionalProperties: true
+        industry:
+          $ref: '#/components/schemas/IndustryType'
+
+    EventProcessingResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        customerId:
+          type: string
+        eventsProcessed:
+          type: integer
+        insights:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndustryInsight'
+        analysisTimestamp:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: string
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Bad Request"
+            message: "customerId is required"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Unauthorized"
+            message: "Invalid API key"
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Error'
+              - type: object
+                properties:
+                  resetTime:
+                    type: integer
+                    description: Unix timestamp when rate limit resets
+          example:
+            error: "Rate limit exceeded"
+            resetTime: 1234567890
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Internal server error"
+            message: "An unexpected error occurred"

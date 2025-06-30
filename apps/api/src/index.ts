@@ -250,6 +250,10 @@ app.use(`/api/${apiVersion}/layouts`, adaptiveLayoutRoutes);
 import { default as smartWidgetRecommendationRoutes } from './routes/smart-widget-recommendations';
 app.use(`/api/${apiVersion}/widget-recommendations`, smartWidgetRecommendationRoutes);
 
+// Import and mount Progressive Complexity Management routes
+import { default as progressiveComplexityRoutes } from './routes/progressive-complexity';
+app.use(`/api/${apiVersion}/complexity`, progressiveComplexityRoutes);
+
 // Import and mount Buyer Profile routes
 import { default as buyerProfileRoutes } from './routes/buyer-profiles';
 app.use(`/api/${apiVersion}/buyer-profiles`, buyerProfileRoutes);
