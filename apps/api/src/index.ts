@@ -293,6 +293,10 @@ app.use(
   modelRefinementRoutes
 );
 
+// Import and mount A/B Testing Framework routes
+import { default as abTestingRoutes } from './routes/ab-testing';
+app.use(`/api/${apiVersion}/ab-testing`, abTestingRoutes);
+
 // Import and mount Confidence Scoring routes
 import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
 app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
