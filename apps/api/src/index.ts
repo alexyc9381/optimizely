@@ -297,6 +297,10 @@ app.use(
 import { default as abTestingRoutes } from './routes/ab-testing';
 app.use(`/api/${apiVersion}/ab-testing`, abTestingRoutes);
 
+// Import and mount Adaptive Recommendation routes
+import { default as adaptiveRecommendationRoutes } from './routes/adaptive-recommendation';
+app.use(`/api/${apiVersion}/adaptive-recommendation`, adaptiveRecommendationRoutes);
+
 // Import and mount Confidence Scoring routes
 import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
 app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
