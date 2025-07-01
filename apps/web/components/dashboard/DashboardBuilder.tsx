@@ -34,7 +34,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
   isEditable = true,
   onSave,
   onWidgetClick,
-  onFilterChange
+  onFilterChange: _onFilterChange
 }) => {
   const [dashboard, setDashboard] = useState<Dashboard | null>(initialDashboard || null);
   const [gridItems, setGridItems] = useState<GridItem[]>([]);
@@ -42,7 +42,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [realTimeData, setRealTimeData] = useState<Record<string, any>>({});
+  const [realTimeData, setRealTimeData] = useState<Record<string, unknown>>({});
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('disconnected');
 
   const wsRef = useRef<WebSocket | null>(null);
@@ -313,27 +313,25 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     await addWidget(widget.type, duplicatedWidget.position);
   }, [dashboard, isEditable, addWidget]);
 
-      const _applyFilters = useCallback(async (filters: DashboardFilter[]) => {
-    if (!dashboard) return;
-
-    try {
-      const response = await fetch(`/api/dashboards/${dashboard.id}/filters/apply`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filters })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to apply filters');
-      }
-
-      const { data: updatedDashboard } = await response.json();
-      setDashboard(updatedDashboard);
-      onFilterChange?.(filters);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to apply filters');
-    }
-  }, [dashboard, onFilterChange]);
+      // TODO: Implement filter application functionality
+  // const applyFilters = useCallback(async (filters: DashboardFilter[]) => {
+  //   if (!dashboard) return;
+  //   try {
+  //     const response = await fetch(`/api/dashboards/${dashboard.id}/filters/apply`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ filters })
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error('Failed to apply filters');
+  //     }
+  //     const { data: updatedDashboard } = await response.json();
+  //     setDashboard(updatedDashboard);
+  //     onFilterChange?.(filters);
+  //   } catch (err) {
+  //     setError(err instanceof Error ? err.message : 'Failed to apply filters');
+  //   }
+  // }, [dashboard, onFilterChange]);
 
   const refreshData = useCallback(async () => {
     if (!dashboard) return;
@@ -349,7 +347,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         throw new Error('Failed to refresh data');
       }
 
-      const { data, metadata: _metadata } = await response.json();
+      const { data } = await response.json();
       setRealTimeData(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to refresh data');

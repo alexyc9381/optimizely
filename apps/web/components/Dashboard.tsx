@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { 
-  Users, TrendingUp, DollarSign, Target, Brain, Shield, Home, Settings, 
-  ChevronLeft, Menu, Bell, Search, BarChart3, ChevronDown, LucideProps, PieChart as PieChartIcon, MapPin, Clock, Zap, SlidersHorizontal, Eye, User, CreditCard, Code, Sun, Moon
+import {
+    BarChart3,
+    Bell,
+    Brain,
+    ChevronDown,
+    ChevronLeft,
+    Clock,
+    Code,
+    CreditCard,
+    DollarSign,
+    Home,
+    LucideProps,
+    Menu,
+    Search,
+    Settings,
+    Shield,
+    Target,
+    TrendingUp,
+    User,
+    Users,
+    Zap
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 // --- TYPE DEFINITIONS ---
 interface SidebarProps {
@@ -105,13 +123,13 @@ const navigationItems = [
       timeOnSite: "12m 34s",
       pagesVisited: 8,
       engagementLevel: "high",
-      aiInsights: { 
+      aiInsights: {
         intent: "Researching Stanford CS programs for child",
         nextAction: "Auto-triggered: Stanford success popup in 30s"
     }
     },
     {
-      visitorId: "V_2851", 
+      visitorId: "V_2851",
       location: { country: "CA", region: "Ontario", city: "Toronto", flag: "🇨🇦" },
       behaviorScore: 67,
       revenueValue: 42000,
@@ -131,7 +149,7 @@ const navigationItems = [
       behaviorScore: 94,
       revenueValue: 89000,
       confidence: 91,
-      status: "active", 
+      status: "active",
       timeOnSite: "18m 45s",
       pagesVisited: 12,
       engagementLevel: "very_high",
@@ -225,7 +243,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, activePage, se
         {/* User Profile */}
         <div className="p-md border-t border-white/10">
           <div className="flex items-center">
-            <img 
+            <img
               src="https://i.pravatar.cc/40"
               alt="User Avatar"
               className="rounded-full w-8 h-8"
@@ -260,7 +278,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, title, subtitle }) => (
     <div className="flex items-center space-x-sm">
       <div className="relative hidden md:block">
         <Search className="absolute left-sm top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted" />
-        <input 
+        <input
           type="text"
           placeholder="Search..."
           className="bg-primary-surface border border-white/10 rounded-md pl-8 pr-sm py-xs w-56 focus:outline-none focus:ring-2 focus:ring-primary-accent"
@@ -332,9 +350,9 @@ const MainChart = () => (
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
           <XAxis dataKey="hour" tick={{ fill: '#9CA3AF', fontSize: 10 }} stroke="rgba(255, 255, 255, 0.1)" />
           <YAxis tick={{ fill: '#9CA3AF', fontSize: 10 }} stroke="rgba(255, 255, 255, 0.1)" tickFormatter={(value) => `$${value}K`} />
-                <Tooltip 
-            contentStyle={{ 
-              backgroundColor: '#252B3A', 
+                <Tooltip
+            contentStyle={{
+              backgroundColor: '#252B3A',
               borderColor: 'rgba(255, 255, 255, 0.1)',
               color: '#FFFFFF'
             }}
@@ -366,7 +384,7 @@ const DashboardPage = () => (
 const AnalyticsPage = () => {
   const formatCurrency = (value: number) => `$${(value / 1000000).toFixed(2)}M`;
   const formatNumber = (value: number) => (value / 1000).toFixed(1) + 'K';
-  
+
   return (
     <div className="space-y-md">
       {/* Overview Metrics */}
@@ -475,19 +493,19 @@ const ProspectsPage = () => {
       {/* Filters and Actions */}
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-xs">
-          <button 
+          <button
             onClick={() => setFilter('all')}
             className={`px-sm py-xs rounded-md text-xs transition-colors ${filter === 'all' ? 'bg-primary-surface border border-white/10 text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
           >
             All Prospects
           </button>
-          <button 
+          <button
             onClick={() => setFilter('high_value')}
             className={`px-sm py-xs rounded-md text-xs transition-colors ${filter === 'high_value' ? 'bg-primary-surface border border-white/10 text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
           >
             High Value
           </button>
-          <button 
+          <button
             onClick={() => setFilter('needs_attention')}
             className={`px-sm py-xs rounded-md text-xs transition-colors ${filter === 'needs_attention' ? 'bg-primary-surface border border-white/10 text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
           >
@@ -610,16 +628,16 @@ const AIDecisionsPage = () => {
       <div className="space-y-sm">
         <div className="bg-primary-card rounded-lg border border-white/10 shadow-md p-sm">
           <h2 className="text-base font-bold mb-xs">AI Configuration</h2>
-          
+
           <div className="space-y-sm">
             {/* Aggressiveness Slider */}
             <div>
               <label className="text-xs font-medium text-text-secondary">Intervention Aggressiveness</label>
               <div className="flex items-center space-x-sm mt-1">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="100" 
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
                   value={aggressiveness}
                   onChange={(e) => setAggressiveness(Number(e.target.value))}
                   className="w-full h-1 bg-primary-surface rounded-lg appearance-none cursor-pointer"
@@ -759,7 +777,7 @@ const Dashboard = () => {
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
-  
+
   const handleToggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   }
@@ -798,12 +816,12 @@ const Dashboard = () => {
     <div className="min-h-screen">
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={handleToggleMobileMenu}
         />
       )}
-      
+
       {/* Conditional Sidebar for mobile */}
       <div className={`lg:hidden transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} fixed z-50`}>
           <Sidebar isCollapsed={false} onToggle={() => {}} activePage={activePage} setActivePage={setActivePage} />

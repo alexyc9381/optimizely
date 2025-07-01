@@ -561,6 +561,7 @@ type Query {
   # Export queries
   exportJob(id: ID!): ExportJob
   exportJobs(first: Int = 20): [ExportJob!]!
+  exportData(input: ExportDataInput!): ExportDataResult!
 
   # Visualization queries
   chartData(input: ChartDataInput!): ChartData!
@@ -582,9 +583,11 @@ type Query {
   # Integration queries
   integrations(type: IntegrationType, enabled: Boolean): [Integration!]!
   integration(id: ID!): Integration
+  integrationStatus(id: ID!): IntegrationStatus!
   integrationTypes: [IntegrationTypeInfo!]!
   syncJobs(integrationId: ID, status: SyncJobStatus): [SyncJob!]!
   syncJob(id: ID!): SyncJob
+  sdkCode(platform: String!, config: JSON): SDKCode!
 }
 
 type Mutation {
@@ -746,6 +749,20 @@ type IntegrationTypeInfo {
   configurationSchema: JSON
 }
 
+type IntegrationStatus {
+  id: ID!
+  status: String!
+  lastSync: DateTime
+  enabled: Boolean!
+}
+
+type SDKCode {
+  platform: String!
+  code: String!
+  documentation: String!
+  examples: [String!]!
+}
+
 type SyncJob {
   id: ID!
   integrationId: ID!
@@ -886,6 +903,25 @@ type DashboardResult {
   success: Boolean!
   config: JSON!
   widgets: [WidgetData!]!
+  error: String
+  generatedAt: DateTime!
+}
+
+# =============================================================================
+# EXPORT DATA TYPES
+# =============================================================================
+
+input ExportDataInput {
+  type: String!
+  format: String
+  dateRange: DateRangeInput!
+  filters: JSON
+}
+
+type ExportDataResult {
+  success: Boolean!
+  format: String!
+  data: JSON
   error: String
   generatedAt: DateTime!
 }

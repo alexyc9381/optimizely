@@ -1,7 +1,10 @@
 // API Client for Optimizely Universal AI A/B Testing Platform
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_BASE_URL = typeof window !== 'undefined'
+  ? (window as { NEXT_PUBLIC_API_URL?: string }).NEXT_PUBLIC_API_URL || 'http://localhost:4000'
+  : 'http://localhost:4000';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -16,10 +19,10 @@ class ApiClient {
     this.baseURL = baseURL;
   }
 
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  private async request<T>(endpoint: string, options: globalThis.RequestInit = {}): Promise<T> {
     const url = `${this.baseURL}/api/v1${endpoint}`;
 
-    const defaultOptions: RequestInit = {
+    const defaultOptions: globalThis.RequestInit = {
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
@@ -48,8 +51,8 @@ class ApiClient {
   }
 
   // Analytics Services
-  async getAnalytics(filters?: any) {
-    const query = filters ? `?${new URLSearchParams(filters).toString()}` : '';
+  async getAnalytics(filters?: Record<string, string>) {
+    const query = filters ? `?${new globalThis.URLSearchParams(filters).toString()}` : '';
     return this.request(`/analytics${query}`);
   }
 
@@ -66,7 +69,7 @@ class ApiClient {
     return this.request(`/adaptive-recommendation/recommendations/${userId}`);
   }
 
-  async trackBehavior(behaviorData: any) {
+  async trackBehavior(behaviorData: Record<string, unknown>) {
     return this.request('/adaptive-recommendation/behavior', {
       method: 'POST',
       body: JSON.stringify(behaviorData),
@@ -105,8 +108,8 @@ class ApiClient {
   }
 
   // Visitor Intelligence
-  async getVisitorIntelligence(filters?: any) {
-    const query = filters ? `?${new URLSearchParams(filters).toString()}` : '';
+  async getVisitorIntelligence(filters?: Record<string, string>) {
+    const query = filters ? `?${new globalThis.URLSearchParams(filters).toString()}` : '';
     return this.request(`/visitor-intelligence${query}`);
   }
 
