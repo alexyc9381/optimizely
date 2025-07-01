@@ -50,6 +50,13 @@ const IntegrationsPage: React.FC = () => {
       status: 'Available',
       category: 'CRM',
     },
+    {
+      name: 'Docker',
+      logo: '🐳',
+      description: 'Containerized deployment and development environment',
+      status: 'Setup Required',
+      category: 'DevOps',
+    },
   ];
 
   const WebsiteIntegration = () => (
@@ -235,6 +242,83 @@ function App() {
             View API Docs
           </button>
         </div>
+
+        {/* Docker Setup */}
+        <div className='bg-white rounded-lg border border-gray-200 p-6'>
+          <div className='flex items-center mb-4'>
+            <span className='text-2xl mr-3'>🐳</span>
+            <h4 className='text-lg font-semibold text-gray-900'>
+              Docker Container
+            </h4>
+          </div>
+          <p className='text-gray-600 mb-4'>
+            Run Universal AI Platform in a containerized environment.
+          </p>
+          <div className='bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4'>
+            <div className='flex items-center'>
+              <svg
+                className='w-5 h-5 text-orange-600 mr-2'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z'
+                />
+              </svg>
+              <span className='text-sm font-medium text-orange-800'>
+                Docker Not Installed
+              </span>
+            </div>
+            <p className='text-sm text-orange-700 mt-1'>
+              Docker is required to run containerized services. Install Docker
+              first.
+            </p>
+          </div>
+          <div className='space-y-3'>
+            <div className='flex items-center text-sm text-gray-700'>
+              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+                1
+              </span>
+              Install Docker Desktop for your OS
+            </div>
+            <div className='flex items-center text-sm text-gray-700'>
+              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+                2
+              </span>
+              Pull Universal AI Docker image
+            </div>
+            <div className='flex items-center text-sm text-gray-700'>
+              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+                3
+              </span>
+              Configure environment variables
+            </div>
+          </div>
+          <div className='bg-gray-900 rounded-lg p-3 mt-4 mb-4'>
+            <code className='text-green-400 text-sm font-mono'>
+              {`# Install Docker (macOS)
+brew install --cask docker
+
+# Pull and run Universal AI
+docker pull universalai/platform:latest
+docker run -p 3001:3001 \\
+  -e API_KEY=${apiKey} \\
+  universalai/platform:latest`}
+            </code>
+          </div>
+          <div className='flex space-x-2'>
+            <button className='flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
+              Install Docker
+            </button>
+            <button className='flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg text-sm font-medium'>
+              View Docs
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Features */}
@@ -415,7 +499,11 @@ function App() {
             ].map(tab => (
               <button
                 key={tab.key}
-                onClick={() => setSelectedTab(tab.key as any)}
+                onClick={() =>
+                  setSelectedTab(
+                    tab.key as 'website' | 'api' | 'webhooks' | 'apps'
+                  )
+                }
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                   selectedTab === tab.key
                     ? 'border-blue-500 text-blue-600'
