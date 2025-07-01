@@ -1,82 +1,115 @@
 import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
-import globals from 'globals';
 
 export default [
-  js.configs.recommended,
+  // Apply to all JavaScript/TypeScript files
   {
-    files: ['**/*.{js,mjs,cjs,ts,tsx}'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
       parser: typescriptParser,
       parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: 'module',
         ecmaFeatures: {
           jsx: true,
         },
-      },
-      globals: {
-        ...globals.browser,
-        ...globals.node,
       },
     },
     plugins: {
       '@typescript-eslint': typescript,
     },
     rules: {
-      ...typescript.configs.recommended.rules,
-      // Allow unused vars that start with underscore
+      ...js.configs.recommended.rules,
+      // TypeScript specific rules
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_' },
       ],
-      // Allow any type in development
       '@typescript-eslint/no-explicit-any': 'warn',
-      // Allow empty functions
-      '@typescript-eslint/no-empty-function': 'off',
-      // Allow require statements
-      '@typescript-eslint/no-var-requires': 'off',
-      // Disable Function type restriction for callbacks
-      '@typescript-eslint/no-unsafe-function-type': 'off',
-      // Allow prototype methods
-      'no-prototype-builtins': 'off',
+      'no-console': 'warn',
+      'no-debugger': 'error',
     },
   },
+  // Ignore patterns
   {
-    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.next/**',
+      '**/build/**',
+      '**/coverage/**',
+      'apps/api/src/generated/**',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+    ],
+  },
+  // API-specific configuration (Node.js environment)
+  {
+    files: ['apps/api/**/*.{js,ts}'],
     languageOptions: {
       globals: {
-        ...globals.node,
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
+        global: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
       },
     },
     rules: {
-      // Allow require in JS files
-      'no-undef': 'off',
+      'no-console': 'warn',
     },
   },
+  // Web-specific configuration (Browser environment)
   {
-    files: ['**/*.test.{js,ts,tsx}', '**/__tests__/**/*.{js,ts,tsx}'],
+    files: ['apps/web/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
-        ...globals.jest,
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        fetch: 'readonly',
+        alert: 'readonly',
       },
     },
+    rules: {
+      'no-console': 'warn',
+    },
   },
+  // Tracking package configuration (Browser environment)
   {
-    ignores: [
-      'node_modules/',
-      'dist/',
-      'build/',
-      '.next/',
-      '.turbo/',
-      'coverage/',
-      '*.config.js',
-      '*.config.mjs',
-      '.local/',
-      'apps/tracking/dist/',
-      'apps/web/.next/',
-      'apps/api/dist/',
-    ],
+    files: ['apps/tracking/**/*.{js,ts}'],
+    languageOptions: {
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+      },
+    },
   },
 ];
