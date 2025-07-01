@@ -248,16 +248,16 @@ const UniversalAIDashboard: React.FC = () => {
     trend?: string;
     icon: string;
   }> = ({ title, value, subtitle, trend, icon }) => (
-    <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-primary'>
+    <div className='bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg'>
       <div className='flex items-center justify-between mb-4'>
         <div className='text-2xl'>{icon}</div>
-        <div className='text-xs text-text-muted'>{subtitle}</div>
+        <div className='text-xs text-gray-500'>{subtitle}</div>
       </div>
       <div className='mb-2'>
-        <div className='text-2xl font-bold text-text-primary'>{value || 0}</div>
-        <div className='text-sm text-text-secondary'>{title}</div>
+        <div className='text-2xl font-bold text-gray-900'>{value || 0}</div>
+        <div className='text-sm text-gray-600'>{title}</div>
       </div>
-      {trend && <div className='text-xs text-status-success'>{trend}</div>}
+      {trend && <div className='text-xs text-green-600'>{trend}</div>}
     </div>
   );
 
@@ -266,13 +266,13 @@ const UniversalAIDashboard: React.FC = () => {
     status,
   }) => (
     <div className='flex items-center justify-between py-2'>
-      <span className='text-text-secondary text-sm'>{service}</span>
+      <span className='text-gray-600 text-sm'>{service}</span>
       <div className='flex items-center'>
         <div
-          className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-status-success animate-pulse-slow' : 'bg-status-error'}`}
+          className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}
         />
         <span
-          className={`text-xs font-medium ${status ? 'text-status-success' : 'text-status-error'}`}
+          className={`text-xs font-medium ${status ? 'text-green-600' : 'text-red-600'}`}
         >
           {status ? 'Active' : 'Offline'}
         </span>
@@ -283,16 +283,14 @@ const UniversalAIDashboard: React.FC = () => {
   const ExperimentCard: React.FC<{ experiment: Experiment }> = ({
     experiment,
   }) => (
-    <div className='bg-background-tertiary/50 p-4 rounded-lg border border-secondary-800/30'>
+    <div className='bg-gray-50 p-4 rounded-lg border border-gray-200'>
       <div className='flex items-center justify-between mb-2'>
-        <h4 className='text-text-primary font-medium text-sm'>
-          {experiment.name}
-        </h4>
+        <h4 className='text-gray-900 font-medium text-sm'>{experiment.name}</h4>
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             experiment.status === 'Running'
-              ? 'bg-status-success/20 text-status-success'
-              : 'bg-status-warning/20 text-status-warning'
+              ? 'bg-green-100 text-green-700 border border-green-200'
+              : 'bg-yellow-100 text-yellow-700 border border-yellow-200'
           }`}
         >
           {experiment.status}
@@ -300,31 +298,31 @@ const UniversalAIDashboard: React.FC = () => {
       </div>
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
-          <span className='text-text-muted'>Conversion: </span>
-          <span className='text-text-primary font-medium'>
+          <span className='text-gray-500'>Conversion: </span>
+          <span className='text-gray-900 font-medium'>
             {experiment.conversionRate}%
           </span>
         </div>
         <div>
-          <span className='text-text-muted'>Confidence: </span>
-          <span className='text-text-primary font-medium'>
+          <span className='text-gray-500'>Confidence: </span>
+          <span className='text-gray-900 font-medium'>
             {experiment.confidence}%
           </span>
         </div>
       </div>
-      <p className='text-xs text-accent-400 mt-2'>{experiment.industry}</p>
+      <p className='text-xs text-blue-600 mt-2'>{experiment.industry}</p>
     </div>
   );
 
   const ModelMetricCard: React.FC<{ metric: ModelMetric }> = ({ metric }) => (
-    <div className='bg-background-tertiary/50 p-4 rounded-lg border border-accent-800/30'>
+    <div className='bg-gray-50 p-4 rounded-lg border border-gray-200'>
       <div className='flex items-center justify-between mb-2'>
-        <h4 className='text-text-primary font-medium text-sm'>{metric.name}</h4>
+        <h4 className='text-gray-900 font-medium text-sm'>{metric.name}</h4>
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             metric.status === 'Active'
-              ? 'bg-status-success/20 text-status-success'
-              : 'bg-status-info/20 text-status-info'
+              ? 'bg-green-100 text-green-700 border border-green-200'
+              : 'bg-blue-100 text-blue-700 border border-blue-200'
           }`}
         >
           {metric.status}
@@ -332,14 +330,12 @@ const UniversalAIDashboard: React.FC = () => {
       </div>
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
-          <span className='text-text-muted'>Accuracy: </span>
-          <span className='text-text-primary font-medium'>
-            {metric.accuracy}%
-          </span>
+          <span className='text-gray-500'>Accuracy: </span>
+          <span className='text-gray-900 font-medium'>{metric.accuracy}%</span>
         </div>
         <div>
-          <span className='text-text-muted'>Confidence: </span>
-          <span className='text-text-primary font-medium'>
+          <span className='text-gray-500'>Confidence: </span>
+          <span className='text-gray-900 font-medium'>
             {metric.confidence}%
           </span>
         </div>
@@ -361,20 +357,20 @@ const UniversalAIDashboard: React.FC = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary text-text-primary'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'>
       {/* Header */}
-      <header className='bg-background-secondary/80 backdrop-blur-lg border-b border-primary-800/30 sticky top-0 z-50'>
+      <header className='bg-white/90 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'>
         <div className='max-w-7xl mx-auto px-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-4'>
-              <div className='w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center'>
+              <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
                 <span className='text-white font-bold text-sm'>AI</span>
               </div>
               <div>
-                <h1 className='text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent'>
+                <h1 className='text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
                   Universal AI Platform
                 </h1>
-                <p className='text-text-secondary text-xs'>
+                <p className='text-gray-600 text-xs'>
                   Multi-Industry A/B Testing & Analytics
                 </p>
               </div>
@@ -384,28 +380,26 @@ const UniversalAIDashboard: React.FC = () => {
               <div
                 className={`flex items-center px-3 py-1 rounded-full text-xs ${
                   apiConnected
-                    ? 'bg-status-success/20 text-status-success'
-                    : 'bg-status-error/20 text-status-error'
+                    ? 'bg-green-100 text-green-700 border border-green-200'
+                    : 'bg-red-100 text-red-700 border border-red-200'
                 }`}
               >
                 <div
                   className={`w-1.5 h-1.5 rounded-full mr-2 ${
-                    apiConnected
-                      ? 'bg-status-success animate-pulse'
-                      : 'bg-status-error'
+                    apiConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'
                   }`}
                 />
                 API {apiConnected ? 'Connected' : 'Offline'}
               </div>
 
-              <div className='text-text-secondary text-xs'>
+              <div className='text-gray-600 text-xs'>
                 85% Complete • 17/20 Tasks
               </div>
             </div>
           </div>
 
           {error && (
-            <div className='mt-2 p-2 bg-status-warning/20 border border-status-warning/30 rounded text-xs text-status-warning'>
+            <div className='mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800'>
               {error}
             </div>
           )}
@@ -416,11 +410,11 @@ const UniversalAIDashboard: React.FC = () => {
       <main className='max-w-7xl mx-auto px-6 py-8'>
         {/* Key Metrics */}
         <section className='mb-8'>
-          <h2 className='text-2xl font-bold mb-6 flex items-center'>
-            <span className='bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent'>
+          <h2 className='text-2xl font-bold mb-6 flex items-center text-gray-900'>
+            <span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
               Platform Overview
             </span>
-            <div className='ml-3 w-6 h-6 bg-gradient-to-r from-primary-500 to-secondary-500 rounded animate-pulse'></div>
+            <div className='ml-3 w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded animate-pulse'></div>
           </h2>
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6'>
@@ -472,10 +466,10 @@ const UniversalAIDashboard: React.FC = () => {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* System Health */}
           <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               System Health
             </h3>
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
               <div className='space-y-3'>
                 <HealthIndicator service='API Gateway' status={apiConnected} />
                 <HealthIndicator
@@ -496,17 +490,17 @@ const UniversalAIDashboard: React.FC = () => {
                 />
               </div>
 
-              <div className='mt-6 pt-4 border-t border-accent-800/30'>
-                <p className='text-text-muted text-xs mb-2'>System Status</p>
+              <div className='mt-6 pt-4 border-t border-gray-200'>
+                <p className='text-gray-500 text-xs mb-2'>System Status</p>
                 <div className='flex items-center justify-between'>
-                  <span className='text-text-primary font-medium'>
+                  <span className='text-gray-900 font-medium'>
                     Overall Health
                   </span>
-                  <span className='text-status-success font-bold'>98.5%</span>
+                  <span className='text-green-600 font-bold'>98.5%</span>
                 </div>
-                <div className='w-full bg-background-tertiary rounded-full h-2 mt-2'>
+                <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
                   <div
-                    className='bg-gradient-to-r from-accent-500 to-accent-400 h-2 rounded-full transition-all duration-500'
+                    className='bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full transition-all duration-500'
                     style={{ width: '98.5%' }}
                   ></div>
                 </div>
@@ -516,18 +510,18 @@ const UniversalAIDashboard: React.FC = () => {
 
           {/* Active A/B Experiments */}
           <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               Active Experiments
             </h3>
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-secondary-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
               <div className='space-y-4'>
                 {experiments.map(experiment => (
                   <ExperimentCard key={experiment.id} experiment={experiment} />
                 ))}
               </div>
 
-              <div className='mt-6 pt-4 border-t border-secondary-800/30'>
-                <button className='w-full bg-gradient-to-r from-secondary-500 to-secondary-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
+              <div className='mt-6 pt-4 border-t border-gray-200'>
+                <button className='w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
                   View All Experiments
                 </button>
               </div>
@@ -536,18 +530,18 @@ const UniversalAIDashboard: React.FC = () => {
 
           {/* ML Model Performance */}
           <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               ML Models
             </h3>
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
               <div className='space-y-4'>
                 {modelMetrics.map((metric, index) => (
                   <ModelMetricCard key={index} metric={metric} />
                 ))}
               </div>
 
-              <div className='mt-6 pt-4 border-t border-accent-800/30'>
-                <button className='w-full bg-gradient-to-r from-accent-500 to-accent-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
+              <div className='mt-6 pt-4 border-t border-gray-200'>
+                <button className='w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
                   Model Refinement Dashboard
                 </button>
               </div>
@@ -557,7 +551,7 @@ const UniversalAIDashboard: React.FC = () => {
 
         {/* Feature Showcase */}
         <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
             Implemented Features
           </h3>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
@@ -605,19 +599,19 @@ const UniversalAIDashboard: React.FC = () => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className='bg-background-secondary/40 backdrop-blur-sm p-4 rounded-lg border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-lg'
+                className='bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-all duration-300 hover:shadow-md'
               >
-                <h4 className='text-text-primary font-medium text-sm mb-2'>
+                <h4 className='text-gray-900 font-medium text-sm mb-2'>
                   {feature.name}
                 </h4>
                 <div className='flex items-center justify-between mb-1'>
-                  <span className='text-xs text-text-muted'>Status</span>
-                  <span className='text-xs text-status-success font-medium'>
+                  <span className='text-xs text-gray-500'>Status</span>
+                  <span className='text-xs text-green-600 font-medium'>
                     {feature.status}
                   </span>
                 </div>
-                <p className='text-xs text-text-muted'>
-                  <span className='text-accent-400'>{feature.industry}</span>
+                <p className='text-xs text-gray-500'>
+                  <span className='text-blue-600'>{feature.industry}</span>
                 </p>
               </div>
             ))}
@@ -626,14 +620,14 @@ const UniversalAIDashboard: React.FC = () => {
 
         {/* Multi-Industry Pipeline Stages */}
         <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
             Stage-wise Pipeline Management
           </h3>
           <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
             {/* SaaS Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-blue-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-blue-400 flex items-center'>
-                <span className='w-2 h-2 bg-blue-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
+                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
                 SaaS Pipeline
               </h4>
               <div className='space-y-3'>
@@ -642,7 +636,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Awareness',
                     count: 1247,
                     percentage: 15,
-                    color: 'bg-gray-500',
+                    color: 'bg-gray-400',
                   },
                   {
                     stage: 'Trial Signup',
@@ -683,15 +677,15 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color}`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                      <div className='w-16 bg-gray-200 rounded-full h-2'>
                         <div
                           className={`${item.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
@@ -701,18 +695,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-blue-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-blue-200'>
+                <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-blue-400 font-medium'>30 days</span>
+                  <span className='text-blue-700 font-medium'>30 days</span>
                 </div>
               </div>
             </div>
 
             {/* Manufacturing Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-orange-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-orange-400 flex items-center'>
-                <span className='w-2 h-2 bg-orange-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-orange-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-orange-700 flex items-center'>
+                <span className='w-2 h-2 bg-orange-500 rounded-full mr-2'></span>
                 Manufacturing Pipeline
               </h4>
               <div className='space-y-3'>
@@ -721,7 +715,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'RFQ Submission',
                     count: 89,
                     percentage: 20,
-                    color: 'bg-gray-500',
+                    color: 'bg-gray-400',
                   },
                   {
                     stage: 'Technical Review',
@@ -762,15 +756,15 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color}`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                      <div className='w-16 bg-gray-200 rounded-full h-2'>
                         <div
                           className={`${item.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
@@ -780,18 +774,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-orange-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-orange-200'>
+                <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-orange-400 font-medium'>120 days</span>
+                  <span className='text-orange-700 font-medium'>120 days</span>
                 </div>
               </div>
             </div>
 
             {/* Healthcare Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-green-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-green-400 flex items-center'>
-                <span className='w-2 h-2 bg-green-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-green-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-green-700 flex items-center'>
+                <span className='w-2 h-2 bg-green-500 rounded-full mr-2'></span>
                 Healthcare Pipeline
               </h4>
               <div className='space-y-3'>
@@ -800,7 +794,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Patient Registration',
                     count: 456,
                     percentage: 25,
-                    color: 'bg-gray-500',
+                    color: 'bg-gray-400',
                   },
                   {
                     stage: 'Initial Consultation',
@@ -841,15 +835,15 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color}`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                      <div className='w-16 bg-gray-200 rounded-full h-2'>
                         <div
                           className={`${item.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
@@ -859,18 +853,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-green-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-green-200'>
+                <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-green-400 font-medium'>90 days</span>
+                  <span className='text-green-700 font-medium'>90 days</span>
                 </div>
               </div>
             </div>
 
             {/* FinTech Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-purple-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-purple-400 flex items-center'>
-                <span className='w-2 h-2 bg-purple-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-purple-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-purple-700 flex items-center'>
+                <span className='w-2 h-2 bg-purple-500 rounded-full mr-2'></span>
                 FinTech Pipeline
               </h4>
               <div className='space-y-3'>
@@ -879,7 +873,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Compliance Screening',
                     count: 234,
                     percentage: 30,
-                    color: 'bg-gray-500',
+                    color: 'bg-gray-400',
                   },
                   {
                     stage: 'Risk Assessment',
@@ -920,15 +914,15 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color}`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                      <div className='w-16 bg-gray-200 rounded-full h-2'>
                         <div
                           className={`${item.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
@@ -938,18 +932,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-purple-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-purple-200'>
+                <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-purple-400 font-medium'>60 days</span>
+                  <span className='text-purple-700 font-medium'>60 days</span>
                 </div>
               </div>
             </div>
 
             {/* College Consulting Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-indigo-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-indigo-400 flex items-center'>
-                <span className='w-2 h-2 bg-indigo-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-indigo-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-indigo-700 flex items-center'>
+                <span className='w-2 h-2 bg-indigo-500 rounded-full mr-2'></span>
                 College Consulting Pipeline
               </h4>
               <div className='space-y-3'>
@@ -958,7 +952,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Initial Inquiry',
                     count: 123,
                     percentage: 20,
-                    color: 'bg-gray-500',
+                    color: 'bg-gray-400',
                   },
                   {
                     stage: 'Parent Meeting',
@@ -999,15 +993,15 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color}`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                      <div className='w-16 bg-gray-200 rounded-full h-2'>
                         <div
                           className={`${item.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${item.percentage}%` }}
@@ -1017,18 +1011,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-indigo-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-indigo-200'>
+                <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-indigo-400 font-medium'>365 days</span>
+                  <span className='text-indigo-700 font-medium'>365 days</span>
                 </div>
               </div>
             </div>
 
             {/* Data Processing Pipeline */}
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-cyan-800/30'>
-              <h4 className='text-lg font-semibold mb-4 text-cyan-400 flex items-center'>
-                <span className='w-2 h-2 bg-cyan-400 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-cyan-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-cyan-700 flex items-center'>
+                <span className='w-2 h-2 bg-cyan-500 rounded-full mr-2'></span>
                 Data Processing Pipeline
               </h4>
               <div className='space-y-3'>
@@ -1084,25 +1078,25 @@ const UniversalAIDashboard: React.FC = () => {
                       <div
                         className={`w-3 h-3 rounded-full ${item.color} animate-pulse`}
                       ></div>
-                      <span className='text-sm text-text-primary'>
+                      <span className='text-sm text-gray-900'>
                         {item.stage}
                       </span>
                     </div>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-text-muted'>
+                      <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <span className='text-xs text-cyan-400 font-medium'>
+                      <span className='text-xs text-cyan-700 font-medium'>
                         {item.status}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-cyan-800/30'>
-                <div className='text-xs text-text-muted'>
+              <div className='mt-4 pt-3 border-t border-cyan-200'>
+                <div className='text-xs text-gray-600'>
                   Processing Rate:{' '}
-                  <span className='text-cyan-400 font-medium'>
+                  <span className='text-cyan-700 font-medium'>
                     14.2k events/sec
                   </span>
                 </div>
@@ -1113,72 +1107,70 @@ const UniversalAIDashboard: React.FC = () => {
 
         {/* Pipeline Summary Analytics */}
         <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
             Pipeline Performance Summary
           </h3>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-blue-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-blue-400'>
+                <h4 className='text-lg font-semibold text-blue-700'>
                   Overall Conversion
                 </h4>
                 <span className='text-2xl'>🎯</span>
               </div>
-              <div className='text-3xl font-bold text-blue-400 mb-2'>23.7%</div>
-              <div className='text-sm text-text-muted'>
+              <div className='text-3xl font-bold text-blue-700 mb-2'>23.7%</div>
+              <div className='text-sm text-gray-600'>
                 Cross-industry average
               </div>
-              <div className='mt-3 text-xs text-green-400'>
+              <div className='mt-3 text-xs text-green-600'>
                 +2.8% vs last month
               </div>
             </div>
 
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-purple-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-purple-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-purple-400'>
+                <h4 className='text-lg font-semibold text-purple-700'>
                   Avg. Journey Time
                 </h4>
                 <span className='text-2xl'>⏱️</span>
               </div>
-              <div className='text-3xl font-bold text-purple-400 mb-2'>
+              <div className='text-3xl font-bold text-purple-700 mb-2'>
                 67 days
               </div>
-              <div className='text-sm text-text-muted'>Weighted by volume</div>
-              <div className='mt-3 text-xs text-green-400'>
+              <div className='text-sm text-gray-600'>Weighted by volume</div>
+              <div className='mt-3 text-xs text-green-600'>
                 -5.2 days improvement
               </div>
             </div>
 
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-green-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-green-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-green-400'>
+                <h4 className='text-lg font-semibold text-green-700'>
                   Stage Efficiency
                 </h4>
                 <span className='text-2xl'>⚡</span>
               </div>
-              <div className='text-3xl font-bold text-green-400 mb-2'>
+              <div className='text-3xl font-bold text-green-700 mb-2'>
                 94.2%
               </div>
-              <div className='text-sm text-text-muted'>Process automation</div>
-              <div className='mt-3 text-xs text-green-400'>
+              <div className='text-sm text-gray-600'>Process automation</div>
+              <div className='mt-3 text-xs text-green-600'>
                 +1.8% optimization
               </div>
             </div>
 
-            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-orange-800/30'>
+            <div className='bg-white rounded-xl shadow-lg border border-orange-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-orange-400'>
+                <h4 className='text-lg font-semibold text-orange-700'>
                   Active Pipelines
                 </h4>
                 <span className='text-2xl'>🔄</span>
               </div>
-              <div className='text-3xl font-bold text-orange-400 mb-2'>
+              <div className='text-3xl font-bold text-orange-700 mb-2'>
                 2,847
               </div>
-              <div className='text-sm text-text-muted'>
-                Across all industries
-              </div>
-              <div className='mt-3 text-xs text-green-400'>
+              <div className='text-sm text-gray-600'>Across all industries</div>
+              <div className='mt-3 text-xs text-green-600'>
                 +156 new this week
               </div>
             </div>
