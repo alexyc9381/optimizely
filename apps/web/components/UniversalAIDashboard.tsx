@@ -54,15 +54,46 @@ const UniversalAIDashboard: React.FC = () => {
   });
 
   const [experiments, setExperiments] = useState<Experiment[]>([
-    { id: '1', name: 'SaaS Pricing Page', status: 'Running', conversionRate: 12.4, confidence: 98, industry: 'SaaS' },
-    { id: '2', name: 'College Consulting CTA', status: 'Running', conversionRate: 8.7, confidence: 87, industry: 'Education' },
-    { id: '3', name: 'FinTech Dashboard', status: 'Analyzing', conversionRate: 15.2, confidence: 76, industry: 'FinTech' },
+    {
+      id: '1',
+      name: 'SaaS Pricing Page',
+      status: 'Running',
+      conversionRate: 12.4,
+      confidence: 98,
+      industry: 'SaaS',
+    },
+    {
+      id: '2',
+      name: 'College Consulting CTA',
+      status: 'Running',
+      conversionRate: 8.7,
+      confidence: 87,
+      industry: 'Education',
+    },
+    {
+      id: '3',
+      name: 'FinTech Dashboard',
+      status: 'Analyzing',
+      conversionRate: 15.2,
+      confidence: 76,
+      industry: 'FinTech',
+    },
   ]);
 
   const [modelMetrics, setModelMetrics] = useState<ModelMetric[]>([
     { name: 'Lead Scoring', accuracy: 94.2, confidence: 97, status: 'Active' },
-    { name: 'Revenue Prediction', accuracy: 89.1, confidence: 92, status: 'Learning' },
-    { name: 'Churn Prevention', accuracy: 91.8, confidence: 89, status: 'Active' },
+    {
+      name: 'Revenue Prediction',
+      accuracy: 89.1,
+      confidence: 92,
+      status: 'Learning',
+    },
+    {
+      name: 'Churn Prevention',
+      accuracy: 91.8,
+      confidence: 89,
+      status: 'Active',
+    },
   ]);
 
   const [loading, setLoading] = useState(false);
@@ -85,7 +116,10 @@ const UniversalAIDashboard: React.FC = () => {
         setError(null);
 
         // Test API connection first with timeout
-        const controller = typeof window !== 'undefined' && 'AbortController' in window ? new AbortController() : null;
+        const controller =
+          typeof window !== 'undefined' && window.AbortController
+            ? new window.AbortController()
+            : null;
         const timeoutId = setTimeout(() => controller?.abort(), 3000); // 3 second timeout
 
         try {
@@ -101,23 +135,33 @@ const UniversalAIDashboard: React.FC = () => {
             setApiConnected(true);
 
             // Fetch real data using existing API methods with timeout
-            const fetchWithTimeout = async (promise: Promise<unknown>, timeout = 2000) => {
+            const fetchWithTimeout = async (
+              promise: Promise<unknown>,
+              timeout = 2000
+            ) => {
               return Promise.race([
                 promise,
                 new Promise((_, reject) =>
-                  setTimeout(() => reject(new Error('Request timeout')), timeout)
+                  setTimeout(
+                    () => reject(new Error('Request timeout')),
+                    timeout
+                  )
                 ),
               ]);
             };
 
-            const [dashboardResponse, experimentsResponse, modelsResponse] = await Promise.allSettled([
-              fetchWithTimeout(apiClient.getDashboardData()),
-              fetchWithTimeout(apiClient.getABTests()),
-              fetchWithTimeout(apiClient.getModelStats())
-            ]);
+            const [dashboardResponse, experimentsResponse, modelsResponse] =
+              await Promise.allSettled([
+                fetchWithTimeout(apiClient.getDashboardData()),
+                fetchWithTimeout(apiClient.getABTests()),
+                fetchWithTimeout(apiClient.getModelStats()),
+              ]);
 
             // Handle dashboard stats
-            if (dashboardResponse.status === 'fulfilled' && dashboardResponse.value) {
+            if (
+              dashboardResponse.status === 'fulfilled' &&
+              dashboardResponse.value
+            ) {
               const data = dashboardResponse.value as DashboardStats;
               // Transform the response to match expected format
               setDashboardStats({
@@ -131,29 +175,40 @@ const UniversalAIDashboard: React.FC = () => {
             }
 
             // Handle experiments
-            if (experimentsResponse.status === 'fulfilled' && experimentsResponse.value) {
+            if (
+              experimentsResponse.status === 'fulfilled' &&
+              experimentsResponse.value
+            ) {
               const experiments = experimentsResponse.value as Experiment[];
               // Transform to expected format
-              setExperiments(Array.isArray(experiments) ? experiments.slice(0, 3).map((exp: Experiment) => ({
-                id: exp.id || '1',
-                name: exp.name || 'Unknown Experiment',
-                status: exp.status || 'Running',
-                conversionRate: exp.conversionRate || 10.0,
-                confidence: exp.confidence || 95,
-                industry: exp.industry || 'General'
-              })) : experiments);
+              setExperiments(
+                Array.isArray(experiments)
+                  ? experiments.slice(0, 3).map((exp: Experiment) => ({
+                      id: exp.id || '1',
+                      name: exp.name || 'Unknown Experiment',
+                      status: exp.status || 'Running',
+                      conversionRate: exp.conversionRate || 10.0,
+                      confidence: exp.confidence || 95,
+                      industry: exp.industry || 'General',
+                    }))
+                  : experiments
+              );
             }
 
             // Handle model metrics
             if (modelsResponse.status === 'fulfilled' && modelsResponse.value) {
               const models = modelsResponse.value as ModelMetric[];
               // Transform to expected format
-              setModelMetrics(Array.isArray(models) ? models.slice(0, 3).map((model: ModelMetric) => ({
-                name: model.name || 'Unknown Model',
-                accuracy: model.accuracy || 90.0,
-                confidence: model.confidence || 85.0,
-                status: model.status || 'Active'
-              })) : models);
+              setModelMetrics(
+                Array.isArray(models)
+                  ? models.slice(0, 3).map((model: ModelMetric) => ({
+                      name: model.name || 'Unknown Model',
+                      accuracy: model.accuracy || 90.0,
+                      confidence: model.confidence || 85.0,
+                      status: model.status || 'Active',
+                    }))
+                  : models
+              );
             }
 
             setSystemHealth({
@@ -163,7 +218,6 @@ const UniversalAIDashboard: React.FC = () => {
               analytics: true,
               recommendations: true,
             });
-
           } else {
             throw new Error('API connection failed');
           }
@@ -187,82 +241,107 @@ const UniversalAIDashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const StatCard: React.FC<{ title: string; value: string | number; subtitle: string; trend?: string; icon: string }> = ({
-    title, value, subtitle, trend, icon
-  }) => (
-    <div className="bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-primary">
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-2xl">{icon}</div>
-        <div className="text-xs text-text-muted">{subtitle}</div>
+  const StatCard: React.FC<{
+    title: string;
+    value: string | number;
+    subtitle: string;
+    trend?: string;
+    icon: string;
+  }> = ({ title, value, subtitle, trend, icon }) => (
+    <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-primary'>
+      <div className='flex items-center justify-between mb-4'>
+        <div className='text-2xl'>{icon}</div>
+        <div className='text-xs text-text-muted'>{subtitle}</div>
       </div>
-      <div className="mb-2">
-        <div className="text-2xl font-bold text-text-primary">{value || 0}</div>
-        <div className="text-sm text-text-secondary">{title}</div>
+      <div className='mb-2'>
+        <div className='text-2xl font-bold text-text-primary'>{value || 0}</div>
+        <div className='text-sm text-text-secondary'>{title}</div>
       </div>
-      {trend && (
-        <div className="text-xs text-status-success">{trend}</div>
-      )}
+      {trend && <div className='text-xs text-status-success'>{trend}</div>}
     </div>
   );
 
-  const HealthIndicator: React.FC<{ service: string; status: boolean }> = ({ service, status }) => (
-    <div className="flex items-center justify-between py-2">
-      <span className="text-text-secondary text-sm">{service}</span>
-      <div className="flex items-center">
-        <div className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-status-success animate-pulse-slow' : 'bg-status-error'}`} />
-        <span className={`text-xs font-medium ${status ? 'text-status-success' : 'text-status-error'}`}>
+  const HealthIndicator: React.FC<{ service: string; status: boolean }> = ({
+    service,
+    status,
+  }) => (
+    <div className='flex items-center justify-between py-2'>
+      <span className='text-text-secondary text-sm'>{service}</span>
+      <div className='flex items-center'>
+        <div
+          className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-status-success animate-pulse-slow' : 'bg-status-error'}`}
+        />
+        <span
+          className={`text-xs font-medium ${status ? 'text-status-success' : 'text-status-error'}`}
+        >
           {status ? 'Active' : 'Offline'}
         </span>
       </div>
     </div>
   );
 
-  const ExperimentCard: React.FC<{ experiment: Experiment }> = ({ experiment }) => (
-    <div className="bg-background-tertiary/50 p-4 rounded-lg border border-secondary-800/30">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="text-text-primary font-medium text-sm">{experiment.name}</h4>
-        <span className={`text-xs px-2 py-1 rounded-full ${
-          experiment.status === 'Running'
-            ? 'bg-status-success/20 text-status-success'
-            : 'bg-status-warning/20 text-status-warning'
-        }`}>
+  const ExperimentCard: React.FC<{ experiment: Experiment }> = ({
+    experiment,
+  }) => (
+    <div className='bg-background-tertiary/50 p-4 rounded-lg border border-secondary-800/30'>
+      <div className='flex items-center justify-between mb-2'>
+        <h4 className='text-text-primary font-medium text-sm'>
+          {experiment.name}
+        </h4>
+        <span
+          className={`text-xs px-2 py-1 rounded-full ${
+            experiment.status === 'Running'
+              ? 'bg-status-success/20 text-status-success'
+              : 'bg-status-warning/20 text-status-warning'
+          }`}
+        >
           {experiment.status}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs">
+      <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
-          <span className="text-text-muted">Conversion: </span>
-          <span className="text-text-primary font-medium">{experiment.conversionRate}%</span>
+          <span className='text-text-muted'>Conversion: </span>
+          <span className='text-text-primary font-medium'>
+            {experiment.conversionRate}%
+          </span>
         </div>
         <div>
-          <span className="text-text-muted">Confidence: </span>
-          <span className="text-text-primary font-medium">{experiment.confidence}%</span>
+          <span className='text-text-muted'>Confidence: </span>
+          <span className='text-text-primary font-medium'>
+            {experiment.confidence}%
+          </span>
         </div>
       </div>
-      <p className="text-xs text-accent-400 mt-2">{experiment.industry}</p>
+      <p className='text-xs text-accent-400 mt-2'>{experiment.industry}</p>
     </div>
   );
 
   const ModelMetricCard: React.FC<{ metric: ModelMetric }> = ({ metric }) => (
-    <div className="bg-background-tertiary/50 p-4 rounded-lg border border-accent-800/30">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="text-text-primary font-medium text-sm">{metric.name}</h4>
-        <span className={`text-xs px-2 py-1 rounded-full ${
-          metric.status === 'Active'
-            ? 'bg-status-success/20 text-status-success'
-            : 'bg-status-info/20 text-status-info'
-        }`}>
+    <div className='bg-background-tertiary/50 p-4 rounded-lg border border-accent-800/30'>
+      <div className='flex items-center justify-between mb-2'>
+        <h4 className='text-text-primary font-medium text-sm'>{metric.name}</h4>
+        <span
+          className={`text-xs px-2 py-1 rounded-full ${
+            metric.status === 'Active'
+              ? 'bg-status-success/20 text-status-success'
+              : 'bg-status-info/20 text-status-info'
+          }`}
+        >
           {metric.status}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs">
+      <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
-          <span className="text-text-muted">Accuracy: </span>
-          <span className="text-text-primary font-medium">{metric.accuracy}%</span>
+          <span className='text-text-muted'>Accuracy: </span>
+          <span className='text-text-primary font-medium'>
+            {metric.accuracy}%
+          </span>
         </div>
         <div>
-          <span className="text-text-muted">Confidence: </span>
-          <span className="text-text-primary font-medium">{metric.confidence}%</span>
+          <span className='text-text-muted'>Confidence: </span>
+          <span className='text-text-primary font-medium'>
+            {metric.confidence}%
+          </span>
         </div>
       </div>
     </div>
@@ -270,53 +349,63 @@ const UniversalAIDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-text-secondary">Loading Universal AI Platform...</p>
+      <div className='min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4'></div>
+          <p className='text-text-secondary'>
+            Loading Universal AI Platform...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary text-text-primary">
+    <div className='min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary text-text-primary'>
       {/* Header */}
-      <header className="bg-background-secondary/80 backdrop-blur-lg border-b border-primary-800/30 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">AI</span>
+      <header className='bg-background-secondary/80 backdrop-blur-lg border-b border-primary-800/30 sticky top-0 z-50'>
+        <div className='max-w-7xl mx-auto px-6 py-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center space-x-4'>
+              <div className='w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center'>
+                <span className='text-white font-bold text-sm'>AI</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                <h1 className='text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent'>
                   Universal AI Platform
                 </h1>
-                <p className="text-text-secondary text-xs">Multi-Industry A/B Testing & Analytics</p>
+                <p className='text-text-secondary text-xs'>
+                  Multi-Industry A/B Testing & Analytics
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className={`flex items-center px-3 py-1 rounded-full text-xs ${
-                apiConnected
-                  ? 'bg-status-success/20 text-status-success'
-                  : 'bg-status-error/20 text-status-error'
-              }`}>
-                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${
-                  apiConnected ? 'bg-status-success animate-pulse' : 'bg-status-error'
-                }`} />
+            <div className='flex items-center space-x-4'>
+              <div
+                className={`flex items-center px-3 py-1 rounded-full text-xs ${
+                  apiConnected
+                    ? 'bg-status-success/20 text-status-success'
+                    : 'bg-status-error/20 text-status-error'
+                }`}
+              >
+                <div
+                  className={`w-1.5 h-1.5 rounded-full mr-2 ${
+                    apiConnected
+                      ? 'bg-status-success animate-pulse'
+                      : 'bg-status-error'
+                  }`}
+                />
                 API {apiConnected ? 'Connected' : 'Offline'}
               </div>
 
-              <div className="text-text-secondary text-xs">
+              <div className='text-text-secondary text-xs'>
                 85% Complete • 17/20 Tasks
               </div>
             </div>
           </div>
 
           {error && (
-            <div className="mt-2 p-2 bg-status-warning/20 border border-status-warning/30 rounded text-xs text-status-warning">
+            <div className='mt-2 p-2 bg-status-warning/20 border border-status-warning/30 rounded text-xs text-status-warning'>
               {error}
             </div>
           )}
@@ -324,98 +413,121 @@ const UniversalAIDashboard: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className='max-w-7xl mx-auto px-6 py-8'>
         {/* Key Metrics */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
-            <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Platform Overview</span>
-            <div className="ml-3 w-6 h-6 bg-gradient-to-r from-primary-500 to-secondary-500 rounded animate-pulse"></div>
+        <section className='mb-8'>
+          <h2 className='text-2xl font-bold mb-6 flex items-center'>
+            <span className='bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent'>
+              Platform Overview
+            </span>
+            <div className='ml-3 w-6 h-6 bg-gradient-to-r from-primary-500 to-secondary-500 rounded animate-pulse'></div>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6'>
             <StatCard
-              title="Total Visitors"
+              title='Total Visitors'
               value={dashboardStats?.totalVisitors?.toLocaleString() || '0'}
-              subtitle="Cross-platform tracking"
-              trend="+12.3% this week"
-              icon="👥"
+              subtitle='Cross-platform tracking'
+              trend='+12.3% this week'
+              icon='👥'
             />
             <StatCard
-              title="Active Sessions"
+              title='Active Sessions'
               value={dashboardStats?.totalSessions?.toLocaleString() || '0'}
-              subtitle="Real-time monitoring"
-              trend="+8.7% today"
-              icon="⚡"
+              subtitle='Real-time monitoring'
+              trend='+8.7% today'
+              icon='⚡'
             />
             <StatCard
-              title="Conversion Rate"
+              title='Conversion Rate'
               value={`${dashboardStats?.conversionRate || 0}%`}
-              subtitle="AI-optimized funnels"
-              trend="+2.1% improvement"
-              icon="📈"
+              subtitle='AI-optimized funnels'
+              trend='+2.1% improvement'
+              icon='📈'
             />
             <StatCard
-              title="Revenue Generated"
+              title='Revenue Generated'
               value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
-              subtitle="Attribution modeling"
-              trend="+15.4% this month"
-              icon="💰"
+              subtitle='Attribution modeling'
+              trend='+15.4% this month'
+              icon='💰'
             />
             <StatCard
-              title="A/B Experiments"
+              title='A/B Experiments'
               value={dashboardStats?.activeExperiments || '0'}
-              subtitle="Running across industries"
-              trend="3 completed today"
-              icon="🧪"
+              subtitle='Running across industries'
+              trend='3 completed today'
+              icon='🧪'
             />
             <StatCard
-              title="Model Accuracy"
+              title='Model Accuracy'
               value={`${dashboardStats?.modelAccuracy || 0}%`}
-              subtitle="ML performance"
-              trend="+1.8% improvement"
-              icon="🤖"
+              subtitle='ML performance'
+              trend='+1.8% improvement'
+              icon='🤖'
             />
           </div>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* System Health */}
-          <section className="lg:col-span-1">
-            <h3 className="text-xl font-semibold mb-4 text-accent-400">System Health</h3>
-            <div className="bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30">
-              <div className="space-y-3">
-                <HealthIndicator service="API Gateway" status={apiConnected} />
-                <HealthIndicator service="ML Engine" status={systemHealth.mlEngine || apiConnected} />
-                <HealthIndicator service="A/B Testing" status={systemHealth.abTesting || apiConnected} />
-                <HealthIndicator service="Analytics" status={systemHealth.analytics || apiConnected} />
-                <HealthIndicator service="Recommendations" status={systemHealth.recommendations || apiConnected} />
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+              System Health
+            </h3>
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30'>
+              <div className='space-y-3'>
+                <HealthIndicator service='API Gateway' status={apiConnected} />
+                <HealthIndicator
+                  service='ML Engine'
+                  status={systemHealth.mlEngine || apiConnected}
+                />
+                <HealthIndicator
+                  service='A/B Testing'
+                  status={systemHealth.abTesting || apiConnected}
+                />
+                <HealthIndicator
+                  service='Analytics'
+                  status={systemHealth.analytics || apiConnected}
+                />
+                <HealthIndicator
+                  service='Recommendations'
+                  status={systemHealth.recommendations || apiConnected}
+                />
               </div>
 
-              <div className="mt-6 pt-4 border-t border-accent-800/30">
-                <p className="text-text-muted text-xs mb-2">System Status</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-text-primary font-medium">Overall Health</span>
-                  <span className="text-status-success font-bold">98.5%</span>
+              <div className='mt-6 pt-4 border-t border-accent-800/30'>
+                <p className='text-text-muted text-xs mb-2'>System Status</p>
+                <div className='flex items-center justify-between'>
+                  <span className='text-text-primary font-medium'>
+                    Overall Health
+                  </span>
+                  <span className='text-status-success font-bold'>98.5%</span>
                 </div>
-                <div className="w-full bg-background-tertiary rounded-full h-2 mt-2">
-                  <div className="bg-gradient-to-r from-accent-500 to-accent-400 h-2 rounded-full transition-all duration-500" style={{ width: '98.5%' }}></div>
+                <div className='w-full bg-background-tertiary rounded-full h-2 mt-2'>
+                  <div
+                    className='bg-gradient-to-r from-accent-500 to-accent-400 h-2 rounded-full transition-all duration-500'
+                    style={{ width: '98.5%' }}
+                  ></div>
                 </div>
               </div>
             </div>
           </section>
 
           {/* Active A/B Experiments */}
-          <section className="lg:col-span-1">
-            <h3 className="text-xl font-semibold mb-4 text-accent-400">Active Experiments</h3>
-            <div className="bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-secondary-800/30">
-              <div className="space-y-4">
-                {experiments.map((experiment) => (
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+              Active Experiments
+            </h3>
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-secondary-800/30'>
+              <div className='space-y-4'>
+                {experiments.map(experiment => (
                   <ExperimentCard key={experiment.id} experiment={experiment} />
                 ))}
               </div>
 
-              <div className="mt-6 pt-4 border-t border-secondary-800/30">
-                <button className="w-full bg-gradient-to-r from-secondary-500 to-secondary-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
+              <div className='mt-6 pt-4 border-t border-secondary-800/30'>
+                <button className='w-full bg-gradient-to-r from-secondary-500 to-secondary-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
                   View All Experiments
                 </button>
               </div>
@@ -423,17 +535,19 @@ const UniversalAIDashboard: React.FC = () => {
           </section>
 
           {/* ML Model Performance */}
-          <section className="lg:col-span-1">
-            <h3 className="text-xl font-semibold mb-4 text-accent-400">ML Models</h3>
-            <div className="bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30">
-              <div className="space-y-4">
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-accent-400'>
+              ML Models
+            </h3>
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-accent-800/30'>
+              <div className='space-y-4'>
                 {modelMetrics.map((metric, index) => (
                   <ModelMetricCard key={index} metric={metric} />
                 ))}
               </div>
 
-              <div className="mt-6 pt-4 border-t border-accent-800/30">
-                <button className="w-full bg-gradient-to-r from-accent-500 to-accent-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
+              <div className='mt-6 pt-4 border-t border-accent-800/30'>
+                <button className='w-full bg-gradient-to-r from-accent-500 to-accent-400 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
                   Model Refinement Dashboard
                 </button>
               </div>
@@ -442,30 +556,632 @@ const UniversalAIDashboard: React.FC = () => {
         </div>
 
         {/* Feature Showcase */}
-        <section className="mt-8">
-          <h3 className="text-xl font-semibold mb-6 text-accent-400">Implemented Features</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section className='mt-8'>
+          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+            Implemented Features
+          </h3>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {[
-              { name: 'Universal Analytics Engine', status: 'Active', industry: 'All Industries' },
-              { name: 'Adaptive Recommendations', status: 'Learning', industry: 'SaaS & FinTech' },
-              { name: 'A/B Testing Framework', status: 'Running', industry: 'Healthcare & Manufacturing' },
-              { name: 'Model Refinement Engine', status: 'Optimizing', industry: 'College Consulting' },
-              { name: 'Outcome Tracking', status: 'Monitoring', industry: 'Cross-Industry' },
-              { name: 'Deep Customer Profiling', status: 'Active', industry: 'Enterprise' },
-              { name: 'Revenue Attribution', status: 'Calculating', industry: 'All Sectors' },
-              { name: 'Behavioral Analytics', status: 'Processing', industry: 'Multi-Platform' },
+              {
+                name: 'Universal Analytics Engine',
+                status: 'Active',
+                industry: 'All Industries',
+              },
+              {
+                name: 'Adaptive Recommendations',
+                status: 'Learning',
+                industry: 'SaaS & FinTech',
+              },
+              {
+                name: 'A/B Testing Framework',
+                status: 'Running',
+                industry: 'Healthcare & Manufacturing',
+              },
+              {
+                name: 'Model Refinement Engine',
+                status: 'Optimizing',
+                industry: 'College Consulting',
+              },
+              {
+                name: 'Outcome Tracking',
+                status: 'Monitoring',
+                industry: 'Cross-Industry',
+              },
+              {
+                name: 'Deep Customer Profiling',
+                status: 'Active',
+                industry: 'Enterprise',
+              },
+              {
+                name: 'Revenue Attribution',
+                status: 'Calculating',
+                industry: 'All Sectors',
+              },
+              {
+                name: 'Behavioral Analytics',
+                status: 'Processing',
+                industry: 'Multi-Platform',
+              },
             ].map((feature, index) => (
-              <div key={index} className="bg-background-secondary/40 backdrop-blur-sm p-4 rounded-lg border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-lg">
-                <h4 className="text-text-primary font-medium text-sm mb-2">{feature.name}</h4>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-text-muted">Status</span>
-                  <span className="text-xs text-status-success font-medium">{feature.status}</span>
+              <div
+                key={index}
+                className='bg-background-secondary/40 backdrop-blur-sm p-4 rounded-lg border border-primary-800/30 hover:border-primary-600/50 transition-all duration-300 hover:shadow-lg'
+              >
+                <h4 className='text-text-primary font-medium text-sm mb-2'>
+                  {feature.name}
+                </h4>
+                <div className='flex items-center justify-between mb-1'>
+                  <span className='text-xs text-text-muted'>Status</span>
+                  <span className='text-xs text-status-success font-medium'>
+                    {feature.status}
+                  </span>
                 </div>
-                <p className="text-xs text-text-muted">
-                  <span className="text-accent-400">{feature.industry}</span>
+                <p className='text-xs text-text-muted'>
+                  <span className='text-accent-400'>{feature.industry}</span>
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Multi-Industry Pipeline Stages */}
+        <section className='mt-8'>
+          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+            Stage-wise Pipeline Management
+          </h3>
+          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
+            {/* SaaS Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-blue-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-blue-400 flex items-center'>
+                <span className='w-2 h-2 bg-blue-400 rounded-full mr-2'></span>
+                SaaS Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'Awareness',
+                    count: 1247,
+                    percentage: 15,
+                    color: 'bg-gray-500',
+                  },
+                  {
+                    stage: 'Trial Signup',
+                    count: 324,
+                    percentage: 25,
+                    color: 'bg-blue-500',
+                  },
+                  {
+                    stage: 'Trial Activation',
+                    count: 198,
+                    percentage: 40,
+                    color: 'bg-purple-500',
+                  },
+                  {
+                    stage: 'Feature Adoption',
+                    count: 145,
+                    percentage: 60,
+                    color: 'bg-yellow-500',
+                  },
+                  {
+                    stage: 'Purchase Decision',
+                    count: 89,
+                    percentage: 80,
+                    color: 'bg-green-500',
+                  },
+                  {
+                    stage: 'Closed Won',
+                    count: 52,
+                    percentage: 100,
+                    color: 'bg-emerald-600',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                        <div
+                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                          style={{ width: `${item.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-blue-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Avg. Journey Time:{' '}
+                  <span className='text-blue-400 font-medium'>30 days</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Manufacturing Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-orange-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-orange-400 flex items-center'>
+                <span className='w-2 h-2 bg-orange-400 rounded-full mr-2'></span>
+                Manufacturing Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'RFQ Submission',
+                    count: 89,
+                    percentage: 20,
+                    color: 'bg-gray-500',
+                  },
+                  {
+                    stage: 'Technical Review',
+                    count: 67,
+                    percentage: 35,
+                    color: 'bg-blue-500',
+                  },
+                  {
+                    stage: 'Quote Generation',
+                    count: 45,
+                    percentage: 50,
+                    color: 'bg-purple-500',
+                  },
+                  {
+                    stage: 'Negotiation',
+                    count: 32,
+                    percentage: 70,
+                    color: 'bg-yellow-500',
+                  },
+                  {
+                    stage: 'Procurement Approval',
+                    count: 23,
+                    percentage: 85,
+                    color: 'bg-green-500',
+                  },
+                  {
+                    stage: 'Closed Won',
+                    count: 18,
+                    percentage: 100,
+                    color: 'bg-emerald-600',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                        <div
+                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                          style={{ width: `${item.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-orange-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Avg. Journey Time:{' '}
+                  <span className='text-orange-400 font-medium'>120 days</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Healthcare Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-green-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-green-400 flex items-center'>
+                <span className='w-2 h-2 bg-green-400 rounded-full mr-2'></span>
+                Healthcare Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'Patient Registration',
+                    count: 456,
+                    percentage: 25,
+                    color: 'bg-gray-500',
+                  },
+                  {
+                    stage: 'Initial Consultation',
+                    count: 342,
+                    percentage: 40,
+                    color: 'bg-blue-500',
+                  },
+                  {
+                    stage: 'Treatment Planning',
+                    count: 267,
+                    percentage: 55,
+                    color: 'bg-purple-500',
+                  },
+                  {
+                    stage: 'Treatment Delivery',
+                    count: 198,
+                    percentage: 75,
+                    color: 'bg-yellow-500',
+                  },
+                  {
+                    stage: 'Outcome Measurement',
+                    count: 156,
+                    percentage: 90,
+                    color: 'bg-green-500',
+                  },
+                  {
+                    stage: 'Follow-up Complete',
+                    count: 134,
+                    percentage: 100,
+                    color: 'bg-emerald-600',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                        <div
+                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                          style={{ width: `${item.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-green-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Avg. Journey Time:{' '}
+                  <span className='text-green-400 font-medium'>90 days</span>
+                </div>
+              </div>
+            </div>
+
+            {/* FinTech Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-purple-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-purple-400 flex items-center'>
+                <span className='w-2 h-2 bg-purple-400 rounded-full mr-2'></span>
+                FinTech Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'Compliance Screening',
+                    count: 234,
+                    percentage: 30,
+                    color: 'bg-gray-500',
+                  },
+                  {
+                    stage: 'Risk Assessment',
+                    count: 187,
+                    percentage: 45,
+                    color: 'bg-blue-500',
+                  },
+                  {
+                    stage: 'Regulatory Approval',
+                    count: 143,
+                    percentage: 60,
+                    color: 'bg-purple-500',
+                  },
+                  {
+                    stage: 'Account Opening',
+                    count: 98,
+                    percentage: 80,
+                    color: 'bg-yellow-500',
+                  },
+                  {
+                    stage: 'Service Activation',
+                    count: 76,
+                    percentage: 95,
+                    color: 'bg-green-500',
+                  },
+                  {
+                    stage: 'Active Customer',
+                    count: 67,
+                    percentage: 100,
+                    color: 'bg-emerald-600',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                        <div
+                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                          style={{ width: `${item.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-purple-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Avg. Journey Time:{' '}
+                  <span className='text-purple-400 font-medium'>60 days</span>
+                </div>
+              </div>
+            </div>
+
+            {/* College Consulting Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-indigo-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-indigo-400 flex items-center'>
+                <span className='w-2 h-2 bg-indigo-400 rounded-full mr-2'></span>
+                College Consulting Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'Initial Inquiry',
+                    count: 123,
+                    percentage: 20,
+                    color: 'bg-gray-500',
+                  },
+                  {
+                    stage: 'Parent Meeting',
+                    count: 89,
+                    percentage: 35,
+                    color: 'bg-blue-500',
+                  },
+                  {
+                    stage: 'Student Assessment',
+                    count: 67,
+                    percentage: 50,
+                    color: 'bg-purple-500',
+                  },
+                  {
+                    stage: 'School List Development',
+                    count: 45,
+                    percentage: 70,
+                    color: 'bg-yellow-500',
+                  },
+                  {
+                    stage: 'Application Prep',
+                    count: 32,
+                    percentage: 85,
+                    color: 'bg-green-500',
+                  },
+                  {
+                    stage: 'Enrollment Success',
+                    count: 24,
+                    percentage: 100,
+                    color: 'bg-emerald-600',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color}`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <div className='w-16 bg-background-tertiary rounded-full h-2'>
+                        <div
+                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                          style={{ width: `${item.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-indigo-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Avg. Journey Time:{' '}
+                  <span className='text-indigo-400 font-medium'>365 days</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Data Processing Pipeline */}
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-cyan-800/30'>
+              <h4 className='text-lg font-semibold mb-4 text-cyan-400 flex items-center'>
+                <span className='w-2 h-2 bg-cyan-400 rounded-full mr-2'></span>
+                Data Processing Pipeline
+              </h4>
+              <div className='space-y-3'>
+                {[
+                  {
+                    stage: 'Data Ingestion',
+                    count: '2.4M',
+                    percentage: 100,
+                    color: 'bg-emerald-500',
+                    status: 'Active',
+                  },
+                  {
+                    stage: 'Transformation',
+                    count: '2.4M',
+                    percentage: 98,
+                    color: 'bg-green-500',
+                    status: 'Processing',
+                  },
+                  {
+                    stage: 'Enrichment',
+                    count: '2.3M',
+                    percentage: 95,
+                    color: 'bg-yellow-500',
+                    status: 'Running',
+                  },
+                  {
+                    stage: 'Aggregation',
+                    count: '2.2M',
+                    percentage: 92,
+                    color: 'bg-orange-500',
+                    status: 'Active',
+                  },
+                  {
+                    stage: 'Storage',
+                    count: '2.1M',
+                    percentage: 90,
+                    color: 'bg-blue-500',
+                    status: 'Storing',
+                  },
+                  {
+                    stage: 'Output Ready',
+                    count: '2.0M',
+                    percentage: 88,
+                    color: 'bg-purple-500',
+                    status: 'Complete',
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'
+                  >
+                    <div className='flex items-center space-x-3'>
+                      <div
+                        className={`w-3 h-3 rounded-full ${item.color} animate-pulse`}
+                      ></div>
+                      <span className='text-sm text-text-primary'>
+                        {item.stage}
+                      </span>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <span className='text-xs text-text-muted'>
+                        {item.count}
+                      </span>
+                      <span className='text-xs text-cyan-400 font-medium'>
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='mt-4 pt-3 border-t border-cyan-800/30'>
+                <div className='text-xs text-text-muted'>
+                  Processing Rate:{' '}
+                  <span className='text-cyan-400 font-medium'>
+                    14.2k events/sec
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pipeline Summary Analytics */}
+        <section className='mt-8'>
+          <h3 className='text-xl font-semibold mb-6 text-accent-400'>
+            Pipeline Performance Summary
+          </h3>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-blue-800/30'>
+              <div className='flex items-center justify-between mb-4'>
+                <h4 className='text-lg font-semibold text-blue-400'>
+                  Overall Conversion
+                </h4>
+                <span className='text-2xl'>🎯</span>
+              </div>
+              <div className='text-3xl font-bold text-blue-400 mb-2'>23.7%</div>
+              <div className='text-sm text-text-muted'>
+                Cross-industry average
+              </div>
+              <div className='mt-3 text-xs text-green-400'>
+                +2.8% vs last month
+              </div>
+            </div>
+
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-purple-800/30'>
+              <div className='flex items-center justify-between mb-4'>
+                <h4 className='text-lg font-semibold text-purple-400'>
+                  Avg. Journey Time
+                </h4>
+                <span className='text-2xl'>⏱️</span>
+              </div>
+              <div className='text-3xl font-bold text-purple-400 mb-2'>
+                67 days
+              </div>
+              <div className='text-sm text-text-muted'>Weighted by volume</div>
+              <div className='mt-3 text-xs text-green-400'>
+                -5.2 days improvement
+              </div>
+            </div>
+
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-green-800/30'>
+              <div className='flex items-center justify-between mb-4'>
+                <h4 className='text-lg font-semibold text-green-400'>
+                  Stage Efficiency
+                </h4>
+                <span className='text-2xl'>⚡</span>
+              </div>
+              <div className='text-3xl font-bold text-green-400 mb-2'>
+                94.2%
+              </div>
+              <div className='text-sm text-text-muted'>Process automation</div>
+              <div className='mt-3 text-xs text-green-400'>
+                +1.8% optimization
+              </div>
+            </div>
+
+            <div className='bg-background-secondary/60 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-orange-800/30'>
+              <div className='flex items-center justify-between mb-4'>
+                <h4 className='text-lg font-semibold text-orange-400'>
+                  Active Pipelines
+                </h4>
+                <span className='text-2xl'>🔄</span>
+              </div>
+              <div className='text-3xl font-bold text-orange-400 mb-2'>
+                2,847
+              </div>
+              <div className='text-sm text-text-muted'>
+                Across all industries
+              </div>
+              <div className='mt-3 text-xs text-green-400'>
+                +156 new this week
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -474,4 +1190,3 @@ const UniversalAIDashboard: React.FC = () => {
 };
 
 export default UniversalAIDashboard;
-
