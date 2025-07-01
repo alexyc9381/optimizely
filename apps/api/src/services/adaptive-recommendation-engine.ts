@@ -271,35 +271,30 @@ export class AdaptiveRecommendationEngine extends EventEmitter {
 
   // Generate Personalized Recommendations
   public async generateRecommendations(userId: string, context?: Partial<BehaviorContext>): Promise<Recommendation[]> {
-    try {
-      const profile = await this.getUserProfile(userId);
-      if (!profile) {
-        // Create initial profile and return basic recommendations
-        await this.createInitialProfile(userId);
-        return this.getDefaultRecommendations(userId);
-      }
+    let recommendations: Recommendation[] = [];
+    let profile = this.userProfiles.get(userId);
 
-      const recommendations: Recommendation[] = [];
-
-      // Generate different types of recommendations
-      const behaviorRecs = await this.getBehaviorBasedRecommendations(profile, context);
-      const goalRecs = await this.getGoalBasedRecommendations(profile);
-      const trendingRecs = await this.getTrendingRecommendations(profile, context);
-
-      // Combine and rank recommendations
-      const allRecs = [...behaviorRecs, ...goalRecs, ...trendingRecs];
-      const rankedRecs = this.rankRecommendations(allRecs, profile);
-
-      // Apply filters and limits
-      const filteredRecs = this.applyBusinessRules(rankedRecs, profile);
-      const finalRecs = filteredRecs.slice(0, this.config.maxRecommendationsPerUser);
-
-      this.emit('recommendationsGenerated', { userId, recommendations: finalRecs });
-      return finalRecs;
-    } catch (error) {
-      console.error('Error generating recommendations:', error);
-      throw error;
+    if (!profile) {
+      // Create initial profile and return default recommendations
+      await this.updateUserProfile(userId);
+      profile = this.userProfiles.get(userId);
+      return this.getDefaultRecommendations(userId);
     }
+
+    // Get different types of recommendations
+    const behaviorBased = await this.getBehaviorBasedRecommendations(profile, context);
+    const goalBased = await this.getGoalBasedRecommendations(profile);
+    const trending = await this.getTrendingRecommendations(profile, context);
+
+    // Combine and rank recommendations
+    recommendations = [...behaviorBased, ...goalBased, ...trending];
+
+    // Apply ranking and business rules
+    recommendations = this.rankRecommendations(recommendations, profile);
+    recommendations = this.applyBusinessRules(recommendations, profile);
+
+    // Limit number of recommendations
+    return recommendations.slice(0, this.config.maxRecommendationsPerUser);
   }
 
   // Track Recommendation Interactions
@@ -392,7 +387,7 @@ export class AdaptiveRecommendationEngine extends EventEmitter {
   }
 
   // Placeholder implementations for recommendation generation
-  private async getBehaviorBasedRecommendations(profile: UserProfile, context?: Partial<BehaviorContext>): Promise<Recommendation[]> {
+  private async getBehaviorBasedRecommendations(profile: UserProfile, _context?: Partial<BehaviorContext>): Promise<Recommendation[]> {
     const recommendations: Recommendation[] = [];
 
     // Analyze recent behavior patterns
@@ -437,23 +432,23 @@ export class AdaptiveRecommendationEngine extends EventEmitter {
     return recommendations;
   }
 
-  private async getTrendingRecommendations(profile: UserProfile, context?: Partial<BehaviorContext>): Promise<Recommendation[]> {
+  private async getTrendingRecommendations(profile: UserProfile, _context?: Partial<BehaviorContext>): Promise<Recommendation[]> {
     const recommendations: Recommendation[] = [];
 
-    // Industry-specific trending features
-    const industryTrends = this.getIndustryTrends(profile.industry);
+    // Get industry trends
+    const trends = this.getIndustryTrends(profile.industry);
 
-    for (const trend of industryTrends) {
+    trends.forEach((trend, index) => {
       recommendations.push(this.createRecommendation(
         RecommendationType.FEATURE_INTRODUCTION,
-        `Trending in ${profile.industry}: ${trend.name}`,
+        `Try ${trend.name}`,
         trend.description,
         profile.userId,
         trend.popularity,
         0.7,
-        ['trending', 'industry_specific']
+        [`Popular in ${profile.industry}`, `${trend.popularity}/10 industry popularity`]
       ));
-    }
+    });
 
     return recommendations;
   }
@@ -477,40 +472,39 @@ export class AdaptiveRecommendationEngine extends EventEmitter {
       confidence: Math.min(1, Math.max(0, confidence)),
       reasoning,
       metadata: {
-        category: type,
-        tags: reasoning,
-        estimatedValue: priority * confidence,
-        implementationEffort: 3,
-        targetAudience: ['general'],
-        expectedOutcome: 'Improved user experience and productivity'
+        category: type.replace(/_/g, ' '),
+        tags: [type, 'automated'],
+        estimatedValue: priority * 10,
+        implementationEffort: Math.ceil(priority / 2),
+        targetAudience: ['all'],
+        expectedOutcome: `Improved user experience in ${type.replace(/_/g, ' ')}`
       },
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
     };
   }
 
   // Learning and Adaptation
   private async learnFromInteraction(userId: string, recommendationId: string, interaction: RecommendationInteraction): Promise<void> {
-    // Learn from positive/negative feedback to improve future recommendations
+    // Update user profile based on interaction
     const profile = this.userProfiles.get(userId);
     if (profile) {
-      // Adjust adaptation score based on interaction
-      if (interaction.action === 'accepted') {
-        profile.adaptationScore = Math.min(1, profile.adaptationScore + 0.1);
-      } else if (interaction.action === 'rejected') {
-        profile.adaptationScore = Math.max(0, profile.adaptationScore - 0.05);
-      }
+      profile.recommendationHistory.push(interaction);
+      profile.adaptationScore = this.calculateAdaptationScore(profile);
+      profile.lastUpdated = new Date().toISOString();
+      this.userProfiles.set(userId, profile);
     }
   }
 
-  private rankRecommendations(recommendations: Recommendation[], profile: UserProfile): Recommendation[] {
+  private rankRecommendations(recommendations: Recommendation[], _profile: UserProfile): Recommendation[] {
     return recommendations.sort((a, b) => {
-      const scoreA = a.priority * a.confidence;
-      const scoreB = b.priority * b.confidence;
-      return scoreB - scoreA;
+      // Sort by priority first, then confidence
+      if (a.priority !== b.priority) return b.priority - a.priority;
+      return b.confidence - a.confidence;
     });
   }
 
-  private applyBusinessRules(recommendations: Recommendation[], profile: UserProfile): Recommendation[] {
+  private applyBusinessRules(recommendations: Recommendation[], _profile: UserProfile): Recommendation[] {
     return recommendations.filter(rec => rec.confidence >= this.config.confidenceThreshold);
   }
 

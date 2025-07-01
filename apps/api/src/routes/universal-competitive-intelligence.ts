@@ -1,10 +1,10 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import { body, param, query, validationResult } from 'express-validator';
-import { redisManager } from '../services/redis-client.js';
+import { redisManager } from '../services/redis-client';
 import {
     createUniversalCompetitiveIntelligenceEngine
-} from '../services/universal-competitive-intelligence-service.js';
+} from '../services/universal-competitive-intelligence-service';
 
 const router = express.Router();
 

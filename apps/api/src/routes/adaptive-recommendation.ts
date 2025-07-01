@@ -400,7 +400,7 @@ function getRecommendationTypeDescription(type: RecommendationType): string {
 }
 
 // Error handling middleware for this router
-router.use((error: Error, req: Request, res: Response, next: Function) => {
+router.use((error: Error, req: Request, res: Response, _next: Function) => {
   console.error('Adaptive Recommendation Router Error:', error);
   res.status(500).json({
     error: 'Internal Server Error',
