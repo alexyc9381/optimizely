@@ -1,0 +1,637 @@
+/**
+ * Performance Chart CSS
+ * Optimized styling for virtualized charts with performance indicators,
+ * memory-efficient animations, and accessibility features.
+ */
+
+/* Base Performance Chart Container */
+.virtualized-chart {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  box-sizing: border-box;
+  contain: layout style paint;
+  will-change: transform;
+}
+
+.virtualized-chart.dark {
+  background: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+/* Virtual List Items */
+.virtual-list-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #ffffff;
+  transition: background-color 0.2s ease;
+  contain: layout style;
+}
+
+.virtual-list-item:hover {
+  background: #f9fafb;
+}
+
+.virtual-list-item.dark {
+  background: #1f2937;
+  border-bottom-color: #374151;
+}
+
+.virtual-list-item.dark:hover {
+  background: #374151;
+}
+
+.virtual-list-item .data-point {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.virtual-list-item .index {
+  min-width: 40px;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.virtual-list-item .value {
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.virtual-list-item.dark .index {
+  color: #9ca3af;
+}
+
+.virtual-list-item.dark .value {
+  color: #d1d5db;
+}
+
+/* Performance Overlay */
+.performance-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.performance-overlay.dark {
+  background: rgba(31, 41, 55, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f9fafb;
+}
+
+.performance-overlay .metrics {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.performance-overlay .metrics span {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.performance-overlay .scrolling {
+  color: #3b82f6;
+  font-weight: 600;
+  animation: pulse 1s infinite;
+}
+
+.performance-overlay .alerts {
+  margin-top: 8px;
+  max-width: 200px;
+}
+
+.performance-overlay .alert {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-bottom: 2px;
+  animation: slideIn 0.3s ease;
+}
+
+.performance-overlay .alert-memory {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
+.performance-overlay .alert-render-time {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+.performance-overlay .alert-frame-rate {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
+/* Progressive Loading */
+.progressive-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  color: #6b7280;
+}
+
+.progressive-loading.dark {
+  background: #111827;
+  border-color: #4b5563;
+  color: #9ca3af;
+}
+
+.loading-progress {
+  text-align: center;
+  width: 200px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  animation: progressShimmer 2s infinite;
+}
+
+.progressive-loading span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Progressive Error */
+.progressive-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  text-align: center;
+  padding: 24px;
+}
+
+.progressive-error.dark {
+  background: #1f1518;
+  border-color: #7f1d1d;
+  color: #f87171;
+}
+
+.progressive-error p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+}
+
+.progressive-error button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.progressive-error button:hover {
+  background: #b91c1c;
+}
+
+.progressive-error button:focus {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+
+/* Performance Dashboard */
+.performance-dashboard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.performance-dashboard.dark {
+  background: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+.performance-dashboard h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.performance-dashboard.dark h3 {
+  color: #f9fafb;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.metric {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.metric.dark {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.metric label {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric.dark label {
+  color: #9ca3af;
+}
+
+.metric span {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.metric.dark span {
+  color: #f9fafb;
+}
+
+/* Performance status indicators */
+.metric.warning span {
+  color: #f59e0b;
+}
+
+.metric.error span {
+  color: #ef4444;
+}
+
+.metric.success span {
+  color: #10b981;
+}
+
+/* Alerts Section */
+.alerts-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.alerts-section.dark {
+  border-top-color: #374151;
+}
+
+.alerts-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.alerts-section.dark h4 {
+  color: #d1d5db;
+}
+
+.alerts-section .alert {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideInAlert 0.3s ease;
+}
+
+.alerts-section .alert.dark {
+  background: #451a03;
+  border-color: #92400e;
+  color: #fbbf24;
+}
+
+.alerts-section .alert::before {
+  content: '⚠️';
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .virtualized-chart {
+    border-radius: 4px;
+  }
+
+  .performance-overlay {
+    position: static;
+    background: rgba(255, 255, 255, 0.9);
+    margin: 8px;
+    border-radius: 4px;
+  }
+
+  .performance-overlay .metrics {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .metric {
+    padding: 8px;
+  }
+
+  .metric label {
+    font-size: 11px;
+  }
+
+  .metric span {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .performance-overlay .metrics {
+    font-size: 11px;
+  }
+
+  .virtual-list-item {
+    padding: 6px 8px;
+  }
+
+  .virtual-list-item .data-point {
+    gap: 8px;
+  }
+
+  .virtual-list-item .index {
+    min-width: 30px;
+    font-size: 11px;
+  }
+
+  .virtual-list-item .value {
+    font-size: 12px;
+  }
+}
+
+/* High Performance Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInAlert {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+/* Canvas Optimizations */
+.virtualized-chart canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Scroll Performance */
+.virtualized-chart [data-virtual-scroll] {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overflow-anchor: none;
+  contain: strict;
+}
+
+/* Memory Efficient Transitions */
+.virtualized-chart * {
+  will-change: auto;
+}
+
+.virtualized-chart .animating {
+  will-change: transform, opacity;
+}
+
+.virtualized-chart .animating.finished {
+  will-change: auto;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .virtualized-chart,
+  .virtualized-chart *,
+  .performance-overlay,
+  .performance-overlay * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .virtualized-chart:not(.light) {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .virtualized-chart {
+    border-color: #000000;
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .performance-overlay {
+    background: #ffffff;
+    border-color: #000000;
+    color: #000000;
+  }
+
+  .metric {
+    border-color: #000000;
+    background: #ffffff;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .virtualized-chart {
+    break-inside: avoid;
+    background: white !important;
+    border: 1px solid #000;
+  }
+
+  .performance-overlay {
+    display: none;
+  }
+
+  .progressive-loading,
+  .progressive-error {
+    display: none;
+  }
+}
+
+/* Loading States */
+.virtualized-chart.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.virtualized-chart.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.virtualized-chart.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #3b82f6;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 101;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus States */
+.virtualized-chart:focus-within {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.virtual-list-item:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+  background: #dbeafe;
+}
+
+.virtual-list-item.dark:focus {
+  background: #1e3a8a;
+}

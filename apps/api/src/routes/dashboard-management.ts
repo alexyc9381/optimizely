@@ -373,7 +373,7 @@ router.post('/dashboard-templates/:id/create-dashboard', async (req: Request, re
 router.get('/dashboards/:id/data', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { widgetIds, refresh = 'false' } = req.query;
+    const { widgetIds, refresh: _refresh = 'false' } = req.query;
 
     const dashboard = await dashboardService.getDashboard(id, true);
 
@@ -416,7 +416,7 @@ router.get('/dashboards/:id/data', async (req: Request, res: Response) => {
 router.post('/dashboards/:id/refresh', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { widgetIds } = req.body;
+    const { widgetIds: _widgetIds } = req.body;
 
     // This would trigger a refresh of specific widgets or all widgets
     // For now, we'll just return the current data

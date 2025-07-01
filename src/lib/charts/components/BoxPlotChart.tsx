@@ -5,7 +5,7 @@ import {
 } from '../types';
 
 interface BoxPlotChartProps {
-  id: string;
+  id?: string;
   data: number[][] | { [category: string]: number[] };
   categories?: string[];
   width?: number;

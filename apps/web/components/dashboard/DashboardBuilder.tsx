@@ -148,13 +148,14 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   const handleWebSocketMessage = (message: WebSocketMessage) => {
     switch (message.type) {
-      case 'data_update':
+      case 'data_update': {
         const update = message.payload as RealTimeDataUpdate;
         setRealTimeData(prev => ({
           ...prev,
           [update.widgetId]: update.data
         }));
         break;
+      }
 
       case 'error':
         console.error('WebSocket error:', message.payload);
@@ -312,7 +313,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     await addWidget(widget.type, duplicatedWidget.position);
   }, [dashboard, isEditable, addWidget]);
 
-  const applyFilters = useCallback(async (filters: DashboardFilter[]) => {
+      const _applyFilters = useCallback(async (filters: DashboardFilter[]) => {
     if (!dashboard) return;
 
     try {
@@ -348,7 +349,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         throw new Error('Failed to refresh data');
       }
 
-      const { data, metadata } = await response.json();
+      const { data, metadata: _metadata } = await response.json();
       setRealTimeData(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to refresh data');
@@ -523,9 +524,9 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
   widget,
   data,
   isEditable,
-  isSelected,
-  onResize,
-  onMove,
+  isSelected: _isSelected,
+  onResize: _onResize,
+  onMove: _onMove,
   onRemove,
   onDuplicate
 }) => {

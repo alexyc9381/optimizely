@@ -265,7 +265,7 @@ export class StatisticalChartEngine extends EventEmitter {
     };
   }
 
-  private async optimizeData(data: ChartSeries[], chartType: ChartType): Promise<ChartSeries[]> {
+  private async optimizeData(data: ChartSeries[], _chartType: ChartType): Promise<ChartSeries[]> {
     const optimizedData: ChartSeries[] = [];
 
     for (const series of data) {

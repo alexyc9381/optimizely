@@ -1,0 +1,524 @@
+/**
+ * Real-Time Chart Styles
+ * Modern, responsive CSS for real-time data visualization components
+ * with performance optimizations and accessibility features.
+ */
+
+/* Base chart container */
+.real-time-chart {
+  @apply relative bg-white rounded-lg shadow-sm border border-gray-200;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* Chart wrapper with performance optimizations */
+.real-time-chart .recharts-wrapper {
+  will-change: transform;
+  transform: translateZ(0); /* Enable hardware acceleration */
+}
+
+/* Connection status indicator */
+.real-time-chart .connection-status {
+  @apply flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-t-lg border-b border-gray-200;
+}
+
+.real-time-chart .status-dot {
+  @apply w-2 h-2 rounded-full;
+  transition: background-color 0.3s ease;
+}
+
+.real-time-chart .status-dot.connected {
+  @apply bg-green-500;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.real-time-chart .status-dot.disconnected {
+  @apply bg-red-500;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.real-time-chart .status-dot.connecting {
+  @apply bg-yellow-500;
+  animation: pulse 2s infinite;
+}
+
+/* Error display */
+.real-time-chart .error-display {
+  @apply bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Performance metrics display */
+.real-time-metrics {
+  @apply bg-gray-50 rounded-lg p-4;
+  transition: all 0.3s ease;
+}
+
+.real-time-metrics.overlay {
+  @apply absolute top-4 right-4 bg-white bg-opacity-95 backdrop-blur-sm shadow-lg;
+  z-index: 10;
+}
+
+.real-time-metrics .metric-item {
+  @apply text-center p-2;
+}
+
+.real-time-metrics .metric-label {
+  @apply text-xs font-medium text-gray-600 uppercase tracking-wide;
+}
+
+.real-time-metrics .metric-value {
+  @apply text-lg font-bold text-gray-900 mt-1;
+}
+
+.real-time-metrics .metric-value.high {
+  @apply text-red-600;
+}
+
+.real-time-metrics .metric-value.medium {
+  @apply text-yellow-600;
+}
+
+.real-time-metrics .metric-value.low {
+  @apply text-green-600;
+}
+
+/* Control buttons */
+.real-time-controls {
+  @apply flex items-center space-x-2;
+}
+
+.real-time-controls button {
+  @apply px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.real-time-controls .pause-btn {
+  @apply bg-orange-500 hover:bg-orange-600 text-white;
+  @apply focus:ring-orange-500;
+}
+
+.real-time-controls .resume-btn {
+  @apply bg-green-500 hover:bg-green-600 text-white;
+  @apply focus:ring-green-500;
+}
+
+.real-time-controls .clear-btn {
+  @apply bg-red-500 hover:bg-red-600 text-white;
+  @apply focus:ring-red-500;
+}
+
+.real-time-controls .export-btn {
+  @apply bg-blue-500 hover:bg-blue-600 text-white;
+  @apply focus:ring-blue-500;
+}
+
+/* Trend indicators */
+.trend-indicator {
+  @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.trend-indicator.up {
+  @apply bg-green-100 text-green-800;
+}
+
+.trend-indicator.down {
+  @apply bg-red-100 text-red-800;
+}
+
+.trend-indicator.stable {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.trend-indicator::before {
+  content: '';
+  @apply w-2 h-2 rounded-full mr-1;
+}
+
+.trend-indicator.up::before {
+  @apply bg-green-500;
+}
+
+.trend-indicator.down::before {
+  @apply bg-red-500;
+}
+
+.trend-indicator.stable::before {
+  @apply bg-gray-500;
+}
+
+/* Dashboard layout */
+.real-time-dashboard {
+  @apply space-y-6;
+}
+
+.real-time-dashboard .dashboard-header {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200;
+}
+
+.real-time-dashboard .dashboard-grid {
+  @apply grid gap-6;
+}
+
+.real-time-dashboard .dashboard-grid.grid-layout {
+  @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.real-time-dashboard .dashboard-grid.vertical-layout {
+  @apply grid-cols-1;
+}
+
+.real-time-dashboard .dashboard-grid.horizontal-layout {
+  @apply grid-cols-1 lg:grid-cols-3;
+}
+
+.real-time-dashboard .chart-container {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-4;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.real-time-dashboard .chart-container:hover {
+  @apply shadow-md;
+  transform: translateY(-2px);
+}
+
+.real-time-dashboard .chart-title {
+  @apply flex items-center justify-between mb-4 pb-2 border-b border-gray-100;
+}
+
+.real-time-dashboard .chart-title h4 {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+/* Chart-specific styles */
+.real-time-chart .recharts-cartesian-grid line {
+  stroke: #f3f4f6;
+  stroke-width: 1;
+}
+
+.real-time-chart .recharts-xAxis .recharts-cartesian-axis-tick-value,
+.real-time-chart .recharts-yAxis .recharts-cartesian-axis-tick-value {
+  @apply text-xs fill-gray-600;
+}
+
+.real-time-chart .recharts-tooltip-wrapper {
+  @apply z-50;
+}
+
+.real-time-chart .recharts-default-tooltip {
+  @apply bg-white rounded-lg shadow-lg border border-gray-200 p-3;
+  font-size: 14px;
+}
+
+.real-time-chart .recharts-tooltip-label {
+  @apply font-medium text-gray-900 mb-1;
+}
+
+.real-time-chart .recharts-tooltip-item-list {
+  @apply space-y-1;
+}
+
+.real-time-chart .recharts-tooltip-item {
+  @apply text-sm;
+}
+
+/* Loading states */
+.real-time-chart .loading-skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+  height: 300px;
+}
+
+.real-time-chart .loading-spinner {
+  @apply animate-spin rounded-full border-2 border-gray-300 border-t-blue-500;
+  width: 32px;
+  height: 32px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .real-time-chart {
+    @apply rounded-lg;
+  }
+
+  .real-time-controls {
+    @apply flex-wrap gap-2;
+  }
+
+  .real-time-controls button {
+    @apply text-xs px-2 py-1;
+  }
+
+  .real-time-metrics {
+    @apply text-xs;
+  }
+
+  .real-time-metrics .metric-value {
+    @apply text-base;
+  }
+
+  .real-time-dashboard .dashboard-grid {
+    @apply grid-cols-1 gap-4;
+  }
+
+  .real-time-dashboard .chart-container {
+    @apply p-3;
+  }
+}
+
+@media (max-width: 480px) {
+  .real-time-chart .connection-status {
+    @apply text-xs;
+  }
+
+  .real-time-metrics.overlay {
+    @apply relative top-0 right-0 bg-gray-50 bg-opacity-100;
+  }
+
+  .trend-indicator {
+    @apply text-xs px-1.5 py-0.5;
+  }
+
+  .real-time-controls {
+    @apply flex-col space-x-0 space-y-2;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .real-time-chart {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .real-time-chart .connection-status {
+    @apply bg-gray-700 border-gray-600 text-gray-200;
+  }
+
+  .real-time-metrics {
+    @apply bg-gray-700;
+  }
+
+  .real-time-metrics .metric-label {
+    @apply text-gray-400;
+  }
+
+  .real-time-metrics .metric-value {
+    @apply text-gray-100;
+  }
+
+  .real-time-dashboard .chart-container {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .real-time-chart .recharts-cartesian-grid line {
+    stroke: #374151;
+  }
+
+  .real-time-chart .recharts-xAxis .recharts-cartesian-axis-tick-value,
+  .real-time-chart .recharts-yAxis .recharts-cartesian-axis-tick-value {
+    @apply fill-gray-400;
+  }
+
+  .real-time-chart .recharts-default-tooltip {
+    @apply bg-gray-700 border-gray-600 text-gray-100;
+  }
+}
+
+/* Animation keyframes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Performance optimizations */
+.real-time-chart * {
+  box-sizing: border-box;
+}
+
+.real-time-chart .recharts-wrapper {
+  /* Disable pointer events during data updates for better performance */
+  pointer-events: auto;
+}
+
+.real-time-chart.updating .recharts-wrapper {
+  pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .real-time-chart {
+    @apply border-2 border-black;
+  }
+
+  .real-time-controls button {
+    @apply border-2 border-current;
+  }
+
+  .trend-indicator {
+    @apply border border-current;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .real-time-chart *,
+  .real-time-metrics *,
+  .real-time-controls * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .real-time-chart {
+    @apply shadow-none border border-gray-400;
+  }
+
+  .real-time-controls,
+  .connection-status,
+  .real-time-metrics.overlay {
+    display: none !important;
+  }
+
+  .real-time-chart .recharts-wrapper {
+    background: white !important;
+  }
+}
+
+/* Focus management for accessibility */
+.real-time-chart:focus-within {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+}
+
+.real-time-controls button:focus,
+.real-time-chart button:focus {
+  @apply ring-2 ring-offset-2;
+}
+
+/* Screen reader support */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Custom scrollbar for dashboard */
+.real-time-dashboard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.real-time-dashboard::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded;
+}
+
+.real-time-dashboard::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+.real-time-dashboard::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Status indicators with better visibility */
+.status-indicator {
+  @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.status-indicator.connected {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-indicator.disconnected {
+  @apply bg-red-100 text-red-800;
+}
+
+.status-indicator.paused {
+  @apply bg-orange-100 text-orange-800;
+}
+
+.status-indicator.error {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Performance warning indicators */
+.performance-warning {
+  @apply bg-yellow-50 border border-yellow-200 text-yellow-800 px-3 py-2 rounded-md text-sm;
+}
+
+.performance-critical {
+  @apply bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-md text-sm;
+}
+
+/* Chart type specific optimizations */
+.real-time-chart.line-chart .recharts-line {
+  stroke-width: 2;
+  fill: none;
+}
+
+.real-time-chart.area-chart .recharts-area {
+  fill-opacity: 0.3;
+}
+
+.real-time-chart.bar-chart .recharts-bar {
+  transition: fill 0.2s ease;
+}
+
+.real-time-chart.scatter-chart .recharts-scatter {
+  fill-opacity: 0.8;
+}
+
+/* Tooltip improvements */
+.recharts-tooltip-cursor {
+  stroke: #94a3b8;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+/* Legend styles */
+.recharts-legend-wrapper {
+  padding-top: 10px !important;
+}
+
+.recharts-legend-item {
+  margin-right: 16px !important;
+}
+
+/* Grid and axis improvements */
+.recharts-cartesian-axis-line {
+  stroke: #d1d5db;
+}
+
+.recharts-cartesian-axis-tick-line {
+  stroke: #d1d5db;
+}

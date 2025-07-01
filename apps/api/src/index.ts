@@ -279,6 +279,20 @@ app.use(
   campaignAttributionRoutes
 );
 
+// Import and mount Outcome Tracking routes
+import { default as outcomeTrackingRoutes } from './routes/outcome-tracking';
+app.use(
+  `/api/${apiVersion}/outcome-tracking`,
+  outcomeTrackingRoutes
+);
+
+// Import and mount Model Refinement routes
+import { default as modelRefinementRoutes } from './routes/model-refinement';
+app.use(
+  `/api/${apiVersion}/model-refinement`,
+  modelRefinementRoutes
+);
+
 // Import and mount Confidence Scoring routes
 import { default as confidenceScoringRoutes } from './routes/confidence-scoring';
 app.use(`/api/${apiVersion}/confidence-scoring`, confidenceScoringRoutes);
@@ -460,6 +474,10 @@ app.use(`/api/${apiVersion}/content-performance`, universalContentPerformanceRou
 // Import and mount Universal Performance Tracking and Analytics Dashboard routes
 import { default as performanceDashboardRoutes } from './routes/performance-dashboard';
 app.use(`/api/${apiVersion}/performance-dashboard`, performanceDashboardRoutes);
+
+// Import and mount Cross-Industry Performance Analytics routes
+import { default as crossIndustryPerformanceAnalyticsRoutes } from './routes/cross-industry-performance-analytics';
+app.use(`/api/${apiVersion}/cross-industry-performance`, crossIndustryPerformanceAnalyticsRoutes);
 
 // Import and mount Dashboard Management routes
 import { default as dashboardManagementRoutes } from './routes/dashboard-management';

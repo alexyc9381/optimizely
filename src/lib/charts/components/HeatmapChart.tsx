@@ -3,7 +3,7 @@ import { StatisticalChartEngine } from '../StatisticalChartEngine';
 import { HeatmapDataPoint } from '../types';
 
 interface HeatmapChartProps {
-  id: string;
+  id?: string;
   data: HeatmapDataPoint[] | number[][];
   xLabels?: string[];
   yLabels?: string[];
