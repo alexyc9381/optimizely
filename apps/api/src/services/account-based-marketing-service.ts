@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { EventEmitter } from 'events';
+import { PrismaClient } from '../generated/prisma';
 
 // Use the existing redis client type
 type RedisClientType = any;

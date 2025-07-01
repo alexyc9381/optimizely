@@ -7,15 +7,6 @@ import { Context, requireAuth } from '../context';
 let visualizationService: any = null;
 
 export const queryResolvers: IResolvers<any, Context> = {
-  // Event queries
-  getEvent: async (_, { id }, context) => {
-    if (!context.analyticsService) {
-      throw new Error('Analytics service not available');
-    }
-    const result = await context.analyticsService.getEventById(id);
-    return result;
-  },
-
   searchEvents: async (_, { query, filters, sort, limit, offset }, context) => {
     if (!context.analyticsService) {
       throw new Error('Analytics service not available');

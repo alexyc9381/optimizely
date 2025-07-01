@@ -23,6 +23,30 @@ type Event {
   visitor: Visitor
 }
 
+type EventSearchResult {
+  events: [Event!]!
+  totalCount: Int!
+  hasNextPage: Boolean!
+}
+
+input EventSort {
+  field: EventSortField!
+  direction: SortDirection!
+}
+
+enum EventSortField {
+  TIMESTAMP
+  TYPE
+  VISITOR_ID
+  SESSION_ID
+  CREATED_AT
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
 enum EventType {
   PAGE_VIEW
   CLICK
@@ -542,8 +566,16 @@ type Query {
   chartData(input: ChartDataInput!): ChartData!
   widgetData(type: WidgetType!, config: JSON!, dateRange: DateRangeInput): WidgetData!
   dashboardData(widgets: [WidgetInput!]!, dateRange: DateRangeInput): [WidgetData!]!
+  dashboard(input: DashboardInput!): DashboardResult!
 
   # Search queries
+  searchEvents(
+    query: String!
+    filters: EventFilters
+    sort: EventSort
+    limit: Int = 100
+    offset: Int = 0
+  ): EventSearchResult!
   searchVisitors(query: String!, limit: Int = 10): [Visitor!]!
   searchCompanies(query: String!, limit: Int = 10): [Company!]!
 
@@ -838,6 +870,24 @@ input SyncJobInput {
   type: SyncJobType!
   direction: SyncDirection!
   configuration: JSON!
+}
+
+# =============================================================================
+# DASHBOARD TYPES
+# =============================================================================
+
+input DashboardInput {
+  dateRange: DateRangeInput!
+  widgets: [WidgetInput!]
+  filters: JSON
+}
+
+type DashboardResult {
+  success: Boolean!
+  config: JSON!
+  widgets: [WidgetData!]!
+  error: String
+  generatedAt: DateTime!
 }
 
 # =============================================================================

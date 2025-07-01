@@ -265,12 +265,12 @@ app.use(
   competitiveIntelligenceRoutes
 );
 
-// Import and mount Universal Competitive Intelligence routes
-import { default as universalCompetitiveIntelligenceRoutes } from './routes/universal-competitive-intelligence';
-app.use(
-  `/api/${apiVersion}/competitive-intelligence`,
-  universalCompetitiveIntelligenceRoutes
-);
+// Import and mount Universal Competitive Intelligence routes - TEMPORARILY DISABLED
+// import { default as universalCompetitiveIntelligenceRoutes } from './routes/universal-competitive-intelligence';
+// app.use(
+//   `/api/${apiVersion}/competitive-intelligence`,
+//   universalCompetitiveIntelligenceRoutes
+// );
 
 // Import and mount Campaign Attribution routes
 import { default as campaignAttributionRoutes } from './routes/campaign-attribution';
