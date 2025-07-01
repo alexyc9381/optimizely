@@ -239,26 +239,25 @@ const Sidebar: React.FC = () => {
     return (
       <div className='mb-1'>
         <div className='flex items-center'>
-          <Link href={item.href} passHref>
-            <a
-              className={`flex items-center w-full px-2 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              } ${paddingLeft}`}
-            >
-              {item.icon && <span className='mr-3'>{item.icon}</span>}
-              {!isCollapsed && (
-                <>
-                  <span className='flex-1'>{item.name}</span>
-                  {item.badge && (
-                    <span className='inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full'>
-                      {item.badge}
-                    </span>
-                  )}
-                </>
-              )}
-            </a>
+          <Link
+            href={item.href}
+            className={`flex items-center w-full px-2 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+              isActive
+                ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            } ${paddingLeft}`}
+          >
+            {item.icon && <span className='mr-3'>{item.icon}</span>}
+            {!isCollapsed && (
+              <>
+                <span className='flex-1'>{item.name}</span>
+                {item.badge && (
+                  <span className='inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full'>
+                    {item.badge}
+                  </span>
+                )}
+              </>
+            )}
           </Link>
           {hasChildren && !isCollapsed && (
             <button
