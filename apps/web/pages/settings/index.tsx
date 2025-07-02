@@ -192,12 +192,9 @@ const SettingsPage: React.FC = () => {
                     className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'
                   >
                     <div className='flex items-center'>
-                      <div className='w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mr-3'>
-                        <span className='text-white font-medium text-sm'>
-                          {member.name
-                            .split(' ')
-                            .map(n => n[0])
-                            .join('')}
+                      <div className='w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3'>
+                        <span className='text-white font-semibold text-sm'>
+                          {member.name.charAt(0)}
                         </span>
                       </div>
                       <div>

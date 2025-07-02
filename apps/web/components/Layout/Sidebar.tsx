@@ -307,7 +307,7 @@ const Sidebar: React.FC = () => {
       <div className='flex items-center justify-between p-4 border-b border-gray-200'>
         {!isCollapsed && (
           <div className='flex items-center'>
-            <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
+            <div className='w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center'>
               <span className='text-white font-bold text-sm'>AI</span>
             </div>
             <div className='ml-2'>

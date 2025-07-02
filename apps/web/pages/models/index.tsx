@@ -124,9 +124,9 @@ const ModelsPage: React.FC = () => {
                 <p className='text-2xl font-bold text-gray-900'>94.2%</p>
                 <p className='text-xs text-green-600 mt-1'>+2.1% improvement</p>
               </div>
-              <div className='w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center'>
+              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
                 <svg
-                  className='w-4 h-4 text-purple-600'
+                  className='w-4 h-4 text-blue-600'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -135,7 +135,7 @@ const ModelsPage: React.FC = () => {
                     strokeLinecap='round'
                     strokeLinejoin='round'
                     strokeWidth={2}
-                    d='M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'
+                    d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
                   />
                 </svg>
               </div>
@@ -216,7 +216,7 @@ const ModelsPage: React.FC = () => {
                   >
                     <td className='py-4 px-6'>
                       <div className='flex items-center'>
-                        <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-3'>
+                        <div className='w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3'>
                           <span className='text-white font-medium text-xs'>
                             {model.name
                               .split(' ')
@@ -236,7 +236,7 @@ const ModelsPage: React.FC = () => {
                       </div>
                     </td>
                     <td className='py-4 px-6'>
-                      <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800'>
+                      <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
                         {model.type}
                       </span>
                     </td>
@@ -297,6 +297,38 @@ const ModelsPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        {/* Model Insights Card */}
+        <div className='bg-white rounded-xl shadow-lg p-6 border border-gray-200'>
+          <div className='flex items-center justify-between mb-6'>
+            <div className='flex items-center'>
+              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <svg
+                  className='w-4 h-4 text-blue-600'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+                  />
+                </svg>
+              </div>
+              <div className='ml-3'>
+                <h3 className='text-lg font-semibold text-gray-900'>
+                  Model Insights
+                </h3>
+                <p className='text-sm text-gray-600'>Performance analytics</p>
+              </div>
+            </div>
+            <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
+              View Performance
+            </button>
           </div>
         </div>
       </div>

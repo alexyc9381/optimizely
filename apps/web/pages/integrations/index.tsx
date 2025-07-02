@@ -62,7 +62,7 @@ const IntegrationsPage: React.FC = () => {
   const WebsiteIntegration = () => (
     <div className='space-y-8'>
       {/* Quick Start */}
-      <div className='bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200'>
+      <div className='bg-blue-50 rounded-lg p-6 border border-blue-200'>
         <h3 className='text-lg font-semibold text-gray-900 mb-4 flex items-center'>
           <svg
             className='w-5 h-5 text-blue-600 mr-2'
@@ -107,39 +107,42 @@ const IntegrationsPage: React.FC = () => {
       {/* Installation Methods */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         {/* WordPress */}
-        <div className='bg-white rounded-lg border border-gray-200 p-6'>
-          <div className='flex items-center mb-4'>
-            <span className='text-2xl mr-3'>🔵</span>
-            <h4 className='text-lg font-semibold text-gray-900'>
-              WordPress Plugin
-            </h4>
-          </div>
-          <p className='text-gray-600 mb-4'>
-            Install our WordPress plugin for easy integration without code.
-          </p>
+        <div className='bg-blue-50 rounded-lg p-6 border border-blue-200'>
+          <h3 className='text-lg font-semibold text-gray-900 mb-4 flex items-center'>
+            <span className='w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3'>
+              WP
+            </span>
+            WordPress Integration
+          </h3>
           <div className='space-y-3'>
-            <div className='flex items-center text-sm text-gray-700'>
+            <div className='flex items-center'>
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 1
               </span>
-              Download the Universal AI plugin
+              <p className='text-gray-700'>
+                Install the Optimizely WordPress plugin
+              </p>
             </div>
-            <div className='flex items-center text-sm text-gray-700'>
+            <div className='flex items-center'>
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 2
               </span>
-              Upload to WordPress admin → Plugins
+              <p className='text-gray-700'>
+                Add your API key in the plugin settings
+              </p>
             </div>
-            <div className='flex items-center text-sm text-gray-700'>
+            <div className='flex items-center'>
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 3
               </span>
-              Enter your API key in settings
+              <p className='text-gray-700'>
+                Configure A/B tests from your WordPress admin
+              </p>
             </div>
+            <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
+              Download Plugin
+            </button>
           </div>
-          <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
-            Download Plugin
-          </button>
         </div>
 
         {/* Shopify */}
@@ -220,25 +223,25 @@ function App() {
           </p>
           <div className='space-y-3'>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-purple-100 text-purple-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 1
               </span>
               Review API documentation
             </div>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-purple-100 text-purple-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 2
               </span>
               Implement tracking events
             </div>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-purple-100 text-purple-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 3
               </span>
               Set up A/B test variations
             </div>
           </div>
-          <button className='mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-sm font-medium'>
+          <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
             View API Docs
           </button>
         </div>
@@ -280,19 +283,19 @@ function App() {
           </div>
           <div className='space-y-3'>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 1
               </span>
               Install Docker Desktop for your OS
             </div>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 2
               </span>
               Pull Universal AI Docker image
             </div>
             <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
+              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 3
               </span>
               Configure environment variables
@@ -374,9 +377,9 @@ docker run -p 3001:3001 \\
             </div>
           </div>
           <div className='flex items-start'>
-            <div className='p-2 bg-purple-100 rounded-lg mr-3'>
+            <div className='p-2 bg-blue-100 rounded-lg mr-3'>
               <svg
-                className='w-5 h-5 text-purple-600'
+                className='w-5 h-5 text-blue-600'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'

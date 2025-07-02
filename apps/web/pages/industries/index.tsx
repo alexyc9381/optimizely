@@ -42,7 +42,7 @@ const IndustriesPage: React.FC = () => {
     },
     ecommerce: {
       name: 'E-commerce',
-      color: 'purple',
+      color: 'blue',
       metrics: {
         conversionRate: 2.8,
         avgTestDuration: 10,
@@ -146,7 +146,6 @@ const IndustriesPage: React.FC = () => {
   const getColorClasses = (color: string) => {
     const colors = {
       blue: 'bg-blue-100 text-blue-800 border-blue-200',
-      purple: 'bg-purple-100 text-purple-800 border-purple-200',
       green: 'bg-green-100 text-green-800 border-green-200',
       orange: 'bg-orange-100 text-orange-800 border-orange-200',
     };
@@ -218,10 +217,10 @@ const IndustriesPage: React.FC = () => {
                 <p className='text-xs text-green-600 mt-1'>Industry average</p>
               </div>
               <div
-                className={`w-8 h-8 ${currentIndustry.color === 'blue' ? 'bg-blue-100' : currentIndustry.color === 'purple' ? 'bg-purple-100' : currentIndustry.color === 'green' ? 'bg-green-100' : 'bg-orange-100'} rounded-lg flex items-center justify-center`}
+                className={`w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center`}
               >
                 <svg
-                  className={`w-4 h-4 ${currentIndustry.color === 'blue' ? 'text-blue-600' : currentIndustry.color === 'purple' ? 'text-purple-600' : currentIndustry.color === 'green' ? 'text-green-600' : 'text-orange-600'}`}
+                  className={`w-4 h-4 text-blue-600`}
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -248,9 +247,9 @@ const IndustriesPage: React.FC = () => {
                 </p>
                 <p className='text-xs text-blue-600 mt-1'>Optimal range</p>
               </div>
-              <div className='w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center'>
+              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
                 <svg
-                  className='w-4 h-4 text-indigo-600'
+                  className='w-4 h-4 text-blue-600'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -433,9 +432,9 @@ const IndustriesPage: React.FC = () => {
             </div>
 
             <div className='text-center'>
-              <div className='w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3'>
+              <div className='w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3'>
                 <svg
-                  className='w-8 h-8 text-purple-600'
+                  className='w-8 h-8 text-blue-600'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -449,7 +448,7 @@ const IndustriesPage: React.FC = () => {
                 </svg>
               </div>
               <h4 className='font-medium text-gray-900'>Test Success Rate</h4>
-              <p className='text-2xl font-bold text-purple-600 mt-1'>67%</p>
+              <p className='text-2xl font-bold text-green-600 mt-1'>67%</p>
               <p className='text-sm text-gray-500'>Significant results</p>
             </div>
 

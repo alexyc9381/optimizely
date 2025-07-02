@@ -297,9 +297,9 @@ const ABTestingPage: React.FC = () => {
 
           <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center'>
-              <div className='p-2 bg-purple-100 rounded-lg'>
+              <div className='p-2 bg-blue-100 rounded-lg'>
                 <svg
-                  className='w-6 h-6 text-purple-600'
+                  className='w-6 h-6 text-blue-600'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
