@@ -257,7 +257,11 @@ const UniversalAIDashboard: React.FC = () => {
         <div className='text-2xl font-bold text-gray-900'>{value || 0}</div>
         <div className='text-sm text-gray-600'>{title}</div>
       </div>
-      {trend && <div className='text-xs text-green-600'>{trend}</div>}
+      {trend && (
+        <div className={`text-xs ${trend.startsWith('+') ? 'text-green-600' : trend.startsWith('-') ? 'text-red-600' : 'text-gray-600'}`}>
+          {trend}
+        </div>
+      )}
     </div>
   );
 
@@ -269,10 +273,10 @@ const UniversalAIDashboard: React.FC = () => {
       <span className='text-gray-600 text-sm'>{service}</span>
       <div className='flex items-center'>
         <div
-          className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}
+          className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'}`}
         />
         <span
-          className={`text-xs font-medium ${status ? 'text-green-600' : 'text-red-600'}`}
+          className={`text-xs font-medium ${status ? 'text-blue-600' : 'text-gray-600'}`}
         >
           {status ? 'Active' : 'Offline'}
         </span>
@@ -289,8 +293,8 @@ const UniversalAIDashboard: React.FC = () => {
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             experiment.status === 'Running'
-              ? 'bg-green-100 text-green-700 border border-green-200'
-              : 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+              ? 'bg-blue-100 text-blue-700 border border-blue-200'
+              : 'bg-gray-100 text-gray-700 border border-gray-200'
           }`}
         >
           {experiment.status}
@@ -299,13 +303,19 @@ const UniversalAIDashboard: React.FC = () => {
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
           <span className='text-gray-500'>Conversion: </span>
-          <span className='text-gray-900 font-medium'>
+          <span className={`font-medium ${
+            experiment.conversionRate > 10 ? 'text-green-600' :
+            experiment.conversionRate > 5 ? 'text-orange-500' : 'text-red-600'
+          }`}>
             {experiment.conversionRate}%
           </span>
         </div>
         <div>
           <span className='text-gray-500'>Confidence: </span>
-          <span className='text-gray-900 font-medium'>
+          <span className={`font-medium ${
+            experiment.confidence > 95 ? 'text-green-600' :
+            experiment.confidence > 80 ? 'text-orange-500' : 'text-red-600'
+          }`}>
             {experiment.confidence}%
           </span>
         </div>
@@ -321,8 +331,8 @@ const UniversalAIDashboard: React.FC = () => {
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             metric.status === 'Active'
-              ? 'bg-green-100 text-green-700 border border-green-200'
-              : 'bg-blue-100 text-blue-700 border border-blue-200'
+              ? 'bg-blue-100 text-blue-700 border border-blue-200'
+              : 'bg-gray-100 text-gray-700 border border-gray-200'
           }`}
         >
           {metric.status}
@@ -331,11 +341,19 @@ const UniversalAIDashboard: React.FC = () => {
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
           <span className='text-gray-500'>Accuracy: </span>
-          <span className='text-gray-900 font-medium'>{metric.accuracy}%</span>
+          <span className={`font-medium ${
+            metric.accuracy > 95 ? 'text-green-600' :
+            metric.accuracy > 85 ? 'text-orange-500' : 'text-red-600'
+          }`}>
+            {metric.accuracy}%
+          </span>
         </div>
         <div>
           <span className='text-gray-500'>Confidence: </span>
-          <span className='text-gray-900 font-medium'>
+          <span className={`font-medium ${
+            metric.confidence > 95 ? 'text-green-600' :
+            metric.confidence > 85 ? 'text-orange-500' : 'text-red-600'
+          }`}>
             {metric.confidence}%
           </span>
         </div>
@@ -357,17 +375,17 @@ const UniversalAIDashboard: React.FC = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'>
+    <div className='min-h-screen bg-gray-50 text-gray-900'>
       {/* Header */}
       <header className='bg-white/90 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'>
         <div className='max-w-7xl mx-auto px-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-4'>
-              <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
+              <div className='w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center'>
                 <span className='text-white font-bold text-sm'>AI</span>
               </div>
               <div>
-                <h1 className='text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
+                <h1 className='text-xl font-bold text-blue-600'>
                   Universal AI Platform
                 </h1>
                 <p className='text-gray-600 text-xs'>
@@ -380,13 +398,13 @@ const UniversalAIDashboard: React.FC = () => {
               <div
                 className={`flex items-center px-3 py-1 rounded-full text-xs ${
                   apiConnected
-                    ? 'bg-green-100 text-green-700 border border-green-200'
-                    : 'bg-red-100 text-red-700 border border-red-200'
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'bg-gray-100 text-gray-700 border border-gray-200'
                 }`}
               >
                 <div
                   className={`w-1.5 h-1.5 rounded-full mr-2 ${
-                    apiConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'
+                    apiConnected ? 'bg-blue-500 animate-pulse' : 'bg-gray-500'
                   }`}
                 />
                 API {apiConnected ? 'Connected' : 'Offline'}
@@ -399,7 +417,7 @@ const UniversalAIDashboard: React.FC = () => {
           </div>
 
           {error && (
-            <div className='mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800'>
+            <div className='mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800'>
               {error}
             </div>
           )}
@@ -411,10 +429,10 @@ const UniversalAIDashboard: React.FC = () => {
         {/* Key Metrics */}
         <section className='mb-8'>
           <h2 className='text-2xl font-bold mb-6 flex items-center text-gray-900'>
-            <span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
+            <span className='text-blue-600'>
               Platform Overview
             </span>
-            <div className='ml-3 w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded animate-pulse'></div>
+            <div className='ml-3 w-6 h-6 bg-blue-600 rounded animate-pulse'></div>
           </h2>
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6'>
@@ -500,7 +518,7 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
                   <div
-                    className='bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full transition-all duration-500'
+                    className='bg-green-500 h-2 rounded-full transition-all duration-500'
                     style={{ width: '98.5%' }}
                   ></div>
                 </div>
@@ -521,7 +539,7 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
 
               <div className='mt-6 pt-4 border-t border-gray-200'>
-                <button className='w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
+                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
                   View All Experiments
                 </button>
               </div>
@@ -541,7 +559,7 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
 
               <div className='mt-6 pt-4 border-t border-gray-200'>
-                <button className='w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300'>
+                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
                   Model Refinement Dashboard
                 </button>
               </div>
@@ -606,7 +624,7 @@ const UniversalAIDashboard: React.FC = () => {
                 </h4>
                 <div className='flex items-center justify-between mb-1'>
                   <span className='text-xs text-gray-500'>Status</span>
-                  <span className='text-xs text-green-600 font-medium'>
+                  <span className='text-xs text-blue-600 font-medium'>
                     {feature.status}
                   </span>
                 </div>
@@ -648,13 +666,13 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Trial Activation',
                     count: 198,
                     percentage: 40,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                   },
                   {
                     stage: 'Feature Adoption',
                     count: 145,
                     percentage: 60,
-                    color: 'bg-yellow-500',
+                    color: 'bg-blue-700',
                   },
                   {
                     stage: 'Purchase Decision',
@@ -666,7 +684,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Closed Won',
                     count: 52,
                     percentage: 100,
-                    color: 'bg-emerald-600',
+                    color: 'bg-green-600',
                   },
                 ].map((item, index) => (
                   <div
@@ -727,13 +745,13 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Quote Generation',
                     count: 45,
                     percentage: 50,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                   },
                   {
                     stage: 'Negotiation',
                     count: 32,
                     percentage: 70,
-                    color: 'bg-yellow-500',
+                    color: 'bg-orange-500',
                   },
                   {
                     stage: 'Procurement Approval',
@@ -745,7 +763,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Closed Won',
                     count: 18,
                     percentage: 100,
-                    color: 'bg-emerald-600',
+                    color: 'bg-green-600',
                   },
                 ].map((item, index) => (
                   <div
@@ -806,13 +824,13 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Treatment Planning',
                     count: 267,
                     percentage: 55,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                   },
                   {
                     stage: 'Treatment Delivery',
                     count: 198,
                     percentage: 75,
-                    color: 'bg-yellow-500',
+                    color: 'bg-green-400',
                   },
                   {
                     stage: 'Outcome Measurement',
@@ -824,7 +842,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Follow-up Complete',
                     count: 134,
                     percentage: 100,
-                    color: 'bg-emerald-600',
+                    color: 'bg-green-600',
                   },
                 ].map((item, index) => (
                   <div
@@ -862,9 +880,9 @@ const UniversalAIDashboard: React.FC = () => {
             </div>
 
             {/* FinTech Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-purple-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-purple-700 flex items-center'>
-                <span className='w-2 h-2 bg-purple-500 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
+                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
                 FinTech Pipeline
               </h4>
               <div className='space-y-3'>
@@ -885,13 +903,13 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Regulatory Approval',
                     count: 143,
                     percentage: 60,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                   },
                   {
                     stage: 'Account Opening',
                     count: 98,
                     percentage: 80,
-                    color: 'bg-yellow-500',
+                    color: 'bg-orange-500',
                   },
                   {
                     stage: 'Service Activation',
@@ -903,7 +921,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Active Customer',
                     count: 67,
                     percentage: 100,
-                    color: 'bg-emerald-600',
+                    color: 'bg-green-600',
                   },
                 ].map((item, index) => (
                   <div
@@ -932,18 +950,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-purple-200'>
+              <div className='mt-4 pt-3 border-t border-blue-200'>
                 <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-purple-700 font-medium'>60 days</span>
+                  <span className='text-blue-700 font-medium'>60 days</span>
                 </div>
               </div>
             </div>
 
             {/* College Consulting Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-indigo-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-indigo-700 flex items-center'>
-                <span className='w-2 h-2 bg-indigo-500 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
+                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
                 College Consulting Pipeline
               </h4>
               <div className='space-y-3'>
@@ -964,13 +982,13 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Student Assessment',
                     count: 67,
                     percentage: 50,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                   },
                   {
                     stage: 'School List Development',
                     count: 45,
                     percentage: 70,
-                    color: 'bg-yellow-500',
+                    color: 'bg-orange-500',
                   },
                   {
                     stage: 'Application Prep',
@@ -982,7 +1000,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Enrollment Success',
                     count: 24,
                     percentage: 100,
-                    color: 'bg-emerald-600',
+                    color: 'bg-green-600',
                   },
                 ].map((item, index) => (
                   <div
@@ -1011,18 +1029,18 @@ const UniversalAIDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-indigo-200'>
+              <div className='mt-4 pt-3 border-t border-blue-200'>
                 <div className='text-xs text-gray-600'>
                   Avg. Journey Time:{' '}
-                  <span className='text-indigo-700 font-medium'>365 days</span>
+                  <span className='text-blue-700 font-medium'>365 days</span>
                 </div>
               </div>
             </div>
 
             {/* Data Processing Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-cyan-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-cyan-700 flex items-center'>
-                <span className='w-2 h-2 bg-cyan-500 rounded-full mr-2'></span>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
+              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
+                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
                 Data Processing Pipeline
               </h4>
               <div className='space-y-3'>
@@ -1031,7 +1049,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Data Ingestion',
                     count: '2.4M',
                     percentage: 100,
-                    color: 'bg-emerald-500',
+                    color: 'bg-green-500',
                     status: 'Active',
                   },
                   {
@@ -1045,7 +1063,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Enrichment',
                     count: '2.3M',
                     percentage: 95,
-                    color: 'bg-yellow-500',
+                    color: 'bg-orange-500',
                     status: 'Running',
                   },
                   {
@@ -1066,7 +1084,7 @@ const UniversalAIDashboard: React.FC = () => {
                     stage: 'Output Ready',
                     count: '2.0M',
                     percentage: 88,
-                    color: 'bg-purple-500',
+                    color: 'bg-blue-600',
                     status: 'Complete',
                   },
                 ].map((item, index) => (
@@ -1086,17 +1104,17 @@ const UniversalAIDashboard: React.FC = () => {
                       <span className='text-xs text-gray-600'>
                         {item.count}
                       </span>
-                      <span className='text-xs text-cyan-700 font-medium'>
+                      <span className='text-xs text-blue-700 font-medium'>
                         {item.status}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className='mt-4 pt-3 border-t border-cyan-200'>
+              <div className='mt-4 pt-3 border-t border-blue-200'>
                 <div className='text-xs text-gray-600'>
                   Processing Rate:{' '}
-                  <span className='text-cyan-700 font-medium'>
+                  <span className='text-blue-700 font-medium'>
                     14.2k events/sec
                   </span>
                 </div>
@@ -1127,14 +1145,14 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className='bg-white rounded-xl shadow-lg border border-purple-200 p-6'>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-purple-700'>
+                <h4 className='text-lg font-semibold text-blue-700'>
                   Avg. Journey Time
                 </h4>
                 <span className='text-2xl'>⏱️</span>
               </div>
-              <div className='text-3xl font-bold text-purple-700 mb-2'>
+              <div className='text-3xl font-bold text-blue-700 mb-2'>
                 67 days
               </div>
               <div className='text-sm text-gray-600'>Weighted by volume</div>
@@ -1143,14 +1161,14 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className='bg-white rounded-xl shadow-lg border border-green-200 p-6'>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-green-700'>
+                <h4 className='text-lg font-semibold text-blue-700'>
                   Stage Efficiency
                 </h4>
                 <span className='text-2xl'>⚡</span>
               </div>
-              <div className='text-3xl font-bold text-green-700 mb-2'>
+              <div className='text-3xl font-bold text-blue-700 mb-2'>
                 94.2%
               </div>
               <div className='text-sm text-gray-600'>Process automation</div>
@@ -1159,14 +1177,14 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className='bg-white rounded-xl shadow-lg border border-orange-200 p-6'>
+            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
               <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-orange-700'>
+                <h4 className='text-lg font-semibold text-blue-700'>
                   Active Pipelines
                 </h4>
                 <span className='text-2xl'>🔄</span>
               </div>
-              <div className='text-3xl font-bold text-orange-700 mb-2'>
+              <div className='text-3xl font-bold text-blue-700 mb-2'>
                 2,847
               </div>
               <div className='text-sm text-gray-600'>Across all industries</div>
