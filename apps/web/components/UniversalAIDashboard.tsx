@@ -250,7 +250,7 @@ const UniversalAIDashboard: React.FC = () => {
   }> = ({ title, value, subtitle, trend, icon }) => (
     <div className='bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg'>
       <div className='flex items-center justify-between mb-4'>
-        <div className='text-2xl'>{icon}</div>
+        <div className='bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded'>{icon}</div>
         <div className='text-xs text-gray-500'>{subtitle}</div>
       </div>
       <div className='mb-2'>
@@ -389,7 +389,7 @@ const UniversalAIDashboard: React.FC = () => {
         <div className='text-center'>
           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4'></div>
           <p className='text-text-secondary'>
-            Loading Universal AI Platform...
+            Loading Optelo Platform...
           </p>
         </div>
       </div>
@@ -408,7 +408,7 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
               <div>
                 <h1 className='text-xl font-bold text-blue-600'>
-                  Universal AI Platform
+                  Optelo
                 </h1>
                 <p className='text-gray-600 text-xs'>
                   Multi-Industry A/B Testing & Analytics
@@ -461,42 +461,42 @@ const UniversalAIDashboard: React.FC = () => {
               value={dashboardStats?.totalVisitors?.toLocaleString() || '0'}
               subtitle='Cross-platform tracking'
               trend='+12.3% this week'
-              icon='👥'
+              icon='VIS'
             />
             <StatCard
               title='Active Sessions'
               value={dashboardStats?.totalSessions?.toLocaleString() || '0'}
               subtitle='Real-time monitoring'
               trend='+8.7% today'
-              icon='⚡'
+              icon='SES'
             />
             <StatCard
               title='Conversion Rate'
               value={`${dashboardStats?.conversionRate || 0}%`}
               subtitle='AI-optimized funnels'
               trend='+2.1% improvement'
-              icon='📈'
+              icon='CVR'
             />
             <StatCard
               title='Revenue Generated'
               value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
               subtitle='Attribution modeling'
               trend='+15.4% this month'
-              icon='💰'
+              icon='REV'
             />
             <StatCard
               title='A/B Experiments'
               value={dashboardStats?.activeExperiments || '0'}
               subtitle='Running across industries'
               trend='3 completed today'
-              icon='🧪'
+              icon='AB'
             />
             <StatCard
               title='Model Accuracy'
               value={`${dashboardStats?.modelAccuracy || 0}%`}
               subtitle='ML performance'
               trend='+1.8% improvement'
-              icon='🤖'
+              icon='ML'
             />
           </div>
         </section>
@@ -507,40 +507,42 @@ const UniversalAIDashboard: React.FC = () => {
             <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               System Health
             </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
-              <div className='space-y-3'>
-                <HealthIndicator service='API Gateway' status={apiConnected} />
-                <HealthIndicator
-                  service='ML Engine'
-                  status={systemHealth.mlEngine || apiConnected}
-                />
-                <HealthIndicator
-                  service='A/B Testing'
-                  status={systemHealth.abTesting || apiConnected}
-                />
-                <HealthIndicator
-                  service='Analytics'
-                  status={systemHealth.analytics || apiConnected}
-                />
-                <HealthIndicator
-                  service='Recommendations'
-                  status={systemHealth.recommendations || apiConnected}
-                />
-              </div>
-
-              <div className='mt-6 pt-4 border-t border-gray-200'>
-                <p className='text-gray-500 text-xs mb-2'>System Status</p>
-                <div className='flex items-center justify-between'>
-                  <span className='text-gray-900 font-medium'>
-                    Overall Health
-                  </span>
-                  <span className='text-green-600 font-bold'>98.5%</span>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto'>
+                <div className='space-y-3'>
+                  <HealthIndicator service='API Gateway' status={apiConnected} />
+                  <HealthIndicator
+                    service='ML Engine'
+                    status={systemHealth.mlEngine || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='A/B Testing'
+                    status={systemHealth.abTesting || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='Analytics'
+                    status={systemHealth.analytics || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='Recommendations'
+                    status={systemHealth.recommendations || apiConnected}
+                  />
                 </div>
-                <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
-                  <div
-                    className='bg-green-500 h-2 rounded-full transition-all duration-500'
-                    style={{ width: '98.5%' }}
-                  ></div>
+
+                <div className='mt-6 pt-4 border-t border-gray-200'>
+                  <p className='text-gray-500 text-xs mb-2'>System Status</p>
+                  <div className='flex items-center justify-between'>
+                    <span className='text-gray-900 font-medium'>
+                      Overall Health
+                    </span>
+                    <span className='text-green-600 font-bold'>98.5%</span>
+                  </div>
+                  <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
+                    <div
+                      className='bg-green-500 h-2 rounded-full transition-all duration-500'
+                      style={{ width: '98.5%' }}
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -551,11 +553,13 @@ const UniversalAIDashboard: React.FC = () => {
             <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               Active Experiments
             </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
-              <div className='space-y-4'>
-                {experiments.map(experiment => (
-                  <ExperimentCard key={experiment.id} experiment={experiment} />
-                ))}
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto'>
+                <div className='space-y-4'>
+                  {experiments.map(experiment => (
+                    <ExperimentCard key={experiment.id} experiment={experiment} />
+                  ))}
+                </div>
               </div>
 
               <div className='mt-6 pt-4 border-t border-gray-200'>
@@ -571,11 +575,13 @@ const UniversalAIDashboard: React.FC = () => {
             <h3 className='text-xl font-semibold mb-4 text-gray-900'>
               ML Models
             </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6'>
-              <div className='space-y-4'>
-                {modelMetrics.map((metric, index) => (
-                  <ModelMetricCard key={index} metric={metric} />
-                ))}
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto'>
+                <div className='space-y-4'>
+                  {modelMetrics.map((metric, index) => (
+                    <ModelMetricCard key={index} metric={metric} />
+                  ))}
+                </div>
               </div>
 
               <div className='mt-6 pt-4 border-t border-gray-200'>
