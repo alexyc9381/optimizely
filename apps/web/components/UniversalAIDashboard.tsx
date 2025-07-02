@@ -258,7 +258,9 @@ const UniversalAIDashboard: React.FC = () => {
         <div className='text-sm text-gray-600'>{title}</div>
       </div>
       {trend && (
-        <div className={`text-xs ${trend.startsWith('+') ? 'text-green-600' : trend.startsWith('-') ? 'text-red-600' : 'text-gray-600'}`}>
+        <div
+          className={`text-xs ${trend.startsWith('+') ? 'text-green-600' : trend.startsWith('-') ? 'text-red-600' : 'text-gray-600'}`}
+        >
           {trend}
         </div>
       )}
@@ -303,19 +305,29 @@ const UniversalAIDashboard: React.FC = () => {
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
           <span className='text-gray-500'>Conversion: </span>
-          <span className={`font-medium ${
-            experiment.conversionRate > 10 ? 'text-green-600' :
-            experiment.conversionRate > 5 ? 'text-orange-500' : 'text-red-600'
-          }`}>
+          <span
+            className={`font-medium ${
+              experiment.conversionRate > 10
+                ? 'text-green-600'
+                : experiment.conversionRate > 5
+                  ? 'text-orange-500'
+                  : 'text-red-600'
+            }`}
+          >
             {experiment.conversionRate}%
           </span>
         </div>
         <div>
           <span className='text-gray-500'>Confidence: </span>
-          <span className={`font-medium ${
-            experiment.confidence > 95 ? 'text-green-600' :
-            experiment.confidence > 80 ? 'text-orange-500' : 'text-red-600'
-          }`}>
+          <span
+            className={`font-medium ${
+              experiment.confidence > 95
+                ? 'text-green-600'
+                : experiment.confidence > 80
+                  ? 'text-orange-500'
+                  : 'text-red-600'
+            }`}
+          >
             {experiment.confidence}%
           </span>
         </div>
@@ -341,19 +353,29 @@ const UniversalAIDashboard: React.FC = () => {
       <div className='grid grid-cols-2 gap-2 text-xs'>
         <div>
           <span className='text-gray-500'>Accuracy: </span>
-          <span className={`font-medium ${
-            metric.accuracy > 95 ? 'text-green-600' :
-            metric.accuracy > 85 ? 'text-orange-500' : 'text-red-600'
-          }`}>
+          <span
+            className={`font-medium ${
+              metric.accuracy > 95
+                ? 'text-green-600'
+                : metric.accuracy > 85
+                  ? 'text-orange-500'
+                  : 'text-red-600'
+            }`}
+          >
             {metric.accuracy}%
           </span>
         </div>
         <div>
           <span className='text-gray-500'>Confidence: </span>
-          <span className={`font-medium ${
-            metric.confidence > 95 ? 'text-green-600' :
-            metric.confidence > 85 ? 'text-orange-500' : 'text-red-600'
-          }`}>
+          <span
+            className={`font-medium ${
+              metric.confidence > 95
+                ? 'text-green-600'
+                : metric.confidence > 85
+                  ? 'text-orange-500'
+                  : 'text-red-600'
+            }`}
+          >
             {metric.confidence}%
           </span>
         </div>
@@ -429,9 +451,7 @@ const UniversalAIDashboard: React.FC = () => {
         {/* Key Metrics */}
         <section className='mb-8'>
           <h2 className='text-2xl font-bold mb-6 flex items-center text-gray-900'>
-            <span className='text-blue-600'>
-              Platform Overview
-            </span>
+            <span className='text-blue-600'>Platform Overview</span>
             <div className='ml-3 w-6 h-6 bg-blue-600 rounded animate-pulse'></div>
           </h2>
 
@@ -567,629 +587,364 @@ const UniversalAIDashboard: React.FC = () => {
           </section>
         </div>
 
-        {/* Feature Showcase */}
+        {/* Enhanced Analytics Section */}
         <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
-            Implemented Features
+          <h3 className='text-xl font-semibold mb-6 text-blue-600'>
+            SaaS Analytics Dashboard
           </h3>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            {[
-              {
-                name: 'Universal Analytics Engine',
-                status: 'Active',
-                industry: 'All Industries',
-              },
-              {
-                name: 'Adaptive Recommendations',
-                status: 'Learning',
-                industry: 'SaaS & FinTech',
-              },
-              {
-                name: 'A/B Testing Framework',
-                status: 'Running',
-                industry: 'Healthcare & Manufacturing',
-              },
-              {
-                name: 'Model Refinement Engine',
-                status: 'Optimizing',
-                industry: 'College Consulting',
-              },
-              {
-                name: 'Outcome Tracking',
-                status: 'Monitoring',
-                industry: 'Cross-Industry',
-              },
-              {
-                name: 'Deep Customer Profiling',
-                status: 'Active',
-                industry: 'Enterprise',
-              },
-              {
-                name: 'Revenue Attribution',
-                status: 'Calculating',
-                industry: 'All Sectors',
-              },
-              {
-                name: 'Behavioral Analytics',
-                status: 'Processing',
-                industry: 'Multi-Platform',
-              },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className='bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-all duration-300 hover:shadow-md'
-              >
-                <h4 className='text-gray-900 font-medium text-sm mb-2'>
-                  {feature.name}
-                </h4>
-                <div className='flex items-center justify-between mb-1'>
-                  <span className='text-xs text-gray-500'>Status</span>
-                  <span className='text-xs text-blue-600 font-medium'>
-                    {feature.status}
+
+          {/* Conversion Funnel Chart */}
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Conversion Funnel
+              </h4>
+              <div className='space-y-3'>
+                <div className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'>
+                  <span className='text-sm font-medium text-gray-700'>
+                    Visitors
+                  </span>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-32 bg-gray-200 rounded-full h-2'>
+                      <div
+                        className='bg-blue-600 h-2 rounded-full'
+                        style={{ width: '100%' }}
+                      ></div>
+                    </div>
+                    <span className='text-sm font-bold text-gray-900'>
+                      24,789
+                    </span>
+                  </div>
+                </div>
+                <div className='flex items-center justify-between p-3 bg-green-50 rounded-lg'>
+                  <span className='text-sm font-medium text-gray-700'>
+                    Sign-ups
+                  </span>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-32 bg-gray-200 rounded-full h-2'>
+                      <div
+                        className='bg-green-600 h-2 rounded-full'
+                        style={{ width: '45%' }}
+                      ></div>
+                    </div>
+                    <span className='text-sm font-bold text-gray-900'>
+                      11,155
+                    </span>
+                  </div>
+                </div>
+                <div className='flex items-center justify-between p-3 bg-orange-50 rounded-lg'>
+                  <span className='text-sm font-medium text-gray-700'>
+                    Trial Users
+                  </span>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-32 bg-gray-200 rounded-full h-2'>
+                      <div
+                        className='bg-orange-600 h-2 rounded-full'
+                        style={{ width: '25%' }}
+                      ></div>
+                    </div>
+                    <span className='text-sm font-bold text-gray-900'>
+                      6,197
+                    </span>
+                  </div>
+                </div>
+                <div className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'>
+                  <span className='text-sm font-medium text-gray-700'>
+                    Paid Customers
+                  </span>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-32 bg-gray-200 rounded-full h-2'>
+                      <div
+                        className='bg-blue-600 h-2 rounded-full'
+                        style={{ width: '8%' }}
+                      ></div>
+                    </div>
+                    <span className='text-sm font-bold text-gray-900'>
+                      1,983
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Revenue Trend Chart */}
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Monthly Recurring Revenue
+              </h4>
+              <div className='mb-4'>
+                <div className='flex items-end space-x-1 h-32'>
+                  {[45, 52, 48, 61, 58, 67, 72, 69, 78, 82, 89, 94].map(
+                    (height, index) => (
+                      <div
+                        key={index}
+                        className='flex flex-col items-center flex-1'
+                      >
+                        <div
+                          className='bg-blue-600 rounded-t w-full transition-all duration-300 hover:bg-blue-700'
+                          style={{ height: `${height}%` }}
+                        ></div>
+                        <span className='text-xs text-gray-500 mt-1'>
+                          {
+                            [
+                              'J',
+                              'F',
+                              'M',
+                              'A',
+                              'M',
+                              'J',
+                              'J',
+                              'A',
+                              'S',
+                              'O',
+                              'N',
+                              'D',
+                            ][index]
+                          }
+                        </span>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+              <div className='flex items-center justify-between text-sm'>
+                <span className='text-gray-600'>Current MRR</span>
+                <span className='text-lg font-bold text-green-600'>
+                  $847,500
+                </span>
+              </div>
+              <div className='flex items-center justify-between text-sm mt-1'>
+                <span className='text-gray-600'>Growth Rate</span>
+                <span className='text-sm font-medium text-green-600'>
+                  +15.3% MoM
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* A/B Testing Performance */}
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Active A/B Tests
+              </h4>
+              <div className='space-y-4'>
+                <div className='border-l-4 border-green-500 pl-4'>
+                  <h5 className='font-medium text-gray-900'>
+                    Pricing Page CTA
+                  </h5>
+                  <p className='text-sm text-gray-600'>Testing button colors</p>
+                  <div className='flex items-center justify-between mt-2'>
+                    <span className='text-xs text-gray-500'>Confidence</span>
+                    <span className='text-sm font-bold text-green-600'>
+                      96%
+                    </span>
+                  </div>
+                </div>
+                <div className='border-l-4 border-blue-500 pl-4'>
+                  <h5 className='font-medium text-gray-900'>Onboarding Flow</h5>
+                  <p className='text-sm text-gray-600'>3-step vs 5-step</p>
+                  <div className='flex items-center justify-between mt-2'>
+                    <span className='text-xs text-gray-500'>Confidence</span>
+                    <span className='text-sm font-bold text-blue-600'>78%</span>
+                  </div>
+                </div>
+                <div className='border-l-4 border-orange-500 pl-4'>
+                  <h5 className='font-medium text-gray-900'>
+                    Email Subject Lines
+                  </h5>
+                  <p className='text-sm text-gray-600'>Personalization test</p>
+                  <div className='flex items-center justify-between mt-2'>
+                    <span className='text-xs text-gray-500'>Confidence</span>
+                    <span className='text-sm font-bold text-orange-600'>
+                      45%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* User Engagement Metrics */}
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                User Engagement
+              </h4>
+              <div className='space-y-4'>
+                <div>
+                  <div className='flex items-center justify-between mb-1'>
+                    <span className='text-sm text-gray-600'>
+                      Daily Active Users
+                    </span>
+                    <span className='text-sm font-bold text-gray-900'>
+                      8,943
+                    </span>
+                  </div>
+                  <div className='w-full bg-gray-200 rounded-full h-2'>
+                    <div
+                      className='bg-green-600 h-2 rounded-full'
+                      style={{ width: '73%' }}
+                    ></div>
+                  </div>
+                  <span className='text-xs text-green-600'>
+                    +8.2% vs last week
                   </span>
                 </div>
-                <p className='text-xs text-gray-500'>
-                  <span className='text-blue-600'>{feature.industry}</span>
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Multi-Industry Pipeline Stages */}
-        <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
-            Stage-wise Pipeline Management
-          </h3>
-          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
-            {/* SaaS Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
-                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
-                SaaS Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'Awareness',
-                    count: 1247,
-                    percentage: 15,
-                    color: 'bg-gray-400',
-                  },
-                  {
-                    stage: 'Trial Signup',
-                    count: 324,
-                    percentage: 25,
-                    color: 'bg-blue-500',
-                  },
-                  {
-                    stage: 'Trial Activation',
-                    count: 198,
-                    percentage: 40,
-                    color: 'bg-blue-600',
-                  },
-                  {
-                    stage: 'Feature Adoption',
-                    count: 145,
-                    percentage: 60,
-                    color: 'bg-blue-700',
-                  },
-                  {
-                    stage: 'Purchase Decision',
-                    count: 89,
-                    percentage: 80,
-                    color: 'bg-green-500',
-                  },
-                  {
-                    stage: 'Closed Won',
-                    count: 52,
-                    percentage: 100,
-                    color: 'bg-green-600',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color}`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <div className='w-16 bg-gray-200 rounded-full h-2'>
-                        <div
-                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
+                <div>
+                  <div className='flex items-center justify-between mb-1'>
+                    <span className='text-sm text-gray-600'>
+                      Session Duration
+                    </span>
+                    <span className='text-sm font-bold text-gray-900'>
+                      12m 34s
+                    </span>
                   </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-blue-200'>
-                <div className='text-xs text-gray-600'>
-                  Avg. Journey Time:{' '}
-                  <span className='text-blue-700 font-medium'>30 days</span>
+                  <div className='w-full bg-gray-200 rounded-full h-2'>
+                    <div
+                      className='bg-blue-600 h-2 rounded-full'
+                      style={{ width: '68%' }}
+                    ></div>
+                  </div>
+                  <span className='text-xs text-blue-600'>
+                    +2.1% vs last week
+                  </span>
                 </div>
-              </div>
-            </div>
-
-            {/* Manufacturing Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-orange-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-orange-700 flex items-center'>
-                <span className='w-2 h-2 bg-orange-500 rounded-full mr-2'></span>
-                Manufacturing Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'RFQ Submission',
-                    count: 89,
-                    percentage: 20,
-                    color: 'bg-gray-400',
-                  },
-                  {
-                    stage: 'Technical Review',
-                    count: 67,
-                    percentage: 35,
-                    color: 'bg-blue-500',
-                  },
-                  {
-                    stage: 'Quote Generation',
-                    count: 45,
-                    percentage: 50,
-                    color: 'bg-blue-600',
-                  },
-                  {
-                    stage: 'Negotiation',
-                    count: 32,
-                    percentage: 70,
-                    color: 'bg-orange-500',
-                  },
-                  {
-                    stage: 'Procurement Approval',
-                    count: 23,
-                    percentage: 85,
-                    color: 'bg-green-500',
-                  },
-                  {
-                    stage: 'Closed Won',
-                    count: 18,
-                    percentage: 100,
-                    color: 'bg-green-600',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color}`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <div className='w-16 bg-gray-200 rounded-full h-2'>
-                        <div
-                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
+                <div>
+                  <div className='flex items-center justify-between mb-1'>
+                    <span className='text-sm text-gray-600'>
+                      Feature Adoption
+                    </span>
+                    <span className='text-sm font-bold text-gray-900'>67%</span>
                   </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-orange-200'>
-                <div className='text-xs text-gray-600'>
-                  Avg. Journey Time:{' '}
-                  <span className='text-orange-700 font-medium'>120 days</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Healthcare Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-green-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-green-700 flex items-center'>
-                <span className='w-2 h-2 bg-green-500 rounded-full mr-2'></span>
-                Healthcare Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'Patient Registration',
-                    count: 456,
-                    percentage: 25,
-                    color: 'bg-gray-400',
-                  },
-                  {
-                    stage: 'Initial Consultation',
-                    count: 342,
-                    percentage: 40,
-                    color: 'bg-blue-500',
-                  },
-                  {
-                    stage: 'Treatment Planning',
-                    count: 267,
-                    percentage: 55,
-                    color: 'bg-blue-600',
-                  },
-                  {
-                    stage: 'Treatment Delivery',
-                    count: 198,
-                    percentage: 75,
-                    color: 'bg-green-400',
-                  },
-                  {
-                    stage: 'Outcome Measurement',
-                    count: 156,
-                    percentage: 90,
-                    color: 'bg-green-500',
-                  },
-                  {
-                    stage: 'Follow-up Complete',
-                    count: 134,
-                    percentage: 100,
-                    color: 'bg-green-600',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color}`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <div className='w-16 bg-gray-200 rounded-full h-2'>
-                        <div
-                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
+                  <div className='w-full bg-gray-200 rounded-full h-2'>
+                    <div
+                      className='bg-orange-600 h-2 rounded-full'
+                      style={{ width: '67%' }}
+                    ></div>
                   </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-green-200'>
-                <div className='text-xs text-gray-600'>
-                  Avg. Journey Time:{' '}
-                  <span className='text-green-700 font-medium'>90 days</span>
-                </div>
-              </div>
-            </div>
-
-            {/* FinTech Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
-                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
-                FinTech Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'Compliance Screening',
-                    count: 234,
-                    percentage: 30,
-                    color: 'bg-gray-400',
-                  },
-                  {
-                    stage: 'Risk Assessment',
-                    count: 187,
-                    percentage: 45,
-                    color: 'bg-blue-500',
-                  },
-                  {
-                    stage: 'Regulatory Approval',
-                    count: 143,
-                    percentage: 60,
-                    color: 'bg-blue-600',
-                  },
-                  {
-                    stage: 'Account Opening',
-                    count: 98,
-                    percentage: 80,
-                    color: 'bg-orange-500',
-                  },
-                  {
-                    stage: 'Service Activation',
-                    count: 76,
-                    percentage: 95,
-                    color: 'bg-green-500',
-                  },
-                  {
-                    stage: 'Active Customer',
-                    count: 67,
-                    percentage: 100,
-                    color: 'bg-green-600',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color}`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <div className='w-16 bg-gray-200 rounded-full h-2'>
-                        <div
-                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-blue-200'>
-                <div className='text-xs text-gray-600'>
-                  Avg. Journey Time:{' '}
-                  <span className='text-blue-700 font-medium'>60 days</span>
-                </div>
-              </div>
-            </div>
-
-            {/* College Consulting Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
-                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
-                College Consulting Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'Initial Inquiry',
-                    count: 123,
-                    percentage: 20,
-                    color: 'bg-gray-400',
-                  },
-                  {
-                    stage: 'Parent Meeting',
-                    count: 89,
-                    percentage: 35,
-                    color: 'bg-blue-500',
-                  },
-                  {
-                    stage: 'Student Assessment',
-                    count: 67,
-                    percentage: 50,
-                    color: 'bg-blue-600',
-                  },
-                  {
-                    stage: 'School List Development',
-                    count: 45,
-                    percentage: 70,
-                    color: 'bg-orange-500',
-                  },
-                  {
-                    stage: 'Application Prep',
-                    count: 32,
-                    percentage: 85,
-                    color: 'bg-green-500',
-                  },
-                  {
-                    stage: 'Enrollment Success',
-                    count: 24,
-                    percentage: 100,
-                    color: 'bg-green-600',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color}`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <div className='w-16 bg-gray-200 rounded-full h-2'>
-                        <div
-                          className={`${item.color} h-2 rounded-full transition-all duration-500`}
-                          style={{ width: `${item.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-blue-200'>
-                <div className='text-xs text-gray-600'>
-                  Avg. Journey Time:{' '}
-                  <span className='text-blue-700 font-medium'>365 days</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Data Processing Pipeline */}
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <h4 className='text-lg font-semibold mb-4 text-blue-700 flex items-center'>
-                <span className='w-2 h-2 bg-blue-500 rounded-full mr-2'></span>
-                Data Processing Pipeline
-              </h4>
-              <div className='space-y-3'>
-                {[
-                  {
-                    stage: 'Data Ingestion',
-                    count: '2.4M',
-                    percentage: 100,
-                    color: 'bg-green-500',
-                    status: 'Active',
-                  },
-                  {
-                    stage: 'Transformation',
-                    count: '2.4M',
-                    percentage: 98,
-                    color: 'bg-green-500',
-                    status: 'Processing',
-                  },
-                  {
-                    stage: 'Enrichment',
-                    count: '2.3M',
-                    percentage: 95,
-                    color: 'bg-orange-500',
-                    status: 'Running',
-                  },
-                  {
-                    stage: 'Aggregation',
-                    count: '2.2M',
-                    percentage: 92,
-                    color: 'bg-orange-500',
-                    status: 'Active',
-                  },
-                  {
-                    stage: 'Storage',
-                    count: '2.1M',
-                    percentage: 90,
-                    color: 'bg-blue-500',
-                    status: 'Storing',
-                  },
-                  {
-                    stage: 'Output Ready',
-                    count: '2.0M',
-                    percentage: 88,
-                    color: 'bg-blue-600',
-                    status: 'Complete',
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <div
-                        className={`w-3 h-3 rounded-full ${item.color} animate-pulse`}
-                      ></div>
-                      <span className='text-sm text-gray-900'>
-                        {item.stage}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-2'>
-                      <span className='text-xs text-gray-600'>
-                        {item.count}
-                      </span>
-                      <span className='text-xs text-blue-700 font-medium'>
-                        {item.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className='mt-4 pt-3 border-t border-blue-200'>
-                <div className='text-xs text-gray-600'>
-                  Processing Rate:{' '}
-                  <span className='text-blue-700 font-medium'>
-                    14.2k events/sec
+                  <span className='text-xs text-orange-600'>
+                    -1.3% vs last week
                   </span>
                 </div>
               </div>
             </div>
+
+            {/* Customer Satisfaction */}
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Customer Health
+              </h4>
+              <div className='space-y-4'>
+                <div className='text-center'>
+                  <div className='inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-2'>
+                    <span className='text-2xl font-bold text-green-600'>
+                      8.7
+                    </span>
+                  </div>
+                  <p className='text-sm text-gray-600'>Net Promoter Score</p>
+                  <span className='text-xs text-green-600'>Excellent</span>
+                </div>
+                <div className='grid grid-cols-2 gap-4 pt-4 border-t border-gray-200'>
+                  <div className='text-center'>
+                    <span className='text-lg font-bold text-gray-900'>
+                      2.1%
+                    </span>
+                    <p className='text-xs text-gray-600'>Churn Rate</p>
+                    <span className='text-xs text-green-600'>↓ 0.3%</span>
+                  </div>
+                  <div className='text-center'>
+                    <span className='text-lg font-bold text-gray-900'>94%</span>
+                    <p className='text-xs text-gray-600'>Retention</p>
+                    <span className='text-xs text-green-600'>↑ 1.2%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
 
-        {/* Pipeline Summary Analytics */}
-        <section className='mt-8'>
-          <h3 className='text-xl font-semibold mb-6 text-gray-900'>
-            Pipeline Performance Summary
-          </h3>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-blue-700'>
-                  Overall Conversion
-                </h4>
-                <span className='text-2xl'>🎯</span>
-              </div>
-              <div className='text-3xl font-bold text-blue-700 mb-2'>23.7%</div>
-              <div className='text-sm text-gray-600'>
-                Cross-industry average
-              </div>
-              <div className='mt-3 text-xs text-green-600'>
-                +2.8% vs last month
+          {/* Real-time Activity Feed */}
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Real-time Activity
+              </h4>
+              <div className='space-y-3'>
+                <div className='flex items-center space-x-3 p-3 bg-green-50 rounded-lg'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <div className='flex-1'>
+                    <p className='text-sm text-gray-900'>
+                      New trial signup from enterprise lead
+                    </p>
+                    <span className='text-xs text-gray-500'>2 minutes ago</span>
+                  </div>
+                </div>
+                <div className='flex items-center space-x-3 p-3 bg-blue-50 rounded-lg'>
+                  <div className='w-2 h-2 bg-blue-500 rounded-full'></div>
+                  <div className='flex-1'>
+                    <p className='text-sm text-gray-900'>
+                      A/B test reached statistical significance
+                    </p>
+                    <span className='text-xs text-gray-500'>8 minutes ago</span>
+                  </div>
+                </div>
+                <div className='flex items-center space-x-3 p-3 bg-orange-50 rounded-lg'>
+                  <div className='w-2 h-2 bg-orange-500 rounded-full'></div>
+                  <div className='flex-1'>
+                    <p className='text-sm text-gray-900'>
+                      User completed onboarding flow
+                    </p>
+                    <span className='text-xs text-gray-500'>
+                      12 minutes ago
+                    </span>
+                  </div>
+                </div>
+                <div className='flex items-center space-x-3 p-3 bg-green-50 rounded-lg'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <div className='flex-1'>
+                    <p className='text-sm text-gray-900'>
+                      Payment received: $299/month plan
+                    </p>
+                    <span className='text-xs text-gray-500'>
+                      18 minutes ago
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-blue-700'>
-                  Avg. Journey Time
-                </h4>
-                <span className='text-2xl'>⏱️</span>
-              </div>
-              <div className='text-3xl font-bold text-blue-700 mb-2'>
-                67 days
-              </div>
-              <div className='text-sm text-gray-600'>Weighted by volume</div>
-              <div className='mt-3 text-xs text-green-600'>
-                -5.2 days improvement
-              </div>
-            </div>
-
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-blue-700'>
-                  Stage Efficiency
-                </h4>
-                <span className='text-2xl'>⚡</span>
-              </div>
-              <div className='text-3xl font-bold text-blue-700 mb-2'>
-                94.2%
-              </div>
-              <div className='text-sm text-gray-600'>Process automation</div>
-              <div className='mt-3 text-xs text-green-600'>
-                +1.8% optimization
-              </div>
-            </div>
-
-            <div className='bg-white rounded-xl shadow-lg border border-blue-200 p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h4 className='text-lg font-semibold text-blue-700'>
-                  Active Pipelines
-                </h4>
-                <span className='text-2xl'>🔄</span>
-              </div>
-              <div className='text-3xl font-bold text-blue-700 mb-2'>
-                2,847
-              </div>
-              <div className='text-sm text-gray-600'>Across all industries</div>
-              <div className='mt-3 text-xs text-green-600'>
-                +156 new this week
+            {/* Key Performance Indicators */}
+            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
+                Performance Summary
+              </h4>
+              <div className='grid grid-cols-2 gap-4'>
+                <div className='text-center p-4 bg-blue-50 rounded-lg'>
+                  <span className='text-2xl font-bold text-blue-600'>
+                    15.3%
+                  </span>
+                  <p className='text-sm text-gray-600'>Conversion Rate</p>
+                  <span className='text-xs text-green-600'>↑ 2.1%</span>
+                </div>
+                <div className='text-center p-4 bg-green-50 rounded-lg'>
+                  <span className='text-2xl font-bold text-green-600'>
+                    $127
+                  </span>
+                  <p className='text-sm text-gray-600'>Avg. Deal Size</p>
+                  <span className='text-xs text-green-600'>↑ $12</span>
+                </div>
+                <div className='text-center p-4 bg-orange-50 rounded-lg'>
+                  <span className='text-2xl font-bold text-orange-600'>
+                    18 days
+                  </span>
+                  <p className='text-sm text-gray-600'>Sales Cycle</p>
+                  <span className='text-xs text-red-600'>↑ 2 days</span>
+                </div>
+                <div className='text-center p-4 bg-blue-50 rounded-lg'>
+                  <span className='text-2xl font-bold text-blue-600'>
+                    94.2%
+                  </span>
+                  <p className='text-sm text-gray-600'>Model Accuracy</p>
+                  <span className='text-xs text-green-600'>↑ 1.8%</span>
+                </div>
               </div>
             </div>
           </div>

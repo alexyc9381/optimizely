@@ -56,98 +56,150 @@ const SettingsPage: React.FC = () => {
 
         {/* Account Settings */}
         {activeTab === 'account' && (
-          <div className='space-y-6'>
-            <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-              <h3 className='text-lg font-semibold text-gray-900 mb-6'>
-                Account Information
-              </h3>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Full Name
-                  </label>
-                  <input
-                    type='text'
-                    defaultValue='John Doe'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                  />
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Email Address
-                  </label>
-                  <input
-                    type='email'
-                    defaultValue='john.doe@company.com'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                  />
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Company
-                  </label>
-                  <input
-                    type='text'
-                    defaultValue='Acme Corporation'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                  />
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Role
-                  </label>
-                  <select className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-                    <option>Admin</option>
-                    <option>Manager</option>
-                    <option>Analyst</option>
-                  </select>
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-6'>
+              Account Information
+            </h3>
+            <div className='space-y-6'>
+              <div>
+                <h4 className='text-sm font-medium text-gray-900 mb-3'>
+                  Profile Information
+                </h4>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                      Full Name
+                    </label>
+                    <input
+                      type='text'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      placeholder='Enter your name'
+                      defaultValue='John Doe'
+                    />
+                  </div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                      Email Address
+                    </label>
+                    <input
+                      type='email'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      placeholder='Enter your email'
+                      defaultValue='john@company.com'
+                    />
+                  </div>
                 </div>
               </div>
-              <div className='mt-6'>
-                <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium'>
-                  Save Changes
-                </button>
-              </div>
-            </div>
 
-            <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-              <h3 className='text-lg font-semibold text-gray-900 mb-6'>
-                Preferences
-              </h3>
-              <div className='space-y-4'>
-                <div className='flex items-center justify-between'>
+              {/* Business Type Selection */}
+              <div>
+                <h4 className='text-sm font-medium text-gray-900 mb-3'>
+                  Business Configuration
+                </h4>
+                <div className='space-y-4'>
                   <div>
-                    <h4 className='font-medium text-gray-900'>
-                      Email Notifications
-                    </h4>
-                    <p className='text-sm text-gray-500'>
-                      Receive updates about your tests and campaigns
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Primary Business Type
+                    </label>
+                    <select className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option value='saas'>SaaS - Software as a Service</option>
+                      <option value='manufacturing'>Manufacturing</option>
+                      <option value='healthcare'>Healthcare</option>
+                      <option value='fintech'>FinTech</option>
+                      <option value='college-consulting'>
+                        College Consulting
+                      </option>
+                      <option value='ecommerce'>E-commerce</option>
+                    </select>
+                    <p className='text-xs text-gray-500 mt-1'>
+                      This configures your dashboard metrics, A/B testing
+                      templates, and industry-specific analytics
                     </p>
                   </div>
-                  <label className='relative inline-flex items-center cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      defaultChecked
-                      className='sr-only peer'
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Company Size
+                    </label>
+                    <select className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option value='startup'>Startup (1-10 employees)</option>
+                      <option value='small'>
+                        Small Business (11-50 employees)
+                      </option>
+                      <option value='medium'>
+                        Medium Business (51-200 employees)
+                      </option>
+                      <option value='enterprise'>
+                        Enterprise (200+ employees)
+                      </option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Monthly Traffic Volume
+                    </label>
+                    <select className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option value='low'>Under 10K visitors/month</option>
+                      <option value='medium'>10K - 100K visitors/month</option>
+                      <option value='high'>100K - 1M visitors/month</option>
+                      <option value='enterprise'>1M+ visitors/month</option>
+                    </select>
+                  </div>
                 </div>
-                <div className='flex items-center justify-between'>
-                  <div>
-                    <h4 className='font-medium text-gray-900'>Test Alerts</h4>
-                    <p className='text-sm text-gray-500'>
-                      Get notified when tests reach significance
-                    </p>
+              </div>
+
+              {/* Preferences Section */}
+              <div>
+                <h4 className='text-sm font-medium text-gray-900 mb-3'>
+                  Preferences
+                </h4>
+                <div className='space-y-4'>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <h5 className='font-medium text-gray-900'>
+                        Email Notifications
+                      </h5>
+                      <p className='text-sm text-gray-500'>
+                        Receive updates about your tests and campaigns
+                      </p>
+                    </div>
+                    <label className='relative inline-flex items-center cursor-pointer'>
+                      <input
+                        type='checkbox'
+                        defaultChecked
+                        className='sr-only peer'
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
                   </div>
-                  <label className='relative inline-flex items-center cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      defaultChecked
-                      className='sr-only peer'
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <h5 className='font-medium text-gray-900'>Test Alerts</h5>
+                      <p className='text-sm text-gray-500'>
+                        Get notified when tests reach significance
+                      </p>
+                    </div>
+                    <label className='relative inline-flex items-center cursor-pointer'>
+                      <input
+                        type='checkbox'
+                        defaultChecked
+                        className='sr-only peer'
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <div className='mt-6 pt-6 border-t border-gray-200'>
+                <div className='flex items-center justify-between'>
+                  <p className='text-sm text-gray-600'>
+                    Changes will be applied to your dashboard and analytics
+                    configuration
+                  </p>
+                  <button className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors'>
+                    Save Configuration
+                  </button>
                 </div>
               </div>
             </div>
