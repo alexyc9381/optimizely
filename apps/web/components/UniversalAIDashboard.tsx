@@ -250,7 +250,9 @@ const UniversalAIDashboard: React.FC = () => {
   }> = ({ title, value, subtitle, trend, icon }) => (
     <div className='bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg'>
       <div className='flex items-center justify-between mb-4'>
-        <div className='bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded'>{icon}</div>
+        <div className='bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded'>
+          {icon}
+        </div>
         <div className='text-xs text-gray-500'>{subtitle}</div>
       </div>
       <div className='mb-2'>
@@ -388,9 +390,7 @@ const UniversalAIDashboard: React.FC = () => {
       <div className='min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary flex items-center justify-center'>
         <div className='text-center'>
           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4'></div>
-          <p className='text-text-secondary'>
-            Loading Optelo Platform...
-          </p>
+          <p className='text-text-secondary'>Loading Optelo Platform...</p>
         </div>
       </div>
     );
@@ -398,6 +398,62 @@ const UniversalAIDashboard: React.FC = () => {
 
   return (
     <div className='min-h-screen bg-gray-50 text-gray-900'>
+      <style jsx>{`
+        /* Custom scrollbar styling for dashboard components */
+        .dashboard-scrollable {
+          scrollbar-width: thin;
+          scrollbar-color: #d1d5db #f3f4f6;
+        }
+
+        .dashboard-scrollable::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+
+        .dashboard-scrollable::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 10px;
+        }
+
+        .dashboard-scrollable::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 10px;
+          border: 1px solid #f3f4f6;
+        }
+
+        .dashboard-scrollable::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+
+        .dashboard-scrollable::-webkit-scrollbar-corner {
+          background: #f3f4f6;
+        }
+
+        /* Global scrollbar styling for the main page */
+        html {
+          scrollbar-width: thin;
+          scrollbar-color: #d1d5db #f9fafb;
+        }
+
+        html::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        html::-webkit-scrollbar-track {
+          background: #f9fafb;
+          border-radius: 10px;
+        }
+
+        html::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 10px;
+          border: 2px solid #f9fafb;
+        }
+
+        html::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
       {/* Header */}
       <header className='bg-white/90 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'>
         <div className='max-w-7xl mx-auto px-6 py-4'>
@@ -407,9 +463,7 @@ const UniversalAIDashboard: React.FC = () => {
                 <span className='text-white font-bold text-sm'>AI</span>
               </div>
               <div>
-                <h1 className='text-xl font-bold text-blue-600'>
-                  Optelo
-                </h1>
+                <h1 className='text-xl font-bold text-blue-600'>Optelo</h1>
                 <p className='text-gray-600 text-xs'>
                   Multi-Industry A/B Testing & Analytics
                 </p>
@@ -508,9 +562,12 @@ const UniversalAIDashboard: React.FC = () => {
               System Health
             </h3>
             <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
                 <div className='space-y-3'>
-                  <HealthIndicator service='API Gateway' status={apiConnected} />
+                  <HealthIndicator
+                    service='API Gateway'
+                    status={apiConnected}
+                  />
                   <HealthIndicator
                     service='ML Engine'
                     status={systemHealth.mlEngine || apiConnected}
@@ -554,10 +611,13 @@ const UniversalAIDashboard: React.FC = () => {
               Active Experiments
             </h3>
             <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
                 <div className='space-y-4'>
                   {experiments.map(experiment => (
-                    <ExperimentCard key={experiment.id} experiment={experiment} />
+                    <ExperimentCard
+                      key={experiment.id}
+                      experiment={experiment}
+                    />
                   ))}
                 </div>
               </div>
@@ -576,7 +636,7 @@ const UniversalAIDashboard: React.FC = () => {
               ML Models
             </h3>
             <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
                 <div className='space-y-4'>
                   {modelMetrics.map((metric, index) => (
                     <ModelMetricCard key={index} metric={metric} />
