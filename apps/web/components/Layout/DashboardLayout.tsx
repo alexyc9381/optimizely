@@ -10,11 +10,62 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
-  title = 'Universal AI Platform',
-  description = 'AI-powered A/B testing and analytics platform',
+  title = 'Optelo',
+  description = 'Multi-Industry A/B Testing & Analytics Platform',
 }) => {
   return (
     <>
+      <style jsx global>{`
+        /* Global scrollbar styling for all pages */
+        html {
+          scrollbar-width: thin;
+          scrollbar-color: #d1d5db #f9fafb;
+        }
+
+        html::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        html::-webkit-scrollbar-track {
+          background: #f9fafb;
+          border-radius: 10px;
+        }
+
+        html::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 10px;
+          border: 2px solid #f9fafb;
+        }
+
+        html::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+
+        /* Main content area scrollbar styling */
+        .main-content-scrollable {
+          scrollbar-width: thin;
+          scrollbar-color: #d1d5db #f3f4f6;
+        }
+
+        .main-content-scrollable::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .main-content-scrollable::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 10px;
+        }
+
+        .main-content-scrollable::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 10px;
+          border: 2px solid #f3f4f6;
+        }
+
+        .main-content-scrollable::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
       <Head>
         <title>{title}</title>
         <meta name='description' content={description} />
@@ -46,12 +97,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <div className='flex items-center justify-between'>
                 <div>
                   <h1 className='text-2xl font-bold text-gray-900'>
-                    {title === 'Universal AI Platform'
+                    {title === 'Optelo'
                       ? 'Dashboard'
-                      : title.replace('Universal AI Platform - ', '')}
+                      : title.replace('Optelo - ', '')}
                   </h1>
                   <p className='text-sm text-gray-500 mt-1'>
-                    Welcome to your Universal AI Analytics Platform
+                    Welcome to your Optelo Analytics Platform
                   </p>
                 </div>
 
@@ -109,7 +160,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </header>
 
           {/* Main Content Area */}
-          <main className='flex-1 overflow-x-hidden overflow-y-auto bg-gray-50'>
+          <main className='flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 main-content-scrollable'>
             <div className='px-6 py-6'>{children}</div>
           </main>
         </div>
