@@ -5,39 +5,36 @@
 module.exports = {
   // Target your main development server
   devServer: {
-    url: 'http://localhost:3001',
-    port: 3001
+    url: 'http://localhost:3002',
+    port: 3002,
   },
 
   // Specify components to focus on
   components: {
-    include: [
-      './components/**/*.tsx',
-      './pages/**/*.tsx'
-    ],
+    include: ['./components/**/*.tsx', './pages/**/*.tsx'],
     exclude: [
       './components/ui/sidebar.tsx', // Avoid complex animation components initially
-      './node_modules/**'
-    ]
+      './node_modules/**',
+    ],
   },
 
   // Preserve your existing CSS classes
   css: {
     framework: 'tailwind',
     preserveClasses: true,
-    customProperties: true
+    customProperties: true,
   },
 
   // Git integration for safe editing
   git: {
     autoCommit: false, // Manual control over commits
-    commitMessage: 'feat(ui): Onlook visual design updates'
+    commitMessage: 'feat(ui): Onlook visual design updates',
   },
 
   // Component inspection settings
   inspector: {
     showClassNames: true,
     showProps: true,
-    highlightOnHover: true
-  }
-}
+    highlightOnHover: true,
+  },
+};
