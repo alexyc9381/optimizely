@@ -259,10 +259,7 @@ const UniversalAIDashboard: React.FC = () => {
         </div>
       </div>
       {trend && (
-        <div
-          className={`text-xs ${trend.startsWith('+') ? 'text-green-600' : trend.startsWith('-') ? 'text-red-600' : 'text-gray-600'}`}
-          data-oid='x1::7m.'
-        >
+        <div className='text-xs text-green-600' data-oid='x1::7m.'>
           {trend}
         </div>
       )}
