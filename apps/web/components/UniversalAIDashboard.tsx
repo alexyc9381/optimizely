@@ -509,104 +509,6 @@ const UniversalAIDashboard: React.FC = () => {
           </div>
         </section>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {/* System Health */}
-          <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
-              System Health
-            </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
-                <div className='space-y-3'>
-                  <HealthIndicator
-                    service='API Gateway'
-                    status={apiConnected}
-                  />
-                  <HealthIndicator
-                    service='ML Engine'
-                    status={systemHealth.mlEngine || apiConnected}
-                  />
-                  <HealthIndicator
-                    service='A/B Testing'
-                    status={systemHealth.abTesting || apiConnected}
-                  />
-                  <HealthIndicator
-                    service='Analytics'
-                    status={systemHealth.analytics || apiConnected}
-                  />
-                  <HealthIndicator
-                    service='Recommendations'
-                    status={systemHealth.recommendations || apiConnected}
-                  />
-                </div>
-
-                <div className='mt-6 pt-4 border-t border-gray-200'>
-                  <p className='text-gray-500 text-xs mb-2'>System Status</p>
-                  <div className='flex items-center justify-between'>
-                    <span className='text-gray-900 font-medium'>
-                      Overall Health
-                    </span>
-                    <span className='text-green-600 font-bold'>98.5%</span>
-                  </div>
-                  <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
-                    <div
-                      className='bg-green-500 h-2 rounded-full transition-all duration-500'
-                      style={{ width: '98.5%' }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Active A/B Experiments */}
-          <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
-              Active Experiments
-            </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
-                <div className='space-y-4'>
-                  {experiments.map(experiment => (
-                    <ExperimentCard
-                      key={experiment.id}
-                      experiment={experiment}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className='mt-6 pt-4 border-t border-gray-200'>
-                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
-                  View All Experiments
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* ML Model Performance */}
-          <section className='lg:col-span-1'>
-            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
-              ML Models
-            </h3>
-            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
-              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
-                <div className='space-y-4'>
-                  {modelMetrics.map((metric, index) => (
-                    <ModelMetricCard key={index} metric={metric} />
-                  ))}
-                </div>
-              </div>
-
-              <div className='mt-6 pt-4 border-t border-gray-200'>
-                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
-                  Model Refinement Dashboard
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
-
         {/* Enhanced Analytics Section */}
         <section className='mt-8'>
           <h3 className='text-xl font-semibold mb-6 text-blue-600'>
@@ -923,6 +825,104 @@ const UniversalAIDashboard: React.FC = () => {
             </div>
           </div>
         </section>
+
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12'>
+          {/* System Health */}
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
+              System Health
+            </h3>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
+                <div className='space-y-3'>
+                  <HealthIndicator
+                    service='API Gateway'
+                    status={apiConnected}
+                  />
+                  <HealthIndicator
+                    service='ML Engine'
+                    status={systemHealth.mlEngine || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='A/B Testing'
+                    status={systemHealth.abTesting || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='Analytics'
+                    status={systemHealth.analytics || apiConnected}
+                  />
+                  <HealthIndicator
+                    service='Recommendations'
+                    status={systemHealth.recommendations || apiConnected}
+                  />
+                </div>
+
+                <div className='mt-6 pt-4 border-t border-gray-200'>
+                  <p className='text-gray-500 text-xs mb-2'>System Status</p>
+                  <div className='flex items-center justify-between'>
+                    <span className='text-gray-900 font-medium'>
+                      Overall Health
+                    </span>
+                    <span className='text-green-600 font-bold'>98.5%</span>
+                  </div>
+                  <div className='w-full bg-gray-200 rounded-full h-2 mt-2'>
+                    <div
+                      className='bg-green-500 h-2 rounded-full transition-all duration-500'
+                      style={{ width: '98.5%' }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Active A/B Experiments */}
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
+              Active Experiments
+            </h3>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
+                <div className='space-y-4'>
+                  {experiments.map(experiment => (
+                    <ExperimentCard
+                      key={experiment.id}
+                      experiment={experiment}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className='mt-6 pt-4 border-t border-gray-200'>
+                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
+                  View All Experiments
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* ML Model Performance */}
+          <section className='lg:col-span-1'>
+            <h3 className='text-xl font-semibold mb-4 text-gray-900'>
+              ML Models
+            </h3>
+            <div className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'>
+              <div className='flex-1 overflow-y-auto dashboard-scrollable'>
+                <div className='space-y-4'>
+                  {modelMetrics.map((metric, index) => (
+                    <ModelMetricCard key={index} metric={metric} />
+                  ))}
+                </div>
+              </div>
+
+              <div className='mt-6 pt-4 border-t border-gray-200'>
+                <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'>
+                  Model Refinement Dashboard
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   );
