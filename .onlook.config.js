@@ -33,10 +33,11 @@ module.exports = {
     ]
   },
 
-  // Custom dev command for monorepo
+  // Let Onlook manage the dev server
   dev: {
     command: 'cd apps/web && npm run dev',
-    port: 3002
+    port: 3002,
+    killPort: true // Automatically kill any process on this port
   },
 
   git: {
