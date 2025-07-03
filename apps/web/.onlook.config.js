@@ -1,40 +1,37 @@
+/* eslint-env node */
 /* eslint-disable no-undef */
-/**
- * @type {import('@onlook/core').OnlookConfig}
- */
+/** @type {import('@onlook/app').OnlookConfig} */
 module.exports = {
-  // Target your main development server
-  devServer: {
-    url: 'http://localhost:3002',
-    port: 3002,
+  url: 'http://localhost:3002',
+  build: {
+    outDir: '.next'
   },
-
-  // Specify components to focus on
-  components: {
-    include: ['./components/**/*.tsx', './pages/**/*.tsx'],
-    exclude: [
-      './components/ui/sidebar.tsx', // Avoid complex animation components initially
-      './node_modules/**',
-    ],
-  },
-
-  // Preserve your existing CSS classes
+  framework: 'nextjs',
   css: {
     framework: 'tailwind',
-    preserveClasses: true,
-    customProperties: true,
+    configPath: './tailwind.config.js'
   },
-
-  // Git integration for safe editing
+  components: {
+    include: [
+      'components/**/*.tsx',
+      'pages/**/*.tsx',
+      'src/**/*.tsx'
+    ],
+    exclude: [
+      'node_modules/**',
+      '.next/**',
+      'coverage/**'
+    ]
+  },
   git: {
-    autoCommit: false, // Manual control over commits
-    commitMessage: 'feat(ui): Onlook visual design updates',
+    autoCommit: false,
+    commitMessage: 'feat: Update component styling via Onlook'
   },
-
-  // Component inspection settings
+  server: {
+    port: 3002
+  },
   inspector: {
-    showClassNames: true,
-    showProps: true,
-    highlightOnHover: true,
-  },
+    enabled: true,
+    position: 'right'
+  }
 };

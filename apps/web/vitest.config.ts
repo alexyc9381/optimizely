@@ -1,5 +1,6 @@
-import { defineConfig } from 'vitest/config';
+/* eslint-disable no-undef */
 import { resolve } from 'path';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -23,4 +24,4 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
-}); 
+});

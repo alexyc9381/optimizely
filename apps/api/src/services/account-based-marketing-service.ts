@@ -870,7 +870,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     };
 
     // Store in Redis cache
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:account:${account.id}`,
       this.CACHE_TTL.ACCOUNT_PROFILE,
       JSON.stringify(account)
@@ -893,7 +893,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     // Fallback to database simulation
     const account = await this.loadAccountFromStorage(accountId);
     if (account) {
-      await this.redis.setEx(
+      await this.redis.setex(
         `abm:account:${accountId}`,
         this.CACHE_TTL.ACCOUNT_PROFILE,
         JSON.stringify(account)
@@ -915,7 +915,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       updatedAt: new Date(),
     };
 
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:account:${accountId}`,
       this.CACHE_TTL.ACCOUNT_PROFILE,
       JSON.stringify(updatedAccount)
@@ -942,7 +942,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       account.engagementHistory.push(engagementRecord);
       account.updatedAt = new Date();
 
-      await this.redis.setEx(
+      await this.redis.setex(
         `abm:account:${engagement.accountId}`,
         this.CACHE_TTL.ACCOUNT_PROFILE,
         JSON.stringify(account)
@@ -971,7 +971,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       .filter(account => this.evaluateSegmentCriteria(account, segment.criteria))
       .map(account => account.id);
 
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:segment:${segment.id}`,
       this.CACHE_TTL.SEGMENT_DATA,
       JSON.stringify(segment)
@@ -1000,7 +1000,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       if (this.evaluateSegmentCriteria(account, segment.criteria)) {
         if (!segment.accounts.includes(accountId)) {
           segment.accounts.push(accountId);
-          await this.redis.setEx(
+          await this.redis.setex(
             `abm:segment:${segment.id}`,
             this.CACHE_TTL.SEGMENT_DATA,
             JSON.stringify(segment)
@@ -1073,7 +1073,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       updatedAt: new Date(),
     };
 
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:campaign:${campaign.id}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(campaign)
@@ -1305,7 +1305,7 @@ export class AccountBasedMarketingService extends EventEmitter {
       lastActivity: new Date(),
     };
 
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:journey:${accountId}`,
       this.CACHE_TTL.JOURNEY_STATE,
       JSON.stringify(journey)
@@ -1332,7 +1332,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     // Check for stage progression
     await this.checkStageProgression(journey);
 
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:journey:${accountId}`,
       this.CACHE_TTL.JOURNEY_STATE,
       JSON.stringify(journey)
@@ -1399,7 +1399,7 @@ export class AccountBasedMarketingService extends EventEmitter {
 
     const analytics = await this.calculateABMAnalytics(timeframe);
 
-    await this.redis.setEx(
+    await this.redis.setex(
       cacheKey,
       this.CACHE_TTL.ANALYTICS,
       JSON.stringify(analytics)
@@ -1538,7 +1538,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     ).length;
 
     // Update campaign in cache
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:campaign:${campaignId}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(campaign)
@@ -1715,7 +1715,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.workflows.set(workflow.id, workflow);
 
     // Cache the workflow
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:workflow:${workflow.id}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(workflow)
@@ -1741,7 +1741,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     const workflow = this.workflows.get(workflowId);
     if (workflow) {
       // Update cache
-      await this.redis.setEx(
+      await this.redis.setex(
         `abm:workflow:${workflowId}`,
         this.CACHE_TTL.CAMPAIGN_METRICS,
         JSON.stringify(workflow)
@@ -1765,7 +1765,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.workflows.set(workflowId, updatedWorkflow);
 
     // Update cache
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:workflow:${workflowId}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(updatedWorkflow)
@@ -1819,7 +1819,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.automationRules.set(rule.id, rule);
 
     // Cache the rule
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:rule:${rule.id}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(rule)
@@ -1840,7 +1840,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     const rule = this.automationRules.get(ruleId);
     if (rule) {
       // Update cache
-      await this.redis.setEx(
+      await this.redis.setex(
         `abm:rule:${ruleId}`,
         this.CACHE_TTL.CAMPAIGN_METRICS,
         JSON.stringify(rule)
@@ -1869,7 +1869,7 @@ export class AccountBasedMarketingService extends EventEmitter {
           rule.lastExecuted = new Date();
 
           // Update cache
-          await this.redis.setEx(
+          await this.redis.setex(
             `abm:rule:${rule.id}`,
             this.CACHE_TTL.CAMPAIGN_METRICS,
             JSON.stringify(rule)
@@ -1902,7 +1902,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.orchestrations.set(orchestration.id, orchestration);
 
     // Cache the orchestration
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:orchestration:${orchestration.id}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(orchestration)
@@ -1949,7 +1949,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     }
 
     // Update cache
-    await this.redis.setEx(
+    await this.redis.setex(
       `abm:orchestration:${orchestrationId}`,
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(orchestration)
@@ -1969,7 +1969,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     const orchestration = this.orchestrations.get(orchestrationId);
     if (orchestration) {
       // Update cache
-      await this.redis.setEx(
+      await this.redis.setex(
         `abm:orchestration:${orchestrationId}`,
         this.CACHE_TTL.CAMPAIGN_METRICS,
         JSON.stringify(orchestration)
@@ -1985,7 +1985,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.personalizationEngine.rules.push(rule);
 
     // Cache updated engine
-    await this.redis.setEx(
+    await this.redis.setex(
       'abm:personalization:engine',
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(this.personalizationEngine)
@@ -1998,7 +1998,7 @@ export class AccountBasedMarketingService extends EventEmitter {
     this.personalizationEngine.contentLibrary.push(asset);
 
     // Cache updated engine
-    await this.redis.setEx(
+    await this.redis.setex(
       'abm:personalization:engine',
       this.CACHE_TTL.CAMPAIGN_METRICS,
       JSON.stringify(this.personalizationEngine)
