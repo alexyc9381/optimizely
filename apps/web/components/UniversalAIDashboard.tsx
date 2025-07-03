@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { apiClient } from '../src/services/apiClient';
+import { AIModel, apiClient } from '../src/services/apiClient';
+import ConversionRateTrendChart from './ConversionRateTrendChart';
+import WebMetricsChart from './WebMetricsChart';
 
 interface DashboardStats {
   totalVisitors: number;
@@ -98,7 +100,6 @@ const UniversalAIDashboard: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [apiConnected, setApiConnected] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Start with fallback data immediately, attempt API connection in background
@@ -107,13 +108,11 @@ const UniversalAIDashboard: React.FC = () => {
       const enableAPIConnection = false; // Set to true to enable API calls
 
       if (!enableAPIConnection) {
-        setError('Using offline mode - API connection disabled');
         return;
       }
 
       try {
         setLoading(true);
-        setError(null);
 
         // Test API connection first with timeout
         const controller =
@@ -152,9 +151,9 @@ const UniversalAIDashboard: React.FC = () => {
 
             const [dashboardResponse, experimentsResponse, modelsResponse] =
               await Promise.allSettled([
-                fetchWithTimeout(apiClient.getDashboardData()),
+                fetchWithTimeout(apiClient.getDashboardMetrics()),
                 fetchWithTimeout(apiClient.getABTests()),
-                fetchWithTimeout(apiClient.getModelStats()),
+                fetchWithTimeout(apiClient.getModels()),
               ]);
 
             // Handle dashboard stats
@@ -197,17 +196,17 @@ const UniversalAIDashboard: React.FC = () => {
 
             // Handle model metrics
             if (modelsResponse.status === 'fulfilled' && modelsResponse.value) {
-              const models = modelsResponse.value as ModelMetric[];
+              const models = modelsResponse.value as AIModel[];
               // Transform to expected format
               setModelMetrics(
                 Array.isArray(models)
-                  ? models.slice(0, 3).map((model: ModelMetric) => ({
+                  ? models.slice(0, 3).map((model: AIModel) => ({
                       name: model.name || 'Unknown Model',
                       accuracy: model.accuracy || 90.0,
-                      confidence: model.confidence || 85.0,
+                      confidence: 85.0, // AIModel doesn't have confidence, use default
                       status: model.status || 'Active',
                     }))
-                  : models
+                  : []
               );
             }
 
@@ -227,7 +226,6 @@ const UniversalAIDashboard: React.FC = () => {
         }
       } catch {
         setApiConnected(false);
-        setError('Using offline mode - some features may be limited');
       } finally {
         // Ensure loading is always set to false
         setLoading(false);
@@ -455,50 +453,6 @@ const UniversalAIDashboard: React.FC = () => {
         }
       `}</style>
       {/* Header */}
-      <header className='bg-white/90 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'>
-        <div className='max-w-7xl mx-auto px-6 py-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-4'>
-              <div className='w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center'>
-                <span className='text-white font-bold text-sm'>AI</span>
-              </div>
-              <div>
-                <h1 className='text-xl font-bold text-blue-600'>Optelo</h1>
-                <p className='text-gray-600 text-xs'>
-                  Multi-Industry A/B Testing & Analytics
-                </p>
-              </div>
-            </div>
-
-            <div className='flex items-center space-x-4'>
-              <div
-                className={`flex items-center px-3 py-1 rounded-full text-xs ${
-                  apiConnected
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'bg-gray-100 text-gray-700 border border-gray-200'
-                }`}
-              >
-                <div
-                  className={`w-1.5 h-1.5 rounded-full mr-2 ${
-                    apiConnected ? 'bg-blue-500 animate-pulse' : 'bg-gray-500'
-                  }`}
-                />
-                API {apiConnected ? 'Connected' : 'Offline'}
-              </div>
-
-              <div className='text-gray-600 text-xs'>
-                85% Complete • 17/20 Tasks
-              </div>
-            </div>
-          </div>
-
-          {error && (
-            <div className='mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800'>
-              {error}
-            </div>
-          )}
-        </div>
-      </header>
 
       {/* Main Content */}
       <main className='max-w-7xl mx-auto px-6 py-8'>
@@ -659,7 +613,12 @@ const UniversalAIDashboard: React.FC = () => {
             SaaS Analytics Dashboard
           </h3>
 
-          {/* Conversion Funnel Chart */}
+          {/* Conversion Rate Trend Chart - Now First */}
+          <div className='mb-8'>
+            <ConversionRateTrendChart />
+          </div>
+
+          {/* Main Analytics Charts */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
             <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
               <h4 className='text-lg font-semibold text-gray-900 mb-4'>
@@ -733,59 +692,8 @@ const UniversalAIDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Revenue Trend Chart */}
-            <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
-              <h4 className='text-lg font-semibold text-gray-900 mb-4'>
-                Monthly Recurring Revenue
-              </h4>
-              <div className='mb-4'>
-                <div className='flex items-end space-x-1 h-32'>
-                  {[45, 52, 48, 61, 58, 67, 72, 69, 78, 82, 89, 94].map(
-                    (height, index) => (
-                      <div
-                        key={index}
-                        className='flex flex-col items-center flex-1'
-                      >
-                        <div
-                          className='bg-blue-600 rounded-t w-full transition-all duration-300 hover:bg-blue-700'
-                          style={{ height: `${height}%` }}
-                        ></div>
-                        <span className='text-xs text-gray-500 mt-1'>
-                          {
-                            [
-                              'J',
-                              'F',
-                              'M',
-                              'A',
-                              'M',
-                              'J',
-                              'J',
-                              'A',
-                              'S',
-                              'O',
-                              'N',
-                              'D',
-                            ][index]
-                          }
-                        </span>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-              <div className='flex items-center justify-between text-sm'>
-                <span className='text-gray-600'>Current MRR</span>
-                <span className='text-lg font-bold text-green-600'>
-                  $847,500
-                </span>
-              </div>
-              <div className='flex items-center justify-between text-sm mt-1'>
-                <span className='text-gray-600'>Growth Rate</span>
-                <span className='text-sm font-medium text-green-600'>
-                  +15.3% MoM
-                </span>
-              </div>
-            </div>
+            {/* Switchable Web Metrics Chart - Replaces MRR Chart */}
+            <WebMetricsChart />
           </div>
 
           {/* A/B Testing Performance */}
