@@ -250,21 +250,7 @@ const UniversalAIDashboard: React.FC = () => {
       className='bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg'
       data-oid='nn71xrs'
     >
-      <div
-        className='flex items-center justify-between mb-4'
-        data-oid='6f78_:w'
-      >
-        <div
-          className='bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded'
-          data-oid='v9urd5c'
-        >
-          {icon}
-        </div>
-        <div className='text-xs text-gray-500' data-oid='0epl0ee'>
-          {subtitle}
-        </div>
-      </div>
-      <div className='mb-2' data-oid='zgq-pe6'>
+      <div className='mb-2' data-oid='zgq-pe6' key='olk-ch7D'>
         <div className='text-2xl font-bold text-gray-900' data-oid='h3l0k1b'>
           {value || 0}
         </div>
