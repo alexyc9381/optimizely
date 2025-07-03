@@ -248,18 +248,18 @@ const UniversalAIDashboard: React.FC = () => {
   }> = ({ title, value, subtitle, trend, icon }) => (
     <div
       className='bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg'
-      data-oid='nn71xrs'
+      data-oid='3c4:k1h'
     >
-      <div className='mb-2' data-oid='zgq-pe6' key='olk-ch7D'>
-        <div className='text-2xl font-bold text-gray-900' data-oid='h3l0k1b'>
+      <div className='mb-2' data-oid='jm5y8ak'>
+        <div className='text-2xl font-bold text-gray-900' data-oid='wwh4680'>
           {value || 0}
         </div>
-        <div className='text-sm text-gray-600' data-oid='7-iwfhq'>
-          Sessions
+        <div className='text-sm text-gray-600' data-oid='x1qjiit'>
+          {title}
         </div>
       </div>
       {trend && (
-        <div className='text-xs text-green-600' data-oid='x1::7m.'>
+        <div className='text-xs text-green-600' data-oid='svmy:j6'>
           {trend}
         </div>
       )}
@@ -270,19 +270,19 @@ const UniversalAIDashboard: React.FC = () => {
     service,
     status,
   }) => (
-    <div className='flex items-center justify-between py-2' data-oid='hp_4jg-'>
-      <span className='text-gray-600 text-sm' data-oid='soz:9gv'>
+    <div className='flex items-center justify-between py-2' data-oid='v3-pj85'>
+      <span className='text-gray-600 text-sm' data-oid='9.t3xrv'>
         {service}
       </span>
-      <div className='flex items-center' data-oid='x9lzp5r'>
+      <div className='flex items-center' data-oid='c.nug8s'>
         <div
           className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'}`}
-          data-oid='mtse0k7'
+          data-oid='6-z1m6f'
         />
 
         <span
           className={`text-xs font-medium ${status ? 'text-blue-600' : 'text-gray-600'}`}
-          data-oid='1u9sqss'
+          data-oid=':4q92m8'
         >
           {status ? 'Active' : 'Offline'}
         </span>
@@ -295,13 +295,13 @@ const UniversalAIDashboard: React.FC = () => {
   }) => (
     <div
       className='bg-gray-50 p-4 rounded-lg border border-gray-200'
-      data-oid='e3-p8t1'
+      data-oid='gnljat5'
     >
       <div
         className='flex items-center justify-between mb-2'
-        data-oid='f.a14k:'
+        data-oid='ld9jot7'
       >
-        <h4 className='text-gray-900 font-medium text-sm' data-oid='ov_nhd:'>
+        <h4 className='text-gray-900 font-medium text-sm' data-oid='zxzp.a9'>
           {experiment.name}
         </h4>
         <span
@@ -310,14 +310,14 @@ const UniversalAIDashboard: React.FC = () => {
               ? 'bg-blue-100 text-blue-700 border border-blue-200'
               : 'bg-gray-100 text-gray-700 border border-gray-200'
           }`}
-          data-oid='dzi0h9_'
+          data-oid='la.ld6f'
         >
           {experiment.status}
         </span>
       </div>
-      <div className='grid grid-cols-2 gap-2 text-xs' data-oid='oz:ab1x'>
-        <div data-oid='ae9.8ss'>
-          <span className='text-gray-500' data-oid='s0ep:co'>
+      <div className='grid grid-cols-2 gap-2 text-xs' data-oid='_fv-f7h'>
+        <div data-oid='f.2-bue'>
+          <span className='text-gray-500' data-oid='36dd99-'>
             Conversion:{' '}
           </span>
           <span
@@ -328,13 +328,13 @@ const UniversalAIDashboard: React.FC = () => {
                   ? 'text-orange-500'
                   : 'text-red-600'
             }`}
-            data-oid='omlfhjy'
+            data-oid='sv2qf:-'
           >
             {experiment.conversionRate}%
           </span>
         </div>
-        <div data-oid='16r4109'>
-          <span className='text-gray-500' data-oid='.7qfnru'>
+        <div data-oid='3r-.6gr'>
+          <span className='text-gray-500' data-oid='.ybyf-h'>
             Confidence:{' '}
           </span>
           <span
@@ -345,13 +345,13 @@ const UniversalAIDashboard: React.FC = () => {
                   ? 'text-orange-500'
                   : 'text-red-600'
             }`}
-            data-oid='28_e6t1'
+            data-oid='d05-9_2'
           >
             {experiment.confidence}%
           </span>
         </div>
       </div>
-      <p className='text-xs text-blue-600 mt-2' data-oid='obr9r1f'>
+      <p className='text-xs text-blue-600 mt-2' data-oid='1:1f67-'>
         {experiment.industry}
       </p>
     </div>
@@ -360,13 +360,13 @@ const UniversalAIDashboard: React.FC = () => {
   const ModelMetricCard: React.FC<{ metric: ModelMetric }> = ({ metric }) => (
     <div
       className='bg-gray-50 p-4 rounded-lg border border-gray-200'
-      data-oid='8j5ax6v'
+      data-oid='9frls8-'
     >
       <div
         className='flex items-center justify-between mb-2'
-        data-oid='i2w.m7p'
+        data-oid='mp:77q9'
       >
-        <h4 className='text-gray-900 font-medium text-sm' data-oid='k4:x.f4'>
+        <h4 className='text-gray-900 font-medium text-sm' data-oid='i9te6w8'>
           {metric.name}
         </h4>
         <span
@@ -375,14 +375,14 @@ const UniversalAIDashboard: React.FC = () => {
               ? 'bg-blue-100 text-blue-700 border border-blue-200'
               : 'bg-gray-100 text-gray-700 border border-gray-200'
           }`}
-          data-oid='o5c50n5'
+          data-oid='rzfd923'
         >
           {metric.status}
         </span>
       </div>
-      <div className='grid grid-cols-2 gap-2 text-xs' data-oid='lcqig3_'>
-        <div data-oid='7.d:.tg'>
-          <span className='text-gray-500' data-oid='cn10nup'>
+      <div className='grid grid-cols-2 gap-2 text-xs' data-oid='_ja_wtq'>
+        <div data-oid='q6jlduq'>
+          <span className='text-gray-500' data-oid='a_1ufpi'>
             Accuracy:{' '}
           </span>
           <span
@@ -393,13 +393,13 @@ const UniversalAIDashboard: React.FC = () => {
                   ? 'text-orange-500'
                   : 'text-red-600'
             }`}
-            data-oid='avcbeyh'
+            data-oid='_si_agf'
           >
             {metric.accuracy}%
           </span>
         </div>
-        <div data-oid='ne5jujg'>
-          <span className='text-gray-500' data-oid='q3ms.qh'>
+        <div data-oid='_ajl3um'>
+          <span className='text-gray-500' data-oid='22rmgue'>
             Confidence:{' '}
           </span>
           <span
@@ -410,7 +410,7 @@ const UniversalAIDashboard: React.FC = () => {
                   ? 'text-orange-500'
                   : 'text-red-600'
             }`}
-            data-oid='_vr_thm'
+            data-oid='6.cmklf'
           >
             {metric.confidence}%
           </span>
@@ -423,14 +423,14 @@ const UniversalAIDashboard: React.FC = () => {
     return (
       <div
         className='min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-background-primary flex items-center justify-center'
-        data-oid='-:hntvw'
+        data-oid=':4_63g9'
       >
-        <div className='text-center' data-oid='-q4kr::'>
+        <div className='text-center' data-oid='a:krcaf'>
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4'
-            data-oid='-5b_3mp'
+            data-oid='dasj61v'
           ></div>
-          <p className='text-text-secondary' data-oid='wt12req'>
+          <p className='text-text-secondary' data-oid='7qewdxc'>
             Loading Optelo Platform...
           </p>
         </div>
@@ -439,8 +439,8 @@ const UniversalAIDashboard: React.FC = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 text-gray-900' data-oid='2q_kd6b'>
-      <style jsx data-oid='_q-ncyb'>{`
+    <div className='min-h-screen bg-gray-50 text-gray-900' data-oid='y14-0_5'>
+      <style jsx data-oid='jhucejd'>{`
         /* Custom scrollbar styling for dashboard components */
         .dashboard-scrollable {
           scrollbar-width: thin;
@@ -499,21 +499,21 @@ const UniversalAIDashboard: React.FC = () => {
       {/* Header */}
 
       {/* Main Content */}
-      <main className='max-w-7xl mx-auto px-6 py-8' data-oid='6c-r2pp'>
+      <main className='max-w-7xl mx-auto px-6 py-8' data-oid='18n4m4s'>
         {/* Key Metrics */}
-        <section className='mb-8' data-oid='59e2n6j'>
+        <section className='mb-8' data-oid='k3eextj'>
           <h2
             className='text-2xl font-bold mb-6 flex items-center text-gray-900'
-            data-oid='mcybnvi'
+            data-oid='ni2r09m'
           >
-            <span className='text-blue-600' data-oid='8xi4-:n' key='olk-awWV'>
+            <span className='text-blue-600' data-oid='ca5j8y4'>
               Analytics Overview
             </span>
           </h2>
 
           <div
             className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6'
-            data-oid='wey28mt'
+            data-oid='-yhwcbh'
           >
             <StatCard
               title='Total Visitors'
@@ -521,7 +521,7 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='Cross-platform tracking'
               trend='+12.3% this week'
               icon='VIS'
-              data-oid='v5n_qu1'
+              data-oid='g-494xo'
             />
 
             <StatCard
@@ -530,7 +530,7 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='Real-time monitoring'
               trend='+8.7% today'
               icon='SES'
-              data-oid='0yhfbak'
+              data-oid='fzvsc-_'
             />
 
             <StatCard
@@ -539,7 +539,7 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='AI-optimized funnels'
               trend='+2.1% improvement'
               icon='CVR'
-              data-oid='s3w.8-g'
+              data-oid='21.snpj'
             />
 
             <StatCard
@@ -548,7 +548,7 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='Attribution modeling'
               trend='+15.4% this month'
               icon='REV'
-              data-oid='95e4wn_'
+              data-oid='-cqzadf'
             />
 
             <StatCard
@@ -557,7 +557,7 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='Running across industries'
               trend='3 completed today'
               icon='AB'
-              data-oid='cv_tbrj'
+              data-oid='ojc0-br'
             />
 
             <StatCard
@@ -566,68 +566,68 @@ const UniversalAIDashboard: React.FC = () => {
               subtitle='ML performance'
               trend='+1.8% improvement'
               icon='ML'
-              data-oid='mjj1mtq'
+              data-oid='4t:ou:d'
             />
           </div>
         </section>
 
         {/* Enhanced Analytics Section */}
-        <section className='mt-8' data-oid='9xvqi_5'>
+        <section className='mt-8' data-oid='pez31fe'>
           <h3
             className='text-xl font-semibold mb-6 text-blue-600'
-            data-oid='h7q0c1k'
+            data-oid='z-4840b'
           >
-            Detailed Overview
+            SaaS Analytics Dashboard
           </h3>
 
           {/* Conversion Rate Trend Chart - Now First */}
-          <div className='mb-8' data-oid='qlh3boz'>
-            <ConversionRateTrendChart data-oid='.mz77m1' />
+          <div className='mb-8' data-oid='j694z.e'>
+            <ConversionRateTrendChart data-oid='mucxjuh' />
           </div>
 
           {/* Main Analytics Charts */}
           <div
             className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'
-            data-oid='9zb6c34'
+            data-oid='v2iq:pn'
           >
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm h-[498px]'
-              data-oid='w57h782'
+              data-oid='65mm1r5'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='baobf_g'
+                data-oid='lb3233a'
               >
                 Conversion Funnel
               </h4>
-              <div className='space-y-3' data-oid='nex3hb7'>
+              <div className='space-y-3' data-oid='_4ox-_u'>
                 <div
                   className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'
-                  data-oid='iqm9fpx'
+                  data-oid='hzxw24k'
                 >
                   <span
                     className='text-sm font-medium text-gray-700'
-                    data-oid='a6ad0x0'
+                    data-oid='7bym_qn'
                   >
                     Visitors
                   </span>
                   <div
                     className='flex items-center space-x-2'
-                    data-oid='3qmejub'
+                    data-oid='prqxz4r'
                   >
                     <div
                       className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='2vmodnp'
+                      data-oid='fei:aut'
                     >
                       <div
                         className='bg-blue-600 h-2 rounded-full'
                         style={{ width: '100%' }}
-                        data-oid='4h74ynd'
+                        data-oid='3gr30-c'
                       ></div>
                     </div>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='ske38v7'
+                      data-oid='i54.s86'
                     >
                       24,789
                     </span>
@@ -635,31 +635,31 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div
                   className='flex items-center justify-between p-3 bg-green-50 rounded-lg'
-                  data-oid='w6u.:83'
+                  data-oid='m0ll:_a'
                 >
                   <span
                     className='text-sm font-medium text-gray-700'
-                    data-oid='inp.0n3'
+                    data-oid='k.2xws.'
                   >
                     Sign-ups
                   </span>
                   <div
                     className='flex items-center space-x-2'
-                    data-oid='.k-m3vw'
+                    data-oid='uq71f_y'
                   >
                     <div
                       className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='33qbxjl'
+                      data-oid='wy3uoet'
                     >
                       <div
                         className='bg-green-600 h-2 rounded-full'
                         style={{ width: '45%' }}
-                        data-oid='tebe.gp'
+                        data-oid='3e29lm_'
                       ></div>
                     </div>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='6w9n797'
+                      data-oid='kdj0it1'
                     >
                       11,155
                     </span>
@@ -667,31 +667,31 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div
                   className='flex items-center justify-between p-3 bg-orange-50 rounded-lg'
-                  data-oid='69myn3j'
+                  data-oid='9abicg.'
                 >
                   <span
                     className='text-sm font-medium text-gray-700'
-                    data-oid='pwqsyoc'
+                    data-oid='f_fkbk3'
                   >
                     Trial Users
                   </span>
                   <div
                     className='flex items-center space-x-2'
-                    data-oid='9lsxcym'
+                    data-oid='ggcl1dz'
                   >
                     <div
                       className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='5380vb:'
+                      data-oid='1e4a32x'
                     >
                       <div
                         className='bg-orange-600 h-2 rounded-full'
                         style={{ width: '25%' }}
-                        data-oid='wn3o55g'
+                        data-oid='s:mbd93'
                       ></div>
                     </div>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='99he9n.'
+                      data-oid='18wwejv'
                     >
                       6,197
                     </span>
@@ -699,31 +699,31 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div
                   className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'
-                  data-oid='_zynic:'
+                  data-oid='cowx3-l'
                 >
                   <span
                     className='text-sm font-medium text-gray-700'
-                    data-oid='dek4ckj'
+                    data-oid='2wa-2o6'
                   >
                     Paid Customers
                   </span>
                   <div
                     className='flex items-center space-x-2'
-                    data-oid='x6wtb_v'
+                    data-oid='s2b026p'
                   >
                     <div
                       className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='eb61gi8'
+                      data-oid='ke.tnq7'
                     >
                       <div
                         className='bg-blue-600 h-2 rounded-full'
                         style={{ width: '8%' }}
-                        data-oid='ni_htud'
+                        data-oid='43_vqbh'
                       ></div>
                     </div>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='fsekqxc'
+                      data-oid='vxxk52q'
                     >
                       1,983
                     </span>
@@ -733,45 +733,45 @@ const UniversalAIDashboard: React.FC = () => {
             </div>
 
             {/* Switchable Web Metrics Chart - Replaces MRR Chart */}
-            <WebMetricsChart data-oid='vu7t-fi' />
+            <WebMetricsChart data-oid='kh0aaow' />
           </div>
 
           {/* A/B Testing Performance */}
           <div
             className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'
-            data-oid='kz24zn.'
+            data-oid=':h3dm4z'
           >
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
-              data-oid='qep89jo'
+              data-oid='mw82ixm'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='76wh5fl'
+                data-oid=':va-jx:'
               >
                 Active A/B Tests
               </h4>
-              <div className='space-y-4' data-oid='2v43d8x'>
+              <div className='space-y-4' data-oid='qxl5wv3'>
                 <div
                   className='border-l-4 border-green-500 pl-4'
-                  data-oid='73sf4w7'
+                  data-oid='989z:4a'
                 >
-                  <h5 className='font-medium text-gray-900' data-oid='z240j-9'>
+                  <h5 className='font-medium text-gray-900' data-oid='wj:z_yn'>
                     Pricing Page CTA
                   </h5>
-                  <p className='text-sm text-gray-600' data-oid='vc0j24w'>
+                  <p className='text-sm text-gray-600' data-oid='5n-lpts'>
                     Testing button colors
                   </p>
                   <div
                     className='flex items-center justify-between mt-2'
-                    data-oid='bq:e0vg'
+                    data-oid='shkf5nm'
                   >
-                    <span className='text-xs text-gray-500' data-oid='e90bvoq'>
+                    <span className='text-xs text-gray-500' data-oid='x_.rk.o'>
                       Confidence
                     </span>
                     <span
                       className='text-sm font-bold text-green-600'
-                      data-oid='c43u76o'
+                      data-oid='bbrw4ya'
                     >
                       96%
                     </span>
@@ -779,24 +779,24 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div
                   className='border-l-4 border-blue-500 pl-4'
-                  data-oid='sojoe-o'
+                  data-oid='kv9hm7x'
                 >
-                  <h5 className='font-medium text-gray-900' data-oid='nq3sqop'>
+                  <h5 className='font-medium text-gray-900' data-oid='dys-t_8'>
                     Onboarding Flow
                   </h5>
-                  <p className='text-sm text-gray-600' data-oid='ya3api5'>
+                  <p className='text-sm text-gray-600' data-oid='olwqmw6'>
                     3-step vs 5-step
                   </p>
                   <div
                     className='flex items-center justify-between mt-2'
-                    data-oid='6dy_3j0'
+                    data-oid='6q2o2na'
                   >
-                    <span className='text-xs text-gray-500' data-oid='7it4crp'>
+                    <span className='text-xs text-gray-500' data-oid='my5.xvn'>
                       Confidence
                     </span>
                     <span
                       className='text-sm font-bold text-blue-600'
-                      data-oid='d0qwsvq'
+                      data-oid='wse8dy:'
                     >
                       78%
                     </span>
@@ -804,24 +804,24 @@ const UniversalAIDashboard: React.FC = () => {
                 </div>
                 <div
                   className='border-l-4 border-orange-500 pl-4'
-                  data-oid='r1l75wu'
+                  data-oid='mcotqh0'
                 >
-                  <h5 className='font-medium text-gray-900' data-oid='pc-mde9'>
+                  <h5 className='font-medium text-gray-900' data-oid=':_juze5'>
                     Email Subject Lines
                   </h5>
-                  <p className='text-sm text-gray-600' data-oid='so0a24h'>
+                  <p className='text-sm text-gray-600' data-oid='1-0mkzr'>
                     Personalization test
                   </p>
                   <div
                     className='flex items-center justify-between mt-2'
-                    data-oid='i1vgmlx'
+                    data-oid='ett6:-5'
                   >
-                    <span className='text-xs text-gray-500' data-oid='rthu1jb'>
+                    <span className='text-xs text-gray-500' data-oid='g5o4n4.'>
                       Confidence
                     </span>
                     <span
                       className='text-sm font-bold text-orange-600'
-                      data-oid='ln8_931'
+                      data-oid='212al9x'
                     >
                       45%
                     </span>
@@ -833,99 +833,99 @@ const UniversalAIDashboard: React.FC = () => {
             {/* User Engagement Metrics */}
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
-              data-oid='.72sach'
+              data-oid='eqil4dm'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='-u.g_2w'
+                data-oid='ydmzhvu'
               >
                 Engagement
               </h4>
-              <div className='space-y-4' data-oid='e:w1ns0'>
-                <div data-oid='5413y32'>
+              <div className='space-y-4' data-oid='hde5qjp'>
+                <div data-oid='utlxgvn'>
                   <div
                     className='flex items-center justify-between mb-1'
-                    data-oid='iq0e.ur'
+                    data-oid='jg-uihk'
                   >
-                    <span className='text-sm text-gray-600' data-oid='6jders2'>
+                    <span className='text-sm text-gray-600' data-oid='pql7ocu'>
                       Daily Active Users
                     </span>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='9tb55n2'
+                      data-oid='40.0.l1'
                     >
                       8,943
                     </span>
                   </div>
                   <div
                     className='w-full bg-gray-200 rounded-full h-2'
-                    data-oid='e2wl509'
+                    data-oid='v_dxl6f'
                   >
                     <div
                       className='bg-green-600 h-2 rounded-full'
                       style={{ width: '73%' }}
-                      data-oid='kz4hh9i'
+                      data-oid='eaw_56n'
                     ></div>
                   </div>
-                  <span className='text-xs text-green-600' data-oid='s9gk4r8'>
+                  <span className='text-xs text-green-600' data-oid='rwu_bl6'>
                     +8.2% vs last week
                   </span>
                 </div>
-                <div data-oid='4lr2-m3'>
+                <div data-oid='i3994la'>
                   <div
                     className='flex items-center justify-between mb-1'
-                    data-oid='caut9to'
+                    data-oid='z04ru05'
                   >
-                    <span className='text-sm text-gray-600' data-oid='trcrl4e'>
+                    <span className='text-sm text-gray-600' data-oid=':vf:9no'>
                       Session Duration
                     </span>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='wev01s1'
+                      data-oid='8gb920g'
                     >
                       12m 34s
                     </span>
                   </div>
                   <div
                     className='w-full bg-gray-200 rounded-full h-2'
-                    data-oid='d-oomg2'
+                    data-oid='fy6lzxk'
                   >
                     <div
                       className='bg-blue-600 h-2 rounded-full'
                       style={{ width: '68%' }}
-                      data-oid='woao4mf'
+                      data-oid='hy-xr7x'
                     ></div>
                   </div>
-                  <span className='text-xs text-blue-600' data-oid='o9lvk.2'>
+                  <span className='text-xs text-blue-600' data-oid='m9y7.b4'>
                     +2.1% vs last week
                   </span>
                 </div>
-                <div data-oid='6e_-jaw'>
+                <div data-oid='p0:be:z'>
                   <div
                     className='flex items-center justify-between mb-1'
-                    data-oid='qkadj:z'
+                    data-oid='m747r5u'
                   >
-                    <span className='text-sm text-gray-600' data-oid='50xbsu0'>
+                    <span className='text-sm text-gray-600' data-oid='uptzlbe'>
                       Feature Adoption
                     </span>
                     <span
                       className='text-sm font-bold text-gray-900'
-                      data-oid='wfb4hga'
+                      data-oid='c-jg11_'
                     >
                       67%
                     </span>
                   </div>
                   <div
                     className='w-full bg-gray-200 rounded-full h-2'
-                    data-oid='67djfyx'
+                    data-oid='c88xac3'
                   >
                     <div
                       className='bg-orange-600 h-2 rounded-full'
                       style={{ width: '67%' }}
-                      data-oid='wcx0uie'
+                      data-oid='53i5b._'
                     ></div>
                   </div>
-                  <span className='text-xs text-orange-600' data-oid='sdo6-kl'>
+                  <span className='text-xs text-orange-600' data-oid='sdeqz6-'>
                     -1.3% vs last week
                   </span>
                 </div>
@@ -935,63 +935,63 @@ const UniversalAIDashboard: React.FC = () => {
             {/* Customer Satisfaction */}
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
-              data-oid='vwrcvrv'
+              data-oid='9_5:veq'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='n9-rppg'
+                data-oid='q-_ca._'
               >
                 Customer Metrics
               </h4>
-              <div className='space-y-4' data-oid='yb89vsd'>
-                <div className='text-center' data-oid='rw-dlrv'>
+              <div className='space-y-4' data-oid='z:tfhts'>
+                <div className='text-center' data-oid='-yt_-sm'>
                   <div
                     className='inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-2'
-                    data-oid='tye-q-g'
+                    data-oid=':qp0ewy'
                   >
                     <span
                       className='text-2xl font-bold text-green-600'
-                      data-oid='71finej'
+                      data-oid='1y.8mmw'
                     >
                       8.7
                     </span>
                   </div>
-                  <p className='text-sm text-gray-600' data-oid='s_y8gz9'>
+                  <p className='text-sm text-gray-600' data-oid='3dpa.-d'>
                     Customer Satisfaction Score
                   </p>
-                  <span className='text-xs text-green-600' data-oid='200cl8_'>
+                  <span className='text-xs text-green-600' data-oid='9ue7pe1'>
                     Excellent
                   </span>
                 </div>
                 <div
                   className='grid grid-cols-2 gap-4 pt-4 border-t border-gray-200'
-                  data-oid='8gxe19_'
+                  data-oid='90-15n:'
                 >
-                  <div className='text-center' data-oid='633nou4'>
+                  <div className='text-center' data-oid='99lf292'>
                     <span
                       className='text-lg font-bold text-gray-900'
-                      data-oid='zg-r0ln'
+                      data-oid='b:j6fk:'
                     >
                       2.1%
                     </span>
-                    <p className='text-xs text-gray-600' data-oid='yl07boe'>
+                    <p className='text-xs text-gray-600' data-oid='m.n:t3b'>
                       Churn Rate
                     </p>
-                    <span className='text-xs text-green-600' data-oid='ovgr7lj'>
+                    <span className='text-xs text-green-600' data-oid='x.ivz7-'>
                       ↓ 0.3%
                     </span>
                   </div>
-                  <div className='text-center' data-oid='rlbjw14'>
+                  <div className='text-center' data-oid='d7wof_4'>
                     <span
                       className='text-lg font-bold text-gray-900'
-                      data-oid='ve1oikm'
+                      data-oid='puy6t.2'
                     >
                       94%
                     </span>
-                    <p className='text-xs text-gray-600' data-oid='h.hbrhn'>
+                    <p className='text-xs text-gray-600' data-oid='z0ccz8q'>
                       Retention
                     </p>
-                    <span className='text-xs text-green-600' data-oid='1jywqer'>
+                    <span className='text-xs text-green-600' data-oid='5xn5tkx'>
                       ↑ 1.2%
                     </span>
                   </div>
@@ -1003,83 +1003,83 @@ const UniversalAIDashboard: React.FC = () => {
           {/* Real-time Activity Feed */}
           <div
             className='grid grid-cols-1 lg:grid-cols-2 gap-6'
-            data-oid='t_g8pqt'
+            data-oid='cyryzfs'
           >
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
-              data-oid='dgmau6.'
+              data-oid='8-xz-2z'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='14u3it3'
+                data-oid='t4505m7'
               >
                 Real-time Activity
               </h4>
-              <div className='space-y-3' data-oid='zy7s4if'>
+              <div className='space-y-3' data-oid='bt3:czh'>
                 <div
                   className='flex items-center space-x-3 p-3 bg-green-50 rounded-lg'
-                  data-oid='ssz3kgw'
+                  data-oid='gns.ct2'
                 >
                   <div
                     className='w-2 h-2 bg-green-500 rounded-full'
-                    data-oid='_n8nbph'
+                    data-oid='fva-ky8'
                   ></div>
-                  <div className='flex-1' data-oid='wt48ndc'>
-                    <p className='text-sm text-gray-900' data-oid='td6o4nl'>
+                  <div className='flex-1' data-oid='1q6il3c'>
+                    <p className='text-sm text-gray-900' data-oid='ib2hcl0'>
                       New trial signup from enterprise lead
                     </p>
-                    <span className='text-xs text-gray-500' data-oid='r9c64qc'>
+                    <span className='text-xs text-gray-500' data-oid='aoidktf'>
                       2 minutes ago
                     </span>
                   </div>
                 </div>
                 <div
                   className='flex items-center space-x-3 p-3 bg-blue-50 rounded-lg'
-                  data-oid='z4uu-r_'
+                  data-oid='igv0od8'
                 >
                   <div
                     className='w-2 h-2 bg-blue-500 rounded-full'
-                    data-oid='tpf0nly'
+                    data-oid='lb_dp_h'
                   ></div>
-                  <div className='flex-1' data-oid='2g8jm1q'>
-                    <p className='text-sm text-gray-900' data-oid='sgcubfa'>
+                  <div className='flex-1' data-oid='.ingx82'>
+                    <p className='text-sm text-gray-900' data-oid='a1nw0kj'>
                       A/B test reached statistical significance
                     </p>
-                    <span className='text-xs text-gray-500' data-oid='afq5igz'>
+                    <span className='text-xs text-gray-500' data-oid='fkyrl3f'>
                       8 minutes ago
                     </span>
                   </div>
                 </div>
                 <div
                   className='flex items-center space-x-3 p-3 bg-orange-50 rounded-lg'
-                  data-oid='x5eqex-'
+                  data-oid='71hb.6_'
                 >
                   <div
                     className='w-2 h-2 bg-orange-500 rounded-full'
-                    data-oid='n7q69-6'
+                    data-oid='x12ul-.'
                   ></div>
-                  <div className='flex-1' data-oid='ns6u8ox'>
-                    <p className='text-sm text-gray-900' data-oid='4omkpde'>
+                  <div className='flex-1' data-oid='reqopdl'>
+                    <p className='text-sm text-gray-900' data-oid='-ua8o:d'>
                       User completed onboarding flow
                     </p>
-                    <span className='text-xs text-gray-500' data-oid='sptujgz'>
+                    <span className='text-xs text-gray-500' data-oid='5pda5--'>
                       12 minutes ago
                     </span>
                   </div>
                 </div>
                 <div
                   className='flex items-center space-x-3 p-3 bg-green-50 rounded-lg'
-                  data-oid='aafs7x4'
+                  data-oid='c-okuf.'
                 >
                   <div
                     className='w-2 h-2 bg-green-500 rounded-full'
-                    data-oid='e7rr:vu'
+                    data-oid=':wzx-bq'
                   ></div>
-                  <div className='flex-1' data-oid='0x_ve3z'>
-                    <p className='text-sm text-gray-900' data-oid='v6oox1j'>
+                  <div className='flex-1' data-oid='g8eja1-'>
+                    <p className='text-sm text-gray-900' data-oid='j64aqtl'>
                       Payment received: $299/month plan
                     </p>
-                    <span className='text-xs text-gray-500' data-oid='z1k4x:-'>
+                    <span className='text-xs text-gray-500' data-oid='m5525u9'>
                       18 minutes ago
                     </span>
                   </div>
@@ -1090,80 +1090,80 @@ const UniversalAIDashboard: React.FC = () => {
             {/* Key Performance Indicators */}
             <div
               className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
-              data-oid='--qz:sq'
+              data-oid='m_-t4l5'
             >
               <h4
                 className='text-lg font-semibold text-gray-900 mb-4'
-                data-oid='8:rljob'
+                data-oid='zwa1-vf'
               >
                 Performance Summary
               </h4>
-              <div className='grid grid-cols-2 gap-4' data-oid='fz8njrz'>
+              <div className='grid grid-cols-2 gap-4' data-oid='mbi9pgs'>
                 <div
                   className='text-center p-4 bg-blue-50 rounded-lg'
-                  data-oid='z28p0u-'
+                  data-oid='t9h3vx2'
                 >
                   <span
                     className='text-2xl font-bold text-blue-600'
-                    data-oid='58vfcs6'
+                    data-oid='v38q79c'
                   >
                     15.3%
                   </span>
-                  <p className='text-sm text-gray-600' data-oid='z34:p4g'>
+                  <p className='text-sm text-gray-600' data-oid='j:t61t1'>
                     Conversion Rate
                   </p>
-                  <span className='text-xs text-green-600' data-oid='rk29gll'>
+                  <span className='text-xs text-green-600' data-oid='ilk42t6'>
                     ↑ 2.1%
                   </span>
                 </div>
                 <div
                   className='text-center p-4 bg-green-50 rounded-lg'
-                  data-oid='xy53zwu'
+                  data-oid='y7._ozp'
                 >
                   <span
                     className='text-2xl font-bold text-green-600'
-                    data-oid='r8ke3q-'
+                    data-oid='i-b9e59'
                   >
                     $127
                   </span>
-                  <p className='text-sm text-gray-600' data-oid='ym51j3r'>
+                  <p className='text-sm text-gray-600' data-oid='87uumtk'>
                     Avg. Deal Size
                   </p>
-                  <span className='text-xs text-green-600' data-oid='i1mxxxl'>
+                  <span className='text-xs text-green-600' data-oid='abae_b4'>
                     ↑ $12
                   </span>
                 </div>
                 <div
                   className='text-center p-4 bg-orange-50 rounded-lg'
-                  data-oid='uz7_c_b'
+                  data-oid='7c1eh:m'
                 >
                   <span
                     className='text-2xl font-bold text-orange-600'
-                    data-oid='8mmc1qp'
+                    data-oid='1726uf.'
                   >
                     18 days
                   </span>
-                  <p className='text-sm text-gray-600' data-oid='q3ak1-f'>
+                  <p className='text-sm text-gray-600' data-oid='d:iec7f'>
                     Sales Cycle
                   </p>
-                  <span className='text-xs text-red-600' data-oid='b0yomn5'>
+                  <span className='text-xs text-red-600' data-oid='cf7mk67'>
                     ↑ 2 days
                   </span>
                 </div>
                 <div
                   className='text-center p-4 bg-blue-50 rounded-lg'
-                  data-oid='ct10d0k'
+                  data-oid='y.so4hf'
                 >
                   <span
                     className='text-2xl font-bold text-blue-600'
-                    data-oid='ov51mpd'
+                    data-oid='fri-ypg'
                   >
                     94.2%
                   </span>
-                  <p className='text-sm text-gray-600' data-oid='miqni3k'>
+                  <p className='text-sm text-gray-600' data-oid='ilfglxy'>
                     Model Accuracy
                   </p>
-                  <span className='text-xs text-green-600' data-oid='ftncr8.'>
+                  <span className='text-xs text-green-600' data-oid='ouon7ru'>
                     ↑ 1.8%
                   </span>
                 </div>
@@ -1174,88 +1174,88 @@ const UniversalAIDashboard: React.FC = () => {
 
         <div
           className='grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12'
-          data-oid=':r5:5qr'
+          data-oid='i04atkc'
         >
           {/* System Health */}
-          <section className='lg:col-span-1' data-oid='m36vk.l'>
+          <section className='lg:col-span-1' data-oid='4dm:.:s'>
             <h3
               className='text-xl font-semibold mb-4 text-gray-900'
-              data-oid='uqbxfeb'
+              data-oid='vwmmteh'
             >
               System Health
             </h3>
             <div
               className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'
-              data-oid='yh0er-o'
+              data-oid='9lg8khy'
             >
               <div
                 className='flex-1 overflow-y-auto dashboard-scrollable'
-                data-oid='yfj_z50'
+                data-oid='vvrick4'
               >
-                <div className='space-y-3' data-oid='v4fo84-'>
+                <div className='space-y-3' data-oid='b1jyghy'>
                   <HealthIndicator
                     service='API Gateway'
                     status={apiConnected}
-                    data-oid='69ob4rp'
+                    data-oid='b0v:y2d'
                   />
 
                   <HealthIndicator
                     service='ML Engine'
                     status={systemHealth.mlEngine || apiConnected}
-                    data-oid='gnn3r7g'
+                    data-oid='v_uzu8f'
                   />
 
                   <HealthIndicator
                     service='A/B Testing'
                     status={systemHealth.abTesting || apiConnected}
-                    data-oid='n1au0rp'
+                    data-oid='edj2324'
                   />
 
                   <HealthIndicator
                     service='Analytics'
                     status={systemHealth.analytics || apiConnected}
-                    data-oid='-:5hblm'
+                    data-oid='ug664sl'
                   />
 
                   <HealthIndicator
                     service='Recommendations'
                     status={systemHealth.recommendations || apiConnected}
-                    data-oid='mi-xz3l'
+                    data-oid='o0gzzcd'
                   />
                 </div>
 
                 <div
                   className='mt-6 pt-4 border-t border-gray-200'
-                  data-oid='hm5-3k5'
+                  data-oid='z6aup29'
                 >
-                  <p className='text-gray-500 text-xs mb-2' data-oid='0_o0.j5'>
+                  <p className='text-gray-500 text-xs mb-2' data-oid='u._sms:'>
                     System Status
                   </p>
                   <div
                     className='flex items-center justify-between'
-                    data-oid='.41ztci'
+                    data-oid='22t:_xh'
                   >
                     <span
                       className='text-gray-900 font-medium'
-                      data-oid='152kt5b'
+                      data-oid='159gypy'
                     >
                       Overall Health
                     </span>
                     <span
                       className='text-green-600 font-bold'
-                      data-oid='v1m8h.y'
+                      data-oid='vbqj2a.'
                     >
                       98.5%
                     </span>
                   </div>
                   <div
                     className='w-full bg-gray-200 rounded-full h-2 mt-2'
-                    data-oid='tpwu1uh'
+                    data-oid='2s6sx9h'
                   >
                     <div
                       className='bg-green-500 h-2 rounded-full transition-all duration-500'
                       style={{ width: '98.5%' }}
-                      data-oid='rmz15k4'
+                      data-oid='t0sw76t'
                     ></div>
                   </div>
                 </div>
@@ -1264,27 +1264,27 @@ const UniversalAIDashboard: React.FC = () => {
           </section>
 
           {/* Active A/B Experiments */}
-          <section className='lg:col-span-1' data-oid='vwggi_m'>
+          <section className='lg:col-span-1' data-oid='ku-jdq7'>
             <h3
               className='text-xl font-semibold mb-4 text-gray-900'
-              data-oid='c03dl3m'
+              data-oid='01ts_vm'
             >
               Active Experiments
             </h3>
             <div
               className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'
-              data-oid='75imvqo'
+              data-oid='s08901g'
             >
               <div
                 className='flex-1 overflow-y-auto dashboard-scrollable'
-                data-oid='l4spupd'
+                data-oid='mbg2d2a'
               >
-                <div className='space-y-4' data-oid='j6fwwww'>
+                <div className='space-y-4' data-oid='kj_id2w'>
                   {experiments.map(experiment => (
                     <ExperimentCard
                       key={experiment.id}
                       experiment={experiment}
-                      data-oid='_um2fl-'
+                      data-oid='fbn7yyr'
                     />
                   ))}
                 </div>
@@ -1292,11 +1292,11 @@ const UniversalAIDashboard: React.FC = () => {
 
               <div
                 className='mt-6 pt-4 border-t border-gray-200'
-                data-oid='srx_7ze'
+                data-oid='nztlnpf'
               >
                 <button
                   className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'
-                  data-oid='p2u0ktw'
+                  data-oid='_3o6pij'
                 >
                   View All Experiments
                 </button>
@@ -1305,27 +1305,27 @@ const UniversalAIDashboard: React.FC = () => {
           </section>
 
           {/* ML Model Performance */}
-          <section className='lg:col-span-1' data-oid='6wiodqc'>
+          <section className='lg:col-span-1' data-oid='vqmyygh'>
             <h3
               className='text-xl font-semibold mb-4 text-gray-900'
-              data-oid='.qf::-4'
+              data-oid='-.ktksh'
             >
               ML Models
             </h3>
             <div
               className='bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-96 flex flex-col'
-              data-oid='uau51x1'
+              data-oid='c8ip70y'
             >
               <div
                 className='flex-1 overflow-y-auto dashboard-scrollable'
-                data-oid='lqyfns0'
+                data-oid='hl814in'
               >
-                <div className='space-y-4' data-oid='-fg4q-z'>
+                <div className='space-y-4' data-oid='lu2sxiy'>
                   {modelMetrics.map((metric, index) => (
                     <ModelMetricCard
                       key={index}
                       metric={metric}
-                      data-oid='uupg.69'
+                      data-oid='qkol0fz'
                     />
                   ))}
                 </div>
@@ -1333,11 +1333,11 @@ const UniversalAIDashboard: React.FC = () => {
 
               <div
                 className='mt-6 pt-4 border-t border-gray-200'
-                data-oid='eo-drd3'
+                data-oid='dfr413t'
               >
                 <button
                   className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-all duration-300'
-                  data-oid='2y25f2v'
+                  data-oid='6mu2f4g'
                 >
                   Model Refinement Page
                 </button>
