@@ -45,7 +45,7 @@ const EnhancedDashboard = () => {
         setError(null);
 
         // Try to get dashboard data from our real API
-        const data = await apiClient.getDashboardData();
+        const data = await apiClient.getDashboardMetrics();
         setRealTimeData(data);
         setIsConnected(true);
       } catch (err) {

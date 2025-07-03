@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import { AlertCircle, CheckCircle, Download, ExternalLink, Loader, RefreshCw, Settings, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
+import { apiClient, Integration } from '../../src/services/apiClient';
 
 const IntegrationsPage: React.FC = () => {
   const [apiKey] = useState('ai_live_1234567890abcdef');
   const [selectedTab, setSelectedTab] = useState<
     'website' | 'api' | 'webhooks' | 'apps'
   >('website');
+  const [integrations, setIntegrations] = useState<Integration[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  const integrations = [
+  // Mock data as fallback
+  const mockIntegrations: Integration[] = [
     {
       name: 'WordPress',
       logo: '🔵',
@@ -19,7 +26,7 @@ const IntegrationsPage: React.FC = () => {
       name: 'Shopify',
       logo: '🛍️',
       description: 'E-commerce integration for product testing',
-      status: 'Available',
+      status: 'Installed',
       category: 'E-commerce',
     },
     {
@@ -33,7 +40,7 @@ const IntegrationsPage: React.FC = () => {
       name: 'Google Analytics',
       logo: '📊',
       description: 'Sync test data with GA4',
-      status: 'Available',
+      status: 'Installed',
       category: 'Analytics',
     },
     {
@@ -47,7 +54,7 @@ const IntegrationsPage: React.FC = () => {
       name: 'Salesforce',
       logo: '☁️',
       description: 'Lead scoring and CRM integration',
-      status: 'Available',
+      status: 'Installed',
       category: 'CRM',
     },
     {
@@ -57,7 +64,82 @@ const IntegrationsPage: React.FC = () => {
       status: 'Setup Required',
       category: 'DevOps',
     },
+    {
+      name: 'HubSpot',
+      logo: '🧡',
+      description: 'Marketing automation and CRM integration',
+      status: 'Available',
+      category: 'CRM',
+    },
   ];
+
+  useEffect(() => {
+    const fetchIntegrations = async () => {
+      try {
+        setLoading(true);
+        const data = await apiClient.getIntegrations();
+        setIntegrations(data);
+      } catch (err) {
+        console.warn('Failed to fetch integrations from API, using mock data:', err);
+        setError('Unable to connect to backend. Showing demo data.');
+        setIntegrations(mockIntegrations);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIntegrations();
+  }, []);
+
+  const handleIntegrationAction = async (action: 'install' | 'uninstall', integrationName: string) => {
+    try {
+      setActionLoading(integrationName);
+
+      if (action === 'install') {
+        await apiClient.installIntegration(integrationName);
+        setIntegrations(prev => prev.map(integration =>
+          integration.name === integrationName
+            ? { ...integration, status: 'Installed' }
+            : integration
+        ));
+      } else {
+        await apiClient.uninstallIntegration(integrationName);
+        setIntegrations(prev => prev.map(integration =>
+          integration.name === integrationName
+            ? { ...integration, status: 'Available' }
+            : integration
+        ));
+      }
+    } catch (err) {
+      console.error(`Failed to ${action} integration:`, err);
+      alert(`Failed to ${action} integration. Please try again.`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Installed': return 'bg-green-100 text-green-800';
+      case 'Available': return 'bg-blue-100 text-blue-800';
+      case 'Setup Required': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'Installed': return <CheckCircle className="w-4 h-4 text-green-600" />;
+      case 'Available': return <Download className="w-4 h-4 text-blue-600" />;
+      case 'Setup Required': return <AlertCircle className="w-4 h-4 text-yellow-600" />;
+      default: return <Settings className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
+  // Calculate metrics from actual data
+  const totalIntegrations = integrations.length;
+  const installedIntegrations = integrations.filter(i => i.status === 'Installed').length;
+  const availableIntegrations = integrations.filter(i => i.status === 'Available').length;
 
   const WebsiteIntegration = () => (
     <div className='space-y-8'>
@@ -95,13 +177,96 @@ const IntegrationsPage: React.FC = () => {
           </code>
         </div>
         <div className='mt-4 flex space-x-3'>
-          <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium'>
+          <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
             Copy Code
           </button>
-          <button className='bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium'>
+          <button className='bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
             Download Script
           </button>
         </div>
+      </div>
+
+      {/* Available Integrations */}
+      <div className='space-y-6'>
+        <h3 className='text-lg font-semibold text-gray-900'>Available Integrations</h3>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {integrations.map((integration) => (
+              <div key={integration.name} className='bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200'>
+                <div className='flex items-center justify-between mb-4'>
+                  <div className='flex items-center'>
+                    <span className='text-2xl mr-3'>{integration.logo}</span>
+                    <div>
+                      <h4 className='text-lg font-semibold text-gray-900'>{integration.name}</h4>
+                      <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'>
+                        {integration.category}
+                      </span>
+                    </div>
+                  </div>
+                  {getStatusIcon(integration.status)}
+                </div>
+
+                <p className='text-gray-600 mb-4 text-sm'>{integration.description}</p>
+
+                <div className='flex items-center justify-between'>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(integration.status)}`}>
+                    {integration.status}
+                  </span>
+
+                  <div className='flex items-center space-x-2'>
+                    {integration.status === 'Available' && (
+                      <button
+                        onClick={() => handleIntegrationAction('install', integration.name)}
+                        disabled={actionLoading === integration.name}
+                        className='bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
+                      >
+                        {actionLoading === integration.name ? (
+                          <Loader className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Download className="w-3 h-3" />
+                        )}
+                        <span>Install</span>
+                      </button>
+                    )}
+
+                    {integration.status === 'Installed' && (
+                      <>
+                        <button className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'>
+                          <Settings className="w-3 h-3" />
+                          <span>Configure</span>
+                        </button>
+                        <button
+                          onClick={() => handleIntegrationAction('uninstall', integration.name)}
+                          disabled={actionLoading === integration.name}
+                          className='bg-red-100 hover:bg-red-200 disabled:opacity-50 text-red-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
+                        >
+                          {actionLoading === integration.name ? (
+                            <Loader className="w-3 h-3 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-3 h-3" />
+                          )}
+                          <span>Remove</span>
+                        </button>
+                      </>
+                    )}
+
+                    {integration.status === 'Setup Required' && (
+                      <button className='bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'>
+                        <Settings className="w-3 h-3" />
+                        <span>Setup</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Installation Methods */}
@@ -119,15 +284,15 @@ const IntegrationsPage: React.FC = () => {
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 1
               </span>
-              <p className='text-gray-700'>
-                Install the Optimizely WordPress plugin
+              <p className='text-gray-700 text-sm'>
+                Install the Universal AI WordPress plugin
               </p>
             </div>
             <div className='flex items-center'>
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 2
               </span>
-              <p className='text-gray-700'>
+              <p className='text-gray-700 text-sm'>
                 Add your API key in the plugin settings
               </p>
             </div>
@@ -135,51 +300,18 @@ const IntegrationsPage: React.FC = () => {
               <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
                 3
               </span>
-              <p className='text-gray-700'>
+              <p className='text-gray-700 text-sm'>
                 Configure A/B tests from your WordPress admin
               </p>
             </div>
-            <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
-              Download Plugin
+            <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'>
+              <Download className="w-4 h-4" />
+              <span>Download Plugin</span>
             </button>
           </div>
         </div>
 
-        {/* Shopify */}
-        <div className='bg-white rounded-lg border border-gray-200 p-6'>
-          <div className='flex items-center mb-4'>
-            <span className='text-2xl mr-3'>🛍️</span>
-            <h4 className='text-lg font-semibold text-gray-900'>Shopify App</h4>
-          </div>
-          <p className='text-gray-600 mb-4'>
-            Install directly from the Shopify App Store for e-commerce testing.
-          </p>
-          <div className='space-y-3'>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-green-100 text-green-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                1
-              </span>
-              Visit Shopify App Store
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-green-100 text-green-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                2
-              </span>
-              Search "Universal AI Platform"
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-green-100 text-green-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                3
-              </span>
-              Install and connect your account
-            </div>
-          </div>
-          <button className='mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-sm font-medium'>
-            Install from Store
-          </button>
-        </div>
-
-        {/* React/Next.js */}
+        {/* React/Next.js SDK */}
         <div className='bg-white rounded-lg border border-gray-200 p-6'>
           <div className='flex items-center mb-4'>
             <span className='text-2xl mr-3'>⚛️</span>
@@ -195,11 +327,11 @@ const IntegrationsPage: React.FC = () => {
               npm install @universal-ai/react
             </code>
           </div>
-          <div className='bg-gray-900 rounded-lg p-3'>
+          <div className='bg-gray-900 rounded-lg p-3 mb-4'>
             <code className='text-green-400 text-sm font-mono'>
               {`import { UniversalAI } from '@universal-ai/react';
 
-function App() {
+export default function App() {
   return (
     <UniversalAI apiKey="${apiKey}">
       <YourApp />
@@ -208,197 +340,10 @@ function App() {
 }`}
             </code>
           </div>
-        </div>
-
-        {/* Custom Implementation */}
-        <div className='bg-white rounded-lg border border-gray-200 p-6'>
-          <div className='flex items-center mb-4'>
-            <span className='text-2xl mr-3'>⚙️</span>
-            <h4 className='text-lg font-semibold text-gray-900'>
-              Custom Implementation
-            </h4>
-          </div>
-          <p className='text-gray-600 mb-4'>
-            Full control with our REST API and JavaScript SDK.
-          </p>
-          <div className='space-y-3'>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                1
-              </span>
-              Review API documentation
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                2
-              </span>
-              Implement tracking events
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                3
-              </span>
-              Set up A/B test variations
-            </div>
-          </div>
-          <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
-            View API Docs
+          <button className='w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'>
+            <ExternalLink className="w-4 h-4" />
+            <span>View Documentation</span>
           </button>
-        </div>
-
-        {/* Docker Setup */}
-        <div className='bg-white rounded-lg border border-gray-200 p-6'>
-          <div className='flex items-center mb-4'>
-            <span className='text-2xl mr-3'>🐳</span>
-            <h4 className='text-lg font-semibold text-gray-900'>
-              Docker Container
-            </h4>
-          </div>
-          <p className='text-gray-600 mb-4'>
-            Run Universal AI Platform in a containerized environment.
-          </p>
-          <div className='bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4'>
-            <div className='flex items-center'>
-              <svg
-                className='w-5 h-5 text-orange-600 mr-2'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z'
-                />
-              </svg>
-              <span className='text-sm font-medium text-orange-800'>
-                Docker Not Installed
-              </span>
-            </div>
-            <p className='text-sm text-orange-700 mt-1'>
-              Docker is required to run containerized services. Install Docker
-              first.
-            </p>
-          </div>
-          <div className='space-y-3'>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                1
-              </span>
-              Install Docker Desktop for your OS
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                2
-              </span>
-              Pull Universal AI Docker image
-            </div>
-            <div className='flex items-center text-sm text-gray-700'>
-              <span className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'>
-                3
-              </span>
-              Configure environment variables
-            </div>
-          </div>
-          <div className='bg-gray-900 rounded-lg p-3 mt-4 mb-4'>
-            <code className='text-green-400 text-sm font-mono'>
-              {`# Install Docker (macOS)
-brew install --cask docker
-
-# Pull and run Universal AI
-docker pull universalai/platform:latest
-docker run -p 3001:3001 \\
-  -e API_KEY=${apiKey} \\
-  universalai/platform:latest`}
-            </code>
-          </div>
-          <div className='flex space-x-2'>
-            <button className='flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
-              Install Docker
-            </button>
-            <button className='flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg text-sm font-medium'>
-              View Docs
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Features */}
-      <div className='bg-white rounded-lg border border-gray-200 p-6'>
-        <h4 className='text-lg font-semibold text-gray-900 mb-4'>
-          What You Get After Integration
-        </h4>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          <div className='flex items-start'>
-            <div className='p-2 bg-blue-100 rounded-lg mr-3'>
-              <svg
-                className='w-5 h-5 text-blue-600'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M13 10V3L4 14h7v7l9-11h-7z'
-                />
-              </svg>
-            </div>
-            <div>
-              <h5 className='font-medium text-gray-900'>Real-time Analytics</h5>
-              <p className='text-sm text-gray-600'>
-                Track user behavior and conversions instantly
-              </p>
-            </div>
-          </div>
-          <div className='flex items-start'>
-            <div className='p-2 bg-green-100 rounded-lg mr-3'>
-              <svg
-                className='w-5 h-5 text-green-600'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z'
-                />
-              </svg>
-            </div>
-            <div>
-              <h5 className='font-medium text-gray-900'>A/B Testing</h5>
-              <p className='text-sm text-gray-600'>
-                Run experiments without affecting performance
-              </p>
-            </div>
-          </div>
-          <div className='flex items-start'>
-            <div className='p-2 bg-blue-100 rounded-lg mr-3'>
-              <svg
-                className='w-5 h-5 text-blue-600'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
-                />
-              </svg>
-            </div>
-            <div>
-              <h5 className='font-medium text-gray-900'>AI Insights</h5>
-              <p className='text-sm text-gray-600'>
-                Get automated recommendations for optimization
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -406,108 +351,304 @@ docker run -p 3001:3001 \\
 
   const APIKeysSection = () => (
     <div className='space-y-6'>
-      <div className='bg-white rounded-lg border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>API Keys</h3>
-        <div className='space-y-4'>
+      <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>API Configuration</h3>
+
+        <div className='space-y-6'>
           <div>
             <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Live API Key
+              Production API Key
             </label>
             <div className='flex items-center space-x-3'>
               <input
                 type='text'
-                value={apiKey}
                 readOnly
-                className='flex-1 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono'
+                value={apiKey}
+                className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
               />
-              <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium'>
+              <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
                 Copy
               </button>
-              <button className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium'>
-                Regenerate
+              <button className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'>
+                <RefreshCw className="w-4 h-4" />
+                <span>Regenerate</span>
               </button>
             </div>
             <p className='text-xs text-gray-500 mt-1'>
-              Use this key for production websites
+              Keep this key secure. Never expose it in client-side code.
             </p>
           </div>
 
           <div>
             <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Test API Key
+              Test Environment Key
             </label>
             <div className='flex items-center space-x-3'>
               <input
                 type='text'
-                value='ai_test_abcdef1234567890'
                 readOnly
-                className='flex-1 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono'
+                value='ai_test_abcdef1234567890'
+                className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
               />
-              <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium'>
+              <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
                 Copy
               </button>
             </div>
             <p className='text-xs text-gray-500 mt-1'>
-              Use this key for testing and development
+              Use this key for development and testing environments.
             </p>
           </div>
         </div>
       </div>
 
-      {/* API Usage */}
-      <div className='bg-white rounded-lg border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>
-          API Usage This Month
-        </h3>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-          <div>
-            <p className='text-2xl font-bold text-gray-900'>847,293</p>
-            <p className='text-sm text-gray-600'>API Calls</p>
-            <p className='text-xs text-green-600'>↗ 12% from last month</p>
+      {/* REST API Documentation */}
+      <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+        <h3 className='text-lg font-semibold text-gray-900 mb-4'>REST API Endpoints</h3>
+
+        <div className='space-y-4'>
+          <div className='bg-gray-50 rounded-lg p-4'>
+            <div className='flex items-center justify-between mb-2'>
+              <span className='text-sm font-mono text-gray-900'>POST /api/events</span>
+              <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>Track Events</span>
+            </div>
+            <p className='text-sm text-gray-600'>Send custom events and conversions to your account</p>
           </div>
-          <div>
-            <p className='text-2xl font-bold text-gray-900'>2.4ms</p>
-            <p className='text-sm text-gray-600'>Avg Response Time</p>
-            <p className='text-xs text-green-600'>↗ 8% improvement</p>
+
+          <div className='bg-gray-50 rounded-lg p-4'>
+            <div className='flex items-center justify-between mb-2'>
+              <span className='text-sm font-mono text-gray-900'>GET /api/tests</span>
+              <span className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'>A/B Tests</span>
+            </div>
+            <p className='text-sm text-gray-600'>Retrieve active A/B tests and configurations</p>
           </div>
-          <div>
-            <p className='text-2xl font-bold text-gray-900'>99.98%</p>
-            <p className='text-sm text-gray-600'>Uptime</p>
-            <p className='text-xs text-gray-500'>Last 30 days</p>
+
+          <div className='bg-gray-50 rounded-lg p-4'>
+            <div className='flex items-center justify-between mb-2'>
+              <span className='text-sm font-mono text-gray-900'>GET /api/analytics</span>
+              <span className='text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded'>Analytics</span>
+            </div>
+            <p className='text-sm text-gray-600'>Access detailed analytics and performance metrics</p>
           </div>
+        </div>
+
+        <button className='mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'>
+          <ExternalLink className="w-4 h-4" />
+          <span>View Full API Documentation</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  const WebhooksSection = () => (
+    <div className='space-y-6'>
+      <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>Webhook Configuration</h3>
+
+        <div className='space-y-6'>
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-2'>
+              Endpoint URL
+            </label>
+            <input
+              type='url'
+              placeholder='https://your-app.com/webhooks/universal-ai'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+            />
+            <p className='text-xs text-gray-500 mt-1'>
+              We'll send POST requests to this URL when events occur.
+            </p>
+          </div>
+
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-2'>
+              Events to Send
+            </label>
+            <div className='space-y-2'>
+              {['Test Started', 'Test Completed', 'Significant Result', 'Conversion Event'].map((event) => (
+                <label key={event} className='flex items-center'>
+                  <input
+                    type='checkbox'
+                    defaultChecked
+                    className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+                  />
+                  <span className='ml-2 text-sm text-gray-700'>{event}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-2'>
+              Secret Key (Optional)
+            </label>
+            <input
+              type='text'
+              placeholder='webhook_secret_key'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+            />
+            <p className='text-xs text-gray-500 mt-1'>
+              Used to verify webhook authenticity via HMAC signature.
+            </p>
+          </div>
+
+          <button className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors'>
+            Save Webhook Configuration
+          </button>
         </div>
       </div>
     </div>
   );
 
+  const ConnectedAppsSection = () => (
+    <div className='space-y-6'>
+      <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>Connected Applications</h3>
+
+        <div className='space-y-4'>
+          {integrations.filter(i => i.status === 'Installed').map((app) => (
+            <div key={app.name} className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'>
+              <div className='flex items-center'>
+                <span className='text-2xl mr-3'>{app.logo}</span>
+                <div>
+                  <h4 className='font-medium text-gray-900'>{app.name}</h4>
+                  <p className='text-sm text-gray-500'>{app.description}</p>
+                </div>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>Connected</span>
+                <button className='text-gray-400 hover:text-gray-600 transition-colors'>
+                  <Settings className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleIntegrationAction('uninstall', app.name)}
+                  className='text-red-400 hover:text-red-600 transition-colors'
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {integrations.filter(i => i.status === 'Installed').length === 0 && (
+            <div className='text-center py-8'>
+              <p className='text-gray-500'>No connected applications yet.</p>
+              <button
+                onClick={() => setSelectedTab('website')}
+                className='mt-2 text-blue-600 hover:text-blue-700 text-sm font-medium'
+              >
+                Browse available integrations
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <DashboardLayout title='Integrations - Universal AI Platform'>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
-    <DashboardLayout title='Universal AI Platform - Integrations'>
+    <DashboardLayout title='Integrations - Universal AI Platform'>
       <div className='space-y-6'>
+        {error && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
-        <div>
-          <h1 className='text-3xl font-bold text-gray-900'>Integrations</h1>
-          <p className='text-gray-600 mt-1'>
-            Connect your websites and applications to the Universal AI Platform
-          </p>
+        <div className='flex items-center justify-between'>
+          <div>
+            <h1 className='text-2xl font-bold text-gray-900'>Integrations</h1>
+            <p className='text-sm text-gray-500 mt-1'>
+              Connect Universal AI Platform with your favorite tools and services
+            </p>
+          </div>
+
+          <div className='flex items-center space-x-3'>
+            <button className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'>
+              <ExternalLink className="h-4 w-4" />
+              <span>Documentation</span>
+            </button>
+            <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'>
+              <Download className="h-4 w-4" />
+              <span>Request Integration</span>
+            </button>
+          </div>
         </div>
 
-        {/* Tabs */}
+        {/* Metrics Cards */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'>
+            <div className='flex items-center'>
+              <div className='flex-1'>
+                <p className='text-sm font-medium text-gray-600'>Total Integrations</p>
+                <p className='text-2xl font-bold text-gray-900'>{totalIntegrations}</p>
+                <p className='text-xs text-blue-600 mt-1'>+2 this month</p>
+              </div>
+              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <Settings className='w-4 h-4 text-blue-600' />
+              </div>
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'>
+            <div className='flex items-center'>
+              <div className='flex-1'>
+                <p className='text-sm font-medium text-gray-600'>Installed</p>
+                <p className='text-2xl font-bold text-gray-900'>{installedIntegrations}</p>
+                <p className='text-xs text-green-600 mt-1'>Active connections</p>
+              </div>
+              <div className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'>
+                <CheckCircle className='w-4 h-4 text-green-600' />
+              </div>
+            </div>
+          </div>
+
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'>
+            <div className='flex items-center'>
+              <div className='flex-1'>
+                <p className='text-sm font-medium text-gray-600'>Available</p>
+                <p className='text-2xl font-bold text-gray-900'>{availableIntegrations}</p>
+                <p className='text-xs text-gray-600 mt-1'>Ready to install</p>
+              </div>
+              <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>
+                <Download className='w-4 h-4 text-gray-600' />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Integration Tabs */}
         <div className='border-b border-gray-200'>
           <nav className='-mb-px flex space-x-8'>
             {[
-              { key: 'website', label: 'Website Integration', icon: '🌐' },
-              { key: 'api', label: 'API Keys', icon: '🔑' },
+              { key: 'website', label: 'Website', icon: '🌐' },
+              { key: 'api', label: 'API & SDK', icon: '⚡' },
               { key: 'webhooks', label: 'Webhooks', icon: '🔗' },
               { key: 'apps', label: 'Connected Apps', icon: '📱' },
             ].map(tab => (
               <button
                 key={tab.key}
-                onClick={() =>
-                  setSelectedTab(
-                    tab.key as 'website' | 'api' | 'webhooks' | 'apps'
-                  )
-                }
-                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                onClick={() => setSelectedTab(tab.key as any)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
                   selectedTab === tab.key
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -521,57 +662,12 @@ docker run -p 3001:3001 \\
         </div>
 
         {/* Tab Content */}
-        {selectedTab === 'website' && <WebsiteIntegration />}
-        {selectedTab === 'api' && <APIKeysSection />}
-
-        {selectedTab === 'apps' && (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {integrations.map((integration, index) => (
-              <div
-                key={index}
-                className='bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow'
-              >
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center'>
-                    <span className='text-2xl mr-3'>{integration.logo}</span>
-                    <div>
-                      <h3 className='font-semibold text-gray-900'>
-                        {integration.name}
-                      </h3>
-                      <span className='text-xs text-gray-500'>
-                        {integration.category}
-                      </span>
-                    </div>
-                  </div>
-                  <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full'>
-                    {integration.status}
-                  </span>
-                </div>
-                <p className='text-sm text-gray-600 mb-4'>
-                  {integration.description}
-                </p>
-                <button className='w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium'>
-                  Connect
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {selectedTab === 'webhooks' && (
-          <div className='bg-white rounded-lg border border-gray-200 p-6'>
-            <h3 className='text-lg font-semibold text-gray-900 mb-4'>
-              Webhook Endpoints
-            </h3>
-            <p className='text-gray-600 mb-6'>
-              Configure webhooks to receive real-time notifications about test
-              results and events.
-            </p>
-            <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium'>
-              Add Webhook
-            </button>
-          </div>
-        )}
+        <div className='py-6'>
+          {selectedTab === 'website' && <WebsiteIntegration />}
+          {selectedTab === 'api' && <APIKeysSection />}
+          {selectedTab === 'webhooks' && <WebhooksSection />}
+          {selectedTab === 'apps' && <ConnectedAppsSection />}
+        </div>
       </div>
     </DashboardLayout>
   );

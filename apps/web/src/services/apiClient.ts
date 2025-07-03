@@ -1,8 +1,6 @@
 // API Client for Optimizely Universal AI A/B Testing Platform
 
-const API_BASE_URL = typeof window !== 'undefined'
-  ? (window as { NEXT_PUBLIC_API_URL?: string }).NEXT_PUBLIC_API_URL || 'http://localhost:4000'
-  : 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ApiResponse<T> {
@@ -12,226 +10,207 @@ interface ApiResponse<T> {
   error?: string;
 }
 
+export interface ABTest {
+  id: string;
+  name: string;
+  status: 'Running' | 'Paused' | 'Completed' | 'Draft';
+  industry: string;
+  startDate: string;
+  endDate?: string;
+  visitors: number;
+  conversionRate: {
+    control: number;
+    variant: number;
+  };
+  confidence: number;
+  uplift: number;
+}
+
+export interface AnalyticsData {
+  totalVisitors: number;
+  conversionRate: number;
+  revenue: number;
+  testsRunning: number;
+  avgTestDuration: number;
+  significantResults: number;
+}
+
+export interface AIModel {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  accuracy: number;
+  industry: string;
+  usage: number;
+  version: string;
+}
+
+export interface Integration {
+  name: string;
+  logo: string;
+  description: string;
+  status: string;
+  category: string;
+}
+
+export interface IndustryData {
+  name: string;
+  color: string;
+  metrics: {
+    conversionRate: number;
+    avgTestDuration: number;
+    topPerformingElement: string;
+    improvement: string;
+  };
+  insights: string[];
+  topTests: Array<{
+    name: string;
+    improvement: string;
+    confidence: string;
+  }>;
+}
+
 class ApiClient {
-  private baseURL: string;
-
-  constructor(baseURL: string = API_BASE_URL) {
-    this.baseURL = baseURL;
-  }
-
-  private async request<T>(endpoint: string, options: globalThis.RequestInit = {}): Promise<T> {
-    const url = `${this.baseURL}/api/v1${endpoint}`;
-
-    const defaultOptions: globalThis.RequestInit = {
+  private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...options?.headers,
       },
       ...options,
-    };
+    });
 
-    try {
-      const response = await fetch(url, defaultOptions);
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      return result.data || result;
-    } catch (error) {
-      console.error(`API Request failed: ${endpoint}`, error);
-      throw error;
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
+
+    return response.json();
   }
 
-  // Health Check
-  async getHealth() {
-    return this.request('/health');
+  // A/B Testing API
+  async getABTests(): Promise<ABTest[]> {
+    return this.request<ABTest[]>('/ab-testing');
   }
 
-  // Analytics Services
-  async getAnalytics(filters?: Record<string, string>) {
-    const query = filters ? `?${new globalThis.URLSearchParams(filters).toString()}` : '';
-    return this.request(`/analytics${query}`);
-  }
-
-  async getRevenuePrediction(timeframe: string = '7d') {
-    return this.request(`/analytics/revenue-prediction?timeframe=${timeframe}`);
-  }
-
-  async getExecutiveKPIs() {
-    return this.request('/executive-kpi/dashboard');
-  }
-
-  // Adaptive Recommendation Engine
-  async getRecommendations(userId: string) {
-    return this.request(`/adaptive-recommendation/recommendations/${userId}`);
-  }
-
-  async trackBehavior(behaviorData: Record<string, unknown>) {
-    return this.request('/adaptive-recommendation/behavior', {
+  async createABTest(data: Partial<ABTest>): Promise<ABTest> {
+    return this.request<ABTest>('/ab-testing', {
       method: 'POST',
-      body: JSON.stringify(behaviorData),
+      body: JSON.stringify(data),
     });
   }
 
-  async getAdaptiveStats() {
-    return this.request('/adaptive-recommendation/stats');
+  async updateABTest(id: string, data: Partial<ABTest>): Promise<ABTest> {
+    return this.request<ABTest>(`/ab-testing/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
   }
 
-  // A/B Testing Framework
-  async getABTests(status?: string) {
-    const query = status ? `?status=${status}` : '';
-    return this.request(`/ab-testing/experiments${query}`);
+  async deleteABTest(id: string): Promise<void> {
+    return this.request<void>(`/ab-testing/${id}`, {
+      method: 'DELETE',
+    });
   }
 
-  async getABTestStats() {
-    return this.request('/ab-testing/stats');
+  // Analytics API
+  async getAnalytics(timeRange: string = '30d'): Promise<AnalyticsData> {
+    return this.request<AnalyticsData>(`/analytics?timeRange=${timeRange}`);
   }
 
-  async getExperimentResults(experimentId: string) {
-    return this.request(`/ab-testing/experiments/${experimentId}`);
+  async getIndustryBreakdown(timeRange: string = '30d'): Promise<any[]> {
+    return this.request<any[]>(`/analytics/industry-breakdown?timeRange=${timeRange}`);
   }
 
-  // Model Refinement Engine
-  async getModelPerformance() {
-    return this.request('/model-refinement/models/performance');
+  async getTopPerformingTests(): Promise<any[]> {
+    return this.request<any[]>('/analytics/top-tests');
   }
 
-  async getRetrainingHistory() {
-    return this.request('/model-refinement/retraining/history');
+  // AI Models API
+  async getModels(): Promise<AIModel[]> {
+    return this.request<AIModel[]>('/models');
   }
 
-  async getModelStats() {
-    return this.request('/model-refinement/stats');
+  async createModel(data: Partial<AIModel>): Promise<AIModel> {
+    return this.request<AIModel>('/models', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
 
-  // Visitor Intelligence
-  async getVisitorIntelligence(filters?: Record<string, string>) {
-    const query = filters ? `?${new globalThis.URLSearchParams(filters).toString()}` : '';
-    return this.request(`/visitor-intelligence${query}`);
+  async updateModel(id: string, data: Partial<AIModel>): Promise<AIModel> {
+    return this.request<AIModel>(`/models/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
   }
 
-  async getHotProspects() {
-    return this.request('/hot-accounts');
+  async deleteModel(id: string): Promise<void> {
+    return this.request<void>(`/models/${id}`, {
+      method: 'DELETE',
+    });
   }
 
-  // Real-time Predictions
-  async getRealTimePredictions() {
-    return this.request('/real-time-predictions');
+  // Industry Insights API
+  async getIndustryData(industry: string): Promise<IndustryData> {
+    return this.request<IndustryData>(`/industry-insights/${industry}`);
   }
 
-  // Industry Analytics
-  async getIndustryMetrics(industry: string) {
-    return this.request(`/industry-metrics?industry=${industry}`);
+  async getAllIndustries(): Promise<IndustryData[]> {
+    return this.request<IndustryData[]>('/industry-insights');
   }
 
-  // Behavioral Analytics
-  async getBehavioralInsights(userId?: string) {
-    const query = userId ? `?userId=${userId}` : '';
-    return this.request(`/behavioral${query}`);
+  // Integrations API
+  async getIntegrations(): Promise<Integration[]> {
+    return this.request<Integration[]>('/integrations');
   }
 
-  // Revenue Attribution
-  async getRevenueAttribution() {
-    return this.request('/revenue-attribution');
+  async installIntegration(name: string): Promise<void> {
+    return this.request<void>(`/integrations/${name}/install`, {
+      method: 'POST',
+    });
   }
 
-  // Performance Dashboard
-  async getPerformanceDashboard() {
-    return this.request('/performance-dashboard');
+  async uninstallIntegration(name: string): Promise<void> {
+    return this.request<void>(`/integrations/${name}/uninstall`, {
+      method: 'DELETE',
+    });
   }
 
-  // Cross-Industry Performance Analytics
-  async getCrossIndustryAnalytics() {
-    return this.request('/cross-industry-performance-analytics');
+  // Dashboard API
+  async getDashboardMetrics(): Promise<any> {
+    return this.request<any>('/dashboard/metrics');
   }
 
-  // Smart Widget Recommendations
-  async getWidgetRecommendations(userId: string) {
-    return this.request(`/smart-widget-recommendations/${userId}`);
+  async getRecentActivity(): Promise<any[]> {
+    return this.request<any[]>('/dashboard/recent-activity');
   }
 
-  // Outcome Tracking
-  async getOutcomeTracking() {
-    return this.request('/outcome-tracking');
+  // Settings API
+  async getSettings(): Promise<any> {
+    return this.request<any>('/settings');
   }
 
-  // Progressive Complexity Analytics
-  async getProgressiveComplexity() {
-    return this.request('/progressive-complexity');
+  async updateSettings(data: any): Promise<any> {
+    return this.request<any>('/settings', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
   }
 
-  // Multi-Dimensional Testing
-  async getMultiDimensionalTests() {
-    return this.request('/multi-dimensional-testing');
+  // Events API
+  async trackEvent(event: any): Promise<void> {
+    return this.request<void>('/events', {
+      method: 'POST',
+      body: JSON.stringify(event),
+    });
   }
 
-  // Statistical Monitoring
-  async getStatisticalMonitoring() {
-    return this.request('/statistical-monitoring');
-  }
-
-  // Dynamic Personalization
-  async getPersonalizationResults() {
-    return this.request('/dynamic-personalization');
-  }
-
-  // Enterprise Infrastructure Stats
-  async getEnterpriseStats() {
-    return this.request('/enterprise-infrastructure/stats');
-  }
-
-  // Pipeline Visualization
-  async getPipelineVisualization() {
-    return this.request('/pipeline-visualization');
-  }
-
-  // Psychographic Profiling
-  async getPsychographicProfiles() {
-    return this.request('/psychographic-profiling');
-  }
-
-  // Real-time Dashboard Data (Combined)
-  async getDashboardData() {
-    try {
-      const [
-        health,
-        analytics,
-        kpis,
-        abTestStats,
-        modelStats,
-        hotProspects,
-        realtimePredictions,
-        outcomeTracking
-      ] = await Promise.allSettled([
-        this.getHealth(),
-        this.getAnalytics(),
-        this.getExecutiveKPIs(),
-        this.getABTestStats(),
-        this.getModelStats(),
-        this.getHotProspects(),
-        this.getRealTimePredictions(),
-        this.getOutcomeTracking()
-      ]);
-
-      return {
-        health: health.status === 'fulfilled' ? health.value : null,
-        analytics: analytics.status === 'fulfilled' ? analytics.value : null,
-        kpis: kpis.status === 'fulfilled' ? kpis.value : null,
-        abTestStats: abTestStats.status === 'fulfilled' ? abTestStats.value : null,
-        modelStats: modelStats.status === 'fulfilled' ? modelStats.value : null,
-        hotProspects: hotProspects.status === 'fulfilled' ? hotProspects.value : null,
-        realtimePredictions: realtimePredictions.status === 'fulfilled' ? realtimePredictions.value : null,
-        outcomeTracking: outcomeTracking.status === 'fulfilled' ? outcomeTracking.value : null,
-      };
-    } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
-      throw error;
-    }
+  // Health check
+  async health(): Promise<{ status: string }> {
+    return this.request<{ status: string }>('/health');
   }
 }
 
 export const apiClient = new ApiClient();
-export default ApiClient;
+export default apiClient;

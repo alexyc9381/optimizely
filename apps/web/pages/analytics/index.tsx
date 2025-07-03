@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import {
+    Activity,
+    BarChart3,
+    Calendar,
+    DollarSign,
+    Download,
+    Filter,
+    Target,
+    TrendingUp,
+    Users
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
-
-interface AnalyticsData {
-  totalVisitors: number;
-  conversionRate: number;
-  revenue: number;
-  testsRunning: number;
-  avgTestDuration: number;
-  significantResults: number;
-}
+import { formatCurrency, formatNumber, formatPercentage } from '../../lib/utils';
+import { AnalyticsData, apiClient } from '../../src/services/apiClient';
 
 // Interface for future chart implementation
 // interface ChartData {
@@ -19,15 +23,45 @@ interface AnalyticsData {
 // }
 
 const AnalyticsPage: React.FC = () => {
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>(
-    '30d'
-  );
-  const [selectedMetric, setSelectedMetric] = useState<
-    'visitors' | 'conversions' | 'revenue'
-  >('visitors');
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
+  const [selectedMetric, setSelectedMetric] = useState<'visitors' | 'conversions' | 'revenue'>('visitors');
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [industryBreakdown, setIndustryBreakdown] = useState<any[]>([]);
+  const [topTests, setTopTests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data - replace with real API calls
-  const analyticsData: AnalyticsData = {
+  // Load analytics data from backend
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        setLoading(true);
+        const [analytics, breakdown, tests] = await Promise.all([
+          apiClient.getAnalytics(timeRange),
+          apiClient.getIndustryBreakdown(timeRange),
+          apiClient.getTopPerformingTests()
+        ]);
+
+        setAnalyticsData(analytics);
+        setIndustryBreakdown(breakdown);
+        setTopTests(tests);
+      } catch (err) {
+        setError('Failed to load analytics data');
+        console.error('Error fetching analytics:', err);
+        // Fallback to mock data
+        setAnalyticsData(mockAnalyticsData);
+        setIndustryBreakdown(mockIndustryBreakdown);
+        setTopTests(mockTopTests);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, [timeRange]);
+
+  // Mock data fallback
+  const mockAnalyticsData: AnalyticsData = {
     totalVisitors: 47583,
     conversionRate: 3.24,
     revenue: 284750,
@@ -36,24 +70,14 @@ const AnalyticsPage: React.FC = () => {
     significantResults: 8,
   };
 
-  // Mock chart data for future chart implementation
-  // const chartData: ChartData[] = [
-  //   { date: '2024-01-01', visitors: 1200, conversions: 38, revenue: 4500 },
-  //   { date: '2024-01-02', visitors: 1350, conversions: 42, revenue: 5200 },
-  //   { date: '2024-01-03', visitors: 1100, conversions: 35, revenue: 4100 },
-  //   { date: '2024-01-04', visitors: 1450, conversions: 48, revenue: 5800 },
-  //   { date: '2024-01-05', visitors: 1600, conversions: 52, revenue: 6200 },
-  //   { date: '2024-01-06', visitors: 1380, conversions: 45, revenue: 5400 },
-  //   { date: '2024-01-07', visitors: 1520, conversions: 49, revenue: 5900 },
-  // ];
-
-  const industryBreakdown = [
+  const mockIndustryBreakdown = [
     {
       name: 'SaaS',
       visitors: 18530,
       conversions: 601,
       revenue: 125400,
       growth: '+12.5%',
+      color: 'blue',
     },
     {
       name: 'E-commerce',
@@ -61,6 +85,7 @@ const AnalyticsPage: React.FC = () => {
       conversions: 456,
       revenue: 89200,
       growth: '+8.3%',
+      color: 'green',
     },
     {
       name: 'Healthcare',
@@ -68,6 +93,7 @@ const AnalyticsPage: React.FC = () => {
       conversions: 178,
       revenue: 45600,
       growth: '+15.2%',
+      color: 'purple',
     },
     {
       name: 'FinTech',
@@ -75,362 +101,360 @@ const AnalyticsPage: React.FC = () => {
       conversions: 147,
       revenue: 24550,
       growth: '+22.1%',
+      color: 'orange',
     },
   ];
 
-  const topPerformingTests = [
+  const mockTopTests = [
     {
       name: 'Pricing Page CTA Button',
       improvement: '+18.4%',
       confidence: '99%',
       status: 'Winner',
+      industry: 'SaaS',
     },
     {
       name: 'Homepage Hero Section',
       improvement: '+12.7%',
       confidence: '95%',
       status: 'Winner',
+      industry: 'E-commerce',
     },
     {
       name: 'Checkout Process Flow',
       improvement: '+9.3%',
       confidence: '98%',
       status: 'Running',
+      industry: 'FinTech',
     },
     {
       name: 'Product Page Layout',
       improvement: '+15.8%',
       confidence: '97%',
       status: 'Winner',
+      industry: 'Healthcare',
     },
   ];
 
+  const getTimeRangeLabel = (range: string) => {
+    switch (range) {
+      case '7d': return 'Last 7 days';
+      case '30d': return 'Last 30 days';
+      case '90d': return 'Last 90 days';
+      case '1y': return 'Last year';
+      default: return 'Last 30 days';
+    }
+  };
+
+  const getIndustryColor = (color: string) => {
+    const colors = {
+      blue: 'bg-blue-500',
+      green: 'bg-green-500',
+      purple: 'bg-purple-500',
+      orange: 'bg-orange-500',
+    };
+    return colors[color as keyof typeof colors] || 'bg-gray-500';
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout title='Analytics - Optelo'>
+        <div className='flex items-center justify-center h-64'>
+          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
-    <DashboardLayout title='Analytics - Universal AI Platform'>
+    <DashboardLayout title='Analytics - Optelo'>
       <div className='space-y-6'>
         {/* Header */}
         <div className='flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold text-gray-900'>
-              Analytics Dashboard
-            </h1>
-            <p className='text-sm text-gray-500 mt-1'>
-              Real-time performance metrics and insights across all your
-              experiments
+            <h1 className='text-3xl font-bold text-gray-900'>Analytics Dashboard</h1>
+            <p className='text-gray-600 mt-1'>
+              Real-time performance metrics and insights across all your experiments
             </p>
           </div>
 
           <div className='flex items-center space-x-3'>
-            <select
-              value={timeRange}
-              onChange={e =>
-                setTimeRange(e.target.value as '7d' | '30d' | '90d' | '1y')
-              }
-              className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-            >
-              <option value='7d'>Last 7 days</option>
-              <option value='30d'>Last 30 days</option>
-              <option value='90d'>Last 90 days</option>
-              <option value='1y'>Last year</option>
-            </select>
-            <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium'>
-              Export Report
+            <div className='flex items-center space-x-2'>
+              <Calendar className='w-4 h-4 text-gray-500' />
+              <select
+                value={timeRange}
+                onChange={e => setTimeRange(e.target.value as any)}
+                className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              >
+                <option value='7d'>Last 7 days</option>
+                <option value='30d'>Last 30 days</option>
+                <option value='90d'>Last 90 days</option>
+                <option value='1y'>Last year</option>
+              </select>
+            </div>
+            <button className='flex items-center space-x-2 border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
+              <Filter className='w-4 h-4' />
+              <span>Filters</span>
+            </button>
+            <button className='flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
+              <Download className='w-4 h-4' />
+              <span>Export Report</span>
             </button>
           </div>
         </div>
 
+        {error && (
+          <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+            <p className='text-red-800'>{error}</p>
+          </div>
+        )}
+
         {/* Key Metrics Cards */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6'>
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>
-                  Total Visitors
-                </p>
+                <p className='text-sm font-medium text-gray-600'>Total Visitors</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData.totalVisitors.toLocaleString()}
+                  {analyticsData ? formatNumber(analyticsData.totalVisitors) : '0'}
                 </p>
-                <p className='text-xs text-green-600 mt-1'>
-                  ↗ +12.5% vs last period
+                <p className='text-xs text-green-600 mt-1 flex items-center'>
+                  <TrendingUp className='w-3 h-3 mr-1' />
+                  +12.5% vs last period
                 </p>
               </div>
-              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-blue-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <Users className='w-5 h-5 text-blue-600' />
               </div>
             </div>
           </div>
 
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>
-                  Conversion Rate
-                </p>
+                <p className='text-sm font-medium text-gray-600'>Conversion Rate</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData.conversionRate}%
+                  {analyticsData ? formatPercentage(analyticsData.conversionRate) : '0%'}
                 </p>
-                <p className='text-xs text-green-600 mt-1'>
-                  ↗ +0.8% vs last period
+                <p className='text-xs text-green-600 mt-1 flex items-center'>
+                  <TrendingUp className='w-3 h-3 mr-1' />
+                  +0.8% vs last period
                 </p>
               </div>
-              <div className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-green-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'>
+                <Target className='w-5 h-5 text-green-600' />
               </div>
             </div>
           </div>
 
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
                 <p className='text-sm font-medium text-gray-600'>Revenue</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  ${analyticsData.revenue.toLocaleString()}
+                  {analyticsData ? formatCurrency(analyticsData.revenue) : '$0'}
                 </p>
-                <p className='text-xs text-green-600 mt-1'>
-                  ↗ +18.2% vs last period
+                <p className='text-xs text-green-600 mt-1 flex items-center'>
+                  <TrendingUp className='w-3 h-3 mr-1' />
+                  +18.2% vs last period
                 </p>
               </div>
-              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-blue-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'>
+                <DollarSign className='w-5 h-5 text-green-600' />
               </div>
             </div>
           </div>
 
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>
-                  Active Tests
-                </p>
+                <p className='text-sm font-medium text-gray-600'>Tests Running</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData.testsRunning}
+                  {analyticsData ? analyticsData.testsRunning : 0}
                 </p>
-                <p className='text-xs text-blue-600 mt-1'>
-                  4 ready for analysis
+                <p className='text-xs text-blue-600 mt-1 flex items-center'>
+                  <Activity className='w-3 h-3 mr-1' />
+                  Active experiments
                 </p>
               </div>
-              <div className='w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-orange-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <BarChart3 className='w-5 h-5 text-blue-600' />
               </div>
             </div>
           </div>
 
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>
-                  Avg Test Duration
-                </p>
+                <p className='text-sm font-medium text-gray-600'>Avg. Duration</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData.avgTestDuration}d
+                  {analyticsData ? `${analyticsData.avgTestDuration}d` : '0d'}
                 </p>
-                <p className='text-xs text-gray-500 mt-1'>
-                  Optimal range: 10-21d
-                </p>
+                <p className='text-xs text-gray-500 mt-1'>Test duration</p>
               </div>
-              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-blue-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center'>
+                <Calendar className='w-5 h-5 text-purple-600' />
               </div>
             </div>
           </div>
 
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>
-                  Significant Results
-                </p>
+                <p className='text-sm font-medium text-gray-600'>Significant Results</p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData.significantResults}
+                  {analyticsData ? analyticsData.significantResults : 0}
                 </p>
-                <p className='text-xs text-green-600 mt-1'>67% success rate</p>
+                <p className='text-xs text-green-600 mt-1'>95%+ confidence</p>
               </div>
-              <div className='w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-emerald-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-                  />
-                </svg>
+              <div className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'>
+                <Target className='w-5 h-5 text-green-600' />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Charts Section */}
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-          {/* Performance Chart */}
-          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <div className='flex items-center justify-between mb-6'>
-              <h3 className='text-lg font-semibold text-gray-900'>
-                Performance Trends
-              </h3>
-              <div className='flex items-center space-x-2'>
-                <button
-                  onClick={() => setSelectedMetric('visitors')}
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                    selectedMetric === 'visitors'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Visitors
-                </button>
-                <button
-                  onClick={() => setSelectedMetric('conversions')}
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                    selectedMetric === 'conversions'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Conversions
-                </button>
-                <button
-                  onClick={() => setSelectedMetric('revenue')}
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                    selectedMetric === 'revenue'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Revenue
-                </button>
-              </div>
+        {/* Chart Placeholder */}
+        <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+          <div className='flex items-center justify-between mb-6'>
+            <div>
+              <h3 className='text-lg font-semibold text-gray-900'>Performance Trends</h3>
+              <p className='text-sm text-gray-500'>
+                {getTimeRangeLabel(timeRange)} performance overview
+              </p>
             </div>
-
-            {/* Simple chart representation */}
-            <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center'>
-              <div className='text-center'>
-                <div className='w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3'>
-                  <svg
-                    className='w-8 h-8 text-blue-600'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z'
-                    />
-                  </svg>
-                </div>
-                <p className='text-gray-600'>
-                  Interactive {selectedMetric} chart
-                </p>
-                <p className='text-sm text-gray-500'>
-                  Chart component integration ready
-                </p>
-              </div>
+            <div className='flex items-center space-x-2'>
+              <button
+                onClick={() => setSelectedMetric('visitors')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  selectedMetric === 'visitors'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Visitors
+              </button>
+              <button
+                onClick={() => setSelectedMetric('conversions')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  selectedMetric === 'conversions'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Conversions
+              </button>
+              <button
+                onClick={() => setSelectedMetric('revenue')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  selectedMetric === 'revenue'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Revenue
+              </button>
             </div>
           </div>
 
-          {/* Industry Performance */}
+          {/* Chart placeholder - would integrate with a charting library */}
+          <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center'>
+            <div className='text-center'>
+              <BarChart3 className='w-12 h-12 text-gray-400 mx-auto mb-3' />
+              <p className='text-gray-500'>Chart visualization for {selectedMetric}</p>
+              <p className='text-sm text-gray-400 mt-1'>
+                Chart implementation with libraries like Chart.js or Recharts
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Two Column Layout */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          {/* Industry Breakdown */}
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-            <h3 className='text-lg font-semibold text-gray-900 mb-6'>
-              Industry Performance
-            </h3>
+            <div className='flex items-center justify-between mb-6'>
+              <h3 className='text-lg font-semibold text-gray-900'>Industry Breakdown</h3>
+              <span className='text-sm text-gray-500'>{getTimeRangeLabel(timeRange)}</span>
+            </div>
+
             <div className='space-y-4'>
               {industryBreakdown.map((industry, index) => (
-                <div
-                  key={index}
-                  className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'
-                >
-                  <div className='flex-1'>
-                    <div className='flex items-center justify-between mb-2'>
-                      <h4 className='font-medium text-gray-900'>
-                        {industry.name}
-                      </h4>
-                      <span className='text-sm font-medium text-green-600'>
-                        {industry.growth}
-                      </span>
+                <div key={index} className='border border-gray-200 rounded-lg p-4'>
+                  <div className='flex items-center justify-between mb-3'>
+                    <div className='flex items-center space-x-3'>
+                      <div className={`w-3 h-3 rounded-full ${getIndustryColor(industry.color)}`}></div>
+                      <h4 className='font-medium text-gray-900'>{industry.name}</h4>
+                      <span className='text-sm text-green-600 font-medium'>{industry.growth}</span>
                     </div>
-                    <div className='grid grid-cols-3 gap-4 text-sm'>
-                      <div>
-                        <p className='text-gray-500'>Visitors</p>
-                        <p className='font-medium'>
-                          {industry.visitors.toLocaleString()}
-                        </p>
+                    <div className='text-right'>
+                      <p className='text-sm font-medium text-gray-900'>
+                        {formatCurrency(industry.revenue)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className='grid grid-cols-3 gap-4 text-sm'>
+                    <div>
+                      <p className='text-gray-500'>Visitors</p>
+                      <p className='font-medium text-gray-900'>{formatNumber(industry.visitors)}</p>
+                    </div>
+                    <div>
+                      <p className='text-gray-500'>Conversions</p>
+                      <p className='font-medium text-gray-900'>{formatNumber(industry.conversions)}</p>
+                    </div>
+                    <div>
+                      <p className='text-gray-500'>Conv. Rate</p>
+                      <p className='font-medium text-gray-900'>
+                        {formatPercentage((industry.conversions / industry.visitors) * 100)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Top Performing Tests */}
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='flex items-center justify-between mb-6'>
+              <h3 className='text-lg font-semibold text-gray-900'>Top Performing Tests</h3>
+              <button className='text-blue-600 hover:text-blue-700 text-sm font-medium'>
+                View All →
+              </button>
+            </div>
+
+            <div className='space-y-4'>
+              {topTests.map((test, index) => (
+                <div key={index} className='border border-gray-200 rounded-lg p-4'>
+                  <div className='flex items-start justify-between mb-2'>
+                    <div className='flex-1'>
+                      <h4 className='font-medium text-gray-900 mb-1'>{test.name}</h4>
+                      <div className='flex items-center space-x-2'>
+                        <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'>
+                          {test.industry}
+                        </span>
+                        <span className={`text-xs px-2 py-1 rounded ${
+                          test.status === 'Winner'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          {test.status}
+                        </span>
                       </div>
-                      <div>
-                        <p className='text-gray-500'>Conversions</p>
-                        <p className='font-medium'>{industry.conversions}</p>
-                      </div>
-                      <div>
-                        <p className='text-gray-500'>Revenue</p>
-                        <p className='font-medium'>
-                          ${industry.revenue.toLocaleString()}
-                        </p>
-                      </div>
+                    </div>
+                    <div className='text-right'>
+                      <p className='text-lg font-bold text-green-600'>{test.improvement}</p>
+                      <p className='text-xs text-gray-500'>{test.confidence} confidence</p>
+                    </div>
+                  </div>
+
+                  <div className='bg-green-50 rounded-md p-2 mt-3'>
+                    <div className='flex items-center'>
+                      <TrendingUp className='w-4 h-4 text-green-600 mr-2' />
+                      <span className='text-sm text-green-800'>
+                        Significant improvement detected
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -439,106 +463,24 @@ const AnalyticsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Top Performing Tests */}
-        <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-          <div className='flex items-center justify-between mb-6'>
-            <h3 className='text-lg font-semibold text-gray-900'>
-              Top Performing Tests
-            </h3>
-            <button className='text-blue-600 hover:text-blue-700 text-sm font-medium'>
-              View All Tests
-            </button>
-          </div>
-          <div className='overflow-x-auto'>
-            <table className='w-full'>
-              <thead>
-                <tr className='border-b border-gray-200'>
-                  <th className='text-left py-3 px-4 font-medium text-gray-700'>
-                    Test Name
-                  </th>
-                  <th className='text-left py-3 px-4 font-medium text-gray-700'>
-                    Improvement
-                  </th>
-                  <th className='text-left py-3 px-4 font-medium text-gray-700'>
-                    Confidence
-                  </th>
-                  <th className='text-left py-3 px-4 font-medium text-gray-700'>
-                    Status
-                  </th>
-                  <th className='text-left py-3 px-4 font-medium text-gray-700'>
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {topPerformingTests.map((test, index) => (
-                  <tr
-                    key={index}
-                    className='border-b border-gray-100 hover:bg-gray-50'
-                  >
-                    <td className='py-4 px-4'>
-                      <p className='font-medium text-gray-900'>{test.name}</p>
-                    </td>
-                    <td className='py-4 px-4'>
-                      <span className='text-green-600 font-medium'>
-                        {test.improvement}
-                      </span>
-                    </td>
-                    <td className='py-4 px-4'>
-                      <span className='text-gray-900'>{test.confidence}</span>
-                    </td>
-                    <td className='py-4 px-4'>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          test.status === 'Winner'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}
-                      >
-                        {test.status}
-                      </span>
-                    </td>
-                    <td className='py-4 px-4'>
-                      <button className='text-blue-600 hover:text-blue-700 text-sm font-medium'>
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Event Analytics Card */}
-        <div className='bg-white rounded-xl shadow-lg p-6 border border-gray-200'>
-          <div className='flex items-center justify-between mb-6'>
-            <div className='flex items-center'>
-              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
-                <svg
-                  className='w-4 h-4 text-blue-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-                  />
-                </svg>
-              </div>
-              <div className='ml-3'>
-                <h3 className='text-lg font-semibold text-gray-900'>
-                  Event Analytics
-                </h3>
-                <p className='text-sm text-gray-600'>Track user interactions</p>
-              </div>
+        {/* Insights Section */}
+        <div className='bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6'>
+          <div className='flex items-start space-x-4'>
+            <div className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0'>
+              <Activity className='w-5 h-5 text-blue-600' />
             </div>
-            <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
-              View Details
-            </button>
+            <div>
+              <h3 className='text-lg font-semibold text-gray-900 mb-2'>AI-Powered Insights</h3>
+              <div className='space-y-2 text-sm text-gray-700'>
+                <p>• Your SaaS industry tests are performing 15% above average this period</p>
+                <p>• Consider running more tests on checkout flows - they show highest uplift potential</p>
+                <p>• Mobile traffic has increased 23% but conversion rate is 8% lower than desktop</p>
+                <p>• Tests with social proof elements are showing 31% higher success rates</p>
+              </div>
+              <button className='mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium'>
+                View Detailed Insights →
+              </button>
+            </div>
           </div>
         </div>
       </div>
