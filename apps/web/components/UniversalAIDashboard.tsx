@@ -522,6 +522,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+12.3% this week'
               icon='VIS'
               data-oid='v5n_qu1'
+              key='olk-f7MT'
             />
 
             <StatCard
@@ -531,6 +532,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+8.7% today'
               icon='SES'
               data-oid='0yhfbak'
+              key='olk-1Pn5'
             />
 
             <StatCard
@@ -540,15 +542,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+2.1% improvement'
               icon='CVR'
               data-oid='s3w.8-g'
-            />
-
-            <StatCard
-              title='Revenue Generated'
-              value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
-              subtitle='Attribution modeling'
-              trend='+15.4% this month'
-              icon='REV'
-              data-oid='95e4wn_'
+              key='olk-7Lwy'
             />
 
             <StatCard
@@ -558,6 +552,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='3 completed today'
               icon='AB'
               data-oid='cv_tbrj'
+              key='olk-FOMR'
             />
 
             <StatCard
@@ -567,6 +562,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+1.8% improvement'
               icon='ML'
               data-oid='mjj1mtq'
+              key='olk-b7oV'
             />
           </div>
         </section>
