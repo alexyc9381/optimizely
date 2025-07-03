@@ -295,22 +295,23 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
   }, [currentTheme, applyThemeToDocument]);
 
   return (
-    <div className='theme-example'>
+    <div className='theme-example' data-oid='1a659id'>
       {/* Header */}
-      <div className='theme-example-header'>
-        <div className='header-content'>
-          <h1>Theme System Demonstration</h1>
-          <p>
+      <div className='theme-example-header' data-oid='hsct62p'>
+        <div className='header-content' data-oid='srb99fm'>
+          <h1 data-oid='3ngj4l7'>Theme System Demonstration</h1>
+          <p data-oid='tg26tc-'>
             Comprehensive theming and customization capabilities with live
             preview
           </p>
         </div>
 
-        <div className='header-actions'>
+        <div className='header-actions' data-oid='5k0p44k'>
           <button
             className='btn btn-outline'
             onClick={generateRandomTheme}
             disabled={isLoading}
+            data-oid='myt-u2v'
           >
             🎲 Random Theme
           </button>
@@ -319,6 +320,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
             className='btn btn-outline'
             onClick={resetToDefault}
             disabled={isLoading}
+            data-oid='dl-267s'
           >
             🔄 Reset Default
           </button>
@@ -327,68 +329,86 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
             className='btn btn-secondary'
             onClick={handleExportTheme}
             disabled={isLoading}
+            data-oid='ai3nvq4'
           >
             📁 Export Theme
           </button>
 
-          <label className='btn btn-primary' style={{ cursor: 'pointer' }}>
+          <label
+            className='btn btn-primary'
+            style={{ cursor: 'pointer' }}
+            data-oid='liv9_we'
+          >
             📂 Import Theme
             <input
               type='file'
               accept='.json'
               onChange={handleImportTheme}
               style={{ display: 'none' }}
+              data-oid='n:qmfc1'
             />
           </label>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className='theme-example-nav'>
+      <div className='theme-example-nav' data-oid='nf2y9al'>
         <button
           className={`nav-tab ${activeTab === 'preview' ? 'active' : ''}`}
           onClick={() => setActiveTab('preview')}
+          data-oid='q5moqog'
         >
           🎨 Live Preview
         </button>
         <button
           className={`nav-tab ${activeTab === 'customizer' ? 'active' : ''}`}
           onClick={() => setActiveTab('customizer')}
+          data-oid='x60qmbp'
         >
           ⚙️ Theme Editor
         </button>
         <button
           className={`nav-tab ${activeTab === 'examples' ? 'active' : ''}`}
           onClick={() => setActiveTab('examples')}
+          data-oid='fvtq2kp'
         >
           📊 Chart Examples
         </button>
       </div>
 
       {/* Content */}
-      <div className='theme-example-content'>
+      <div className='theme-example-content' data-oid='wdeblxo'>
         {/* Live Preview Tab */}
         {activeTab === 'preview' && (
-          <div className='preview-section'>
-            <div className='preview-header'>
-              <h2>Live Theme Preview</h2>
-              <div className='chart-type-selector'>
-                <label>Chart Type:</label>
+          <div className='preview-section' data-oid=':ha0opw'>
+            <div className='preview-header' data-oid='qj:bjb-'>
+              <h2 data-oid='rchz85g'>Live Theme Preview</h2>
+              <div className='chart-type-selector' data-oid='1vgg:y6'>
+                <label data-oid='ml7gizp'>Chart Type:</label>
                 <select
                   value={previewChartType}
                   onChange={e => setPreviewChartType(e.target.value as any)}
                   className='form-select'
+                  data-oid='po4jges'
                 >
-                  <option value='line'>Line Chart</option>
-                  <option value='bar'>Bar Chart</option>
-                  <option value='doughnut'>Doughnut Chart</option>
-                  <option value='scatter'>Scatter Plot</option>
+                  <option value='line' data-oid=':oeghk8'>
+                    Line Chart
+                  </option>
+                  <option value='bar' data-oid='6-yfhgk'>
+                    Bar Chart
+                  </option>
+                  <option value='doughnut' data-oid='z04osuo'>
+                    Doughnut Chart
+                  </option>
+                  <option value='scatter' data-oid='ba474wp'>
+                    Scatter Plot
+                  </option>
                 </select>
               </div>
             </div>
 
-            <div className='preview-container'>
-              <div className='preview-chart'>
+            <div className='preview-container' data-oid='uqb7z7p'>
+              <div className='preview-chart' data-oid='s882qxh'>
                 <UniversalChart
                   type={previewChartType}
                   data={sampleData[`${previewChartType}Data`]}
@@ -441,42 +461,44 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                           }
                         : undefined,
                   }}
+                  data-oid='ufs4may'
                 />
               </div>
 
-              <div className='theme-info'>
-                <div className='theme-info-card'>
-                  <h3>Current Theme</h3>
-                  <div className='theme-details'>
-                    <div className='detail-item'>
-                      <label>Name:</label>
-                      <span>{currentTheme.name}</span>
+              <div className='theme-info' data-oid='t_fcso1'>
+                <div className='theme-info-card' data-oid='syj5bny'>
+                  <h3 data-oid='h-:6wyz'>Current Theme</h3>
+                  <div className='theme-details' data-oid='hh8d29e'>
+                    <div className='detail-item' data-oid='6xs_u:r'>
+                      <label data-oid='qc1ovxf'>Name:</label>
+                      <span data-oid='.vgw:4g'>{currentTheme.name}</span>
                     </div>
-                    <div className='detail-item'>
-                      <label>Category:</label>
+                    <div className='detail-item' data-oid='o32_:yv'>
+                      <label data-oid='b473fj3'>Category:</label>
                       <span
                         className={`category-badge ${currentTheme.category}`}
+                        data-oid='9j2iaq0'
                       >
                         {currentTheme.category}
                       </span>
                     </div>
-                    <div className='detail-item'>
-                      <label>Version:</label>
-                      <span>{currentTheme.version}</span>
+                    <div className='detail-item' data-oid='zd_2hng'>
+                      <label data-oid='uplnhvl'>Version:</label>
+                      <span data-oid='9k2lbm.'>{currentTheme.version}</span>
                     </div>
-                    <div className='detail-item'>
-                      <label>Author:</label>
-                      <span>{currentTheme.author}</span>
+                    <div className='detail-item' data-oid='h8ub1r4'>
+                      <label data-oid='1fvx9wm'>Author:</label>
+                      <span data-oid='xcjkslx'>{currentTheme.author}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className='color-palette-preview'>
-                  <h4>Color Palette</h4>
-                  <div className='palette-colors'>
-                    <div className='color-group'>
-                      <label>Primary</label>
-                      <div className='color-swatches'>
+                <div className='color-palette-preview' data-oid='_b69gv0'>
+                  <h4 data-oid='3vx1oz8'>Color Palette</h4>
+                  <div className='palette-colors' data-oid='u95y.zz'>
+                    <div className='color-group' data-oid='jm_tp13'>
+                      <label data-oid='orhbna1'>Primary</label>
+                      <div className='color-swatches' data-oid='a4kqmqx'>
                         {currentTheme.colorPalette.primary.map(
                           (color, index) => (
                             <div
@@ -484,14 +506,15 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                               className='color-swatch'
                               style={{ backgroundColor: color }}
                               title={color}
+                              data-oid='pp4zvb8'
                             />
                           )
                         )}
                       </div>
                     </div>
-                    <div className='color-group'>
-                      <label>Secondary</label>
-                      <div className='color-swatches'>
+                    <div className='color-group' data-oid='6n_3p9d'>
+                      <label data-oid='rlfz611'>Secondary</label>
+                      <div className='color-swatches' data-oid='hu4-yz-'>
                         {currentTheme.colorPalette.secondary.map(
                           (color, index) => (
                             <div
@@ -499,6 +522,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                               className='color-swatch'
                               style={{ backgroundColor: color }}
                               title={color}
+                              data-oid='s.rme3e'
                             />
                           )
                         )}
@@ -513,24 +537,25 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
 
         {/* Theme Editor Tab */}
         {activeTab === 'customizer' && (
-          <div className='customizer-section'>
+          <div className='customizer-section' data-oid='6jr23yh'>
             <ThemeCustomizer
               onThemeChange={handleThemeChange}
               showPreview={false}
               className='full-customizer'
+              data-oid='mxu9hmn'
             />
           </div>
         )}
 
         {/* Chart Examples Tab */}
         {activeTab === 'examples' && (
-          <div className='examples-section'>
-            <h2>Chart Examples Gallery</h2>
-            <div className='examples-grid'>
+          <div className='examples-section' data-oid='ej1zj6-'>
+            <h2 data-oid='xhr6c4l'>Chart Examples Gallery</h2>
+            <div className='examples-grid' data-oid='gsqs:k5'>
               {/* Line Chart Example */}
-              <div className='example-card'>
-                <h3>📈 Line Chart</h3>
-                <div className='example-chart'>
+              <div className='example-card' data-oid='2h36zkh'>
+                <h3 data-oid='vq8sozh'>📈 Line Chart</h3>
+                <div className='example-chart' data-oid='b2j-qg-'>
                   <UniversalChart
                     type='line'
                     data={sampleData.lineData}
@@ -541,18 +566,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'bottom' as const },
                       },
                     }}
+                    data-oid='js--bdb'
                   />
                 </div>
-                <div className='example-description'>
+                <div className='example-description' data-oid='gvfsnb:'>
                   Perfect for showing trends over time with multiple data
                   series.
                 </div>
               </div>
 
               {/* Bar Chart Example */}
-              <div className='example-card'>
-                <h3>📊 Bar Chart</h3>
-                <div className='example-chart'>
+              <div className='example-card' data-oid='y04jy_-'>
+                <h3 data-oid='kkpmo5b'>📊 Bar Chart</h3>
+                <div className='example-chart' data-oid='8f6jqyo'>
                   <UniversalChart
                     type='bar'
                     data={sampleData.barData}
@@ -563,18 +589,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { display: false },
                       },
                     }}
+                    data-oid='go6y4-1'
                   />
                 </div>
-                <div className='example-description'>
+                <div className='example-description' data-oid='0848:k5'>
                   Ideal for comparing categorical data with clear visual
                   distinction.
                 </div>
               </div>
 
               {/* Doughnut Chart Example */}
-              <div className='example-card'>
-                <h3>🍩 Doughnut Chart</h3>
-                <div className='example-chart'>
+              <div className='example-card' data-oid='k-e2.d-'>
+                <h3 data-oid='0ir_9.a'>🍩 Doughnut Chart</h3>
+                <div className='example-chart' data-oid='8.24exo'>
                   <UniversalChart
                     type='doughnut'
                     data={sampleData.doughnutData}
@@ -585,18 +612,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'right' as const },
                       },
                     }}
+                    data-oid='n00so.h'
                   />
                 </div>
-                <div className='example-description'>
+                <div className='example-description' data-oid='kuzf6.h'>
                   Great for showing proportional data and part-to-whole
                   relationships.
                 </div>
               </div>
 
               {/* Scatter Plot Example */}
-              <div className='example-card'>
-                <h3>🎯 Scatter Plot</h3>
-                <div className='example-chart'>
+              <div className='example-card' data-oid='.5iyxne'>
+                <h3 data-oid='b669wol'>🎯 Scatter Plot</h3>
+                <div className='example-chart' data-oid='vtg-gfn'>
                   <UniversalChart
                     type='scatter'
                     data={sampleData.scatterData}
@@ -607,17 +635,18 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'top' as const },
                       },
                     }}
+                    data-oid='k2dlown'
                   />
                 </div>
-                <div className='example-description'>
+                <div className='example-description' data-oid='hi0v2_a'>
                   Excellent for visualizing correlations between two variables.
                 </div>
               </div>
 
               {/* Real-time Chart Example */}
-              <div className='example-card full-width'>
-                <h3>⚡ Real-time Chart</h3>
-                <div className='example-chart'>
+              <div className='example-card full-width' data-oid='vo97f-w'>
+                <h3 data-oid='hik1g:5'>⚡ Real-time Chart</h3>
+                <div className='example-chart' data-oid='rpt8:7l'>
                   <RealTimeChart
                     type='line'
                     dataSource='analytics'
@@ -627,9 +656,10 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                       maxDataPoints: 50,
                       updateInterval: 1000,
                     }}
+                    data-oid='j4zjx-w'
                   />
                 </div>
-                <div className='example-description'>
+                <div className='example-description' data-oid='3y13p:1'>
                   Live data streaming with automatic updates and trend analysis.
                 </div>
               </div>
@@ -639,21 +669,22 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
       </div>
 
       {/* Notifications */}
-      <div className='notifications-container'>
+      <div className='notifications-container' data-oid='p4w75sy'>
         {notifications.map(notification => (
           <div
             key={notification.id}
             className={`theme-notification ${notification.type}`}
             onClick={() => removeNotification(notification.id)}
+            data-oid='lc54bkj'
           >
-            <div className='notification-content'>
-              <span className='notification-icon'>
+            <div className='notification-content' data-oid='u-l3all'>
+              <span className='notification-icon' data-oid='b5kip9y'>
                 {notification.type === 'success' && '✅'}
                 {notification.type === 'error' && '❌'}
                 {notification.type === 'warning' && '⚠️'}
                 {notification.type === 'info' && 'ℹ️'}
               </span>
-              <span className='notification-message'>
+              <span className='notification-message' data-oid='n4:szzt'>
                 {notification.message}
               </span>
             </div>
@@ -664,6 +695,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                 removeNotification(notification.id);
               }}
               aria-label='Close notification'
+              data-oid='d:xa2wl'
             >
               ×
             </button>
@@ -673,9 +705,9 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
 
       {/* Loading overlay */}
       {isLoading && (
-        <div className='loading-overlay'>
-          <div className='loading-spinner' />
-          <span>Processing...</span>
+        <div className='loading-overlay' data-oid='2pchs08'>
+          <div className='loading-spinner' data-oid='ih18qv8' />
+          <span data-oid='556bf-i'>Processing...</span>
         </div>
       )}
     </div>

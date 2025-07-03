@@ -138,111 +138,162 @@ export const PerformanceExample: React.FC = () => {
   };
 
   return (
-    <div className='performance-example'>
-      <div className='example-header'>
-        <h2>Performance Optimization Example</h2>
-        <p>
+    <div className='performance-example' data-oid='dp1o18-'>
+      <div className='example-header' data-oid='rfo8xd9'>
+        <h2 data-oid='8agh.:b'>Performance Optimization Example</h2>
+        <p data-oid='pfgase.'>
           Demonstrating high-performance chart rendering with virtualization,
           progressive loading, and memory management for large datasets.
         </p>
       </div>
 
       {/* Configuration Controls */}
-      <div className='controls-section'>
-        <h3>Configuration</h3>
+      <div className='controls-section' data-oid='pafkgpd'>
+        <h3 data-oid='td2qkwg'>Configuration</h3>
 
-        <div className='controls-grid'>
-          <div className='control-group'>
-            <label htmlFor='data-size'>Dataset Size:</label>
+        <div className='controls-grid' data-oid='1com.pj'>
+          <div className='control-group' data-oid='5dw-0_i'>
+            <label htmlFor='data-size' data-oid='h5n2x5_'>
+              Dataset Size:
+            </label>
             <select
               id='data-size'
               value={dataSize}
               onChange={handleDataSizeChange}
               disabled={isGenerating}
+              data-oid='yf3ar7u'
             >
-              <option value={1000}>1K records</option>
-              <option value={10000}>10K records</option>
-              <option value={50000}>50K records</option>
-              <option value={100000}>100K records</option>
-              <option value={500000}>500K records</option>
-              <option value={1000000}>1M records</option>
+              <option value={1000} data-oid='81xygfy'>
+                1K records
+              </option>
+              <option value={10000} data-oid='2qg5lm8'>
+                10K records
+              </option>
+              <option value={50000} data-oid='73oc1px'>
+                50K records
+              </option>
+              <option value={100000} data-oid='2qg6l0n'>
+                100K records
+              </option>
+              <option value={500000} data-oid='4cnpi1f'>
+                500K records
+              </option>
+              <option value={1000000} data-oid='d5_80sk'>
+                1M records
+              </option>
             </select>
           </div>
 
-          <div className='control-group'>
-            <label htmlFor='chart-type'>Chart Type:</label>
+          <div className='control-group' data-oid='9wyxwo4'>
+            <label htmlFor='chart-type' data-oid='y:9sh4p'>
+              Chart Type:
+            </label>
             <select
               id='chart-type'
               value={chartType}
               onChange={handleChartTypeChange}
+              data-oid='md0mi8.'
             >
-              <option value='line'>Line Chart</option>
-              <option value='bar'>Bar Chart</option>
-              <option value='area'>Area Chart</option>
-              <option value='scatter'>Scatter Plot</option>
+              <option value='line' data-oid='.6f1-mr'>
+                Line Chart
+              </option>
+              <option value='bar' data-oid='jkrktqj'>
+                Bar Chart
+              </option>
+              <option value='area' data-oid='he9_8ea'>
+                Area Chart
+              </option>
+              <option value='scatter' data-oid='jj3q-z6'>
+                Scatter Plot
+              </option>
             </select>
           </div>
 
-          <div className='control-group'>
-            <label>
+          <div className='control-group' data-oid='ykchkks'>
+            <label data-oid='0kg.pp8'>
               <input
                 type='checkbox'
                 checked={showVirtualization}
                 onChange={e => setShowVirtualization(e.target.checked)}
+                data-oid=':vao72.'
               />
               Enable Virtualization
             </label>
           </div>
 
-          <div className='control-group'>
-            <label>
+          <div className='control-group' data-oid='304077j'>
+            <label data-oid='qjbm90y'>
               <input
                 type='checkbox'
                 checked={showProgressiveLoading}
                 onChange={e => setShowProgressiveLoading(e.target.checked)}
+                data-oid='1izrd87'
               />
               Progressive Loading
             </label>
           </div>
         </div>
 
-        <div className='action-buttons'>
-          <button onClick={handleClearCache} className='btn-secondary'>
+        <div className='action-buttons' data-oid='xgwsqgo'>
+          <button
+            onClick={handleClearCache}
+            className='btn-secondary'
+            data-oid='rnjbl-8'
+          >
             Clear Cache
           </button>
-          <button onClick={handleGarbageCollection} className='btn-secondary'>
+          <button
+            onClick={handleGarbageCollection}
+            className='btn-secondary'
+            data-oid='uavn.qy'
+          >
             Force GC
           </button>
-          <button onClick={handleOptimizeData} className='btn-secondary'>
+          <button
+            onClick={handleOptimizeData}
+            className='btn-secondary'
+            data-oid='.hi6l_4'
+          >
             Optimize Data
           </button>
-          <button onClick={handleExportChart} className='btn-primary'>
+          <button
+            onClick={handleExportChart}
+            className='btn-primary'
+            data-oid='pwy3z8b'
+          >
             Export Chart
           </button>
         </div>
       </div>
 
       {/* Performance Dashboard */}
-      <PerformanceDashboard />
+      <PerformanceDashboard data-oid='mgz.mpn' />
 
       {/* Chart Rendering Section */}
-      <div className='chart-section'>
-        <h3>
+      <div className='chart-section' data-oid='1.p1234'>
+        <h3 data-oid='pa75ge9'>
           {showProgressiveLoading
             ? 'Progressive Loading Chart'
             : 'Virtualized Chart'}
-          {isGenerating && <span className='generating'> (Generating...)</span>}
+          {isGenerating && (
+            <span className='generating' data-oid='8z7zgxj'>
+              {' '}
+              (Generating...)
+            </span>
+          )}
         </h3>
 
-        <div className='chart-info'>
-          <span>Data Points: {data.length.toLocaleString()}</span>
-          <span>Chart Type: {chartType}</span>
-          <span>
+        <div className='chart-info' data-oid=':tgd.j9'>
+          <span data-oid='o4zfn3c'>
+            Data Points: {data.length.toLocaleString()}
+          </span>
+          <span data-oid='a5.wr-u'>Chart Type: {chartType}</span>
+          <span data-oid='w0liwrb'>
             Virtualization: {showVirtualization ? 'Enabled' : 'Disabled'}
           </span>
         </div>
 
-        <div className='chart-container'>
+        <div className='chart-container' data-oid='pgpu3u3'>
           {showProgressiveLoading ? (
             <ProgressiveChart
               dataProvider={dataProviderRef.current}
@@ -254,6 +305,7 @@ export const PerformanceExample: React.FC = () => {
                 loadDelay: 100,
                 loadingStrategy: 'adaptive',
               }}
+              data-oid='.pk9gh8'
             />
           ) : (
             <VirtualizedChart
@@ -282,20 +334,21 @@ export const PerformanceExample: React.FC = () => {
               onError={error => console.error('Chart error:', error)}
               className='example-chart'
               testId='performance-chart'
+              data-oid='hv6-3tc'
             />
           )}
         </div>
       </div>
 
       {/* Performance Metrics History */}
-      <div className='metrics-section'>
-        <h3>Performance Metrics History</h3>
+      <div className='metrics-section' data-oid='q_w0vrw'>
+        <h3 data-oid='lwo:oay'>Performance Metrics History</h3>
 
         {metrics.length > 0 ? (
-          <div className='metrics-charts'>
-            <div className='metric-chart'>
-              <h4>Render Time (ms)</h4>
-              <div className='metric-graph'>
+          <div className='metrics-charts' data-oid='6g2t.fx'>
+            <div className='metric-chart' data-oid='teb3c5o'>
+              <h4 data-oid='oyw7-ht'>Render Time (ms)</h4>
+              <div className='metric-graph' data-oid='2:wkoq.'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
@@ -306,14 +359,15 @@ export const PerformanceExample: React.FC = () => {
                         metric.renderTime > 16.67 ? '#ef4444' : '#10b981',
                     }}
                     title={`${metric.renderTime.toFixed(2)}ms`}
+                    data-oid='5xx2f43'
                   />
                 ))}
               </div>
             </div>
 
-            <div className='metric-chart'>
-              <h4>Frame Rate (fps)</h4>
-              <div className='metric-graph'>
+            <div className='metric-chart' data-oid='r3kprus'>
+              <h4 data-oid='7cfkp4k'>Frame Rate (fps)</h4>
+              <div className='metric-graph' data-oid='hptvbd_'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
@@ -324,14 +378,15 @@ export const PerformanceExample: React.FC = () => {
                         metric.frameRate < 30 ? '#ef4444' : '#10b981',
                     }}
                     title={`${metric.frameRate.toFixed(1)} fps`}
+                    data-oid='o:_ram6'
                   />
                 ))}
               </div>
             </div>
 
-            <div className='metric-chart'>
-              <h4>Memory Usage (%)</h4>
-              <div className='metric-graph'>
+            <div className='metric-chart' data-oid='lhb8o89'>
+              <h4 data-oid='f8x-gxu'>Memory Usage (%)</h4>
+              <div className='metric-graph' data-oid='2ttf-f.'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
@@ -342,13 +397,14 @@ export const PerformanceExample: React.FC = () => {
                         metric.memoryUsage > 0.8 ? '#ef4444' : '#10b981',
                     }}
                     title={`${(metric.memoryUsage * 100).toFixed(1)}%`}
+                    data-oid='xr9d24o'
                   />
                 ))}
               </div>
             </div>
           </div>
         ) : (
-          <p>
+          <p data-oid='t2zbdao'>
             No performance metrics available yet. Interact with the chart to see
             metrics.
           </p>
@@ -356,49 +412,49 @@ export const PerformanceExample: React.FC = () => {
       </div>
 
       {/* Feature Comparison */}
-      <div className='comparison-section'>
-        <h3>Performance Comparison</h3>
+      <div className='comparison-section' data-oid='glkki47'>
+        <h3 data-oid='42cp.12'>Performance Comparison</h3>
 
-        <div className='comparison-table'>
-          <table>
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Without Optimization</th>
-                <th>With Optimization</th>
-                <th>Improvement</th>
+        <div className='comparison-table' data-oid='7dhid50'>
+          <table data-oid='9d_wus:'>
+            <thead data-oid='8rql338'>
+              <tr data-oid='0.ts0sq'>
+                <th data-oid='d49g_kr'>Feature</th>
+                <th data-oid='u28:tu7'>Without Optimization</th>
+                <th data-oid='pd098_3'>With Optimization</th>
+                <th data-oid='ib0huko'>Improvement</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Render Time</td>
-                <td>~200ms</td>
-                <td>~15ms</td>
-                <td>13x faster</td>
+            <tbody data-oid='dpko-ux'>
+              <tr data-oid='9z:qnsu'>
+                <td data-oid='04t_97d'>Render Time</td>
+                <td data-oid='d:oowwc'>~200ms</td>
+                <td data-oid=':xwr4zg'>~15ms</td>
+                <td data-oid='m3xpg8n'>13x faster</td>
               </tr>
-              <tr>
-                <td>Memory Usage</td>
-                <td>~500MB</td>
-                <td>~50MB</td>
-                <td>10x reduction</td>
+              <tr data-oid='.6w0ucp'>
+                <td data-oid='4g4o4zs'>Memory Usage</td>
+                <td data-oid='a793ic6'>~500MB</td>
+                <td data-oid='x3zp.se'>~50MB</td>
+                <td data-oid='hsp2yh4'>10x reduction</td>
               </tr>
-              <tr>
-                <td>Scroll Performance</td>
-                <td>Laggy</td>
-                <td>Smooth 60fps</td>
-                <td>Smooth</td>
+              <tr data-oid='qzxh.3o'>
+                <td data-oid='dyzyj0p'>Scroll Performance</td>
+                <td data-oid='53y_59t'>Laggy</td>
+                <td data-oid='8jilfun'>Smooth 60fps</td>
+                <td data-oid='7qnb8dt'>Smooth</td>
               </tr>
-              <tr>
-                <td>Initial Load</td>
-                <td>~5 seconds</td>
-                <td>~500ms</td>
-                <td>10x faster</td>
+              <tr data-oid='5xp0j:6'>
+                <td data-oid='8cjttwf'>Initial Load</td>
+                <td data-oid='gxnh3s.'>~5 seconds</td>
+                <td data-oid='npgm2la'>~500ms</td>
+                <td data-oid='b09xj61'>10x faster</td>
               </tr>
-              <tr>
-                <td>Max Data Points</td>
-                <td>~10K</td>
-                <td>~1M+</td>
-                <td>100x more</td>
+              <tr data-oid='-sw35c4'>
+                <td data-oid='xiee9k7'>Max Data Points</td>
+                <td data-oid='zhkuuqp'>~10K</td>
+                <td data-oid='6xp:uw0'>~1M+</td>
+                <td data-oid='vuh9:yt'>100x more</td>
               </tr>
             </tbody>
           </table>
@@ -406,47 +462,47 @@ export const PerformanceExample: React.FC = () => {
       </div>
 
       {/* Technical Implementation */}
-      <div className='implementation-section'>
-        <h3>Technical Implementation</h3>
+      <div className='implementation-section' data-oid='lhn3825'>
+        <h3 data-oid='i7xhn.x'>Technical Implementation</h3>
 
-        <div className='implementation-grid'>
-          <div className='implementation-card'>
-            <h4>Data Virtualization</h4>
-            <ul>
-              <li>Renders only visible data points</li>
-              <li>Dynamic viewport calculation</li>
-              <li>Buffered scrolling with overscan</li>
-              <li>Memory-efficient data structures</li>
+        <div className='implementation-grid' data-oid='mf9l40m'>
+          <div className='implementation-card' data-oid='ws1hbux'>
+            <h4 data-oid='ah1.037'>Data Virtualization</h4>
+            <ul data-oid='17-d00b'>
+              <li data-oid='9v1-5ti'>Renders only visible data points</li>
+              <li data-oid='cdp-fer'>Dynamic viewport calculation</li>
+              <li data-oid='.2lmv3y'>Buffered scrolling with overscan</li>
+              <li data-oid='k2n8e:3'>Memory-efficient data structures</li>
             </ul>
           </div>
 
-          <div className='implementation-card'>
-            <h4>Progressive Loading</h4>
-            <ul>
-              <li>Chunked data loading</li>
-              <li>Adaptive loading strategies</li>
-              <li>Background processing</li>
-              <li>Error recovery mechanisms</li>
+          <div className='implementation-card' data-oid=':uel386'>
+            <h4 data-oid='l9ey2:t'>Progressive Loading</h4>
+            <ul data-oid='xbki_cf'>
+              <li data-oid='.2lrggg'>Chunked data loading</li>
+              <li data-oid='knez66t'>Adaptive loading strategies</li>
+              <li data-oid='.j8x54x'>Background processing</li>
+              <li data-oid='f8wa92y'>Error recovery mechanisms</li>
             </ul>
           </div>
 
-          <div className='implementation-card'>
-            <h4>Memory Management</h4>
-            <ul>
-              <li>Intelligent caching with LRU eviction</li>
-              <li>Automatic garbage collection</li>
-              <li>Memory usage monitoring</li>
-              <li>Configurable memory limits</li>
+          <div className='implementation-card' data-oid='u_6m-oz'>
+            <h4 data-oid='pon73yn'>Memory Management</h4>
+            <ul data-oid='f0ncoyz'>
+              <li data-oid='s_slj3.'>Intelligent caching with LRU eviction</li>
+              <li data-oid='waitfpa'>Automatic garbage collection</li>
+              <li data-oid='k1klzdd'>Memory usage monitoring</li>
+              <li data-oid='76-3utd'>Configurable memory limits</li>
             </ul>
           </div>
 
-          <div className='implementation-card'>
-            <h4>Performance Monitoring</h4>
-            <ul>
-              <li>Real-time metrics collection</li>
-              <li>Frame rate monitoring</li>
-              <li>Render time tracking</li>
-              <li>Performance alerts</li>
+          <div className='implementation-card' data-oid='c86dqeb'>
+            <h4 data-oid='8hobp4n'>Performance Monitoring</h4>
+            <ul data-oid='1p3wtu3'>
+              <li data-oid='8vho1qf'>Real-time metrics collection</li>
+              <li data-oid='6s-t4od'>Frame rate monitoring</li>
+              <li data-oid='am2s8-p'>Render time tracking</li>
+              <li data-oid='6ful12m'>Performance alerts</li>
             </ul>
           </div>
         </div>
@@ -462,34 +518,36 @@ export const PerformanceTestGrid: React.FC = () => {
   const largeData = generateLargeDataset(100000);
 
   return (
-    <div className='performance-test-grid'>
-      <h2>Performance Test Grid</h2>
+    <div className='performance-test-grid' data-oid='r43xaki'>
+      <h2 data-oid='5q40cvm'>Performance Test Grid</h2>
 
-      <div className='test-grid'>
-        <div className='test-case'>
-          <h3>Small Dataset (1K)</h3>
+      <div className='test-grid' data-oid='gogw2kj'>
+        <div className='test-case' data-oid='igl0uvv'>
+          <h3 data-oid='z:gzg.9'>Small Dataset (1K)</h3>
           <VirtualizedChart
             data={smallData}
             type='line'
             height={200}
             width={300}
             virtualization={{ enabled: false }}
+            data-oid='ea:6h-x'
           />
         </div>
 
-        <div className='test-case'>
-          <h3>Medium Dataset (10K)</h3>
+        <div className='test-case' data-oid='fpyukl5'>
+          <h3 data-oid='03ondfy'>Medium Dataset (10K)</h3>
           <VirtualizedChart
             data={mediumData}
             type='bar'
             height={200}
             width={300}
             virtualization={{ enabled: true }}
+            data-oid='h94-w.k'
           />
         </div>
 
-        <div className='test-case'>
-          <h3>Large Dataset (100K)</h3>
+        <div className='test-case' data-oid='_v:_b.s'>
+          <h3 data-oid='gqxd_i6'>Large Dataset (100K)</h3>
           <VirtualizedChart
             data={largeData}
             type='area'
@@ -500,6 +558,7 @@ export const PerformanceTestGrid: React.FC = () => {
               itemHeight: 1,
               bufferSize: 20,
             }}
+            data-oid='.0sqaj:'
           />
         </div>
       </div>

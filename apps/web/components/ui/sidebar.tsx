@@ -46,7 +46,10 @@ export const SidebarProvider = ({
   const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider
+      value={{ open, setOpen, animate: animate }}
+      data-oid='.hpu24n'
+    >
       {children}
     </SidebarContext.Provider>
   );
@@ -64,7 +67,12 @@ export const Sidebar = ({
   animate?: boolean;
 }) => {
   return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+    <SidebarProvider
+      open={open}
+      setOpen={setOpen}
+      animate={animate}
+      data-oid='83d:sgb'
+    >
       {children}
     </SidebarProvider>
   );
@@ -73,8 +81,11 @@ export const Sidebar = ({
 export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
   return (
     <>
-      <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<'div'>)} />
+      <DesktopSidebar {...props} data-oid='zhx_jba' />
+      <MobileSidebar
+        {...(props as React.ComponentProps<'div'>)}
+        data-oid=':t0_gh2'
+      />
     </>
   );
 };
@@ -98,6 +109,7 @@ export const DesktopSidebar = ({
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         {...props}
+        data-oid='pvk65hw'
       >
         {children}
       </motion.div>
@@ -118,14 +130,16 @@ export const MobileSidebar = ({
           'h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full'
         )}
         {...props}
+        data-oid='4hdwzyd'
       >
-        <div className='flex justify-end z-20 w-full'>
+        <div className='flex justify-end z-20 w-full' data-oid='ygs8zl7'>
           <IconMenu2
             className='text-neutral-800 dark:text-neutral-200'
             onClick={() => setOpen(!open)}
+            data-oid='qhwgf03'
           />
         </div>
-        <AnimatePresence>
+        <AnimatePresence data-oid='o2.pt-5'>
           {open && (
             <motion.div
               initial={{ x: '-100%', opacity: 0 }}
@@ -139,12 +153,14 @@ export const MobileSidebar = ({
                 'fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between',
                 className
               )}
+              data-oid='_jl5lmm'
             >
               <div
                 className='absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200'
                 onClick={() => setOpen(!open)}
+                data-oid='8qippx3'
               >
-                <IconX />
+                <IconX data-oid='em8qyxx' />
               </div>
               {children}
             </motion.div>
@@ -173,6 +189,7 @@ export const SidebarLink = ({
         className
       )}
       {...props}
+      data-oid='_--i5d5'
     >
       {link.icon}
 
@@ -182,6 +199,7 @@ export const SidebarLink = ({
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
         className='text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0'
+        data-oid='px3j180'
       >
         {link.label}
       </motion.span>

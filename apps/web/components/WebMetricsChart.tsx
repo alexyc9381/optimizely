@@ -33,7 +33,7 @@ const WebMetricsChart: React.FC = () => {
     traffic: {
       id: 'traffic',
       name: 'Website Traffic',
-      icon: <TrendingUp className='w-4 h-4' />,
+      icon: <TrendingUp className='w-4 h-4' data-oid='7u2z98-' />,
       color: '#3B82F6',
       unit: 'visitors',
       current: '24,789',
@@ -43,7 +43,7 @@ const WebMetricsChart: React.FC = () => {
     ctr: {
       id: 'ctr',
       name: 'Click-Through Rate',
-      icon: <MousePointer className='w-4 h-4' />,
+      icon: <MousePointer className='w-4 h-4' data-oid='9.u62jn' />,
       color: '#10B981',
       unit: '%',
       current: '3.42%',
@@ -53,7 +53,7 @@ const WebMetricsChart: React.FC = () => {
     bounce: {
       id: 'bounce',
       name: 'Bounce Rate',
-      icon: <ArrowLeft className='w-4 h-4' />,
+      icon: <ArrowLeft className='w-4 h-4' data-oid='30r4k.d' />,
       color: '#F59E0B',
       unit: '%',
       current: '32.1%',
@@ -63,7 +63,7 @@ const WebMetricsChart: React.FC = () => {
     session: {
       id: 'session',
       name: 'Session Duration',
-      icon: <Clock className='w-4 h-4' />,
+      icon: <Clock className='w-4 h-4' data-oid='17u98x3' />,
       color: '#8B5CF6',
       unit: 'min',
       current: '12m 34s',
@@ -133,29 +133,45 @@ const WebMetricsChart: React.FC = () => {
   const range = maxValue - minValue;
 
   return (
-    <div className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'>
+    <div
+      className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm'
+      data-oid='s5tnlcz'
+    >
       {/* Header with Metric Selector */}
-      <div className='flex items-center justify-between mb-6'>
-        <div className='flex items-center space-x-3'>
-          <div className='flex items-center space-x-2 text-lg font-semibold text-gray-900'>
+      <div
+        className='flex items-center justify-between mb-6'
+        data-oid='979zcoi'
+      >
+        <div className='flex items-center space-x-3' data-oid='9pmic4m'>
+          <div
+            className='flex items-center space-x-2 text-lg font-semibold text-gray-900'
+            data-oid='6zbuskm'
+          >
             {currentMetric.icon}
-            <span>{currentMetric.name}</span>
+            <span data-oid='gsoq.0h'>{currentMetric.name}</span>
           </div>
         </div>
 
-        <div className='relative'>
+        <div className='relative' data-oid='n:81zo2'>
           <button
             onClick={() => setShowDropdown(!showDropdown)}
             className='flex items-center space-x-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg border transition-colors'
+            data-oid='jan8dnr'
           >
-            <span className='text-sm font-medium text-gray-700'>
+            <span
+              className='text-sm font-medium text-gray-700'
+              data-oid='mi8jvcq'
+            >
               {currentMetric.name}
             </span>
-            <ChevronDown className='w-4 h-4 text-gray-500' />
+            <ChevronDown className='w-4 h-4 text-gray-500' data-oid='xy_wzxg' />
           </button>
 
           {showDropdown && (
-            <div className='absolute right-0 top-full mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10'>
+            <div
+              className='absolute right-0 top-full mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10'
+              data-oid='3.5u51o'
+            >
               {Object.values(metrics).map(metric => (
                 <button
                   key={metric.id}
@@ -168,9 +184,12 @@ const WebMetricsChart: React.FC = () => {
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-gray-700'
                   }`}
+                  data-oid='r0:57gh'
                 >
                   {metric.icon}
-                  <span className='text-sm font-medium'>{metric.name}</span>
+                  <span className='text-sm font-medium' data-oid='k7y_ob4'>
+                    {metric.name}
+                  </span>
                 </button>
               ))}
             </div>
@@ -179,13 +198,21 @@ const WebMetricsChart: React.FC = () => {
       </div>
 
       {/* Current Value and Trend */}
-      <div className='flex items-center justify-between mb-6'>
-        <div className='flex items-center space-x-4'>
-          <div>
-            <div className='text-3xl font-bold text-gray-900'>
+      <div
+        className='flex items-center justify-between mb-6'
+        data-oid='1-0i:bz'
+      >
+        <div className='flex items-center space-x-4' data-oid='y14psae'>
+          <div data-oid='bvvyid0'>
+            <div
+              className='text-3xl font-bold text-gray-900'
+              data-oid='12bdadw'
+            >
               {currentMetric.current}
             </div>
-            <div className='text-sm text-gray-500'>Last 30 days</div>
+            <div className='text-sm text-gray-500' data-oid='qxv6z55'>
+              Last 30 days
+            </div>
           </div>
           <div
             className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${
@@ -193,21 +220,33 @@ const WebMetricsChart: React.FC = () => {
                 ? 'bg-green-100 text-green-700'
                 : 'bg-red-100 text-red-700'
             }`}
+            data-oid='au8f1nz'
           >
-            <span>{currentMetric.trend}</span>
+            <span data-oid='.ckn3-y'>{currentMetric.trend}</span>
           </div>
         </div>
       </div>
 
       {/* Chart */}
-      <div className='relative'>
+      <div className='relative' data-oid='_h0n8mj'>
         {loading ? (
-          <div className='flex items-center justify-center h-64'>
-            <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+          <div
+            className='flex items-center justify-center h-64'
+            data-oid='jmi-two'
+          >
+            <div
+              className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'
+              data-oid='1h6xj8t'
+            ></div>
           </div>
         ) : (
-          <div className='h-64'>
-            <svg width='100%' height='100%' className='overflow-visible'>
+          <div className='h-64' data-oid='vrgn-ny'>
+            <svg
+              width='100%'
+              height='100%'
+              className='overflow-visible'
+              data-oid='3x:kq33'
+            >
               {/* Grid lines */}
               {[0, 25, 50, 75, 100].map(percent => (
                 <line
@@ -218,6 +257,7 @@ const WebMetricsChart: React.FC = () => {
                   y2={`${percent}%`}
                   stroke='#f3f4f6'
                   strokeWidth='1'
+                  data-oid='b9a_rwk'
                 />
               ))}
 
@@ -239,6 +279,7 @@ const WebMetricsChart: React.FC = () => {
                     textAnchor='end'
                     dominantBaseline='middle'
                     className='fill-gray-500 text-xs'
+                    data-oid='es43nw8'
                   >
                     {displayValue}
                   </text>
@@ -259,6 +300,7 @@ const WebMetricsChart: React.FC = () => {
                     return `${x},${y}`;
                   })
                   .join(' ')}
+                data-oid='uftdnux'
               />
 
               {/* Data points */}
@@ -273,8 +315,9 @@ const WebMetricsChart: React.FC = () => {
                     r='4'
                     fill={currentMetric.color}
                     className='hover:r-6 transition-all duration-200 cursor-pointer'
+                    data-oid='gfn3og3'
                   >
-                    <title>{`${point.date}: ${point.value}${currentMetric.unit === 'visitors' ? '' : currentMetric.unit}`}</title>
+                    <title data-oid='_ka4dbj'>{`${point.date}: ${point.value}${currentMetric.unit === 'visitors' ? '' : currentMetric.unit}`}</title>
                   </circle>
                 );
               })}
@@ -284,15 +327,23 @@ const WebMetricsChart: React.FC = () => {
       </div>
 
       {/* Legend */}
-      <div className='flex items-center justify-between mt-4 pt-4 border-t border-gray-200'>
-        <div className='flex items-center space-x-2'>
+      <div
+        className='flex items-center justify-between mt-4 pt-4 border-t border-gray-200'
+        data-oid='fm66boy'
+      >
+        <div className='flex items-center space-x-2' data-oid='kl2o-:-'>
           <div
             className='w-3 h-3 rounded-full'
             style={{ backgroundColor: currentMetric.color }}
+            data-oid='pjg_iz1'
           ></div>
-          <span className='text-sm text-gray-600'>{currentMetric.name}</span>
+          <span className='text-sm text-gray-600' data-oid='wca8fd1'>
+            {currentMetric.name}
+          </span>
         </div>
-        <div className='text-sm text-gray-500'>30-day trend</div>
+        <div className='text-sm text-gray-500' data-oid='gy:gbie'>
+          30-day trend
+        </div>
       </div>
     </div>
   );

@@ -239,23 +239,25 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
     switch (chartType) {
       case 'line':
         return (
-          <LineChart {...commonProps}>
-            <CartesianGrid strokeDasharray='3 3' />
+          <LineChart {...commonProps} data-oid='d92r7o9'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='5agvjgr' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
+              data-oid='kh:mu4b'
             />
 
-            <YAxis />
+            <YAxis data-oid='rpbqug9' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
+              data-oid='i-3n-23'
             />
 
-            <Legend />
+            <Legend data-oid='ee2kr7t' />
             <Line
               type='monotone'
               dataKey='y'
@@ -263,6 +265,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
               strokeWidth={2}
               dot={false}
               isAnimationActive={false}
+              data-oid='m-igbik'
             />
 
             {showTrend && trendData && (
@@ -271,6 +274,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
                 stroke={trendData.direction === 'up' ? '#4ade80' : '#f87171'}
                 strokeDasharray='5 5'
                 label={`Trend: ${trendData.direction}`}
+                data-oid='1z40w6n'
               />
             )}
           </LineChart>
@@ -278,23 +282,25 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
 
       case 'area':
         return (
-          <AreaChart {...commonProps}>
-            <CartesianGrid strokeDasharray='3 3' />
+          <AreaChart {...commonProps} data-oid='7yqiyjs'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='9gckaw8' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
+              data-oid='ev2ai_i'
             />
 
-            <YAxis />
+            <YAxis data-oid='5bhonm.' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
+              data-oid='axi-8eh'
             />
 
-            <Legend />
+            <Legend data-oid='xm-z3_e' />
             <Area
               type='monotone'
               dataKey='y'
@@ -302,79 +308,98 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
               fill={colors[0]}
               fillOpacity={0.3}
               isAnimationActive={false}
+              data-oid='f3b7d:a'
             />
           </AreaChart>
         );
 
       case 'bar':
         return (
-          <BarChart {...commonProps}>
-            <CartesianGrid strokeDasharray='3 3' />
+          <BarChart {...commonProps} data-oid='krzuvi0'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='8wt_lme' />
             <XAxis
               dataKey='name'
               tickFormatter={(value, index) => `${index + 1}`}
+              data-oid='-ybcrjr'
             />
 
-            <YAxis />
+            <YAxis data-oid='-czrai2' />
             <Tooltip
               formatter={(value: number) => [value.toFixed(2), 'Value']}
+              data-oid='6cf5z.6'
             />
 
-            <Legend />
-            <Bar dataKey='y' fill={colors[0]} isAnimationActive={false} />
+            <Legend data-oid='6_jyw5g' />
+            <Bar
+              dataKey='y'
+              fill={colors[0]}
+              isAnimationActive={false}
+              data-oid='8zmm:d7'
+            />
           </BarChart>
         );
 
       case 'scatter':
         return (
-          <ScatterChart {...commonProps}>
-            <CartesianGrid strokeDasharray='3 3' />
+          <ScatterChart {...commonProps} data-oid='ggdbbtz'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='wovbzk2' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
+              data-oid='vwvnr05'
             />
 
-            <YAxis dataKey='y' />
+            <YAxis dataKey='y' data-oid='frl65dy' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
+              data-oid='n66f6fy'
             />
 
-            <Legend />
-            <Scatter dataKey='y' fill={colors[0]} />
+            <Legend data-oid='2lfczei' />
+            <Scatter dataKey='y' fill={colors[0]} data-oid='5cqc:bb' />
           </ScatterChart>
         );
 
       default:
-        return <div>Unsupported chart type</div>;
+        return <div data-oid='7xgj9:l'>Unsupported chart type</div>;
     }
   };
 
   return (
-    <div className={`real-time-chart ${className}`}>
+    <div className={`real-time-chart ${className}`} data-oid='hagthxh'>
       {/* Connection Status */}
-      <div className='flex items-center justify-between mb-4'>
-        <div className='flex items-center space-x-2'>
+      <div
+        className='flex items-center justify-between mb-4'
+        data-oid='73fn0u9'
+      >
+        <div className='flex items-center space-x-2' data-oid=':pv8fvp'>
           <div
             className={`w-3 h-3 rounded-full ${
               isConnected ? 'bg-green-500' : 'bg-red-500'
             }`}
+            data-oid='me6tqx9'
           />
 
-          <span className='text-sm text-gray-600'>
+          <span className='text-sm text-gray-600' data-oid='9hl3871'>
             {isConnected ? 'Connected' : 'Disconnected'}
           </span>
           {isPaused && (
-            <span className='text-sm text-orange-600 ml-2'>Paused</span>
+            <span className='text-sm text-orange-600 ml-2' data-oid='dzedux7'>
+              Paused
+            </span>
           )}
         </div>
 
         {showTrend && trendData && (
-          <div className='flex items-center space-x-2 text-sm'>
-            <span>Trend:</span>
+          <div
+            className='flex items-center space-x-2 text-sm'
+            data-oid='-fj1x7d'
+          >
+            <span data-oid='uipcc:g'>Trend:</span>
             <span
               className={`font-medium ${
                 trendData.direction === 'up'
@@ -383,6 +408,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
                     ? 'text-red-600'
                     : 'text-gray-600'
               }`}
+              data-oid='t1:it8f'
             >
               {trendData.direction} ({trendData.strength.toFixed(1)}%)
             </span>
@@ -392,19 +418,26 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
 
       {/* Error Display */}
       {error && (
-        <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4'>
+        <div
+          className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4'
+          data-oid='2cx9t32'
+        >
           Error: {error}
         </div>
       )}
 
       {/* Chart */}
-      <ResponsiveContainer width={width} height={height}>
+      <ResponsiveContainer width={width} height={height} data-oid='c9ohdmu'>
         {renderChart()}
       </ResponsiveContainer>
 
       {/* Performance Metrics */}
       {showPerformanceMetrics && (
-        <RealTimeMetricsDisplay chartId={chartId} position='bottom' />
+        <RealTimeMetricsDisplay
+          chartId={chartId}
+          position='bottom'
+          data-oid='oetyghf'
+        />
       )}
     </div>
   );
@@ -429,39 +462,56 @@ export const RealTimeMetricsDisplay: React.FC<RealTimeMetricsDisplayProps> = ({
   };
 
   return (
-    <div className={`real-time-metrics ${positionClasses[position]}`}>
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm'>
-        <div className='text-center'>
-          <div className='font-medium text-gray-600'>Update Rate</div>
-          <div className='text-lg font-bold'>
+    <div
+      className={`real-time-metrics ${positionClasses[position]}`}
+      data-oid='flnfmvl'
+    >
+      <div
+        className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm'
+        data-oid='-j3jxpo'
+      >
+        <div className='text-center' data-oid='wl349gr'>
+          <div className='font-medium text-gray-600' data-oid='1rn_yjd'>
+            Update Rate
+          </div>
+          <div className='text-lg font-bold' data-oid='tfyn-8z'>
             {metrics.updateRate.toFixed(1)} Hz
           </div>
         </div>
 
-        <div className='text-center'>
-          <div className='font-medium text-gray-600'>Latency</div>
-          <div className='text-lg font-bold'>
+        <div className='text-center' data-oid='t2v5fl6'>
+          <div className='font-medium text-gray-600' data-oid='c_.otdn'>
+            Latency
+          </div>
+          <div className='text-lg font-bold' data-oid='q5uqh-4'>
             {metrics.averageLatency.toFixed(0)}ms
           </div>
         </div>
 
-        <div className='text-center'>
-          <div className='font-medium text-gray-600'>Buffer</div>
-          <div className='text-lg font-bold'>
+        <div className='text-center' data-oid='e-eff8q'>
+          <div className='font-medium text-gray-600' data-oid='1vxbvml'>
+            Buffer
+          </div>
+          <div className='text-lg font-bold' data-oid='j7r1lbp'>
             {metrics.bufferUtilization.toFixed(1)}%
           </div>
         </div>
 
-        <div className='text-center'>
-          <div className='font-medium text-gray-600'>Memory</div>
-          <div className='text-lg font-bold'>
+        <div className='text-center' data-oid='s.yt:zb'>
+          <div className='font-medium text-gray-600' data-oid='xr.eb-l'>
+            Memory
+          </div>
+          <div className='text-lg font-bold' data-oid='395lk_1'>
             {metrics.memoryUsage.toFixed(1)}MB
           </div>
         </div>
       </div>
 
       {showDetails && (
-        <div className='mt-2 text-xs text-gray-500 text-center'>
+        <div
+          className='mt-2 text-xs text-gray-500 text-center'
+          data-oid='r64ucp1'
+        >
           Dropped: {metrics.droppedFrames} | Last Update:{' '}
           {new Date(metrics.lastUpdate).toLocaleTimeString()}
         </div>
@@ -518,7 +568,10 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
   };
 
   return (
-    <div className='real-time-controls flex items-center space-x-2'>
+    <div
+      className='real-time-controls flex items-center space-x-2'
+      data-oid='elsk.ri'
+    >
       <button
         onClick={isPaused ? handleResume : handlePause}
         className={`px-3 py-1 rounded text-sm font-medium ${
@@ -526,6 +579,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
             ? 'bg-green-500 hover:bg-green-600 text-white'
             : 'bg-orange-500 hover:bg-orange-600 text-white'
         }`}
+        data-oid='ub:s8.q'
       >
         {isPaused ? 'Resume' : 'Pause'}
       </button>
@@ -533,6 +587,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
       <button
         onClick={handleClear}
         className='px-3 py-1 rounded text-sm font-medium bg-red-500 hover:bg-red-600 text-white'
+        data-oid='9_2ie4z'
       >
         Clear
       </button>
@@ -540,6 +595,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
       <button
         onClick={handleExport}
         className='px-3 py-1 rounded text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white'
+        data-oid='hjlwu0u'
       >
         Export
       </button>
@@ -572,26 +628,32 @@ export const RealTimeDashboard: React.FC<RealTimeDashboardProps> = ({
   };
 
   return (
-    <div className='real-time-dashboard'>
+    <div className='real-time-dashboard' data-oid='me:9ae:'>
       {showGlobalMetrics && (
-        <div className='mb-6 p-4 bg-gray-50 rounded-lg'>
-          <h3 className='text-lg font-medium mb-4'>
+        <div className='mb-6 p-4 bg-gray-50 rounded-lg' data-oid='94y0pqf'>
+          <h3 className='text-lg font-medium mb-4' data-oid='siy9q1m'>
             Global Performance Metrics
           </h3>
           <RealTimeMetricsDisplay
             chartId='global'
             position='top'
             showDetails={true}
+            data-oid='kaxd2a0'
           />
         </div>
       )}
 
-      <div className={layoutClasses[layout]}>
+      <div className={layoutClasses[layout]} data-oid='vek0jo4'>
         {charts.map(chart => (
-          <div key={chart.id} className='chart-container'>
-            <div className='mb-2 flex items-center justify-between'>
-              <h4 className='font-medium'>{chart.title}</h4>
-              <RealTimeControls chartId={chart.id} />
+          <div key={chart.id} className='chart-container' data-oid='x76g.jc'>
+            <div
+              className='mb-2 flex items-center justify-between'
+              data-oid='gtgofjx'
+            >
+              <h4 className='font-medium' data-oid='dhzzdtf'>
+                {chart.title}
+              </h4>
+              <RealTimeControls chartId={chart.id} data-oid='9exm42.' />
             </div>
 
             <RealTimeChart
@@ -603,6 +665,7 @@ export const RealTimeDashboard: React.FC<RealTimeDashboardProps> = ({
               showPerformanceMetrics={false}
               showTrend={true}
               className='border border-gray-200 rounded p-4'
+              data-oid='pe93p43'
             />
           </div>
         ))}

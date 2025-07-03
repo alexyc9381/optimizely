@@ -236,13 +236,13 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
 
   if (loading && !dashboardData) {
     return (
-      <div className='flex items-center justify-center h-64'>
-        <div className='text-center'>
+      <div className='flex items-center justify-center h-64' data-oid="wyb.i86">
+        <div className='text-center' data-oid="u6w:54h">
           <RefreshCw
-            className='h-8 w-8 animate-spin mx-auto mb-4' />
+            className='h-8 w-8 animate-spin mx-auto mb-4' data-oid="hqna5io" />
 
 
-          <p>Loading performance analytics...</p>
+          <p data-oid="z8rk-av">Loading performance analytics...</p>
         </div>
       </div>);
 
@@ -251,17 +251,17 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
   if (error) {
     return (
       <div
-        className='bg-red-50 border border-red-200 rounded-lg p-6'>
+        className='bg-red-50 border border-red-200 rounded-lg p-6' data-oid="a.l8z76">
 
 
-        <h3 className='text-red-800 font-medium'>
+        <h3 className='text-red-800 font-medium' data-oid="xxgtk.n">
           Error Loading Dashboard
         </h3>
-        <p className='text-red-600 mt-2'>
+        <p className='text-red-600 mt-2' data-oid="u-.jp1x">
           {error}
         </p>
-        <Button onClick={refreshData} className='mt-4'>
-          <RefreshCw className='h-4 w-4 mr-2' />
+        <Button onClick={refreshData} className='mt-4' data-oid="jimqh_v">
+          <RefreshCw className='h-4 w-4 mr-2' data-oid="p8s7epu" />
           Retry
         </Button>
       </div>);
@@ -270,37 +270,37 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
 
   if (!dashboardData) {
     return (
-      <div className='text-center py-8'>
-        <p>No data available</p>
+      <div className='text-center py-8' data-oid="lu:r942">
+        <p data-oid="3vkibvp">No data available</p>
       </div>);
 
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6' data-oid="9fxy5m3">
       {/* Header */}
-      <div className='flex justify-between items-center'>
-        <div>
-          <h1 className='text-3xl font-bold text-gray-900'>
+      <div className='flex justify-between items-center' data-oid="y8p6ysg">
+        <div data-oid="1nyzy.2">
+          <h1 className='text-3xl font-bold text-gray-900' data-oid="d396s86">
             Cross-Industry Performance Analytics
           </h1>
-          <p className='text-gray-500 mt-2'>
+          <p className='text-gray-500 mt-2' data-oid="kd59mrv">
             Performance tracking across College Consulting, SaaS, Manufacturing,
             Healthcare, and FinTech
           </p>
         </div>
-        <div className='flex items-center space-x-4'>
-          <div className='text-sm text-gray-500'>
+        <div className='flex items-center space-x-4' data-oid="63w8o03">
+          <div className='text-sm text-gray-500' data-oid="tjx6dfq">
             Last updated: {lastUpdated.toLocaleTimeString()}
           </div>
           <Button
             onClick={refreshData}
             variant='outline'
-            size='sm'>
+            size='sm' data-oid=":6yxylx">
 
 
             <RefreshCw
-              className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+              className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} data-oid="-r0rgcs" />
 
 
             Refresh
@@ -309,82 +309,82 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
       </div>
 
       {/* Key Metrics */}
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
-        <Card>
+      <div className='grid grid-cols-1 md:grid-cols-4 gap-6' data-oid="118a:7s">
+        <Card data-oid="39fdo_f">
           <CardHeader
-            className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            className='flex flex-row items-center justify-between space-y-0 pb-2' data-oid="64iwhlc">
 
 
-            <CardTitle className='text-sm font-medium'>
+            <CardTitle className='text-sm font-medium' data-oid="o_y4h:k">
               Total Performers
             </CardTitle>
             <Users
-              className='h-4 w-4 text-muted-foreground' />
+              className='h-4 w-4 text-muted-foreground' data-oid="fc2mr78" />
 
 
           </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>
+          <CardContent data-oid="d.dpizt">
+            <div className='text-2xl font-bold' data-oid="6uhgk5v">
               {dashboardData.overallStats.totalPerformers.toLocaleString()}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-oid="0hj2ou4">
           <CardHeader
-            className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            className='flex flex-row items-center justify-between space-y-0 pb-2' data-oid="k1-w2m5">
 
 
-            <CardTitle className='text-sm font-medium'>
+            <CardTitle className='text-sm font-medium' data-oid=".sbv.dx">
               Industries Tracked
             </CardTitle>
             <Target
-              className='h-4 w-4 text-muted-foreground' />
+              className='h-4 w-4 text-muted-foreground' data-oid="-_x4ezg" />
 
 
           </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>
+          <CardContent data-oid="acy-x9m">
+            <div className='text-2xl font-bold' data-oid="3jw-:oi">
               {dashboardData.overallStats.industriesTracked}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-oid="y09gs13">
           <CardHeader
-            className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            className='flex flex-row items-center justify-between space-y-0 pb-2' data-oid="a3f8ir1">
 
 
-            <CardTitle className='text-sm font-medium'>
+            <CardTitle className='text-sm font-medium' data-oid="9ccwn2d">
               Average Performance Score
             </CardTitle>
             <Award
-              className='h-4 w-4 text-muted-foreground' />
+              className='h-4 w-4 text-muted-foreground' data-oid="z.y2gtt" />
 
 
           </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>
+          <CardContent data-oid="yen3xmn">
+            <div className='text-2xl font-bold' data-oid="o4-kj9t">
               {dashboardData.overallStats.averagePerformanceScore}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-oid="24yuy0z">
           <CardHeader
-            className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            className='flex flex-row items-center justify-between space-y-0 pb-2' data-oid="mzx3fn9">
 
 
-            <CardTitle className='text-sm font-medium'>
+            <CardTitle className='text-sm font-medium' data-oid="7:bbjk6">
               Top Industry
             </CardTitle>
             <TrendingUp
-              className='h-4 w-4 text-muted-foreground' />
+              className='h-4 w-4 text-muted-foreground' data-oid="2hq52ki" />
 
 
           </CardHeader>
-          <CardContent>
-            <div className='text-lg font-bold'>
+          <CardContent data-oid="85ql61t">
+            <div className='text-lg font-bold' data-oid="si0alqg">
               {INDUSTRY_DISPLAY_NAMES[
               dashboardData.crossIndustryComparison.insights.
               highestPerformingIndustry as keyof typeof INDUSTRY_DISPLAY_NAMES] ||
@@ -401,65 +401,65 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
         value={selectedIndustry || 'all'}
         onValueChange={(value) =>
         setSelectedIndustry(value === 'all' ? null : value)
-        }>
+        } data-oid="n4flp4w">
 
 
-        <TabsList className='grid w-full grid-cols-6'>
-          <TabsTrigger value='all'>
+        <TabsList className='grid w-full grid-cols-6' data-oid="8.d2dy6">
+          <TabsTrigger value='all' data-oid="-oa40v7">
             All Industries
           </TabsTrigger>
-          <TabsTrigger value='college_consulting'>
+          <TabsTrigger value='college_consulting' data-oid="t445qki">
             College Consulting
           </TabsTrigger>
-          <TabsTrigger value='saas'>
+          <TabsTrigger value='saas' data-oid="2cs07bf">
             SaaS
           </TabsTrigger>
-          <TabsTrigger value='manufacturing'>
+          <TabsTrigger value='manufacturing' data-oid="9qy:yi:">
             Manufacturing
           </TabsTrigger>
-          <TabsTrigger value='healthcare'>
+          <TabsTrigger value='healthcare' data-oid="x0-jl8d">
             Healthcare
           </TabsTrigger>
-          <TabsTrigger value='fintech'>
+          <TabsTrigger value='fintech' data-oid="mg7.son">
             FinTech
           </TabsTrigger>
         </TabsList>
 
         <TabsContent
           value={selectedIndustry || 'all'}
-          className='space-y-6'>
+          className='space-y-6' data-oid="rjdmi05">
 
 
           {/* Industry Comparison Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>
+          <Card data-oid="fng5gri">
+            <CardHeader data-oid="50p:75.">
+              <CardTitle data-oid="p3vxgkd">
                 Industry Performance Comparison
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width='100%' height={400}>
-                <BarChart data={industryComparisonData}>
-                  <CartesianGrid strokeDasharray='3 3' />
+            <CardContent data-oid="7erxk-:">
+              <ResponsiveContainer width='100%' height={400} data-oid="lyu2w4g">
+                <BarChart data={industryComparisonData} data-oid="9cws:._">
+                  <CartesianGrid strokeDasharray='3 3' data-oid="3g_2u-a" />
                   <XAxis
                     dataKey='displayName'
                     angle={-45}
                     textAnchor='end'
-                    height={80} />
+                    height={80} data-oid="7i514tb" />
 
 
 
-                  <YAxis />
+                  <YAxis data-oid="3p91o-:" />
                   <Tooltip
                     formatter={(value, name) => [value, 'Average Score']}
-                    labelFormatter={(label) => `Industry: ${label}`} />
+                    labelFormatter={(label) => `Industry: ${label}`} data-oid="9v1a.3j" />
 
 
 
                   <Bar
                     dataKey='averageScore'
                     fill='#8884d8'
-                    radius={[4, 4, 0, 0]} />
+                    radius={[4, 4, 0, 0]} data-oid="3c4ourb" />
 
 
                 </BarChart>
@@ -468,23 +468,23 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
           </Card>
 
           <div
-            className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            className='grid grid-cols-1 lg:grid-cols-2 gap-6' data-oid="52_.ptv">
 
 
             {/* Performance Level Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle>
+            <Card data-oid=".remtly">
+              <CardHeader data-oid="1wai3dj">
+                <CardTitle data-oid="qcciu::">
                   Performance Level Distribution
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent data-oid="xpwc-k.">
                 <ResponsiveContainer
                   width='100%'
-                  height={300}>
+                  height={300} data-oid="a-wbajr">
 
 
-                  <PieChart>
+                  <PieChart data-oid="6gmhsf4">
                     <Pie
                       data={performanceLevelData}
                       cx='50%'
@@ -492,64 +492,64 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                       outerRadius={100}
                       fill='#8884d8'
                       dataKey='count'
-                      label={({ level, count }) => `${level}: ${count}`}>
+                      label={({ level, count }) => `${level}: ${count}`} data-oid="jd:vaac">
 
 
                       {performanceLevelData.map((entry, index) =>
                       <Cell
                         key={`cell-${index}`}
-                        fill={entry.color} />
+                        fill={entry.color} data-oid="-uddk3k" />
 
 
                       )}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip data-oid="4c6qi_l" />
                   </PieChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
 
             {/* Industry Rankings */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Industry Rankings</CardTitle>
+            <Card data-oid="rcdu-6z">
+              <CardHeader data-oid="8g_2vfv">
+                <CardTitle data-oid=".b6-i86">Industry Rankings</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className='space-y-3'>
+              <CardContent data-oid="8:g_uvy">
+                <div className='space-y-3' data-oid="gbjf3uj">
                   {industryComparisonData.map((industry, index) =>
                   <div
                     key={industry.industry}
-                    className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
+                    className='flex items-center justify-between p-3 bg-gray-50 rounded-lg' data-oid="536ngag">
 
 
                       <div
-                      className='flex items-center space-x-3'>
+                      className='flex items-center space-x-3' data-oid="fr9iweh">
 
 
                         <div
-                        className='flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold text-sm'>
+                        className='flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold text-sm' data-oid="4uhfg56">
 
 
                           {industry.rank}
                         </div>
-                        <div>
-                          <div className='font-medium'>
+                        <div data-oid="92o1p-w">
+                          <div className='font-medium' data-oid="2c55.1r">
                             {industry.displayName}
                           </div>
                           <div
-                          className='text-sm text-gray-500'>
+                          className='text-sm text-gray-500' data-oid="uwwi7mf">
 
 
                             {industry.performerCount} performers
                           </div>
                         </div>
                       </div>
-                      <div className='text-right'>
-                        <div className='font-bold text-lg'>
+                      <div className='text-right' data-oid="gugv104">
+                        <div className='font-bold text-lg' data-oid=".sopq.r">
                           {industry.averageScore}
                         </div>
                         <div
-                        className='text-sm text-gray-500'>
+                        className='text-sm text-gray-500' data-oid=".gtkore">
 
 
                           avg score
@@ -564,9 +564,9 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
 
           {/* Top Performers Table - Only show when industry is selected */}
           {selectedIndustry && dashboardData.industryData &&
-          <Card>
-              <CardHeader>
-                <CardTitle>
+          <Card data-oid="qy3d9fn">
+              <CardHeader data-oid="c1n4trz">
+                <CardTitle data-oid="ncqo4_1">
                   Top Performers -{' '}
                   {
                 INDUSTRY_DISPLAY_NAMES[
@@ -575,65 +575,65 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                 }
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className='overflow-x-auto'>
-                  <table className='w-full'>
-                    <thead>
-                      <tr className='border-b'>
-                        <th className='text-left p-2'>
+              <CardContent data-oid="qj8xxbv">
+                <div className='overflow-x-auto' data-oid="sp3-f3f">
+                  <table className='w-full' data-oid="v0a.9d2">
+                    <thead data-oid="f4e.2rl">
+                      <tr className='border-b' data-oid="h-.ryps">
+                        <th className='text-left p-2' data-oid="25jpenm">
                           Rank
                         </th>
-                        <th className='text-left p-2'>
+                        <th className='text-left p-2' data-oid="v3jg4u-">
                           Name
                         </th>
-                        <th className='text-left p-2'>
+                        <th className='text-left p-2' data-oid="ebi2val">
                           Department
                         </th>
-                        <th className='text-left p-2'>
+                        <th className='text-left p-2' data-oid="frsc2u2">
                           Score
                         </th>
-                        <th className='text-left p-2'>
+                        <th className='text-left p-2' data-oid="ik:y:h4">
                           Percentile
                         </th>
-                        <th className='text-left p-2'>
+                        <th className='text-left p-2' data-oid=".0uf8fh">
                           Trend
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody data-oid="686xu3l">
                       {topPerformersData.map((performer, index) =>
-                    <tr key={index} className='border-b'>
-                          <td className='p-2 font-bold'>
+                    <tr key={index} className='border-b' data-oid="tyt_hts">
+                          <td className='p-2 font-bold' data-oid="p58bu_9">
                             {index + 1}
                           </td>
-                          <td className='p-2'>
+                          <td className='p-2' data-oid="l_825:e">
                             {performer.name}
                           </td>
-                          <td className='p-2'>
+                          <td className='p-2' data-oid="rdc11r-">
                             {performer.department}
                           </td>
-                          <td className='p-2'>
-                            <Badge variant='secondary'>
+                          <td className='p-2' data-oid="q6rl-q.">
+                            <Badge variant='secondary' data-oid="-ao3k7h">
                               {performer.score}
                             </Badge>
                           </td>
-                          <td className='p-2'>
+                          <td className='p-2' data-oid="6w374.q">
                             {performer.percentileRank}%
                           </td>
-                          <td className='p-2'>
+                          <td className='p-2' data-oid="9_xeqte">
                             <div
-                          className='flex items-center space-x-1'>
+                          className='flex items-center space-x-1' data-oid="1z92viv">
 
 
                               {performer.trending === 'up' &&
                           <TrendingUp
-                            className='h-4 w-4 text-green-500' />
+                            className='h-4 w-4 text-green-500' data-oid="aqfqn1-" />
 
 
                           }
                               {performer.trending === 'down' &&
                           <TrendingDown
-                            className='h-4 w-4 text-red-500' />
+                            className='h-4 w-4 text-red-500' data-oid="gqwseyb" />
 
 
                           }
@@ -644,7 +644,7 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                             performer.trending === 'down' ?
                             'text-red-600' :
                             'text-gray-600'}`
-                            }>
+                            } data-oid=".r68xxi">
 
 
                                 {performer.changePercent > 0 ? '+' : ''}
@@ -662,29 +662,29 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
           }
 
           {/* Insights Panel */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Key Insights</CardTitle>
+          <Card data-oid="89w8n8_">
+            <CardHeader data-oid="s521qxs">
+              <CardTitle data-oid="6adi28z">Key Insights</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent data-oid="pe:2l74">
               <div
-                className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                className='grid grid-cols-1 md:grid-cols-2 gap-6' data-oid="xsrj1x_">
 
 
-                <div>
-                  <h4 className='font-medium mb-3'>
+                <div data-oid="mt78bun">
+                  <h4 className='font-medium mb-3' data-oid="z8mpgwk">
                     Cross-Industry Trends
                   </h4>
-                  <ul className='space-y-2'>
+                  <ul className='space-y-2' data-oid="_9rp4qg">
                     {dashboardData.crossIndustryComparison.insights.crossIndustryTrends.map(
                       (trend, index) =>
                       <li
                         key={index}
-                        className='text-sm text-gray-600 flex items-start'>
+                        className='text-sm text-gray-600 flex items-start' data-oid="43x1vv1">
 
 
                           <span
-                          className='w-2 h-2 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0'>
+                          className='w-2 h-2 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0' data-oid="ue:pyax">
 
                         </span>
                           {trend}
@@ -693,20 +693,20 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                     )}
                   </ul>
                 </div>
-                <div>
-                  <h4 className='font-medium mb-3'>
+                <div data-oid="hk2.:7e">
+                  <h4 className='font-medium mb-3' data-oid="-v7q3t_">
                     Opportunity Areas
                   </h4>
-                  <ul className='space-y-2'>
+                  <ul className='space-y-2' data-oid="_ur6z1v">
                     {dashboardData.crossIndustryComparison.insights.opportunityAreas.map(
                       (area, index) =>
                       <li
                         key={index}
-                        className='text-sm text-gray-600 flex items-start'>
+                        className='text-sm text-gray-600 flex items-start' data-oid="9isnaqs">
 
 
                           <span
-                          className='w-2 h-2 bg-orange-500 rounded-full mt-2 mr-2 flex-shrink-0'>
+                          className='w-2 h-2 bg-orange-500 rounded-full mt-2 mr-2 flex-shrink-0' data-oid="4c_5j:m">
 
                         </span>
                           {area}
@@ -717,16 +717,16 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className='mt-6 pt-6 border-t'>
+              <div className='mt-6 pt-6 border-t' data-oid="88ejpjn">
                 <div
-                  className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                  className='grid grid-cols-1 md:grid-cols-3 gap-4' data-oid="0w43u0w">
 
 
-                  <div className='text-center'>
-                    <div className='text-sm text-gray-500'>
+                  <div className='text-center' data-oid="fkmdp63">
+                    <div className='text-sm text-gray-500' data-oid="p.1wf8d">
                       Fastest Improving
                     </div>
-                    <div className='font-medium'>
+                    <div className='font-medium' data-oid="q6yyos5">
                       {INDUSTRY_DISPLAY_NAMES[
                       dashboardData.crossIndustryComparison.insights.
                       fastestImprovingIndustry as keyof typeof INDUSTRY_DISPLAY_NAMES] ||
@@ -735,11 +735,11 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                       fastestImprovingIndustry}
                     </div>
                   </div>
-                  <div className='text-center'>
-                    <div className='text-sm text-gray-500'>
+                  <div className='text-center' data-oid="f6ucmxp">
+                    <div className='text-sm text-gray-500' data-oid=".v5wqge">
                       Most Consistent
                     </div>
-                    <div className='font-medium'>
+                    <div className='font-medium' data-oid="bwcq_3p">
                       {INDUSTRY_DISPLAY_NAMES[
                       dashboardData.crossIndustryComparison.insights.
                       mostConsistentIndustry as keyof typeof INDUSTRY_DISPLAY_NAMES] ||
@@ -748,11 +748,11 @@ const CrossIndustryPerformanceDashboard: React.FC = () => {
                       mostConsistentIndustry}
                     </div>
                   </div>
-                  <div className='text-center'>
-                    <div className='text-sm text-gray-500'>
+                  <div className='text-center' data-oid="4pa8ups">
+                    <div className='text-sm text-gray-500' data-oid="hd9yf9v">
                       Top Performing
                     </div>
-                    <div className='font-medium'>
+                    <div className='font-medium' data-oid="-d.izbd">
                       {INDUSTRY_DISPLAY_NAMES[
                       dashboardData.crossIndustryComparison.insights.
                       highestPerformingIndustry as keyof typeof INDUSTRY_DISPLAY_NAMES] ||

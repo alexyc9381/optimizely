@@ -57,7 +57,7 @@ const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(
     }, [isVisible, index, onRender]);
 
     if (!isVisible) {
-      return <div style={{ height }} />;
+      return <div style={{ height }} data-oid='a6ekzsq' />;
     }
 
     return (
@@ -66,11 +66,16 @@ const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(
         style={{ height }}
         className='virtual-list-item'
         data-index={index}
+        data-oid='58lbddn'
       >
         {/* Render chart data point */}
-        <div className='data-point'>
-          <span className='index'>{index}</span>
-          <span className='value'>{JSON.stringify(data)}</span>
+        <div className='data-point' data-oid='85j4.z8'>
+          <span className='index' data-oid='h97u3wn'>
+            {index}
+          </span>
+          <span className='value' data-oid='m78shif'>
+            {JSON.stringify(data)}
+          </span>
         </div>
       </div>
     );
@@ -404,6 +409,7 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
         className={`virtualized-chart ${className}`}
         data-testid={testId}
         style={{ width, height, position: 'relative', overflow: 'hidden' }}
+        data-oid='qgn3ceg'
       >
         {/* Canvas for chart rendering */}
         <canvas
@@ -414,6 +420,7 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
             left: 0,
             pointerEvents: 'none',
           }}
+          data-oid='gdn1l6g'
         />
 
         {/* Virtual scrollable container */}
@@ -424,8 +431,9 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
             overflowX: 'hidden',
           }}
           onScroll={handleScroll}
+          data-oid='pr6ecnj'
         >
-          <div style={{ height: totalHeight }}>
+          <div style={{ height: totalHeight }} data-oid='0c7p9ff'>
             {virtualData.map((item, index) => (
               <VirtualListItem
                 key={`${index}-${item.id || index}`}
@@ -433,24 +441,33 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
                 data={item}
                 height={virtualization?.itemHeight || 50}
                 isVisible={true}
+                data-oid='4ya.gwv'
               />
             ))}
           </div>
         </div>
 
         {/* Performance overlay */}
-        <div className='performance-overlay'>
-          <div className='metrics'>
-            <span>Render: {renderTime.toFixed(2)}ms</span>
-            <span>Items: {virtualData.length}</span>
-            {isScrolling && <span className='scrolling'>Scrolling...</span>}
+        <div className='performance-overlay' data-oid='4z8:6u8'>
+          <div className='metrics' data-oid='98jt1ke'>
+            <span data-oid='mo4zkj4'>Render: {renderTime.toFixed(2)}ms</span>
+            <span data-oid='otaadue'>Items: {virtualData.length}</span>
+            {isScrolling && (
+              <span className='scrolling' data-oid='38sy24p'>
+                Scrolling...
+              </span>
+            )}
           </div>
 
           {/* Performance alerts */}
           {alerts.length > 0 && (
-            <div className='alerts'>
+            <div className='alerts' data-oid='rsh1kwb'>
               {alerts.slice(-3).map((alert, index) => (
-                <div key={index} className={`alert alert-${alert.type}`}>
+                <div
+                  key={index}
+                  className={`alert alert-${alert.type}`}
+                  data-oid='4w:ojh.'
+                >
                   {alert.message || 'Performance warning'}
                 </div>
               ))}
@@ -625,11 +642,19 @@ export const ProgressiveChart: React.FC<{
 
   if (loading) {
     return (
-      <div className='progressive-loading' style={{ width, height }}>
-        <div className='loading-progress'>
-          <div className='progress-bar' style={{ width: `${progress}%` }} />
+      <div
+        className='progressive-loading'
+        style={{ width, height }}
+        data-oid='v5c3159'
+      >
+        <div className='loading-progress' data-oid='2x2ee2a'>
+          <div
+            className='progress-bar'
+            style={{ width: `${progress}%` }}
+            data-oid='t.l2m2s'
+          />
 
-          <span>{progress.toFixed(1)}% loaded</span>
+          <span data-oid='x.bl50n'>{progress.toFixed(1)}% loaded</span>
         </div>
       </div>
     );
@@ -637,15 +662,27 @@ export const ProgressiveChart: React.FC<{
 
   if (error) {
     return (
-      <div className='progressive-error' style={{ width, height }}>
-        <p>Error loading data: {error.message}</p>
-        <button onClick={loadData}>Retry</button>
+      <div
+        className='progressive-error'
+        style={{ width, height }}
+        data-oid='..dm1li'
+      >
+        <p data-oid='fwa:l6k'>Error loading data: {error.message}</p>
+        <button onClick={loadData} data-oid='-96_6jk'>
+          Retry
+        </button>
       </div>
     );
   }
 
   return (
-    <VirtualizedChart data={data} type={type} height={height} width={width} />
+    <VirtualizedChart
+      data={data}
+      type={type}
+      height={height}
+      width={width}
+      data-oid='iva5_9:'
+    />
   );
 };
 
@@ -656,41 +693,53 @@ export const PerformanceDashboard: React.FC = () => {
 
   if (!latestMetrics) {
     return (
-      <div className='performance-dashboard'>No performance data available</div>
+      <div className='performance-dashboard' data-oid='ttd8_9w'>
+        No performance data available
+      </div>
     );
   }
 
   return (
-    <div className='performance-dashboard'>
-      <h3>Performance Metrics</h3>
-      <div className='metrics-grid'>
-        <div className='metric'>
-          <label>Render Time</label>
-          <span>{latestMetrics.renderTime.toFixed(2)}ms</span>
+    <div className='performance-dashboard' data-oid='lyyy8_x'>
+      <h3 data-oid='88g7qlb'>Performance Metrics</h3>
+      <div className='metrics-grid' data-oid='hc9yf3-'>
+        <div className='metric' data-oid='0l6ss6o'>
+          <label data-oid='4f6-4_0'>Render Time</label>
+          <span data-oid='4:tlxpr'>
+            {latestMetrics.renderTime.toFixed(2)}ms
+          </span>
         </div>
-        <div className='metric'>
-          <label>Frame Rate</label>
-          <span>{latestMetrics.frameRate.toFixed(1)} fps</span>
+        <div className='metric' data-oid='.-celgb'>
+          <label data-oid='vtlab0j'>Frame Rate</label>
+          <span data-oid='zqgw3yh'>
+            {latestMetrics.frameRate.toFixed(1)} fps
+          </span>
         </div>
-        <div className='metric'>
-          <label>Memory Usage</label>
-          <span>{(latestMetrics.memoryUsage * 100).toFixed(1)}%</span>
+        <div className='metric' data-oid='wi65u6d'>
+          <label data-oid='nm.-it3'>Memory Usage</label>
+          <span data-oid='63ct9cc'>
+            {(latestMetrics.memoryUsage * 100).toFixed(1)}%
+          </span>
         </div>
-        <div className='metric'>
-          <label>Cache Hit Rate</label>
-          <span>{(latestMetrics.cacheHitRate * 100).toFixed(1)}%</span>
+        <div className='metric' data-oid='5izgfvz'>
+          <label data-oid='gky4dkt'>Cache Hit Rate</label>
+          <span data-oid='xovqs_e'>
+            {(latestMetrics.cacheHitRate * 100).toFixed(1)}%
+          </span>
         </div>
-        <div className='metric'>
-          <label>Virtualized Items</label>
-          <span>{latestMetrics.virtualizedItems.toLocaleString()}</span>
+        <div className='metric' data-oid='b8sy_d3'>
+          <label data-oid='mzyhq51'>Virtualized Items</label>
+          <span data-oid='w:.2r9m'>
+            {latestMetrics.virtualizedItems.toLocaleString()}
+          </span>
         </div>
       </div>
 
       {alerts.length > 0 && (
-        <div className='alerts-section'>
-          <h4>Performance Alerts</h4>
+        <div className='alerts-section' data-oid='djzjrgm'>
+          <h4 data-oid='4ef.sf4'>Performance Alerts</h4>
           {alerts.slice(-5).map((alert, index) => (
-            <div key={index} className='alert'>
+            <div key={index} className='alert' data-oid='s7n7m8s'>
               {alert.type}: {alert.message}
             </div>
           ))}

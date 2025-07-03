@@ -72,34 +72,45 @@ export function NewSidebar() {
             ? 'text-neutral-200'
             : 'text-neutral-700 dark:text-neutral-200'
         )}
+        data-oid='90w3qi0'
       />
     ),
   }));
 
   return (
-    <Sidebar open={open} setOpen={setOpen}>
-      <SidebarBody className='justify-between gap-10'>
-        <div className='flex flex-col flex-1 overflow-y-auto overflow-x-hidden'>
-          {open ? <Logo /> : <LogoIcon />}
-          <div className='mt-8 flex flex-col gap-2'>
+    <Sidebar open={open} setOpen={setOpen} data-oid='43el3if'>
+      <SidebarBody className='justify-between gap-10' data-oid='23sybr7'>
+        <div
+          className='flex flex-col flex-1 overflow-y-auto overflow-x-hidden'
+          data-oid='4fzz28f'
+        >
+          {open ? <Logo data-oid='bg1tddf' /> : <LogoIcon data-oid='yrpvqza' />}
+          <div className='mt-8 flex flex-col gap-2' data-oid='i_jfy5x'>
             {links.map((link, idx) => (
-              <SidebarLink key={idx} link={link} />
+              <SidebarLink key={idx} link={link} data-oid='_r2iwg0' />
             ))}
           </div>
         </div>
-        <div>
+        <div data-oid='.5ruga4'>
           <SidebarLink
             link={{
               label: 'User',
               href: '#',
               icon: (
-                <div className='h-7 w-7 flex-shrink-0 rounded-full bg-neutral-300 flex items-center justify-center'>
-                  <span className='text-neutral-700 text-sm font-medium'>
+                <div
+                  className='h-7 w-7 flex-shrink-0 rounded-full bg-neutral-300 flex items-center justify-center'
+                  data-oid='8rma9xt'
+                >
+                  <span
+                    className='text-neutral-700 text-sm font-medium'
+                    data-oid='1dy6q3c'
+                  >
                     U
                   </span>
                 </div>
               ),
             }}
+            data-oid='27jl0wz'
           />
         </div>
       </SidebarBody>
@@ -112,10 +123,17 @@ export const Logo = () => {
     <Link
       href='/'
       className='font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20'
+      data-oid='l.70y1c'
     >
-      <div className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0' />
+      <div
+        className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
+        data-oid='.bq7-u3'
+      />
 
-      <span className='font-medium text-black dark:text-white whitespace-pre'>
+      <span
+        className='font-medium text-black dark:text-white whitespace-pre'
+        data-oid='f1zuxpc'
+      >
         Optelo
       </span>
     </Link>
@@ -127,8 +145,12 @@ export const LogoIcon = () => {
     <Link
       href='/'
       className='font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20'
+      data-oid='2_dwckr'
     >
-      <div className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0' />
+      <div
+        className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
+        data-oid='xq:ho7q'
+      />
     </Link>
   );
 };

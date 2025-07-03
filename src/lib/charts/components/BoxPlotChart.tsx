@@ -432,7 +432,11 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
   };
 
   return (
-    <div className={`box-plot-chart ${className}`} style={containerStyle}>
+    <div
+      className={`box-plot-chart ${className}`}
+      style={containerStyle}
+      data-oid='pn-ugwa'
+    >
       <div
         ref={containerRef}
         style={{
@@ -440,6 +444,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
           height: '100%',
           overflow: 'hidden',
         }}
+        data-oid='547wr.7'
       />
 
       {/* Statistics tooltip */}
@@ -456,18 +461,22 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
           maxWidth: '200px',
           display: boxPlotStats.length > 0 ? 'block' : 'none',
         }}
+        data-oid='gd7rt:1'
       >
-        <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+        <div
+          style={{ fontWeight: 'bold', marginBottom: '4px' }}
+          data-oid='6mstx_b'
+        >
           Statistics
         </div>
         {boxPlotStats.map((stats, index) => (
-          <div key={index} style={{ marginBottom: '2px' }}>
-            <strong>{stats.category}:</strong>
-            <br />
+          <div key={index} style={{ marginBottom: '2px' }} data-oid='7.m7j_f'>
+            <strong data-oid='yqwtl6m'>{stats.category}:</strong>
+            <br data-oid='rjj3oah' />
             Q1: {stats.q1.toFixed(2)}, Q3: {stats.q3.toFixed(2)}
-            <br />
+            <br data-oid='b4z0a2g' />
             Median: {stats.median.toFixed(2)}, IQR: {stats.iqr.toFixed(2)}
-            <br />
+            <br data-oid='y:nfoc7' />
             Outliers: {stats.outliers.length}
           </div>
         ))}

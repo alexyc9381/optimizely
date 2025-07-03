@@ -159,39 +159,51 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
   return (
     <div
       className={`bg-white rounded-xl p-6 border border-gray-200 shadow-sm ${className}`}
+      data-oid='p79mj3l'
     >
       {/* Header with dropdowns */}
-      <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h3 className='text-lg font-semibold text-gray-900'>
+      <div
+        className='flex items-center justify-between mb-6'
+        data-oid='t8yv8s8'
+      >
+        <div data-oid='c25hbmk'>
+          <h3
+            className='text-lg font-semibold text-gray-900'
+            data-oid='.vmihq3'
+          >
             Conversion Rate Trends
           </h3>
-          <p className='text-sm text-gray-600'>
+          <p className='text-sm text-gray-600' data-oid='t228:66'>
             Compare test variants over time
           </p>
         </div>
 
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-3' data-oid='l4hie71'>
           {/* Test Group Selector */}
-          <div className='relative'>
+          <div className='relative' data-oid='nsq3.2k'>
             <button
               onClick={() => {
                 setShowTestDropdown(!showTestDropdown);
                 setShowTimeDropdown(false);
               }}
               className='flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              data-oid='kwvm2_-'
             >
               <div
                 className='w-3 h-3 rounded-full'
                 style={{ backgroundColor: currentTest?.color }}
+                data-oid='-rt8-m-'
               />
 
               {currentTest?.name}
-              <ChevronDown className='w-4 h-4' />
+              <ChevronDown className='w-4 h-4' data-oid='9ec5vet' />
             </button>
 
             {showTestDropdown && (
-              <div className='absolute right-0 z-10 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg'>
+              <div
+                className='absolute right-0 z-10 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg'
+                data-oid='hf-u6vn'
+              >
                 {testGroups.map(test => (
                   <button
                     key={test.id}
@@ -200,10 +212,12 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                       setShowTestDropdown(false);
                     }}
                     className='flex items-center gap-3 w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg'
+                    data-oid='ta.ehkl'
                   >
                     <div
                       className='w-3 h-3 rounded-full'
                       style={{ backgroundColor: test.color }}
+                      data-oid='l8psou2'
                     />
 
                     {test.name}
@@ -214,21 +228,25 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
           </div>
 
           {/* Timeframe Selector */}
-          <div className='relative'>
+          <div className='relative' data-oid='me574.b'>
             <button
               onClick={() => {
                 setShowTimeDropdown(!showTimeDropdown);
                 setShowTestDropdown(false);
               }}
               className='flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              data-oid='mc3t2m_'
             >
-              <Calendar className='w-4 h-4' />
+              <Calendar className='w-4 h-4' data-oid='mwxwblj' />
               {currentTimeframe?.label}
-              <ChevronDown className='w-4 h-4' />
+              <ChevronDown className='w-4 h-4' data-oid='qcoflqe' />
             </button>
 
             {showTimeDropdown && (
-              <div className='absolute right-0 z-10 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg'>
+              <div
+                className='absolute right-0 z-10 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg'
+                data-oid='79l9dit'
+              >
                 {timeframes.map(tf => (
                   <button
                     key={tf.id}
@@ -241,6 +259,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                         ? 'text-blue-600 bg-blue-50'
                         : 'text-gray-700'
                     }`}
+                    data-oid='g3.52zt'
                   >
                     {tf.label}
                   </button>
@@ -252,41 +271,60 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       </div>
 
       {/* Chart Area */}
-      <div className='relative'>
+      <div className='relative' data-oid='enp45_r'>
         {loading ? (
-          <div className='flex items-center justify-center h-64'>
-            <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+          <div
+            className='flex items-center justify-center h-64'
+            data-oid='a7akwjb'
+          >
+            <div
+              className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'
+              data-oid='ymva:c1'
+            ></div>
           </div>
         ) : (
-          <div className='h-64'>
-            <svg viewBox='0 0 400 200' className='w-full h-full'>
+          <div className='h-64' data-oid='g.jdz28'>
+            <svg
+              viewBox='0 0 400 200'
+              className='w-full h-full'
+              data-oid='xk6.0lv'
+            >
               {/* Grid lines */}
-              <defs>
+              <defs data-oid='oaaw1.d'>
                 <pattern
                   id='grid'
                   width='40'
                   height='20'
                   patternUnits='userSpaceOnUse'
+                  data-oid='k91ef.v'
                 >
                   <path
                     d='M 40 0 L 0 0 0 20'
                     fill='none'
                     stroke='#f3f4f6'
                     strokeWidth='1'
+                    data-oid='adc1obq'
                   />
                 </pattern>
               </defs>
-              <rect width='100%' height='100%' fill='url(#grid)' />
+              <rect
+                width='100%'
+                height='100%'
+                fill='url(#grid)'
+                data-oid='xjhv:z2'
+                className='rounded-none'
+              />
 
               {/* Y-axis labels */}
               {[0, 5, 10, 15, 20].map(value => (
-                <g key={value}>
+                <g key={value} data-oid='izc8qvt'>
                   <text
                     x='15'
                     y={185 - (value / 20) * 160}
                     fontSize='10'
                     fill='#6b7280'
                     textAnchor='end'
+                    data-oid='wjks1nn'
                   >
                     {value}%
                   </text>
@@ -323,6 +361,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                     strokeDasharray={variant.isControl ? '0' : '0'}
                     fill='none'
                     opacity={0.8}
+                    data-oid='zapx7fs'
                   />
                 );
               })}
@@ -363,6 +402,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                     r={variant.isControl ? '4' : '3'}
                     fill={variant.color}
                     opacity={0.8}
+                    data-oid='rh0ne96'
                   />
                 ));
               })}
@@ -372,7 +412,10 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       </div>
 
       {/* Legend */}
-      <div className='flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-200'>
+      <div
+        className='flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-200'
+        data-oid='x.t9rm7'
+      >
         {variants.map(variant => {
           const latestValue =
             data.length > 0
@@ -396,18 +439,30 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
           if (!latestValue) return null;
 
           return (
-            <div key={variant.id} className='flex items-center gap-2'>
+            <div
+              key={variant.id}
+              className='flex items-center gap-2'
+              data-oid='t5:xa-6'
+            >
               <div
                 className='w-3 h-3 rounded-full'
                 style={{ backgroundColor: variant.color }}
+                data-oid='anu.f4_'
               />
 
-              <span className='text-sm text-gray-600'>{variant.name}</span>
-              <span className='text-sm font-semibold text-gray-900'>
+              <span className='text-sm text-gray-600' data-oid='fgelk4r'>
+                {variant.name}
+              </span>
+              <span
+                className='text-sm font-semibold text-gray-900'
+                data-oid='uuxe1ai'
+              >
                 {latestValue.toFixed(1)}%
               </span>
               {variant.isControl && (
-                <span className='text-xs text-gray-500 ml-1'>(baseline)</span>
+                <span className='text-xs text-gray-500 ml-1' data-oid='e8sdr1.'>
+                  (baseline)
+                </span>
               )}
             </div>
           );
@@ -415,10 +470,10 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       </div>
 
       {/* Performance Summary */}
-      <div className='mt-4 pt-4 border-t border-gray-200'>
-        <div className='grid grid-cols-3 gap-4 text-center'>
-          <div>
-            <div className='text-lg font-bold text-gray-900'>
+      <div className='mt-4 pt-4 border-t border-gray-200' data-oid='3kp3.30'>
+        <div className='grid grid-cols-3 gap-4 text-center' data-oid='yatpzey'>
+          <div data-oid='hvuw0im'>
+            <div className='text-lg font-bold text-gray-900' data-oid='lv4jp7d'>
               {data.length > 0
                 ? Math.max(
                     ...variants
@@ -442,10 +497,12 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 : '0.0'}
               %
             </div>
-            <div className='text-xs text-gray-600'>Best Performer</div>
+            <div className='text-xs text-gray-600' data-oid='j.kxy.k'>
+              Best Performer
+            </div>
           </div>
-          <div>
-            <div className='text-lg font-bold text-gray-900'>
+          <div data-oid='b9x_iae'>
+            <div className='text-lg font-bold text-gray-900' data-oid='y8l8txf'>
               {data.length > 0
                 ? (
                     ((Math.max(
@@ -474,11 +531,17 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 : '0.0'}
               %
             </div>
-            <div className='text-xs text-gray-600'>Improvement</div>
+            <div className='text-xs text-gray-600' data-oid='i0tklb7'>
+              Improvement
+            </div>
           </div>
-          <div>
-            <div className='text-lg font-bold text-gray-900'>95%</div>
-            <div className='text-xs text-gray-600'>Confidence</div>
+          <div data-oid='glkx0aa'>
+            <div className='text-lg font-bold text-gray-900' data-oid='6j6.iiv'>
+              95%
+            </div>
+            <div className='text-xs text-gray-600' data-oid='oxig2ac'>
+              Confidence
+            </div>
           </div>
         </div>
       </div>
