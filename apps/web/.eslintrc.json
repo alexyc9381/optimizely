@@ -16,22 +16,27 @@
     "WebSocket": "readonly",
     "HTMLDivElement": "readonly",
     "RequestInit": "readonly",
-    "URLSearchParams": "readonly"
+    "URLSearchParams": "readonly",
+    "process": "readonly",
+    "confirm": "readonly",
+    "module": "readonly",
+    "__dirname": "readonly"
   },
   "rules": {
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-explicit-any": "warn",
-    "no-undef": "off"
+    "no-undef": "off",
+    "no-console": "warn"
   },
   "overrides": [
     {
-      "files": ["*.config.js", "*.config.ts"],
+      "files": ["*.config.js", "*.config.ts", "vitest.config.ts"],
       "env": {
         "node": true
       },
       "rules": {
         "no-undef": "off"
       }
-  }
+    }
   ]
 }

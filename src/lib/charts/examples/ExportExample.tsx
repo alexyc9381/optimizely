@@ -6,19 +6,15 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import {
-    ExportControls,
-    ReportScheduler
-} from '../components/ExportControls';
-import {
-    ScheduledReport,
-    ShareableLink,
-    exportEngine
-} from '../ExportEngine';
+import { ExportControls, ReportScheduler } from '../components/ExportControls';
+import { ScheduledReport, ShareableLink, exportEngine } from '../ExportEngine';
 import './ExportControls.css';
 
 // Mock chart components for demonstration
-const LineChart: React.FC<{ data: any[]; title: string }> = ({ data, title }) => {
+const LineChart: React.FC<{ data: any[]; title: string }> = ({
+  data,
+  title,
+}) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -60,10 +56,13 @@ const LineChart: React.FC<{ data: any[]; title: string }> = ({ data, title }) =>
     }
   }, [data, title]);
 
-  return <div ref={chartRef} className="chart-container" />;
+  return <div ref={chartRef} className='chart-container' />;
 };
 
-const BarChart: React.FC<{ data: any[]; title: string }> = ({ data, title }) => {
+const BarChart: React.FC<{ data: any[]; title: string }> = ({
+  data,
+  title,
+}) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,7 +103,7 @@ const BarChart: React.FC<{ data: any[]; title: string }> = ({ data, title }) => 
     }
   }, [data, title]);
 
-  return <div ref={chartRef} className="chart-container" />;
+  return <div ref={chartRef} className='chart-container' />;
 };
 
 // Main example component
@@ -112,7 +111,9 @@ export const ExportExample: React.FC = () => {
   const [selectedChart, setSelectedChart] = useState<'line' | 'bar'>('line');
   const [exportHistory, setExportHistory] = useState<any[]>([]);
   const [shareableLinks, setShareableLinks] = useState<ShareableLink[]>([]);
-  const [scheduledReports, setScheduledReports] = useState<ScheduledReport[]>([]);
+  const [scheduledReports, setScheduledReports] = useState<ScheduledReport[]>(
+    []
+  );
   const [notifications, setNotifications] = useState<string[]>([]);
 
   const lineChartRef = useRef<HTMLDivElement>(null);
@@ -125,14 +126,14 @@ export const ExportExample: React.FC = () => {
     { label: 'Mar', value: 85 },
     { label: 'Apr', value: 78 },
     { label: 'May', value: 90 },
-    { label: 'Jun', value: 95 }
+    { label: 'Jun', value: 95 },
   ];
 
   const barData = [
     { label: 'Product A', value: 80 },
     { label: 'Product B', value: 65 },
     { label: 'Product C', value: 90 },
-    { label: 'Product D', value: 75 }
+    { label: 'Product D', value: 75 },
   ];
 
   const tableData = [
@@ -141,7 +142,7 @@ export const ExportExample: React.FC = () => {
     { month: 'March', conversions: 200, revenue: 22000, ctr: 3.1 },
     { month: 'April', conversions: 175, revenue: 19500, ctr: 2.9 },
     { month: 'May', conversions: 220, revenue: 25000, ctr: 3.3 },
-    { month: 'June', conversions: 240, revenue: 28000, ctr: 3.5 }
+    { month: 'June', conversions: 240, revenue: 28000, ctr: 3.5 },
   ];
 
   // Event handlers
@@ -194,11 +195,21 @@ export const ExportExample: React.FC = () => {
       console.log(`Export Engine Event: ${event}`, data);
     };
 
-    exportEngine.on('export:image:success', (data) => handleEngineEvent('image:success', data));
-    exportEngine.on('export:pdf:success', (data) => handleEngineEvent('pdf:success', data));
-    exportEngine.on('export:data:success', (data) => handleEngineEvent('data:success', data));
-    exportEngine.on('link:created', (data) => handleEngineEvent('link:created', data));
-    exportEngine.on('report:scheduled', (data) => handleEngineEvent('report:scheduled', data));
+    exportEngine.on('export:image:success', data =>
+      handleEngineEvent('image:success', data)
+    );
+    exportEngine.on('export:pdf:success', data =>
+      handleEngineEvent('pdf:success', data)
+    );
+    exportEngine.on('export:data:success', data =>
+      handleEngineEvent('data:success', data)
+    );
+    exportEngine.on('link:created', data =>
+      handleEngineEvent('link:created', data)
+    );
+    exportEngine.on('report:scheduled', data =>
+      handleEngineEvent('report:scheduled', data)
+    );
 
     return () => {
       exportEngine.removeAllListeners();
@@ -206,25 +217,26 @@ export const ExportExample: React.FC = () => {
   }, []);
 
   return (
-    <div className="export-example">
-      <div className="container mx-auto p-6">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+    <div className='export-example'>
+      <div className='container mx-auto p-6'>
+        <header className='mb-8'>
+          <h1 className='text-3xl font-bold text-gray-900 mb-2'>
             Export & Sharing System Demo
           </h1>
-          <p className="text-gray-600">
-            Comprehensive demonstration of chart export, sharing, and reporting functionality.
-            Test all export formats, create shareable links, generate embed codes, and schedule reports.
+          <p className='text-gray-600'>
+            Comprehensive demonstration of chart export, sharing, and reporting
+            functionality. Test all export formats, create shareable links,
+            generate embed codes, and schedule reports.
           </p>
         </header>
 
         {/* Notifications */}
         {notifications.length > 0 && (
-          <div className="notifications mb-6">
+          <div className='notifications mb-6'>
             {notifications.map((notification, index) => (
               <div
                 key={index}
-                className="notification bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md mb-2"
+                className='notification bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md mb-2'
               >
                 {notification}
               </div>
@@ -232,15 +244,15 @@ export const ExportExample: React.FC = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           {/* Chart Display */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="mb-4">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+          <div className='lg:col-span-2'>
+            <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+              <div className='mb-4'>
+                <h2 className='text-xl font-semibold text-gray-900 mb-2'>
                   Sample Charts
                 </h2>
-                <div className="flex space-x-4">
+                <div className='flex space-x-4'>
                   <button
                     onClick={() => setSelectedChart('line')}
                     className={`px-4 py-2 rounded-md ${
@@ -264,50 +276,64 @@ export const ExportExample: React.FC = () => {
                 </div>
               </div>
 
-              <div className="chart-display">
+              <div className='chart-display'>
                 {selectedChart === 'line' && (
                   <div ref={lineChartRef}>
-                    <LineChart data={lineData} title="Monthly Performance Trends" />
+                    <LineChart
+                      data={lineData}
+                      title='Monthly Performance Trends'
+                    />
                   </div>
                 )}
 
                 {selectedChart === 'bar' && (
                   <div ref={barChartRef}>
-                    <BarChart data={barData} title="Product Performance Comparison" />
+                    <BarChart
+                      data={barData}
+                      title='Product Performance Comparison'
+                    />
                   </div>
                 )}
               </div>
 
               {/* Data Table */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <div className='mt-6'>
+                <h3 className='text-lg font-semibold text-gray-900 mb-3'>
                   Sample Data Table
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full border border-gray-200 rounded-lg">
-                    <thead className="bg-gray-50">
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full border border-gray-200 rounded-lg'>
+                    <thead className='bg-gray-50'>
                       <tr>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                        <th className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'>
                           Month
                         </th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                        <th className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'>
                           Conversions
                         </th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                        <th className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'>
                           Revenue
                         </th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">
+                        <th className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'>
                           CTR (%)
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {tableData.map((row, index) => (
-                        <tr key={index} className="border-b border-gray-100">
-                          <td className="px-4 py-2 text-sm text-gray-900">{row.month}</td>
-                          <td className="px-4 py-2 text-sm text-gray-900">{row.conversions}</td>
-                          <td className="px-4 py-2 text-sm text-gray-900">${row.revenue.toLocaleString()}</td>
-                          <td className="px-4 py-2 text-sm text-gray-900">{row.ctr}%</td>
+                        <tr key={index} className='border-b border-gray-100'>
+                          <td className='px-4 py-2 text-sm text-gray-900'>
+                            {row.month}
+                          </td>
+                          <td className='px-4 py-2 text-sm text-gray-900'>
+                            {row.conversions}
+                          </td>
+                          <td className='px-4 py-2 text-sm text-gray-900'>
+                            ${row.revenue.toLocaleString()}
+                          </td>
+                          <td className='px-4 py-2 text-sm text-gray-900'>
+                            {row.ctr}%
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -318,7 +344,7 @@ export const ExportExample: React.FC = () => {
           </div>
 
           {/* Export Controls */}
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <ExportControls
               chartElement={getCurrentChartElement()}
               chartId={`chart-${selectedChart}`}
@@ -329,7 +355,7 @@ export const ExportExample: React.FC = () => {
             />
 
             {/* Report Scheduler */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
               <ReportScheduler
                 chartIds={['chart-line', 'chart-bar']}
                 onReportScheduled={handleReportScheduled}
@@ -340,25 +366,28 @@ export const ExportExample: React.FC = () => {
 
         {/* Export History */}
         {exportHistory.length > 0 && (
-          <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-4'>
               Export History
             </h3>
-            <div className="space-y-3">
+            <div className='space-y-3'>
               {exportHistory.map((export_, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
+                  className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className={`file-icon ${export_.metadata?.format || 'image'}`}>
-                      {export_.metadata?.format?.toUpperCase().slice(0, 3) || 'IMG'}
+                  <div className='flex items-center space-x-3'>
+                    <div
+                      className={`file-icon ${export_.metadata?.format || 'image'}`}
+                    >
+                      {export_.metadata?.format?.toUpperCase().slice(0, 3) ||
+                        'IMG'}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className='text-sm font-medium text-gray-900'>
                         {export_.filename}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className='text-xs text-gray-500'>
                         {export_.metadata?.fileSize &&
                           `${(export_.metadata.fileSize / 1024).toFixed(1)} KB`}
                         {export_.metadata?.exportTime &&
@@ -366,7 +395,9 @@ export const ExportExample: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className={`status-indicator ${export_.success ? 'success' : 'error'}`}>
+                  <div
+                    className={`status-indicator ${export_.success ? 'success' : 'error'}`}
+                  >
                     {export_.success ? 'Success' : 'Failed'}
                   </div>
                 </div>
@@ -377,30 +408,30 @@ export const ExportExample: React.FC = () => {
 
         {/* Shareable Links */}
         {shareableLinks.length > 0 && (
-          <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-4'>
               Shareable Links
             </h3>
-            <div className="space-y-3">
+            <div className='space-y-3'>
               {shareableLinks.map((link, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
+                  className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className='text-sm font-medium text-gray-900'>
                       Chart: {link.chartId}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Created: {link.createdAt.toLocaleDateString()} •
-                      Views: {link.viewCount} •
+                    <p className='text-xs text-gray-500'>
+                      Created: {link.createdAt.toLocaleDateString()} • Views:{' '}
+                      {link.viewCount} •
                       {link.accessControl.isPublic ? 'Public' : 'Private'}
                     </p>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className='flex space-x-2'>
                     <button
                       onClick={() => navigator.clipboard.writeText(link.url)}
-                      className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                      className='px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700'
                     >
                       Copy Link
                     </button>
@@ -413,27 +444,29 @@ export const ExportExample: React.FC = () => {
 
         {/* Scheduled Reports */}
         {scheduledReports.length > 0 && (
-          <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-4'>
               Scheduled Reports
             </h3>
-            <div className="space-y-3">
+            <div className='space-y-3'>
               {scheduledReports.map((report, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
+                  className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className='text-sm font-medium text-gray-900'>
                       {report.name}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {report.frequency} • {report.format.toUpperCase()} •
-                      Next: {report.nextRun.toLocaleDateString()} •
-                      Recipients: {report.recipients.length}
+                    <p className='text-xs text-gray-500'>
+                      {report.frequency} • {report.format.toUpperCase()} • Next:{' '}
+                      {report.nextRun.toLocaleDateString()} • Recipients:{' '}
+                      {report.recipients.length}
                     </p>
                   </div>
-                  <div className={`status-indicator ${report.isActive ? 'success' : 'error'}`}>
+                  <div
+                    className={`status-indicator ${report.isActive ? 'success' : 'error'}`}
+                  >
                     {report.isActive ? 'Active' : 'Inactive'}
                   </div>
                 </div>
@@ -443,14 +476,14 @@ export const ExportExample: React.FC = () => {
         )}
 
         {/* Technical Features */}
-        <div className="mt-8 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className='mt-8 bg-gray-50 rounded-lg p-6'>
+          <h3 className='text-lg font-semibold text-gray-900 mb-4'>
             Technical Features Demonstrated
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Export Formats</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>Export Formats</h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• PNG/JPG/SVG Images</li>
                 <li>• PDF Reports</li>
                 <li>• Excel Spreadsheets</li>
@@ -459,9 +492,11 @@ export const ExportExample: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Sharing Features</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>
+                Sharing Features
+              </h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• Shareable Links</li>
                 <li>• Access Control</li>
                 <li>• Password Protection</li>
@@ -470,9 +505,9 @@ export const ExportExample: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Embed Options</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>Embed Options</h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• Responsive iFrames</li>
                 <li>• Theme Selection</li>
                 <li>• Auto Refresh</li>
@@ -481,9 +516,9 @@ export const ExportExample: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Reporting</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>Reporting</h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• Scheduled Reports</li>
                 <li>• Multiple Recipients</li>
                 <li>• Custom Templates</li>
@@ -492,9 +527,11 @@ export const ExportExample: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Advanced Features</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>
+                Advanced Features
+              </h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• Watermark Support</li>
                 <li>• High DPI Export</li>
                 <li>• Compression Options</li>
@@ -503,9 +540,9 @@ export const ExportExample: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Performance</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+            <div className='bg-white p-4 rounded-md'>
+              <h4 className='font-medium text-gray-900 mb-2'>Performance</h4>
+              <ul className='text-sm text-gray-600 space-y-1'>
                 <li>• Dynamic Imports</li>
                 <li>• Bundle Optimization</li>
                 <li>• Memory Management</li>

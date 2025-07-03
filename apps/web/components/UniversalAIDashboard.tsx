@@ -277,6 +277,7 @@ const UniversalAIDashboard: React.FC = () => {
         <div
           className={`w-2 h-2 rounded-full mr-2 ${status ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'}`}
         />
+
         <span
           className={`text-xs font-medium ${status ? 'text-blue-600' : 'text-gray-600'}`}
         >
@@ -471,6 +472,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+12.3% this week'
               icon='VIS'
             />
+
             <StatCard
               title='Active Sessions'
               value={dashboardStats?.totalSessions?.toLocaleString() || '0'}
@@ -478,6 +480,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+8.7% today'
               icon='SES'
             />
+
             <StatCard
               title='Conversion Rate'
               value={`${dashboardStats?.conversionRate || 0}%`}
@@ -485,6 +488,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+2.1% improvement'
               icon='CVR'
             />
+
             <StatCard
               title='Revenue Generated'
               value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
@@ -492,6 +496,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+15.4% this month'
               icon='REV'
             />
+
             <StatCard
               title='A/B Experiments'
               value={dashboardStats?.activeExperiments || '0'}
@@ -499,6 +504,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='3 completed today'
               icon='AB'
             />
+
             <StatCard
               title='Model Accuracy'
               value={`${dashboardStats?.modelAccuracy || 0}%`}
@@ -839,18 +845,22 @@ const UniversalAIDashboard: React.FC = () => {
                     service='API Gateway'
                     status={apiConnected}
                   />
+
                   <HealthIndicator
                     service='ML Engine'
                     status={systemHealth.mlEngine || apiConnected}
                   />
+
                   <HealthIndicator
                     service='A/B Testing'
                     status={systemHealth.abTesting || apiConnected}
                   />
+
                   <HealthIndicator
                     service='Analytics'
                     status={systemHealth.analytics || apiConnected}
                   />
+
                   <HealthIndicator
                     service='Recommendations'
                     status={systemHealth.recommendations || apiConnected}

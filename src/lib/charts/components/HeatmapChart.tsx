@@ -10,7 +10,14 @@ interface HeatmapChartProps {
   width?: number;
   height?: number;
   title?: string;
-  colorScheme?: 'viridis' | 'plasma' | 'inferno' | 'blues' | 'reds' | 'greens' | 'custom';
+  colorScheme?:
+    | 'viridis'
+    | 'plasma'
+    | 'inferno'
+    | 'blues'
+    | 'reds'
+    | 'greens'
+    | 'custom';
   customColors?: string[];
   showValues?: boolean;
   showColorScale?: boolean;
@@ -53,12 +60,22 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
   className = '',
   style = {},
   onCellClick,
-  onCellHover
+  onCellHover,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [processedData, setProcessedData] = useState<ProcessedHeatmapData[]>([]);
-  const [colorScale, setColorScale] = useState<ColorScale>({ min: 0, max: 1, colors: [] });
-  const [hoveredCell, setHoveredCell] = useState<{ x: string | number; y: string | number; value: number } | null>(null);
+  const [processedData, setProcessedData] = useState<ProcessedHeatmapData[]>(
+    []
+  );
+  const [colorScale, setColorScale] = useState<ColorScale>({
+    min: 0,
+    max: 1,
+    colors: [],
+  });
+  const [hoveredCell, setHoveredCell] = useState<{
+    x: string | number;
+    y: string | number;
+    value: number;
+  } | null>(null);
   const engineRef = useRef<StatisticalChartEngine | null>(null);
 
   useEffect(() => {
@@ -69,21 +86,96 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
   const getColorScheme = (scheme: string): string[] => {
     switch (scheme) {
       case 'viridis':
-        return ['#440154', '#482777', '#3f4a8a', '#31678e', '#26838f', '#1f9d8a', '#6cce5a', '#b6de2b', '#fee825'];
+        return [
+          '#440154',
+          '#482777',
+          '#3f4a8a',
+          '#31678e',
+          '#26838f',
+          '#1f9d8a',
+          '#6cce5a',
+          '#b6de2b',
+          '#fee825',
+        ];
+
       case 'plasma':
-        return ['#0c0786', '#5302a3', '#8b0aa5', '#b83289', '#db5c68', '#f48849', '#febd2a', '#f0f921'];
+        return [
+          '#0c0786',
+          '#5302a3',
+          '#8b0aa5',
+          '#b83289',
+          '#db5c68',
+          '#f48849',
+          '#febd2a',
+          '#f0f921',
+        ];
+
       case 'inferno':
-        return ['#000003', '#1b0c41', '#4a0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9b06', '#f7d03c'];
+        return [
+          '#000003',
+          '#1b0c41',
+          '#4a0c6b',
+          '#781c6d',
+          '#a52c60',
+          '#cf4446',
+          '#ed6925',
+          '#fb9b06',
+          '#f7d03c',
+        ];
+
       case 'blues':
-        return ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
+        return [
+          '#f7fbff',
+          '#deebf7',
+          '#c6dbef',
+          '#9ecae1',
+          '#6baed6',
+          '#4292c6',
+          '#2171b5',
+          '#08519c',
+          '#08306b',
+        ];
+
       case 'reds':
-        return ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
+        return [
+          '#fff5f0',
+          '#fee0d2',
+          '#fcbba1',
+          '#fc9272',
+          '#fb6a4a',
+          '#ef3b2c',
+          '#cb181d',
+          '#a50f15',
+          '#67000d',
+        ];
+
       case 'greens':
-        return ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b'];
+        return [
+          '#f7fcf5',
+          '#e5f5e0',
+          '#c7e9c0',
+          '#a1d99b',
+          '#74c476',
+          '#41ab5d',
+          '#238b45',
+          '#006d2c',
+          '#00441b',
+        ];
+
       case 'custom':
         return customColors || ['#ffffff', '#000000'];
       default:
-        return ['#440154', '#482777', '#3f4a8a', '#31678e', '#26838f', '#1f9d8a', '#6cce5a', '#b6de2b', '#fee825'];
+        return [
+          '#440154',
+          '#482777',
+          '#3f4a8a',
+          '#31678e',
+          '#26838f',
+          '#1f9d8a',
+          '#6cce5a',
+          '#b6de2b',
+          '#fee825',
+        ];
     }
   };
 
@@ -96,7 +188,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
         heatmapData.push({
           x: xLabels?.[xIndex] || xIndex,
           y: yLabels?.[yIndex] || yIndex,
-          value
+          value,
         });
       });
     });
@@ -131,13 +223,17 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
     return `rgb(${r}, ${g}, ${b})`;
   };
 
-  const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+  const hexToRgb = (
+    hex: string
+  ): { r: number; g: number; b: number } | null => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
   };
 
   // Process data
@@ -162,7 +258,8 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
     const colors = getColorScheme(colorScheme);
 
     const processed: ProcessedHeatmapData[] = heatmapData.map(point => {
-      const normalizedValue = max === min ? 0.5 : (point.value - min) / (max - min);
+      const normalizedValue =
+        max === min ? 0.5 : (point.value - min) / (max - min);
       const color = interpolateColor(normalizedValue, colors);
 
       return {
@@ -170,7 +267,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
         y: point.y,
         value: point.value,
         normalizedValue,
-        color
+        color,
       };
     });
 
@@ -186,41 +283,52 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
   };
 
   // Handle mouse events
-  const handleMouseMove = useCallback((event: MouseEvent) => {
-    if (!containerRef.current) return;
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
+      if (!containerRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-    const { xValues, yValues } = getGridDimensions();
-    const cellWidth = (width - 120) / xValues.length;
-    const cellHeight = (height - 120) / yValues.length;
-    const startX = 80;
-    const startY = 60;
+      const { xValues, yValues } = getGridDimensions();
+      const cellWidth = (width - 120) / xValues.length;
+      const cellHeight = (height - 120) / yValues.length;
+      const startX = 80;
+      const startY = 60;
 
-    const cellX = Math.floor((x - startX) / cellWidth);
-    const cellY = Math.floor((y - startY) / cellHeight);
+      const cellX = Math.floor((x - startX) / cellWidth);
+      const cellY = Math.floor((y - startY) / cellHeight);
 
-    if (cellX >= 0 && cellX < xValues.length && cellY >= 0 && cellY < yValues.length) {
-      const xVal = xValues[cellX];
-      const yVal = yValues[cellY];
-      const dataPoint = processedData.find(d => d.x === xVal && d.y === yVal);
+      if (
+        cellX >= 0 &&
+        cellX < xValues.length &&
+        cellY >= 0 &&
+        cellY < yValues.length
+      ) {
+        const xVal = xValues[cellX];
+        const yVal = yValues[cellY];
+        const dataPoint = processedData.find(d => d.x === xVal && d.y === yVal);
 
-      if (dataPoint) {
-        setHoveredCell({ x: xVal, y: yVal, value: dataPoint.value });
-        onCellHover?.(xVal, yVal, dataPoint.value);
+        if (dataPoint) {
+          setHoveredCell({ x: xVal, y: yVal, value: dataPoint.value });
+          onCellHover?.(xVal, yVal, dataPoint.value);
+        }
+      } else {
+        setHoveredCell(null);
       }
-    } else {
-      setHoveredCell(null);
-    }
-  }, [processedData, width, height, onCellHover]);
+    },
+    [processedData, width, height, onCellHover]
+  );
 
-  const handleClick = useCallback((event: MouseEvent) => {
-    if (hoveredCell) {
-      onCellClick?.(hoveredCell.x, hoveredCell.y, hoveredCell.value);
-    }
-  }, [hoveredCell, onCellClick]);
+  const handleClick = useCallback(
+    (event: MouseEvent) => {
+      if (hoveredCell) {
+        onCellClick?.(hoveredCell.x, hoveredCell.y, hoveredCell.value);
+      }
+    },
+    [hoveredCell, onCellClick]
+  );
 
   // Render heatmap
   useEffect(() => {
@@ -330,7 +438,12 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
       const colorBarHeight = chartHeight;
 
       // Draw color gradient
-      const gradient = ctx.createLinearGradient(0, colorBarY, 0, colorBarY + colorBarHeight);
+      const gradient = ctx.createLinearGradient(
+        0,
+        colorBarY,
+        0,
+        colorBarY + colorBarHeight
+      );
       colorScale.colors.forEach((color, index) => {
         gradient.addColorStop(index / (colorScale.colors.length - 1), color);
       });
@@ -351,7 +464,8 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
 
       const steps = 5;
       for (let i = 0; i <= steps; i++) {
-        const value = colorScale.min + (colorScale.max - colorScale.min) * (i / steps);
+        const value =
+          colorScale.min + (colorScale.max - colorScale.min) * (i / steps);
         const y = colorBarY + colorBarHeight - (i / steps) * colorBarHeight;
         ctx.fillText(value.toFixed(2), colorBarX + colorBarWidth + 5, y);
       }
@@ -362,8 +476,17 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('click', handleClick);
     };
-
-  }, [processedData, title, showValues, showColorScale, cellBorder, borderColor, colorScale, handleMouseMove, handleClick]);
+  }, [
+    processedData,
+    title,
+    showValues,
+    showColorScale,
+    cellBorder,
+    borderColor,
+    colorScale,
+    handleMouseMove,
+    handleClick,
+  ]);
 
   const containerStyle: React.CSSProperties = {
     width,
@@ -373,7 +496,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
     borderRadius: '4px',
     backgroundColor: '#ffffff',
     cursor: onCellClick ? 'pointer' : 'default',
-    ...style
+    ...style,
   };
 
   return (
@@ -383,44 +506,56 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       />
 
       {/* Hover tooltip */}
       {hoveredCell && (
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          left: '10px',
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          color: '#ffffff',
-          padding: '8px 12px',
-          borderRadius: '4px',
-          fontSize: '12px',
-          pointerEvents: 'none',
-          zIndex: 1000
-        }}>
-          <div><strong>X:</strong> {hoveredCell.x}</div>
-          <div><strong>Y:</strong> {hoveredCell.y}</div>
-          <div><strong>Value:</strong> {hoveredCell.value.toFixed(3)}</div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            color: '#ffffff',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            pointerEvents: 'none',
+            zIndex: 1000,
+          }}
+        >
+          <div>
+            <strong>X:</strong> {hoveredCell.x}
+          </div>
+          <div>
+            <strong>Y:</strong> {hoveredCell.y}
+          </div>
+          <div>
+            <strong>Value:</strong> {hoveredCell.value.toFixed(3)}
+          </div>
         </div>
       )}
 
       {/* Statistics panel */}
       {processedData.length > 0 && (
-        <div style={{
-          position: 'absolute',
-          bottom: '10px',
-          right: '10px',
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          padding: '8px',
-          fontSize: '11px',
-          maxWidth: '150px'
-        }}>
-          <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Statistics</div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            right: '10px',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            padding: '8px',
+            fontSize: '11px',
+            maxWidth: '150px',
+          }}
+        >
+          <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+            Statistics
+          </div>
           <div>Min: {colorScale.min.toFixed(3)}</div>
           <div>Max: {colorScale.max.toFixed(3)}</div>
           <div>Cells: {processedData.length}</div>

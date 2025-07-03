@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StatisticalChartEngine } from '../StatisticalChartEngine';
-import {
-    StatisticalAnalysis
-} from '../types';
+import { StatisticalAnalysis } from '../types';
 
 interface BoxPlotChartProps {
   id?: string;
@@ -49,7 +47,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
   meanColor = '#ff8800',
   className = '',
   style = {},
-  onStatistics
+  onStatistics,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [boxPlotStats, setBoxPlotStats] = useState<BoxPlotStats[]>([]);
@@ -74,7 +72,8 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
         processedData.push(stats);
 
         if (engineRef.current) {
-          statisticsData[categoryName] = engineRef.current.calculateStatistics(values);
+          statisticsData[categoryName] =
+            engineRef.current.calculateStatistics(values);
         }
       });
     } else {
@@ -85,7 +84,8 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
         processedData.push(stats);
 
         if (engineRef.current) {
-          statisticsData[category] = engineRef.current.calculateStatistics(values);
+          statisticsData[category] =
+            engineRef.current.calculateStatistics(values);
         }
       });
     }
@@ -94,7 +94,10 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     onStatistics?.(statisticsData);
   }, [data, categories, onStatistics]);
 
-  const calculateBoxPlotStats = (values: number[], category: string): BoxPlotStats => {
+  const calculateBoxPlotStats = (
+    values: number[],
+    category: string
+  ): BoxPlotStats => {
     const sorted = [...values].sort((a, b) => a - b);
     const n = sorted.length;
 
@@ -110,7 +113,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
         mean: 0,
         iqr: 0,
         whiskerLow: 0,
-        whiskerHigh: 0
+        whiskerHigh: 0,
       };
     }
 
@@ -119,9 +122,18 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     const q3Index = Math.floor(n * 0.75);
     const medianIndex = Math.floor(n * 0.5);
 
-    const q1 = n % 4 === 0 ? (sorted[q1Index - 1] + sorted[q1Index]) / 2 : sorted[q1Index];
-    const q3 = n % 4 === 0 ? (sorted[q3Index - 1] + sorted[q3Index]) / 2 : sorted[q3Index];
-    const median = n % 2 === 0 ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2 : sorted[medianIndex];
+    const q1 =
+      n % 4 === 0
+        ? (sorted[q1Index - 1] + sorted[q1Index]) / 2
+        : sorted[q1Index];
+    const q3 =
+      n % 4 === 0
+        ? (sorted[q3Index - 1] + sorted[q3Index]) / 2
+        : sorted[q3Index];
+    const median =
+      n % 2 === 0
+        ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
+        : sorted[medianIndex];
 
     const iqr = q3 - q1;
     const mean = values.reduce((sum, val) => sum + val, 0) / n;
@@ -131,10 +143,15 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     const upperFence = q3 + 1.5 * iqr;
 
     const outliers = sorted.filter(val => val < lowerFence || val > upperFence);
-    const nonOutliers = sorted.filter(val => val >= lowerFence && val <= upperFence);
+    const nonOutliers = sorted.filter(
+      val => val >= lowerFence && val <= upperFence
+    );
 
     const whiskerLow = nonOutliers.length > 0 ? nonOutliers[0] : sorted[0];
-    const whiskerHigh = nonOutliers.length > 0 ? nonOutliers[nonOutliers.length - 1] : sorted[sorted.length - 1];
+    const whiskerHigh =
+      nonOutliers.length > 0
+        ? nonOutliers[nonOutliers.length - 1]
+        : sorted[sorted.length - 1];
 
     return {
       category,
@@ -147,7 +164,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
       mean,
       iqr,
       whiskerLow,
-      whiskerHigh
+      whiskerHigh,
     };
   };
 
@@ -177,7 +194,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     const allValues = boxPlotStats.flatMap(stat => [
       stat.min,
       stat.max,
-      ...stat.outliers
+      ...stat.outliers,
     ]);
     const yMin = Math.min(...allValues);
     const yMax = Math.max(...allValues);
@@ -185,9 +202,11 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     const yPadding = yRange * 0.1;
 
     const scaleY = (y: number) =>
-      padding + chartHeight - ((y - (yMin - yPadding)) / (yRange + 2 * yPadding)) * chartHeight;
+      padding +
+      chartHeight -
+      ((y - (yMin - yPadding)) / (yRange + 2 * yPadding)) * chartHeight;
 
-    const boxWidth = Math.min(chartWidth / boxPlotStats.length * 0.6, 80);
+    const boxWidth = Math.min((chartWidth / boxPlotStats.length) * 0.6, 80);
     const boxSpacing = chartWidth / boxPlotStats.length;
 
     // Clear canvas
@@ -392,8 +411,15 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
       ctx.fillStyle = '#333333';
       ctx.fillText('Outliers', legendX + 20, legendY + 4);
     }
-
-  }, [boxPlotStats, title, showOutliers, showMean, showNotches, outlierColor, meanColor]);
+  }, [
+    boxPlotStats,
+    title,
+    showOutliers,
+    showMean,
+    showNotches,
+    outlierColor,
+    meanColor,
+  ]);
 
   const containerStyle: React.CSSProperties = {
     width,
@@ -402,7 +428,7 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
     border: '1px solid #e0e0e0',
     borderRadius: '4px',
     backgroundColor: '#ffffff',
-    ...style
+    ...style,
   };
 
   return (
@@ -412,29 +438,36 @@ const BoxPlotChart: React.FC<BoxPlotChartProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       />
 
       {/* Statistics tooltip */}
-      <div style={{
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        padding: '8px',
-        fontSize: '11px',
-        maxWidth: '200px',
-        display: boxPlotStats.length > 0 ? 'block' : 'none'
-      }}>
-        <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Statistics</div>
+      <div
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          padding: '8px',
+          fontSize: '11px',
+          maxWidth: '200px',
+          display: boxPlotStats.length > 0 ? 'block' : 'none',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+          Statistics
+        </div>
         {boxPlotStats.map((stats, index) => (
           <div key={index} style={{ marginBottom: '2px' }}>
-            <strong>{stats.category}:</strong><br/>
-            Q1: {stats.q1.toFixed(2)}, Q3: {stats.q3.toFixed(2)}<br/>
-            Median: {stats.median.toFixed(2)}, IQR: {stats.iqr.toFixed(2)}<br/>
+            <strong>{stats.category}:</strong>
+            <br />
+            Q1: {stats.q1.toFixed(2)}, Q3: {stats.q3.toFixed(2)}
+            <br />
+            Median: {stats.median.toFixed(2)}, IQR: {stats.iqr.toFixed(2)}
+            <br />
             Outliers: {stats.outliers.length}
           </div>
         ))}

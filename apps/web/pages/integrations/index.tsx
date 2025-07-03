@@ -1,4 +1,13 @@
-import { AlertCircle, CheckCircle, Download, ExternalLink, Loader, RefreshCw, Settings, Trash2 } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  Download,
+  ExternalLink,
+  Loader,
+  RefreshCw,
+  Settings,
+  Trash2,
+} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
 import { apiClient, Integration } from '../../src/services/apiClient';
@@ -80,7 +89,10 @@ const IntegrationsPage: React.FC = () => {
         const data = await apiClient.getIntegrations();
         setIntegrations(data);
       } catch (err) {
-        console.warn('Failed to fetch integrations from API, using mock data:', err);
+        console.warn(
+          'Failed to fetch integrations from API, using mock data:',
+          err
+        );
         setError('Unable to connect to backend. Showing demo data.');
         setIntegrations(mockIntegrations);
       } finally {
@@ -91,24 +103,31 @@ const IntegrationsPage: React.FC = () => {
     fetchIntegrations();
   }, []);
 
-  const handleIntegrationAction = async (action: 'install' | 'uninstall', integrationName: string) => {
+  const handleIntegrationAction = async (
+    action: 'install' | 'uninstall',
+    integrationName: string
+  ) => {
     try {
       setActionLoading(integrationName);
 
       if (action === 'install') {
         await apiClient.installIntegration(integrationName);
-        setIntegrations(prev => prev.map(integration =>
-          integration.name === integrationName
-            ? { ...integration, status: 'Installed' }
-            : integration
-        ));
+        setIntegrations(prev =>
+          prev.map(integration =>
+            integration.name === integrationName
+              ? { ...integration, status: 'Installed' }
+              : integration
+          )
+        );
       } else {
         await apiClient.uninstallIntegration(integrationName);
-        setIntegrations(prev => prev.map(integration =>
-          integration.name === integrationName
-            ? { ...integration, status: 'Available' }
-            : integration
-        ));
+        setIntegrations(prev =>
+          prev.map(integration =>
+            integration.name === integrationName
+              ? { ...integration, status: 'Available' }
+              : integration
+          )
+        );
       }
     } catch (err) {
       console.error(`Failed to ${action} integration:`, err);
@@ -120,26 +139,41 @@ const IntegrationsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Installed': return 'bg-green-100 text-green-800';
-      case 'Available': return 'bg-blue-100 text-blue-800';
-      case 'Setup Required': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Installed':
+        return 'bg-green-100 text-green-800';
+      case 'Available':
+        return 'bg-blue-100 text-blue-800';
+      case 'Setup Required':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'Installed': return <CheckCircle className="w-4 h-4 text-green-600" />;
-      case 'Available': return <Download className="w-4 h-4 text-blue-600" />;
-      case 'Setup Required': return <AlertCircle className="w-4 h-4 text-yellow-600" />;
-      default: return <Settings className="w-4 h-4 text-gray-600" />;
+      case 'Installed':
+        return <CheckCircle className='w-4 h-4 text-green-600' />;
+
+      case 'Available':
+        return <Download className='w-4 h-4 text-blue-600' />;
+
+      case 'Setup Required':
+        return <AlertCircle className='w-4 h-4 text-yellow-600' />;
+
+      default:
+        return <Settings className='w-4 h-4 text-gray-600' />;
     }
   };
 
   // Calculate metrics from actual data
   const totalIntegrations = integrations.length;
-  const installedIntegrations = integrations.filter(i => i.status === 'Installed').length;
-  const availableIntegrations = integrations.filter(i => i.status === 'Available').length;
+  const installedIntegrations = integrations.filter(
+    i => i.status === 'Installed'
+  ).length;
+  const availableIntegrations = integrations.filter(
+    i => i.status === 'Available'
+  ).length;
 
   const WebsiteIntegration = () => (
     <div className='space-y-8'>
@@ -188,21 +222,28 @@ const IntegrationsPage: React.FC = () => {
 
       {/* Available Integrations */}
       <div className='space-y-6'>
-        <h3 className='text-lg font-semibold text-gray-900'>Available Integrations</h3>
+        <h3 className='text-lg font-semibold text-gray-900'>
+          Available Integrations
+        </h3>
 
         {loading ? (
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className='flex items-center justify-center h-32'>
+            <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
           </div>
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {integrations.map((integration) => (
-              <div key={integration.name} className='bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200'>
+            {integrations.map(integration => (
+              <div
+                key={integration.name}
+                className='bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200'
+              >
                 <div className='flex items-center justify-between mb-4'>
                   <div className='flex items-center'>
                     <span className='text-2xl mr-3'>{integration.logo}</span>
                     <div>
-                      <h4 className='text-lg font-semibold text-gray-900'>{integration.name}</h4>
+                      <h4 className='text-lg font-semibold text-gray-900'>
+                        {integration.name}
+                      </h4>
                       <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'>
                         {integration.category}
                       </span>
@@ -211,24 +252,30 @@ const IntegrationsPage: React.FC = () => {
                   {getStatusIcon(integration.status)}
                 </div>
 
-                <p className='text-gray-600 mb-4 text-sm'>{integration.description}</p>
+                <p className='text-gray-600 mb-4 text-sm'>
+                  {integration.description}
+                </p>
 
                 <div className='flex items-center justify-between'>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(integration.status)}`}>
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(integration.status)}`}
+                  >
                     {integration.status}
                   </span>
 
                   <div className='flex items-center space-x-2'>
                     {integration.status === 'Available' && (
                       <button
-                        onClick={() => handleIntegrationAction('install', integration.name)}
+                        onClick={() =>
+                          handleIntegrationAction('install', integration.name)
+                        }
                         disabled={actionLoading === integration.name}
                         className='bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
                       >
                         {actionLoading === integration.name ? (
-                          <Loader className="w-3 h-3 animate-spin" />
+                          <Loader className='w-3 h-3 animate-spin' />
                         ) : (
-                          <Download className="w-3 h-3" />
+                          <Download className='w-3 h-3' />
                         )}
                         <span>Install</span>
                       </button>
@@ -237,18 +284,23 @@ const IntegrationsPage: React.FC = () => {
                     {integration.status === 'Installed' && (
                       <>
                         <button className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'>
-                          <Settings className="w-3 h-3" />
+                          <Settings className='w-3 h-3' />
                           <span>Configure</span>
                         </button>
                         <button
-                          onClick={() => handleIntegrationAction('uninstall', integration.name)}
+                          onClick={() =>
+                            handleIntegrationAction(
+                              'uninstall',
+                              integration.name
+                            )
+                          }
                           disabled={actionLoading === integration.name}
                           className='bg-red-100 hover:bg-red-200 disabled:opacity-50 text-red-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
                         >
                           {actionLoading === integration.name ? (
-                            <Loader className="w-3 h-3 animate-spin" />
+                            <Loader className='w-3 h-3 animate-spin' />
                           ) : (
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className='w-3 h-3' />
                           )}
                           <span>Remove</span>
                         </button>
@@ -257,7 +309,7 @@ const IntegrationsPage: React.FC = () => {
 
                     {integration.status === 'Setup Required' && (
                       <button className='bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'>
-                        <Settings className="w-3 h-3" />
+                        <Settings className='w-3 h-3' />
                         <span>Setup</span>
                       </button>
                     )}
@@ -305,7 +357,7 @@ const IntegrationsPage: React.FC = () => {
               </p>
             </div>
             <button className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'>
-              <Download className="w-4 h-4" />
+              <Download className='w-4 h-4' />
               <span>Download Plugin</span>
             </button>
           </div>
@@ -341,7 +393,7 @@ export default function App() {
             </code>
           </div>
           <button className='w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'>
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className='w-4 h-4' />
             <span>View Documentation</span>
           </button>
         </div>
@@ -352,7 +404,9 @@ export default function App() {
   const APIKeysSection = () => (
     <div className='space-y-6'>
       <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-6'>API Configuration</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>
+          API Configuration
+        </h3>
 
         <div className='space-y-6'>
           <div>
@@ -366,11 +420,12 @@ export default function App() {
                 value={apiKey}
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
               />
+
               <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
                 Copy
               </button>
               <button className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'>
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className='w-4 h-4' />
                 <span>Regenerate</span>
               </button>
             </div>
@@ -390,6 +445,7 @@ export default function App() {
                 value='ai_test_abcdef1234567890'
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
               />
+
               <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'>
                 Copy
               </button>
@@ -403,36 +459,56 @@ export default function App() {
 
       {/* REST API Documentation */}
       <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>REST API Endpoints</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-4'>
+          REST API Endpoints
+        </h3>
 
         <div className='space-y-4'>
           <div className='bg-gray-50 rounded-lg p-4'>
             <div className='flex items-center justify-between mb-2'>
-              <span className='text-sm font-mono text-gray-900'>POST /api/events</span>
-              <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>Track Events</span>
+              <span className='text-sm font-mono text-gray-900'>
+                POST /api/events
+              </span>
+              <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>
+                Track Events
+              </span>
             </div>
-            <p className='text-sm text-gray-600'>Send custom events and conversions to your account</p>
+            <p className='text-sm text-gray-600'>
+              Send custom events and conversions to your account
+            </p>
           </div>
 
           <div className='bg-gray-50 rounded-lg p-4'>
             <div className='flex items-center justify-between mb-2'>
-              <span className='text-sm font-mono text-gray-900'>GET /api/tests</span>
-              <span className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'>A/B Tests</span>
+              <span className='text-sm font-mono text-gray-900'>
+                GET /api/tests
+              </span>
+              <span className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'>
+                A/B Tests
+              </span>
             </div>
-            <p className='text-sm text-gray-600'>Retrieve active A/B tests and configurations</p>
+            <p className='text-sm text-gray-600'>
+              Retrieve active A/B tests and configurations
+            </p>
           </div>
 
           <div className='bg-gray-50 rounded-lg p-4'>
             <div className='flex items-center justify-between mb-2'>
-              <span className='text-sm font-mono text-gray-900'>GET /api/analytics</span>
-              <span className='text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded'>Analytics</span>
+              <span className='text-sm font-mono text-gray-900'>
+                GET /api/analytics
+              </span>
+              <span className='text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded'>
+                Analytics
+              </span>
             </div>
-            <p className='text-sm text-gray-600'>Access detailed analytics and performance metrics</p>
+            <p className='text-sm text-gray-600'>
+              Access detailed analytics and performance metrics
+            </p>
           </div>
         </div>
 
         <button className='mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'>
-          <ExternalLink className="w-4 h-4" />
+          <ExternalLink className='w-4 h-4' />
           <span>View Full API Documentation</span>
         </button>
       </div>
@@ -442,7 +518,9 @@ export default function App() {
   const WebhooksSection = () => (
     <div className='space-y-6'>
       <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-6'>Webhook Configuration</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>
+          Webhook Configuration
+        </h3>
 
         <div className='space-y-6'>
           <div>
@@ -454,6 +532,7 @@ export default function App() {
               placeholder='https://your-app.com/webhooks/universal-ai'
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
             />
+
             <p className='text-xs text-gray-500 mt-1'>
               We'll send POST requests to this URL when events occur.
             </p>
@@ -464,13 +543,19 @@ export default function App() {
               Events to Send
             </label>
             <div className='space-y-2'>
-              {['Test Started', 'Test Completed', 'Significant Result', 'Conversion Event'].map((event) => (
+              {[
+                'Test Started',
+                'Test Completed',
+                'Significant Result',
+                'Conversion Event',
+              ].map(event => (
                 <label key={event} className='flex items-center'>
                   <input
                     type='checkbox'
                     defaultChecked
                     className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
                   />
+
                   <span className='ml-2 text-sm text-gray-700'>{event}</span>
                 </label>
               ))}
@@ -486,6 +571,7 @@ export default function App() {
               placeholder='webhook_secret_key'
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
             />
+
             <p className='text-xs text-gray-500 mt-1'>
               Used to verify webhook authenticity via HMAC signature.
             </p>
@@ -502,32 +588,43 @@ export default function App() {
   const ConnectedAppsSection = () => (
     <div className='space-y-6'>
       <div className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-6'>Connected Applications</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-6'>
+          Connected Applications
+        </h3>
 
         <div className='space-y-4'>
-          {integrations.filter(i => i.status === 'Installed').map((app) => (
-            <div key={app.name} className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'>
-              <div className='flex items-center'>
-                <span className='text-2xl mr-3'>{app.logo}</span>
-                <div>
-                  <h4 className='font-medium text-gray-900'>{app.name}</h4>
-                  <p className='text-sm text-gray-500'>{app.description}</p>
+          {integrations
+            .filter(i => i.status === 'Installed')
+            .map(app => (
+              <div
+                key={app.name}
+                className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'
+              >
+                <div className='flex items-center'>
+                  <span className='text-2xl mr-3'>{app.logo}</span>
+                  <div>
+                    <h4 className='font-medium text-gray-900'>{app.name}</h4>
+                    <p className='text-sm text-gray-500'>{app.description}</p>
+                  </div>
+                </div>
+                <div className='flex items-center space-x-2'>
+                  <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>
+                    Connected
+                  </span>
+                  <button className='text-gray-400 hover:text-gray-600 transition-colors'>
+                    <Settings className='w-4 h-4' />
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleIntegrationAction('uninstall', app.name)
+                    }
+                    className='text-red-400 hover:text-red-600 transition-colors'
+                  >
+                    <Trash2 className='w-4 h-4' />
+                  </button>
                 </div>
               </div>
-              <div className='flex items-center space-x-2'>
-                <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'>Connected</span>
-                <button className='text-gray-400 hover:text-gray-600 transition-colors'>
-                  <Settings className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleIntegrationAction('uninstall', app.name)}
-                  className='text-red-400 hover:text-red-600 transition-colors'
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
 
           {integrations.filter(i => i.status === 'Installed').length === 0 && (
             <div className='text-center py-8'>
@@ -548,8 +645,8 @@ export default function App() {
   if (loading) {
     return (
       <DashboardLayout title='Integrations - Universal AI Platform'>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className='flex items-center justify-center h-64'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'></div>
         </div>
       </DashboardLayout>
     );
@@ -559,15 +656,23 @@ export default function App() {
     <DashboardLayout title='Integrations - Universal AI Platform'>
       <div className='space-y-6'>
         {error && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
+            <div className='flex'>
+              <div className='flex-shrink-0'>
+                <svg
+                  className='h-5 w-5 text-yellow-400'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
+                    clipRule='evenodd'
+                  />
                 </svg>
               </div>
-              <div className="ml-3">
-                <p className="text-sm text-yellow-700">{error}</p>
+              <div className='ml-3'>
+                <p className='text-sm text-yellow-700'>{error}</p>
               </div>
             </div>
           </div>
@@ -578,17 +683,18 @@ export default function App() {
           <div>
             <h1 className='text-2xl font-bold text-gray-900'>Integrations</h1>
             <p className='text-sm text-gray-500 mt-1'>
-              Connect Universal AI Platform with your favorite tools and services
+              Connect Universal AI Platform with your favorite tools and
+              services
             </p>
           </div>
 
           <div className='flex items-center space-x-3'>
             <button className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'>
-              <ExternalLink className="h-4 w-4" />
+              <ExternalLink className='h-4 w-4' />
               <span>Documentation</span>
             </button>
             <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'>
-              <Download className="h-4 w-4" />
+              <Download className='h-4 w-4' />
               <span>Request Integration</span>
             </button>
           </div>
@@ -599,8 +705,12 @@ export default function App() {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'>
             <div className='flex items-center'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Total Integrations</p>
-                <p className='text-2xl font-bold text-gray-900'>{totalIntegrations}</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Total Integrations
+                </p>
+                <p className='text-2xl font-bold text-gray-900'>
+                  {totalIntegrations}
+                </p>
                 <p className='text-xs text-blue-600 mt-1'>+2 this month</p>
               </div>
               <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
@@ -613,8 +723,12 @@ export default function App() {
             <div className='flex items-center'>
               <div className='flex-1'>
                 <p className='text-sm font-medium text-gray-600'>Installed</p>
-                <p className='text-2xl font-bold text-gray-900'>{installedIntegrations}</p>
-                <p className='text-xs text-green-600 mt-1'>Active connections</p>
+                <p className='text-2xl font-bold text-gray-900'>
+                  {installedIntegrations}
+                </p>
+                <p className='text-xs text-green-600 mt-1'>
+                  Active connections
+                </p>
               </div>
               <div className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'>
                 <CheckCircle className='w-4 h-4 text-green-600' />
@@ -626,7 +740,9 @@ export default function App() {
             <div className='flex items-center'>
               <div className='flex-1'>
                 <p className='text-sm font-medium text-gray-600'>Available</p>
-                <p className='text-2xl font-bold text-gray-900'>{availableIntegrations}</p>
+                <p className='text-2xl font-bold text-gray-900'>
+                  {availableIntegrations}
+                </p>
                 <p className='text-xs text-gray-600 mt-1'>Ready to install</p>
               </div>
               <div className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'>

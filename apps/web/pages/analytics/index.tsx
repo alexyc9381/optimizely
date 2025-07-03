@@ -1,17 +1,21 @@
 import {
-    Activity,
-    BarChart3,
-    Calendar,
-    DollarSign,
-    Download,
-    Filter,
-    Target,
-    TrendingUp,
-    Users
+  Activity,
+  BarChart3,
+  Calendar,
+  DollarSign,
+  Download,
+  Filter,
+  Target,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
-import { formatCurrency, formatNumber, formatPercentage } from '../../lib/utils';
+import {
+  formatCurrency,
+  formatNumber,
+  formatPercentage,
+} from '../../lib/utils';
 import { AnalyticsData, apiClient } from '../../src/services/apiClient';
 
 // Interface for future chart implementation
@@ -23,9 +27,15 @@ import { AnalyticsData, apiClient } from '../../src/services/apiClient';
 // }
 
 const AnalyticsPage: React.FC = () => {
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
-  const [selectedMetric, setSelectedMetric] = useState<'visitors' | 'conversions' | 'revenue'>('visitors');
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>(
+    '30d'
+  );
+  const [selectedMetric, setSelectedMetric] = useState<
+    'visitors' | 'conversions' | 'revenue'
+  >('visitors');
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(
+    null
+  );
   const [industryBreakdown, setIndustryBreakdown] = useState<any[]>([]);
   const [topTests, setTopTests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +49,7 @@ const AnalyticsPage: React.FC = () => {
         const [analytics, breakdown, tests] = await Promise.all([
           apiClient.getAnalytics(timeRange),
           apiClient.getIndustryBreakdown(timeRange),
-          apiClient.getTopPerformingTests()
+          apiClient.getTopPerformingTests(),
         ]);
 
         setAnalyticsData(analytics);
@@ -138,11 +148,16 @@ const AnalyticsPage: React.FC = () => {
 
   const getTimeRangeLabel = (range: string) => {
     switch (range) {
-      case '7d': return 'Last 7 days';
-      case '30d': return 'Last 30 days';
-      case '90d': return 'Last 90 days';
-      case '1y': return 'Last year';
-      default: return 'Last 30 days';
+      case '7d':
+        return 'Last 7 days';
+      case '30d':
+        return 'Last 30 days';
+      case '90d':
+        return 'Last 90 days';
+      case '1y':
+        return 'Last year';
+      default:
+        return 'Last 30 days';
     }
   };
 
@@ -172,9 +187,12 @@ const AnalyticsPage: React.FC = () => {
         {/* Header */}
         <div className='flex items-center justify-between'>
           <div>
-            <h1 className='text-3xl font-bold text-gray-900'>Analytics Dashboard</h1>
+            <h1 className='text-3xl font-bold text-gray-900'>
+              Analytics Dashboard
+            </h1>
             <p className='text-gray-600 mt-1'>
-              Real-time performance metrics and insights across all your experiments
+              Real-time performance metrics and insights across all your
+              experiments
             </p>
           </div>
 
@@ -214,9 +232,13 @@ const AnalyticsPage: React.FC = () => {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Total Visitors</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Total Visitors
+                </p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData ? formatNumber(analyticsData.totalVisitors) : '0'}
+                  {analyticsData
+                    ? formatNumber(analyticsData.totalVisitors)
+                    : '0'}
                 </p>
                 <p className='text-xs text-green-600 mt-1 flex items-center'>
                   <TrendingUp className='w-3 h-3 mr-1' />
@@ -232,9 +254,13 @@ const AnalyticsPage: React.FC = () => {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Conversion Rate</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Conversion Rate
+                </p>
                 <p className='text-2xl font-bold text-gray-900'>
-                  {analyticsData ? formatPercentage(analyticsData.conversionRate) : '0%'}
+                  {analyticsData
+                    ? formatPercentage(analyticsData.conversionRate)
+                    : '0%'}
                 </p>
                 <p className='text-xs text-green-600 mt-1 flex items-center'>
                   <TrendingUp className='w-3 h-3 mr-1' />
@@ -268,7 +294,9 @@ const AnalyticsPage: React.FC = () => {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Tests Running</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Tests Running
+                </p>
                 <p className='text-2xl font-bold text-gray-900'>
                   {analyticsData ? analyticsData.testsRunning : 0}
                 </p>
@@ -286,7 +314,9 @@ const AnalyticsPage: React.FC = () => {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Avg. Duration</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Avg. Duration
+                </p>
                 <p className='text-2xl font-bold text-gray-900'>
                   {analyticsData ? `${analyticsData.avgTestDuration}d` : '0d'}
                 </p>
@@ -301,7 +331,9 @@ const AnalyticsPage: React.FC = () => {
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between'>
               <div className='flex-1'>
-                <p className='text-sm font-medium text-gray-600'>Significant Results</p>
+                <p className='text-sm font-medium text-gray-600'>
+                  Significant Results
+                </p>
                 <p className='text-2xl font-bold text-gray-900'>
                   {analyticsData ? analyticsData.significantResults : 0}
                 </p>
@@ -318,7 +350,9 @@ const AnalyticsPage: React.FC = () => {
         <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
           <div className='flex items-center justify-between mb-6'>
             <div>
-              <h3 className='text-lg font-semibold text-gray-900'>Performance Trends</h3>
+              <h3 className='text-lg font-semibold text-gray-900'>
+                Performance Trends
+              </h3>
               <p className='text-sm text-gray-500'>
                 {getTimeRangeLabel(timeRange)} performance overview
               </p>
@@ -361,7 +395,10 @@ const AnalyticsPage: React.FC = () => {
           <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center'>
             <div className='text-center'>
               <BarChart3 className='w-12 h-12 text-gray-400 mx-auto mb-3' />
-              <p className='text-gray-500'>Chart visualization for {selectedMetric}</p>
+
+              <p className='text-gray-500'>
+                Chart visualization for {selectedMetric}
+              </p>
               <p className='text-sm text-gray-400 mt-1'>
                 Chart implementation with libraries like Chart.js or Recharts
               </p>
@@ -374,18 +411,31 @@ const AnalyticsPage: React.FC = () => {
           {/* Industry Breakdown */}
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between mb-6'>
-              <h3 className='text-lg font-semibold text-gray-900'>Industry Breakdown</h3>
-              <span className='text-sm text-gray-500'>{getTimeRangeLabel(timeRange)}</span>
+              <h3 className='text-lg font-semibold text-gray-900'>
+                Industry Breakdown
+              </h3>
+              <span className='text-sm text-gray-500'>
+                {getTimeRangeLabel(timeRange)}
+              </span>
             </div>
 
             <div className='space-y-4'>
               {industryBreakdown.map((industry, index) => (
-                <div key={index} className='border border-gray-200 rounded-lg p-4'>
+                <div
+                  key={index}
+                  className='border border-gray-200 rounded-lg p-4'
+                >
                   <div className='flex items-center justify-between mb-3'>
                     <div className='flex items-center space-x-3'>
-                      <div className={`w-3 h-3 rounded-full ${getIndustryColor(industry.color)}`}></div>
-                      <h4 className='font-medium text-gray-900'>{industry.name}</h4>
-                      <span className='text-sm text-green-600 font-medium'>{industry.growth}</span>
+                      <div
+                        className={`w-3 h-3 rounded-full ${getIndustryColor(industry.color)}`}
+                      ></div>
+                      <h4 className='font-medium text-gray-900'>
+                        {industry.name}
+                      </h4>
+                      <span className='text-sm text-green-600 font-medium'>
+                        {industry.growth}
+                      </span>
                     </div>
                     <div className='text-right'>
                       <p className='text-sm font-medium text-gray-900'>
@@ -397,16 +447,22 @@ const AnalyticsPage: React.FC = () => {
                   <div className='grid grid-cols-3 gap-4 text-sm'>
                     <div>
                       <p className='text-gray-500'>Visitors</p>
-                      <p className='font-medium text-gray-900'>{formatNumber(industry.visitors)}</p>
+                      <p className='font-medium text-gray-900'>
+                        {formatNumber(industry.visitors)}
+                      </p>
                     </div>
                     <div>
                       <p className='text-gray-500'>Conversions</p>
-                      <p className='font-medium text-gray-900'>{formatNumber(industry.conversions)}</p>
+                      <p className='font-medium text-gray-900'>
+                        {formatNumber(industry.conversions)}
+                      </p>
                     </div>
                     <div>
                       <p className='text-gray-500'>Conv. Rate</p>
                       <p className='font-medium text-gray-900'>
-                        {formatPercentage((industry.conversions / industry.visitors) * 100)}
+                        {formatPercentage(
+                          (industry.conversions / industry.visitors) * 100
+                        )}
                       </p>
                     </div>
                   </div>
@@ -418,7 +474,9 @@ const AnalyticsPage: React.FC = () => {
           {/* Top Performing Tests */}
           <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
             <div className='flex items-center justify-between mb-6'>
-              <h3 className='text-lg font-semibold text-gray-900'>Top Performing Tests</h3>
+              <h3 className='text-lg font-semibold text-gray-900'>
+                Top Performing Tests
+              </h3>
               <button className='text-blue-600 hover:text-blue-700 text-sm font-medium'>
                 View All →
               </button>
@@ -426,32 +484,44 @@ const AnalyticsPage: React.FC = () => {
 
             <div className='space-y-4'>
               {topTests.map((test, index) => (
-                <div key={index} className='border border-gray-200 rounded-lg p-4'>
+                <div
+                  key={index}
+                  className='border border-gray-200 rounded-lg p-4'
+                >
                   <div className='flex items-start justify-between mb-2'>
                     <div className='flex-1'>
-                      <h4 className='font-medium text-gray-900 mb-1'>{test.name}</h4>
+                      <h4 className='font-medium text-gray-900 mb-1'>
+                        {test.name}
+                      </h4>
                       <div className='flex items-center space-x-2'>
                         <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'>
                           {test.industry}
                         </span>
-                        <span className={`text-xs px-2 py-1 rounded ${
-                          test.status === 'Winner'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-blue-100 text-blue-700'
-                        }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded ${
+                            test.status === 'Winner'
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-blue-100 text-blue-700'
+                          }`}
+                        >
                           {test.status}
                         </span>
                       </div>
                     </div>
                     <div className='text-right'>
-                      <p className='text-lg font-bold text-green-600'>{test.improvement}</p>
-                      <p className='text-xs text-gray-500'>{test.confidence} confidence</p>
+                      <p className='text-lg font-bold text-green-600'>
+                        {test.improvement}
+                      </p>
+                      <p className='text-xs text-gray-500'>
+                        {test.confidence} confidence
+                      </p>
                     </div>
                   </div>
 
                   <div className='bg-green-50 rounded-md p-2 mt-3'>
                     <div className='flex items-center'>
                       <TrendingUp className='w-4 h-4 text-green-600 mr-2' />
+
                       <span className='text-sm text-green-800'>
                         Significant improvement detected
                       </span>
@@ -470,12 +540,26 @@ const AnalyticsPage: React.FC = () => {
               <Activity className='w-5 h-5 text-blue-600' />
             </div>
             <div>
-              <h3 className='text-lg font-semibold text-gray-900 mb-2'>AI-Powered Insights</h3>
+              <h3 className='text-lg font-semibold text-gray-900 mb-2'>
+                AI-Powered Insights
+              </h3>
               <div className='space-y-2 text-sm text-gray-700'>
-                <p>• Your SaaS industry tests are performing 15% above average this period</p>
-                <p>• Consider running more tests on checkout flows - they show highest uplift potential</p>
-                <p>• Mobile traffic has increased 23% but conversion rate is 8% lower than desktop</p>
-                <p>• Tests with social proof elements are showing 31% higher success rates</p>
+                <p>
+                  • Your SaaS industry tests are performing 15% above average
+                  this period
+                </p>
+                <p>
+                  • Consider running more tests on checkout flows - they show
+                  highest uplift potential
+                </p>
+                <p>
+                  • Mobile traffic has increased 23% but conversion rate is 8%
+                  lower than desktop
+                </p>
+                <p>
+                  • Tests with social proof elements are showing 31% higher
+                  success rates
+                </p>
               </div>
               <button className='mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium'>
                 View Detailed Insights →

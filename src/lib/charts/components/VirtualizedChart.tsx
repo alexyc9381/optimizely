@@ -5,20 +5,20 @@
  */
 
 import React, {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useRef,
-    useState
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
 } from 'react';
 import {
-    MemoryConfig,
-    performanceEngine,
-    PerformanceMetrics,
-    ProgressiveLoadingConfig,
-    VirtualDataProvider,
-    VirtualizationConfig
+  MemoryConfig,
+  performanceEngine,
+  PerformanceMetrics,
+  ProgressiveLoadingConfig,
+  VirtualDataProvider,
+  VirtualizationConfig,
 } from '../PerformanceEngine';
 
 // Virtualized Chart Props
@@ -46,40 +46,36 @@ interface VirtualListItemProps {
   onRender?: (index: number) => void;
 }
 
-const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(({
-  index,
-  data,
-  height,
-  isVisible,
-  onRender
-}) => {
-  const itemRef = useRef<HTMLDivElement>(null);
+const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(
+  ({ index, data, height, isVisible, onRender }) => {
+    const itemRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isVisible && onRender) {
-      onRender(index);
+    useEffect(() => {
+      if (isVisible && onRender) {
+        onRender(index);
+      }
+    }, [isVisible, index, onRender]);
+
+    if (!isVisible) {
+      return <div style={{ height }} />;
     }
-  }, [isVisible, index, onRender]);
 
-  if (!isVisible) {
-    return <div style={{ height }} />;
-  }
-
-  return (
-    <div
-      ref={itemRef}
-      style={{ height }}
-      className="virtual-list-item"
-      data-index={index}
-    >
-      {/* Render chart data point */}
-      <div className="data-point">
-        <span className="index">{index}</span>
-        <span className="value">{JSON.stringify(data)}</span>
+    return (
+      <div
+        ref={itemRef}
+        style={{ height }}
+        className='virtual-list-item'
+        data-index={index}
+      >
+        {/* Render chart data point */}
+        <div className='data-point'>
+          <span className='index'>{index}</span>
+          <span className='value'>{JSON.stringify(data)}</span>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 VirtualListItem.displayName = 'VirtualListItem';
 
@@ -89,7 +85,11 @@ export const useVirtualization = (
   containerHeight: number,
   config?: Partial<VirtualizationConfig>
 ) => {
-  const [viewport, setViewport] = useState({ start: 0, end: 0, height: containerHeight });
+  const [viewport, setViewport] = useState({
+    start: 0,
+    end: 0,
+    height: containerHeight,
+  });
   const [virtualData, setVirtualData] = useState<any[]>([]);
   const [totalHeight, setTotalHeight] = useState(0);
   const dataProviderRef = useRef<VirtualDataProvider | null>(null);
@@ -98,40 +98,54 @@ export const useVirtualization = (
     if (data.length === 0) return;
 
     // Create virtual data provider
-    dataProviderRef.current = performanceEngine.createVirtualDataProvider(data, config);
+    dataProviderRef.current = performanceEngine.createVirtualDataProvider(
+      data,
+      config
+    );
 
     // Initialize viewport
     setViewport(prev => ({ ...prev, height: containerHeight }));
   }, [data, containerHeight, config]);
 
-  const updateViewport = useCallback((scrollTop: number) => {
-    if (!dataProviderRef.current) return;
+  const updateViewport = useCallback(
+    (scrollTop: number) => {
+      if (!dataProviderRef.current) return;
 
-    const itemHeight = config?.itemHeight || 50;
-    const visibleStart = Math.floor(scrollTop / itemHeight);
-    const visibleEnd = Math.min(
-      data.length - 1,
-      Math.ceil((scrollTop + containerHeight) / itemHeight)
-    );
+      const itemHeight = config?.itemHeight || 50;
+      const visibleStart = Math.floor(scrollTop / itemHeight);
+      const visibleEnd = Math.min(
+        data.length - 1,
+        Math.ceil((scrollTop + containerHeight) / itemHeight)
+      );
 
-    setViewport({ start: scrollTop, end: scrollTop + containerHeight, height: containerHeight });
+      setViewport({
+        start: scrollTop,
+        end: scrollTop + containerHeight,
+        height: containerHeight,
+      });
 
-    // Get virtual data
-    const virtualResult = performanceEngine.virtualizeData(
-      data,
-      { start: scrollTop, end: scrollTop + containerHeight, height: containerHeight },
-      config
-    );
+      // Get virtual data
+      const virtualResult = performanceEngine.virtualizeData(
+        data,
+        {
+          start: scrollTop,
+          end: scrollTop + containerHeight,
+          height: containerHeight,
+        },
+        config
+      );
 
-    setVirtualData(virtualResult.items);
-    setTotalHeight(virtualResult.totalHeight);
-  }, [data, containerHeight, config]);
+      setVirtualData(virtualResult.items);
+      setTotalHeight(virtualResult.totalHeight);
+    },
+    [data, containerHeight, config]
+  );
 
   return {
     virtualData,
     totalHeight,
     updateViewport,
-    viewport
+    viewport,
   };
 };
 
@@ -161,7 +175,10 @@ export const useProgressiveLoading = (
 
       performanceEngine.on('data:progress', progressHandler);
 
-      const result = await performanceEngine.loadDataProgressively(dataProvider, config);
+      const result = await performanceEngine.loadDataProgressively(
+        dataProvider,
+        config
+      );
       setData(result);
       setProgress(100);
 
@@ -178,7 +195,7 @@ export const useProgressiveLoading = (
     loading,
     progress,
     error,
-    loadData
+    loadData,
   };
 };
 
@@ -192,7 +209,10 @@ export const usePerformanceMonitoring = () => {
     };
 
     const alertHandler = (alert: any) => {
-      setAlerts(prev => [...prev.slice(-9), { ...alert, timestamp: Date.now() }]);
+      setAlerts(prev => [
+        ...prev.slice(-9),
+        { ...alert, timestamp: Date.now() },
+      ]);
     };
 
     performanceEngine.on('metrics:collected', metricsHandler);
@@ -212,223 +232,235 @@ export const usePerformanceMonitoring = () => {
 };
 
 // Main Virtualized Chart Component
-export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(({
-  data,
-  type,
-  height,
-  width = 800,
-  virtualization,
-  progressiveLoading,
-  memory,
-  onDataChange,
-  onPerformanceMetrics,
-  onError,
-  className = '',
-  testId
-}, ref) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
+  (
+    {
+      data,
+      type,
+      height,
+      width = 800,
+      virtualization,
+      progressiveLoading,
+      memory,
+      onDataChange,
+      onPerformanceMetrics,
+      onError,
+      className = '',
+      testId,
+    },
+    ref
+  ) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [optimizedData, setOptimizedData] = useState<any[]>([]);
-  const [renderTime, setRenderTime] = useState(0);
+    const [isScrolling, setIsScrolling] = useState(false);
+    const [optimizedData, setOptimizedData] = useState<any[]>([]);
+    const [renderTime, setRenderTime] = useState(0);
 
-  // Performance monitoring
-  const { metrics, alerts } = usePerformanceMonitoring();
+    // Performance monitoring
+    const { metrics, alerts } = usePerformanceMonitoring();
 
-  // Virtualization
-  const { virtualData, totalHeight, updateViewport } = useVirtualization(
-    optimizedData,
-    height,
-    virtualization
-  );
+    // Virtualization
+    const { virtualData, totalHeight, updateViewport } = useVirtualization(
+      optimizedData,
+      height,
+      virtualization
+    );
 
-  // Data optimization
-  useEffect(() => {
-    const startTime = performance.now();
+    // Data optimization
+    useEffect(() => {
+      const startTime = performance.now();
 
-    try {
-      const optimized = performanceEngine.applyOptimizations(data, type);
-      setOptimizedData(optimized);
+      try {
+        const optimized = performanceEngine.applyOptimizations(data, type);
+        setOptimizedData(optimized);
 
-      if (onDataChange) {
-        onDataChange(optimized);
+        if (onDataChange) {
+          onDataChange(optimized);
+        }
+      } catch (error) {
+        if (onError) {
+          onError(error as Error);
+        }
       }
-    } catch (error) {
-      if (onError) {
-        onError(error as Error);
+
+      const endTime = performance.now();
+      setRenderTime(endTime - startTime);
+    }, [data, type, onDataChange, onError]);
+
+    // Scroll handling
+    const handleScroll = useCallback(
+      (event: React.UIEvent<HTMLDivElement>) => {
+        const scrollTop = event.currentTarget.scrollTop;
+
+        setIsScrolling(true);
+        updateViewport(scrollTop);
+
+        // Clear existing timeout
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+
+        // Set new timeout to detect scroll end
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsScrolling(false);
+        }, 150);
+      },
+      [updateViewport]
+    );
+
+    // Canvas rendering
+    const renderChart = useCallback(() => {
+      if (!canvasRef.current || virtualData.length === 0) return;
+
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const startTime = performance.now();
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Set high DPI
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      // Render based on chart type
+      switch (type) {
+        case 'line':
+          renderLineChart(ctx, virtualData, width, height);
+          break;
+        case 'bar':
+          renderBarChart(ctx, virtualData, width, height);
+          break;
+        case 'area':
+          renderAreaChart(ctx, virtualData, width, height);
+          break;
+        case 'scatter':
+          renderScatterChart(ctx, virtualData, width, height);
+          break;
       }
-    }
 
-    const endTime = performance.now();
-    setRenderTime(endTime - startTime);
-  }, [data, type, onDataChange, onError]);
+      const endTime = performance.now();
+      const newRenderTime = endTime - startTime;
+      setRenderTime(newRenderTime);
 
-  // Scroll handling
-  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-    const scrollTop = event.currentTarget.scrollTop;
+      // Report metrics
+      if (onPerformanceMetrics) {
+        onPerformanceMetrics({
+          renderTime: newRenderTime,
+          memoryUsage: 0, // Would be calculated
+          dataProcessingTime: 0,
+          virtualizedItems: virtualData.length,
+          cacheHitRate: 0.85,
+          frameRate: 60,
+          loadTime: 0,
+          gcCollections: 0,
+          timestamp: Date.now(),
+        });
+      }
+    }, [virtualData, width, height, type, onPerformanceMetrics]);
 
-    setIsScrolling(true);
-    updateViewport(scrollTop);
+    // Render chart when data changes
+    useEffect(() => {
+      renderChart();
+    }, [renderChart]);
 
-    // Clear existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    // Memory management
+    useEffect(() => {
+      const interval = setInterval(() => {
+        performanceEngine.manageMemory();
+      }, 5000);
 
-    // Set new timeout to detect scroll end
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 150);
-  }, [updateViewport]);
+      return () => clearInterval(interval);
+    }, []);
 
-  // Canvas rendering
-  const renderChart = useCallback(() => {
-    if (!canvasRef.current || virtualData.length === 0) return;
+    // Expose methods through ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        refresh: () => renderChart(),
+        getMetrics: () => metrics,
+        exportImage: () => canvasRef.current?.toDataURL(),
+        clearCache: () => performanceEngine.clearCache(),
+        optimize: () => {
+          const optimized = performanceEngine.applyOptimizations(data, type);
+          setOptimizedData(optimized);
+          return optimized;
+        },
+      }),
+      [renderChart, metrics, data, type]
+    );
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const startTime = performance.now();
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Set high DPI
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-
-    // Render based on chart type
-    switch (type) {
-      case 'line':
-        renderLineChart(ctx, virtualData, width, height);
-        break;
-      case 'bar':
-        renderBarChart(ctx, virtualData, width, height);
-        break;
-      case 'area':
-        renderAreaChart(ctx, virtualData, width, height);
-        break;
-      case 'scatter':
-        renderScatterChart(ctx, virtualData, width, height);
-        break;
-    }
-
-    const endTime = performance.now();
-    const newRenderTime = endTime - startTime;
-    setRenderTime(newRenderTime);
-
-    // Report metrics
-    if (onPerformanceMetrics) {
-      onPerformanceMetrics({
-        renderTime: newRenderTime,
-        memoryUsage: 0, // Would be calculated
-        dataProcessingTime: 0,
-        virtualizedItems: virtualData.length,
-        cacheHitRate: 0.85,
-        frameRate: 60,
-        loadTime: 0,
-        gcCollections: 0,
-        timestamp: Date.now()
-      });
-    }
-  }, [virtualData, width, height, type, onPerformanceMetrics]);
-
-  // Render chart when data changes
-  useEffect(() => {
-    renderChart();
-  }, [renderChart]);
-
-  // Memory management
-  useEffect(() => {
-    const interval = setInterval(() => {
-      performanceEngine.manageMemory();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Expose methods through ref
-  useImperativeHandle(ref, () => ({
-    refresh: () => renderChart(),
-    getMetrics: () => metrics,
-    exportImage: () => canvasRef.current?.toDataURL(),
-    clearCache: () => performanceEngine.clearCache(),
-    optimize: () => {
-      const optimized = performanceEngine.applyOptimizations(data, type);
-      setOptimizedData(optimized);
-      return optimized;
-    }
-  }), [renderChart, metrics, data, type]);
-
-  return (
-    <div
-      ref={containerRef}
-      className={`virtualized-chart ${className}`}
-      data-testid={testId}
-      style={{ width, height, position: 'relative', overflow: 'hidden' }}
-    >
-      {/* Canvas for chart rendering */}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          pointerEvents: 'none'
-        }}
-      />
-
-      {/* Virtual scrollable container */}
+    return (
       <div
-        style={{
-          height,
-          overflowY: 'auto',
-          overflowX: 'hidden'
-        }}
-        onScroll={handleScroll}
+        ref={containerRef}
+        className={`virtualized-chart ${className}`}
+        data-testid={testId}
+        style={{ width, height, position: 'relative', overflow: 'hidden' }}
       >
-        <div style={{ height: totalHeight }}>
-          {virtualData.map((item, index) => (
-            <VirtualListItem
-              key={`${index}-${item.id || index}`}
-              index={index}
-              data={item}
-              height={virtualization?.itemHeight || 50}
-              isVisible={true}
-            />
-          ))}
-        </div>
-      </div>
+        {/* Canvas for chart rendering */}
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            pointerEvents: 'none',
+          }}
+        />
 
-      {/* Performance overlay */}
-      <div className="performance-overlay">
-        <div className="metrics">
-          <span>Render: {renderTime.toFixed(2)}ms</span>
-          <span>Items: {virtualData.length}</span>
-          {isScrolling && <span className="scrolling">Scrolling...</span>}
-        </div>
-
-        {/* Performance alerts */}
-        {alerts.length > 0 && (
-          <div className="alerts">
-            {alerts.slice(-3).map((alert, index) => (
-              <div key={index} className={`alert alert-${alert.type}`}>
-                {alert.message || 'Performance warning'}
-              </div>
+        {/* Virtual scrollable container */}
+        <div
+          style={{
+            height,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+          }}
+          onScroll={handleScroll}
+        >
+          <div style={{ height: totalHeight }}>
+            {virtualData.map((item, index) => (
+              <VirtualListItem
+                key={`${index}-${item.id || index}`}
+                index={index}
+                data={item}
+                height={virtualization?.itemHeight || 50}
+                isVisible={true}
+              />
             ))}
           </div>
-        )}
+        </div>
+
+        {/* Performance overlay */}
+        <div className='performance-overlay'>
+          <div className='metrics'>
+            <span>Render: {renderTime.toFixed(2)}ms</span>
+            <span>Items: {virtualData.length}</span>
+            {isScrolling && <span className='scrolling'>Scrolling...</span>}
+          </div>
+
+          {/* Performance alerts */}
+          {alerts.length > 0 && (
+            <div className='alerts'>
+              {alerts.slice(-3).map((alert, index) => (
+                <div key={index} className={`alert alert-${alert.type}`}>
+                  {alert.message || 'Performance warning'}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 VirtualizedChart.displayName = 'VirtualizedChart';
 
@@ -452,7 +484,9 @@ const renderLineChart = (
 
   data.forEach((point, index) => {
     const x = index * xStep;
-    const y = height - ((point.y || point.value || 0) - minValue) / valueRange * height;
+    const y =
+      height -
+      (((point.y || point.value || 0) - minValue) / valueRange) * height;
 
     if (index === 0) {
       ctx.moveTo(x, y);
@@ -472,15 +506,15 @@ const renderBarChart = (
 ) => {
   if (data.length === 0) return;
 
-  const barWidth = width / data.length * 0.8;
-  const barSpacing = width / data.length * 0.2;
+  const barWidth = (width / data.length) * 0.8;
+  const barSpacing = (width / data.length) * 0.2;
   const maxValue = Math.max(...data.map(d => d.y || d.value || 0));
 
   ctx.fillStyle = '#3b82f6';
 
   data.forEach((point, index) => {
     const x = index * (barWidth + barSpacing);
-    const barHeight = (point.y || point.value || 0) / maxValue * height;
+    const barHeight = ((point.y || point.value || 0) / maxValue) * height;
     const y = height - barHeight;
 
     ctx.fillRect(x, y, barWidth, barHeight);
@@ -510,7 +544,9 @@ const renderAreaChart = (
 
   data.forEach((point, index) => {
     const x = index * xStep;
-    const y = height - ((point.y || point.value || 0) - minValue) / valueRange * height;
+    const y =
+      height -
+      (((point.y || point.value || 0) - minValue) / valueRange) * height;
     ctx.lineTo(x, y);
   });
 
@@ -527,7 +563,9 @@ const renderAreaChart = (
 
   data.forEach((point, index) => {
     const x = index * xStep;
-    const y = height - ((point.y || point.value || 0) - minValue) / valueRange * height;
+    const y =
+      height -
+      (((point.y || point.value || 0) - minValue) / valueRange) * height;
 
     if (index === 0) {
       ctx.moveTo(x, y);
@@ -558,8 +596,9 @@ const renderScatterChart = (
   ctx.fillStyle = '#3b82f6';
 
   data.forEach(point => {
-    const x = ((point.x || 0) - minX) / xRange * width;
-    const y = height - ((point.y || point.value || 0) - minY) / yRange * height;
+    const x = (((point.x || 0) - minX) / xRange) * width;
+    const y =
+      height - (((point.y || point.value || 0) - minY) / yRange) * height;
 
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, 2 * Math.PI);
@@ -575,7 +614,10 @@ export const ProgressiveChart: React.FC<{
   width?: number;
   config?: Partial<ProgressiveLoadingConfig>;
 }> = ({ dataProvider, type, height, width = 800, config }) => {
-  const { data, loading, progress, error, loadData } = useProgressiveLoading(dataProvider, config);
+  const { data, loading, progress, error, loadData } = useProgressiveLoading(
+    dataProvider,
+    config
+  );
 
   useEffect(() => {
     loadData();
@@ -583,9 +625,10 @@ export const ProgressiveChart: React.FC<{
 
   if (loading) {
     return (
-      <div className="progressive-loading" style={{ width, height }}>
-        <div className="loading-progress">
-          <div className="progress-bar" style={{ width: `${progress}%` }} />
+      <div className='progressive-loading' style={{ width, height }}>
+        <div className='loading-progress'>
+          <div className='progress-bar' style={{ width: `${progress}%` }} />
+
           <span>{progress.toFixed(1)}% loaded</span>
         </div>
       </div>
@@ -594,7 +637,7 @@ export const ProgressiveChart: React.FC<{
 
   if (error) {
     return (
-      <div className="progressive-error" style={{ width, height }}>
+      <div className='progressive-error' style={{ width, height }}>
         <p>Error loading data: {error.message}</p>
         <button onClick={loadData}>Retry</button>
       </div>
@@ -602,12 +645,7 @@ export const ProgressiveChart: React.FC<{
   }
 
   return (
-    <VirtualizedChart
-      data={data}
-      type={type}
-      height={height}
-      width={width}
-    />
+    <VirtualizedChart data={data} type={type} height={height} width={width} />
   );
 };
 
@@ -617,40 +655,42 @@ export const PerformanceDashboard: React.FC = () => {
   const latestMetrics = metrics[metrics.length - 1];
 
   if (!latestMetrics) {
-    return <div className="performance-dashboard">No performance data available</div>;
+    return (
+      <div className='performance-dashboard'>No performance data available</div>
+    );
   }
 
   return (
-    <div className="performance-dashboard">
+    <div className='performance-dashboard'>
       <h3>Performance Metrics</h3>
-      <div className="metrics-grid">
-        <div className="metric">
+      <div className='metrics-grid'>
+        <div className='metric'>
           <label>Render Time</label>
           <span>{latestMetrics.renderTime.toFixed(2)}ms</span>
         </div>
-        <div className="metric">
+        <div className='metric'>
           <label>Frame Rate</label>
           <span>{latestMetrics.frameRate.toFixed(1)} fps</span>
         </div>
-        <div className="metric">
+        <div className='metric'>
           <label>Memory Usage</label>
           <span>{(latestMetrics.memoryUsage * 100).toFixed(1)}%</span>
         </div>
-        <div className="metric">
+        <div className='metric'>
           <label>Cache Hit Rate</label>
           <span>{(latestMetrics.cacheHitRate * 100).toFixed(1)}%</span>
         </div>
-        <div className="metric">
+        <div className='metric'>
           <label>Virtualized Items</label>
           <span>{latestMetrics.virtualizedItems.toLocaleString()}</span>
         </div>
       </div>
 
       {alerts.length > 0 && (
-        <div className="alerts-section">
+        <div className='alerts-section'>
           <h4>Performance Alerts</h4>
           {alerts.slice(-5).map((alert, index) => (
-            <div key={index} className="alert">
+            <div key={index} className='alert'>
               {alert.type}: {alert.message}
             </div>
           ))}

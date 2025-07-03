@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { initToolbar } from '@stagewise/toolbar';
 import type { AppProps } from 'next/app';
 import { useEffect, useRef } from 'react';

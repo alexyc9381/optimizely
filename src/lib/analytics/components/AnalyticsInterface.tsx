@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { AdvancedAnalyticsEngine, AutomatedInsight, CorrelationAnalysis, RegressionResult, StatisticalTest, TrendAnalysis } from '../AdvancedAnalyticsEngine';
+import {
+  AdvancedAnalyticsEngine,
+  AutomatedInsight,
+  CorrelationAnalysis,
+  RegressionResult,
+  StatisticalTest,
+  TrendAnalysis,
+} from '../AdvancedAnalyticsEngine';
 
 // Interface Props
 interface AnalyticsInterfaceProps {
@@ -39,16 +46,20 @@ interface RegressionConfiguration {
 export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
   data,
   onResultChange,
-  config = {}
+  config = {},
 }) => {
-  const [analyticsEngine] = useState(() => AdvancedAnalyticsEngine.getInstance());
-  const [activeTab, setActiveTab] = useState<'insights' | 'tests' | 'correlations' | 'regression' | 'trends'>('insights');
+  const [analyticsEngine] = useState(() =>
+    AdvancedAnalyticsEngine.getInstance()
+  );
+  const [activeTab, setActiveTab] = useState<
+    'insights' | 'tests' | 'correlations' | 'regression' | 'trends'
+  >('insights');
   const [results, setResults] = useState<AnalyticsResults>({
     statisticalTests: [],
     correlations: [],
     regressions: [],
     trends: {},
-    insights: []
+    insights: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,21 +69,24 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
     testType: 'two-sample',
     variable1: '',
     variable2: '',
-    hypothesizedMean: 0
+    hypothesizedMean: 0,
   });
 
-  const [regressionConfig, setRegressionConfig] = useState<RegressionConfiguration>({
-    dependent: '',
-    independent: [],
-    type: 'simple'
-  });
+  const [regressionConfig, setRegressionConfig] =
+    useState<RegressionConfiguration>({
+      dependent: '',
+      independent: [],
+      type: 'simple',
+    });
 
   const variables = Object.keys(data);
 
   // Initialize analytics engine configuration
   useEffect(() => {
     if (config.significanceLevel) {
-      analyticsEngine.updateConfig({ significanceLevel: config.significanceLevel });
+      analyticsEngine.updateConfig({
+        significanceLevel: config.significanceLevel,
+      });
     }
     if (config.confidenceLevel) {
       analyticsEngine.updateConfig({ confidenceLevel: config.confidenceLevel });
@@ -96,15 +110,17 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       setResults(prev => ({
         ...prev,
-        insights
+        insights,
       }));
 
       onResultChange?.({
         ...results,
-        insights
+        insights,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate insights');
+      setError(
+        err instanceof Error ? err.message : 'Failed to generate insights'
+      );
     } finally {
       setLoading(false);
     }
@@ -126,7 +142,12 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       switch (testConfig.testType) {
         case 'one-sample':
-          test = analyticsEngine.tTest(sample1, undefined, 'one-sample', testConfig.hypothesizedMean || 0);
+          test = analyticsEngine.tTest(
+            sample1,
+            undefined,
+            'one-sample',
+            testConfig.hypothesizedMean || 0
+          );
           break;
         case 'two-sample':
           if (!testConfig.variable2) {
@@ -143,7 +164,10 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           test = analyticsEngine.tTest(sample1, pairedSample2, 'paired');
           break;
         case 'chi-square':
-          test = analyticsEngine.chiSquareTest(sample1, testConfig.expectedValues);
+          test = analyticsEngine.chiSquareTest(
+            sample1,
+            testConfig.expectedValues
+          );
           break;
         default:
           throw new Error('Invalid test type');
@@ -151,10 +175,14 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       setResults(prev => ({
         ...prev,
-        statisticalTests: [...prev.statisticalTests, test]
+        statisticalTests: [...prev.statisticalTests, test],
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to perform statistical test');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to perform statistical test'
+      );
     } finally {
       setLoading(false);
     }
@@ -173,8 +201,17 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           const varX = variables[i];
           const varY = variables[j];
 
-          if (data[varX] && data[varY] && data[varX].length > 0 && data[varY].length > 0) {
-            const correlation = analyticsEngine.correlationAnalysis(data[varX], data[varY], 'pearson');
+          if (
+            data[varX] &&
+            data[varY] &&
+            data[varX].length > 0 &&
+            data[varY].length > 0
+          ) {
+            const correlation = analyticsEngine.correlationAnalysis(
+              data[varX],
+              data[varY],
+              'pearson'
+            );
             correlations.push(correlation);
           }
         }
@@ -182,10 +219,14 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       setResults(prev => ({
         ...prev,
-        correlations
+        correlations,
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate correlation matrix');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to generate correlation matrix'
+      );
     } finally {
       setLoading(false);
     }
@@ -193,7 +234,10 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
   // Perform regression analysis
   const performRegression = useCallback(async () => {
-    if (!regressionConfig.dependent || regressionConfig.independent.length === 0) {
+    if (
+      !regressionConfig.dependent ||
+      regressionConfig.independent.length === 0
+    ) {
       setError('Please select dependent and independent variables');
       return;
     }
@@ -205,7 +249,10 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
       const y = data[regressionConfig.dependent];
       let regression: RegressionResult;
 
-      if (regressionConfig.type === 'simple' && regressionConfig.independent.length === 1) {
+      if (
+        regressionConfig.type === 'simple' &&
+        regressionConfig.independent.length === 1
+      ) {
         const x = data[regressionConfig.independent[0]];
         const xMatrix = x.map(val => [val]);
         regression = analyticsEngine.multipleRegression(y, xMatrix);
@@ -217,10 +264,14 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       setResults(prev => ({
         ...prev,
-        regressions: [...prev.regressions, regression]
+        regressions: [...prev.regressions, regression],
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to perform regression analysis');
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to perform regression analysis'
+      );
     } finally {
       setLoading(false);
     }
@@ -242,10 +293,12 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
 
       setResults(prev => ({
         ...prev,
-        trends
+        trends,
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate trend analysis');
+      setError(
+        err instanceof Error ? err.message : 'Failed to generate trend analysis'
+      );
     } finally {
       setLoading(false);
     }
@@ -258,43 +311,52 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
       correlations: [],
       regressions: [],
       trends: {},
-      insights: []
+      insights: [],
     });
     setError(null);
   }, []);
 
   const significanceOrder = { high: 3, medium: 2, low: 1 };
-  const sortedInsights = results.insights.sort((a, b) => significanceOrder[b.significance] - significanceOrder[a.significance]);
+  const sortedInsights = results.insights.sort(
+    (a, b) =>
+      significanceOrder[b.significance] - significanceOrder[a.significance]
+  );
 
   return (
-    <div className="analytics-interface">
-      <div className="analytics-header">
+    <div className='analytics-interface'>
+      <div className='analytics-header'>
         <h2>Advanced Analytics & Statistical Tools</h2>
-        <div className="analytics-controls">
-          <button onClick={clearResults} className="btn btn-secondary">
+        <div className='analytics-controls'>
+          <button onClick={clearResults} className='btn btn-secondary'>
             Clear Results
           </button>
-          <button onClick={generateAutomatedInsights} disabled={loading} className="btn btn-primary">
+          <button
+            onClick={generateAutomatedInsights}
+            disabled={loading}
+            className='btn btn-primary'
+          >
             {loading ? 'Analyzing...' : 'Generate Insights'}
           </button>
         </div>
       </div>
 
       {error && (
-        <div className="error-message">
-          <span className="error-icon">⚠️</span>
+        <div className='error-message'>
+          <span className='error-icon'>⚠️</span>
           {error}
         </div>
       )}
 
-      <div className="analytics-tabs">
-        <nav className="tab-navigation">
+      <div className='analytics-tabs'>
+        <nav className='tab-navigation'>
           <button
             onClick={() => setActiveTab('insights')}
             className={`tab-button ${activeTab === 'insights' ? 'active' : ''}`}
           >
             Automated Insights
-            {results.insights.length > 0 && <span className="badge">{results.insights.length}</span>}
+            {results.insights.length > 0 && (
+              <span className='badge'>{results.insights.length}</span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab('tests')}
@@ -322,37 +384,47 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           </button>
         </nav>
 
-        <div className="tab-content">
+        <div className='tab-content'>
           {activeTab === 'insights' && (
-            <div className="insights-panel">
-              <div className="panel-header">
+            <div className='insights-panel'>
+              <div className='panel-header'>
                 <h3>Automated Statistical Insights</h3>
               </div>
 
               {sortedInsights.length === 0 ? (
-                <div className="empty-state">
-                  <p>No insights generated yet. The system will analyze your data automatically.</p>
+                <div className='empty-state'>
+                  <p>
+                    No insights generated yet. The system will analyze your data
+                    automatically.
+                  </p>
                 </div>
               ) : (
-                <div className="insights-list">
+                <div className='insights-list'>
                   {sortedInsights.map((insight, index) => (
-                    <div key={index} className={`insight-card significance-${insight.significance}`}>
-                      <div className="insight-header">
+                    <div
+                      key={index}
+                      className={`insight-card significance-${insight.significance}`}
+                    >
+                      <div className='insight-header'>
                         <h4>{insight.title}</h4>
-                        <div className="insight-meta">
-                          <span className={`significance-badge ${insight.significance}`}>
+                        <div className='insight-meta'>
+                          <span
+                            className={`significance-badge ${insight.significance}`}
+                          >
                             {insight.significance.toUpperCase()}
                           </span>
-                          <span className="confidence-score">
+                          <span className='confidence-score'>
                             {(insight.confidence * 100).toFixed(1)}% confidence
                           </span>
                         </div>
                       </div>
 
-                      <p className="insight-description">{insight.description}</p>
+                      <p className='insight-description'>
+                        {insight.description}
+                      </p>
 
                       {insight.supportingEvidence.length > 0 && (
-                        <div className="supporting-evidence">
+                        <div className='supporting-evidence'>
                           <h5>Supporting Evidence:</h5>
                           <ul>
                             {insight.supportingEvidence.map((evidence, i) => (
@@ -363,12 +435,14 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
                       )}
 
                       {insight.recommendations.length > 0 && (
-                        <div className="recommendations">
+                        <div className='recommendations'>
                           <h5>Recommendations:</h5>
                           <ul>
-                            {insight.recommendations.map((recommendation, i) => (
-                              <li key={i}>{recommendation}</li>
-                            ))}
+                            {insight.recommendations.map(
+                              (recommendation, i) => (
+                                <li key={i}>{recommendation}</li>
+                              )
+                            )}
                           </ul>
                         </div>
                       )}
@@ -380,35 +454,42 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           )}
 
           {activeTab === 'tests' && (
-            <div className="statistical-tests-panel">
-              <div className="panel-header">
+            <div className='statistical-tests-panel'>
+              <div className='panel-header'>
                 <h3>Statistical Testing Suite</h3>
               </div>
-              <p>Advanced statistical tests (t-tests, chi-square, ANOVA) coming soon!</p>
+              <p>
+                Advanced statistical tests (t-tests, chi-square, ANOVA) coming
+                soon!
+              </p>
             </div>
           )}
 
           {activeTab === 'correlations' && (
-            <div className="correlations-panel">
-              <div className="panel-header">
+            <div className='correlations-panel'>
+              <div className='panel-header'>
                 <h3>Correlation Analysis</h3>
               </div>
-              <p>Pearson, Spearman, and Kendall correlation analysis coming soon!</p>
+              <p>
+                Pearson, Spearman, and Kendall correlation analysis coming soon!
+              </p>
             </div>
           )}
 
           {activeTab === 'regression' && (
-            <div className="regression-panel">
-              <div className="panel-header">
+            <div className='regression-panel'>
+              <div className='panel-header'>
                 <h3>Regression Analysis</h3>
               </div>
-              <p>Multiple regression and polynomial regression tools coming soon!</p>
+              <p>
+                Multiple regression and polynomial regression tools coming soon!
+              </p>
             </div>
           )}
 
           {activeTab === 'trends' && (
-            <div className="trend-analysis-panel">
-              <div className="panel-header">
+            <div className='trend-analysis-panel'>
+              <div className='panel-header'>
                 <h3>Trend Analysis & Forecasting</h3>
               </div>
               <p>Time series analysis and forecasting tools coming soon!</p>

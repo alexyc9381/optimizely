@@ -6,7 +6,11 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import '../components/PerformanceChart.css';
-import { PerformanceDashboard, ProgressiveChart, VirtualizedChart } from '../components/VirtualizedChart';
+import {
+  PerformanceDashboard,
+  ProgressiveChart,
+  VirtualizedChart,
+} from '../components/VirtualizedChart';
 import { performanceEngine, PerformanceMetrics } from '../PerformanceEngine';
 
 // Large dataset generator
@@ -19,7 +23,7 @@ const generateLargeDataset = (size: number) => {
       y: Math.sin(i * 0.1) * 100 + Math.random() * 50,
       value: Math.random() * 1000,
       category: `Category ${Math.floor(i / 1000)}`,
-      timestamp: Date.now() + i * 1000
+      timestamp: Date.now() + i * 1000,
     });
   }
   return data;
@@ -32,7 +36,9 @@ const createDataProvider = (chunkSize: number = 1000) => {
 
   return async (): Promise<any[]> => {
     // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
+    await new Promise(resolve =>
+      setTimeout(resolve, 100 + Math.random() * 200)
+    );
 
     const remainingSize = Math.max(0, totalSize - offset);
     const actualChunkSize = Math.min(chunkSize, remainingSize);
@@ -44,7 +50,7 @@ const createDataProvider = (chunkSize: number = 1000) => {
     const chunk = generateLargeDataset(actualChunkSize).map(item => ({
       ...item,
       id: offset + item.id,
-      x: offset + item.x
+      x: offset + item.x,
     }));
 
     offset += actualChunkSize;
@@ -54,7 +60,9 @@ const createDataProvider = (chunkSize: number = 1000) => {
 
 export const PerformanceExample: React.FC = () => {
   const [dataSize, setDataSize] = useState(10000);
-  const [chartType, setChartType] = useState<'line' | 'bar' | 'area' | 'scatter'>('line');
+  const [chartType, setChartType] = useState<
+    'line' | 'bar' | 'area' | 'scatter'
+  >('line');
   const [data, setData] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<PerformanceMetrics[]>([]);
   const [showVirtualization, setShowVirtualization] = useState(true);
@@ -75,18 +83,25 @@ export const PerformanceExample: React.FC = () => {
   }, [dataSize, showProgressiveLoading]);
 
   // Performance metrics handler
-  const handlePerformanceMetrics = useCallback((newMetrics: PerformanceMetrics) => {
-    setMetrics(prev => [...prev.slice(-99), newMetrics]);
-  }, []);
+  const handlePerformanceMetrics = useCallback(
+    (newMetrics: PerformanceMetrics) => {
+      setMetrics(prev => [...prev.slice(-99), newMetrics]);
+    },
+    []
+  );
 
   // Data size change handler
-  const handleDataSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDataSizeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const size = parseInt(event.target.value);
     setDataSize(size);
   };
 
   // Chart type change handler
-  const handleChartTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChartTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setChartType(event.target.value as any);
   };
 
@@ -123,8 +138,8 @@ export const PerformanceExample: React.FC = () => {
   };
 
   return (
-    <div className="performance-example">
-      <div className="example-header">
+    <div className='performance-example'>
+      <div className='example-header'>
         <h2>Performance Optimization Example</h2>
         <p>
           Demonstrating high-performance chart rendering with virtualization,
@@ -133,14 +148,14 @@ export const PerformanceExample: React.FC = () => {
       </div>
 
       {/* Configuration Controls */}
-      <div className="controls-section">
+      <div className='controls-section'>
         <h3>Configuration</h3>
 
-        <div className="controls-grid">
-          <div className="control-group">
-            <label htmlFor="data-size">Dataset Size:</label>
+        <div className='controls-grid'>
+          <div className='control-group'>
+            <label htmlFor='data-size'>Dataset Size:</label>
             <select
-              id="data-size"
+              id='data-size'
               value={dataSize}
               onChange={handleDataSizeChange}
               disabled={isGenerating}
@@ -154,54 +169,54 @@ export const PerformanceExample: React.FC = () => {
             </select>
           </div>
 
-          <div className="control-group">
-            <label htmlFor="chart-type">Chart Type:</label>
+          <div className='control-group'>
+            <label htmlFor='chart-type'>Chart Type:</label>
             <select
-              id="chart-type"
+              id='chart-type'
               value={chartType}
               onChange={handleChartTypeChange}
             >
-              <option value="line">Line Chart</option>
-              <option value="bar">Bar Chart</option>
-              <option value="area">Area Chart</option>
-              <option value="scatter">Scatter Plot</option>
+              <option value='line'>Line Chart</option>
+              <option value='bar'>Bar Chart</option>
+              <option value='area'>Area Chart</option>
+              <option value='scatter'>Scatter Plot</option>
             </select>
           </div>
 
-          <div className="control-group">
+          <div className='control-group'>
             <label>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={showVirtualization}
-                onChange={(e) => setShowVirtualization(e.target.checked)}
+                onChange={e => setShowVirtualization(e.target.checked)}
               />
               Enable Virtualization
             </label>
           </div>
 
-          <div className="control-group">
+          <div className='control-group'>
             <label>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={showProgressiveLoading}
-                onChange={(e) => setShowProgressiveLoading(e.target.checked)}
+                onChange={e => setShowProgressiveLoading(e.target.checked)}
               />
               Progressive Loading
             </label>
           </div>
         </div>
 
-        <div className="action-buttons">
-          <button onClick={handleClearCache} className="btn-secondary">
+        <div className='action-buttons'>
+          <button onClick={handleClearCache} className='btn-secondary'>
             Clear Cache
           </button>
-          <button onClick={handleGarbageCollection} className="btn-secondary">
+          <button onClick={handleGarbageCollection} className='btn-secondary'>
             Force GC
           </button>
-          <button onClick={handleOptimizeData} className="btn-secondary">
+          <button onClick={handleOptimizeData} className='btn-secondary'>
             Optimize Data
           </button>
-          <button onClick={handleExportChart} className="btn-primary">
+          <button onClick={handleExportChart} className='btn-primary'>
             Export Chart
           </button>
         </div>
@@ -211,19 +226,23 @@ export const PerformanceExample: React.FC = () => {
       <PerformanceDashboard />
 
       {/* Chart Rendering Section */}
-      <div className="chart-section">
+      <div className='chart-section'>
         <h3>
-          {showProgressiveLoading ? 'Progressive Loading Chart' : 'Virtualized Chart'}
-          {isGenerating && <span className="generating"> (Generating...)</span>}
+          {showProgressiveLoading
+            ? 'Progressive Loading Chart'
+            : 'Virtualized Chart'}
+          {isGenerating && <span className='generating'> (Generating...)</span>}
         </h3>
 
-        <div className="chart-info">
+        <div className='chart-info'>
           <span>Data Points: {data.length.toLocaleString()}</span>
           <span>Chart Type: {chartType}</span>
-          <span>Virtualization: {showVirtualization ? 'Enabled' : 'Disabled'}</span>
+          <span>
+            Virtualization: {showVirtualization ? 'Enabled' : 'Disabled'}
+          </span>
         </div>
 
-        <div className="chart-container">
+        <div className='chart-container'>
           {showProgressiveLoading ? (
             <ProgressiveChart
               dataProvider={dataProviderRef.current}
@@ -233,7 +252,7 @@ export const PerformanceExample: React.FC = () => {
               config={{
                 chunkSize: 5000,
                 loadDelay: 100,
-                loadingStrategy: 'adaptive'
+                loadingStrategy: 'adaptive',
               }}
             />
           ) : (
@@ -248,42 +267,43 @@ export const PerformanceExample: React.FC = () => {
                 itemHeight: 2,
                 bufferSize: 10,
                 overscan: 5,
-                chunkSize: 1000
+                chunkSize: 1000,
               }}
               progressiveLoading={{
                 enabled: false,
-                chunkSize: 1000
+                chunkSize: 1000,
               }}
               memory={{
                 maxCacheSize: 50 * 1024 * 1024, // 50MB
                 maxDataPoints: dataSize,
-                gcThreshold: 0.8
+                gcThreshold: 0.8,
               }}
               onPerformanceMetrics={handlePerformanceMetrics}
-              onError={(error) => console.error('Chart error:', error)}
-              className="example-chart"
-              testId="performance-chart"
+              onError={error => console.error('Chart error:', error)}
+              className='example-chart'
+              testId='performance-chart'
             />
           )}
         </div>
       </div>
 
       {/* Performance Metrics History */}
-      <div className="metrics-section">
+      <div className='metrics-section'>
         <h3>Performance Metrics History</h3>
 
         {metrics.length > 0 ? (
-          <div className="metrics-charts">
-            <div className="metric-chart">
+          <div className='metrics-charts'>
+            <div className='metric-chart'>
               <h4>Render Time (ms)</h4>
-              <div className="metric-graph">
+              <div className='metric-graph'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
-                    className="metric-bar"
+                    className='metric-bar'
                     style={{
-                      height: `${Math.min(metric.renderTime / 50 * 100, 100)}%`,
-                      backgroundColor: metric.renderTime > 16.67 ? '#ef4444' : '#10b981'
+                      height: `${Math.min((metric.renderTime / 50) * 100, 100)}%`,
+                      backgroundColor:
+                        metric.renderTime > 16.67 ? '#ef4444' : '#10b981',
                     }}
                     title={`${metric.renderTime.toFixed(2)}ms`}
                   />
@@ -291,16 +311,17 @@ export const PerformanceExample: React.FC = () => {
               </div>
             </div>
 
-            <div className="metric-chart">
+            <div className='metric-chart'>
               <h4>Frame Rate (fps)</h4>
-              <div className="metric-graph">
+              <div className='metric-graph'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
-                    className="metric-bar"
+                    className='metric-bar'
                     style={{
                       height: `${metric.frameRate}%`,
-                      backgroundColor: metric.frameRate < 30 ? '#ef4444' : '#10b981'
+                      backgroundColor:
+                        metric.frameRate < 30 ? '#ef4444' : '#10b981',
                     }}
                     title={`${metric.frameRate.toFixed(1)} fps`}
                   />
@@ -308,16 +329,17 @@ export const PerformanceExample: React.FC = () => {
               </div>
             </div>
 
-            <div className="metric-chart">
+            <div className='metric-chart'>
               <h4>Memory Usage (%)</h4>
-              <div className="metric-graph">
+              <div className='metric-graph'>
                 {metrics.slice(-20).map((metric, index) => (
                   <div
                     key={index}
-                    className="metric-bar"
+                    className='metric-bar'
                     style={{
                       height: `${metric.memoryUsage * 100}%`,
-                      backgroundColor: metric.memoryUsage > 0.8 ? '#ef4444' : '#10b981'
+                      backgroundColor:
+                        metric.memoryUsage > 0.8 ? '#ef4444' : '#10b981',
                     }}
                     title={`${(metric.memoryUsage * 100).toFixed(1)}%`}
                   />
@@ -326,15 +348,18 @@ export const PerformanceExample: React.FC = () => {
             </div>
           </div>
         ) : (
-          <p>No performance metrics available yet. Interact with the chart to see metrics.</p>
+          <p>
+            No performance metrics available yet. Interact with the chart to see
+            metrics.
+          </p>
         )}
       </div>
 
       {/* Feature Comparison */}
-      <div className="comparison-section">
+      <div className='comparison-section'>
         <h3>Performance Comparison</h3>
 
-        <div className="comparison-table">
+        <div className='comparison-table'>
           <table>
             <thead>
               <tr>
@@ -381,11 +406,11 @@ export const PerformanceExample: React.FC = () => {
       </div>
 
       {/* Technical Implementation */}
-      <div className="implementation-section">
+      <div className='implementation-section'>
         <h3>Technical Implementation</h3>
 
-        <div className="implementation-grid">
-          <div className="implementation-card">
+        <div className='implementation-grid'>
+          <div className='implementation-card'>
             <h4>Data Virtualization</h4>
             <ul>
               <li>Renders only visible data points</li>
@@ -395,7 +420,7 @@ export const PerformanceExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className="implementation-card">
+          <div className='implementation-card'>
             <h4>Progressive Loading</h4>
             <ul>
               <li>Chunked data loading</li>
@@ -405,7 +430,7 @@ export const PerformanceExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className="implementation-card">
+          <div className='implementation-card'>
             <h4>Memory Management</h4>
             <ul>
               <li>Intelligent caching with LRU eviction</li>
@@ -415,7 +440,7 @@ export const PerformanceExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className="implementation-card">
+          <div className='implementation-card'>
             <h4>Performance Monitoring</h4>
             <ul>
               <li>Real-time metrics collection</li>
@@ -437,43 +462,43 @@ export const PerformanceTestGrid: React.FC = () => {
   const largeData = generateLargeDataset(100000);
 
   return (
-    <div className="performance-test-grid">
+    <div className='performance-test-grid'>
       <h2>Performance Test Grid</h2>
 
-      <div className="test-grid">
-        <div className="test-case">
+      <div className='test-grid'>
+        <div className='test-case'>
           <h3>Small Dataset (1K)</h3>
           <VirtualizedChart
             data={smallData}
-            type="line"
+            type='line'
             height={200}
             width={300}
             virtualization={{ enabled: false }}
           />
         </div>
 
-        <div className="test-case">
+        <div className='test-case'>
           <h3>Medium Dataset (10K)</h3>
           <VirtualizedChart
             data={mediumData}
-            type="bar"
+            type='bar'
             height={200}
             width={300}
             virtualization={{ enabled: true }}
           />
         </div>
 
-        <div className="test-case">
+        <div className='test-case'>
           <h3>Large Dataset (100K)</h3>
           <VirtualizedChart
             data={largeData}
-            type="area"
+            type='area'
             height={200}
             width={300}
             virtualization={{
               enabled: true,
               itemHeight: 1,
-              bufferSize: 20
+              bufferSize: 20,
             }}
           />
         </div>

@@ -4,8 +4,20 @@
  * responsive layouts, and adaptive UI elements.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DetectedGesture, DeviceInfo, MobileChartConfig, mobileChartEngine, ResponsiveBreakpoint } from '../MobileChartEngine';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  DetectedGesture,
+  DeviceInfo,
+  MobileChartConfig,
+  mobileChartEngine,
+  ResponsiveBreakpoint,
+} from '../MobileChartEngine';
 
 // Mobile Chart Props
 export interface MobileChartProps {
@@ -24,10 +36,13 @@ export interface MobileChartProps {
 export const useMobileChart = (containerRef: React.RefObject<HTMLElement>) => {
   const [chartId, setChartId] = useState<string>('');
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo | null>(null);
-  const [currentBreakpoint, setCurrentBreakpoint] = useState<ResponsiveBreakpoint | null>(null);
+  const [currentBreakpoint, setCurrentBreakpoint] =
+    useState<ResponsiveBreakpoint | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isTouch, setIsTouch] = useState(false);
-  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
+    'portrait'
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -54,7 +69,9 @@ export const useMobileChart = (containerRef: React.RefObject<HTMLElement>) => {
 
     const handleResize = () => {
       if (containerRef.current) {
-        const dims = mobileChartEngine.getOptimalDimensions(containerRef.current);
+        const dims = mobileChartEngine.getOptimalDimensions(
+          containerRef.current
+        );
         setDimensions(dims);
       }
     };
@@ -82,7 +99,8 @@ export const useMobileChart = (containerRef: React.RefObject<HTMLElement>) => {
     orientation,
     isMobile: deviceInfo?.type === 'mobile',
     isTablet: deviceInfo?.type === 'tablet',
-    supportsMultiTouch: deviceInfo?.touchCapabilities.supportsMultiTouch || false
+    supportsMultiTouch:
+      deviceInfo?.touchCapabilities.supportsMultiTouch || false,
   };
 };
 
@@ -91,12 +109,16 @@ export const useTouchGestures = (
   containerRef: React.RefObject<HTMLElement>,
   onGesture?: (gesture: DetectedGesture) => void
 ) => {
-  const [activeGesture, setActiveGesture] = useState<DetectedGesture | null>(null);
+  const [activeGesture, setActiveGesture] = useState<DetectedGesture | null>(
+    null
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const handleGesture = (event: CustomEvent<{ gesture: DetectedGesture }>) => {
+    const handleGesture = (
+      event: CustomEvent<{ gesture: DetectedGesture }>
+    ) => {
       const gesture = event.detail.gesture;
       setActiveGesture(gesture);
       onGesture?.(gesture);
@@ -106,10 +128,16 @@ export const useTouchGestures = (
     };
 
     const container = containerRef.current;
-    container.addEventListener('gesture:detected', handleGesture as EventListener);
+    container.addEventListener(
+      'gesture:detected',
+      handleGesture as EventListener
+    );
 
     return () => {
-      container.removeEventListener('gesture:detected', handleGesture as EventListener);
+      container.removeEventListener(
+        'gesture:detected',
+        handleGesture as EventListener
+      );
     };
   }, [containerRef, onGesture]);
 
@@ -162,7 +190,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
   onGesture,
   onDataSelect,
   className = '',
-  testId = 'mobile-chart'
+  testId = 'mobile-chart',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -175,7 +203,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
     isTouch,
     orientation,
     isMobile,
-    isTablet
+    isTablet,
   } = useMobileChart(containerRef);
 
   const { activeGesture } = useTouchGestures(containerRef, onGesture);
@@ -256,7 +284,14 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
     if (activeGesture) classes.push(`gesture-${activeGesture.type}`);
 
     return classes.join(' ');
-  }, [isMobile, isTablet, isTouch, orientation, currentBreakpoint, activeGesture]);
+  }, [
+    isMobile,
+    isTablet,
+    isTouch,
+    orientation,
+    currentBreakpoint,
+    activeGesture,
+  ]);
 
   return (
     <div
@@ -273,7 +308,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
         maxHeight: mobileConfig.layout.maxHeight,
         padding: mobileConfig.layout.padding,
         touchAction: 'none',
-        userSelect: 'none'
+        userSelect: 'none',
       }}
     >
       <canvas
@@ -283,9 +318,9 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          display: 'block'
+          display: 'block',
         }}
-        role="img"
+        role='img'
         aria-label={`${type} chart with ${data.length} data points`}
       />
 
@@ -310,7 +345,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
 
       {/* Performance indicator for debug */}
       {process.env.NODE_ENV === 'development' && (
-        <div className="mobile-chart-debug">
+        <div className='mobile-chart-debug'>
           <small>
             {deviceInfo?.type} | {currentBreakpoint?.name} | {orientation}
           </small>
@@ -332,44 +367,41 @@ const MobileLegend: React.FC<MobileLegendProps> = ({
   data,
   position,
   fontSize,
-  touchTargetSize
+  touchTargetSize,
 }) => {
   if (position === 'hidden' || !data.length) return null;
 
   const legendItems = data.map((item, index) => (
     <div
       key={index}
-      className="mobile-legend-item"
+      className='mobile-legend-item'
       style={{
         minHeight: touchTargetSize,
         fontSize,
         display: 'flex',
         alignItems: 'center',
         padding: '4px 8px',
-        cursor: 'pointer'
+        cursor: 'pointer',
       }}
     >
       <div
-        className="legend-color"
+        className='legend-color'
         style={{
           width: 12,
           height: 12,
           backgroundColor: item.color || `hsl(${index * 45}, 70%, 50%)`,
           marginRight: 8,
-          borderRadius: 2
+          borderRadius: 2,
         }}
       />
+
       <span>{item.label || `Series ${index + 1}`}</span>
     </div>
   ));
 
   const legendClasses = `mobile-legend position-${position}`;
 
-  return (
-    <div className={legendClasses}>
-      {legendItems}
-    </div>
-  );
+  return <div className={legendClasses}>{legendItems}</div>;
 };
 
 // Mobile Touch Controls component
@@ -382,7 +414,7 @@ interface MobileTouchControlsProps {
 const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
   chartId,
   config,
-  onDataSelect
+  onDataSelect,
 }) => {
   const [showControls, setShowControls] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -407,7 +439,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
   if (!showControls) {
     return (
       <button
-        className="mobile-controls-toggle"
+        className='mobile-controls-toggle'
         onClick={() => setShowControls(true)}
         style={{
           position: 'absolute',
@@ -418,9 +450,9 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           background: 'rgba(0,0,0,0.1)',
           border: 'none',
           borderRadius: '50%',
-          fontSize: config.ui.fontSize
+          fontSize: config.ui.fontSize,
         }}
-        aria-label="Show chart controls"
+        aria-label='Show chart controls'
       >
         ⚙️
       </button>
@@ -429,7 +461,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
 
   return (
     <div
-      className="mobile-touch-controls"
+      className='mobile-touch-controls'
       style={{
         position: 'absolute',
         top: 8,
@@ -440,7 +472,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
       }}
     >
       <button
@@ -452,9 +484,9 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           borderRadius: 4,
           background: '#007AFF',
           color: 'white',
-          fontSize: config.ui.fontSize
+          fontSize: config.ui.fontSize,
         }}
-        aria-label="Zoom in"
+        aria-label='Zoom in'
       >
         +
       </button>
@@ -468,9 +500,9 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           borderRadius: 4,
           background: '#007AFF',
           color: 'white',
-          fontSize: config.ui.fontSize
+          fontSize: config.ui.fontSize,
         }}
-        aria-label="Zoom out"
+        aria-label='Zoom out'
       >
         −
       </button>
@@ -484,9 +516,9 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           borderRadius: 4,
           background: '#34C759',
           color: 'white',
-          fontSize: config.ui.fontSize - 2
+          fontSize: config.ui.fontSize - 2,
         }}
-        aria-label="Reset zoom"
+        aria-label='Reset zoom'
       >
         ↺
       </button>
@@ -500,9 +532,9 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           borderRadius: 4,
           background: '#FF3B30',
           color: 'white',
-          fontSize: config.ui.fontSize
+          fontSize: config.ui.fontSize,
         }}
-        aria-label="Hide controls"
+        aria-label='Hide controls'
       >
         ×
       </button>
@@ -572,8 +604,8 @@ const renderBarChart = (
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  const barWidth = chartWidth / data.length * 0.8;
-  const barSpacing = chartWidth / data.length * 0.2;
+  const barWidth = (chartWidth / data.length) * 0.8;
+  const barSpacing = (chartWidth / data.length) * 0.2;
   const maxY = Math.max(...data.map(d => d.y || d.value || 0));
   const yScale = chartHeight / maxY;
 
@@ -708,8 +740,21 @@ const renderDoughnutChart = (
 
     ctx.beginPath();
     ctx.fillStyle = slice.color || `hsl(${index * 45}, 70%, 50%)`;
-    ctx.arc(centerX, centerY, outerRadius, currentAngle, currentAngle + sliceAngle);
-    ctx.arc(centerX, centerY, innerRadius, currentAngle + sliceAngle, currentAngle, true);
+    ctx.arc(
+      centerX,
+      centerY,
+      outerRadius,
+      currentAngle,
+      currentAngle + sliceAngle
+    );
+    ctx.arc(
+      centerX,
+      centerY,
+      innerRadius,
+      currentAngle + sliceAngle,
+      currentAngle,
+      true
+    );
     ctx.closePath();
     ctx.fill();
 

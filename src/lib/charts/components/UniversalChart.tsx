@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StatisticalChartEngine } from '../StatisticalChartEngine';
 import {
-    ChartConfig,
-    ChartContext,
-    ChartEvents,
-    ChartSeries,
-    ChartType
+  ChartConfig,
+  ChartContext,
+  ChartEvents,
+  ChartSeries,
+  ChartType,
 } from '../types';
 
 interface UniversalChartProps {
@@ -29,7 +29,10 @@ interface ChartRendererProps {
 }
 
 // Canvas-based chart renderers for different chart types
-const LineChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef }) => {
+const LineChartRenderer: React.FC<ChartRendererProps> = ({
+  context,
+  containerRef,
+}) => {
   useEffect(() => {
     if (!containerRef.current || !context.data.length) return;
 
@@ -54,7 +57,7 @@ const LineChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef
     const chartHeight = canvas.height - 2 * padding;
 
     const allData = context.data.flatMap(series => series.data);
-    const xValues = allData.map(d => typeof d.x === 'number' ? d.x : 0);
+    const xValues = allData.map(d => (typeof d.x === 'number' ? d.x : 0));
     const yValues = allData.map(d => d.y);
 
     const xMin = Math.min(...xValues);
@@ -62,8 +65,10 @@ const LineChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef
     const yMin = Math.min(...yValues);
     const yMax = Math.max(...yValues);
 
-    const scaleX = (x: number) => padding + ((x - xMin) / (xMax - xMin)) * chartWidth;
-    const scaleY = (y: number) => padding + chartHeight - ((y - yMin) / (yMax - yMin)) * chartHeight;
+    const scaleX = (x: number) =>
+      padding + ((x - xMin) / (xMax - xMin)) * chartWidth;
+    const scaleY = (y: number) =>
+      padding + chartHeight - ((y - yMin) / (yMax - yMin)) * chartHeight;
 
     // Clear and setup canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -156,13 +161,15 @@ const LineChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef
       ctx.textAlign = 'center';
       ctx.fillText(context.config.title.text, canvas.width / 2, 30);
     }
-
   }, [context, containerRef]);
 
   return null;
 };
 
-const BarChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef }) => {
+const BarChartRenderer: React.FC<ChartRendererProps> = ({
+  context,
+  containerRef,
+}) => {
   useEffect(() => {
     if (!containerRef.current || !context.data.length) return;
 
@@ -190,7 +197,9 @@ const BarChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
     const yMax = Math.max(...allData.map(d => d.y));
     const categories = [...new Set(allData.map(d => String(d.x)))];
 
-    const barWidth = chartWidth / (categories.length * context.data.length + categories.length);
+    const barWidth =
+      chartWidth /
+      (categories.length * context.data.length + categories.length);
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -208,7 +217,8 @@ const BarChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
 
     // Draw bars
     categories.forEach((category, catIndex) => {
-      const groupX = padding + catIndex * (barWidth * context.data.length + barWidth);
+      const groupX =
+        padding + catIndex * (barWidth * context.data.length + barWidth);
 
       context.data.forEach((series, seriesIndex) => {
         const dataPoint = series.data.find(d => String(d.x) === category);
@@ -230,17 +240,21 @@ const BarChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
     ctx.textAlign = 'center';
 
     categories.forEach((category, index) => {
-      const x = padding + index * (barWidth * context.data.length + barWidth) +
-                (barWidth * context.data.length) / 2;
+      const x =
+        padding +
+        index * (barWidth * context.data.length + barWidth) +
+        (barWidth * context.data.length) / 2;
       ctx.fillText(category, x, padding + chartHeight + 20);
     });
-
   }, [context, containerRef]);
 
   return null;
 };
 
-const PieChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef }) => {
+const PieChartRenderer: React.FC<ChartRendererProps> = ({
+  context,
+  containerRef,
+}) => {
   useEffect(() => {
     if (!containerRef.current || !context.data.length) return;
 
@@ -258,7 +272,13 @@ const PieChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
     container.appendChild(canvas);
 
     const { colors } = context.config;
-    const palette = colors?.palette || ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'];
+    const palette = colors?.palette || [
+      '#1f77b4',
+      '#ff7f0e',
+      '#2ca02c',
+      '#d62728',
+      '#9467bd',
+    ];
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
@@ -280,7 +300,13 @@ const PieChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
-      ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+      ctx.arc(
+        centerX,
+        centerY,
+        radius,
+        currentAngle,
+        currentAngle + sliceAngle
+      );
       ctx.closePath();
       ctx.fill();
 
@@ -297,7 +323,11 @@ const PieChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
       ctx.font = '12px Arial';
       ctx.textAlign = 'center';
       const percentage = ((point.y / total) * 100).toFixed(1);
-      ctx.fillText(`${point.label || point.x} (${percentage}%)`, labelX, labelY);
+      ctx.fillText(
+        `${point.label || point.x} (${percentage}%)`,
+        labelX,
+        labelY
+      );
 
       currentAngle += sliceAngle;
     });
@@ -308,13 +338,15 @@ const PieChartRenderer: React.FC<ChartRendererProps> = ({ context, containerRef 
       ctx.textAlign = 'center';
       ctx.fillText(context.config.title.text, canvas.width / 2, 30);
     }
-
   }, [context, containerRef]);
 
   return null;
 };
 
-const ScatterPlotRenderer: React.FC<ChartRendererProps> = ({ context, containerRef }) => {
+const ScatterPlotRenderer: React.FC<ChartRendererProps> = ({
+  context,
+  containerRef,
+}) => {
   useEffect(() => {
     if (!containerRef.current || !context.data.length) return;
 
@@ -339,7 +371,7 @@ const ScatterPlotRenderer: React.FC<ChartRendererProps> = ({ context, containerR
     const chartHeight = canvas.height - 2 * padding;
 
     const allData = context.data.flatMap(series => series.data);
-    const xValues = allData.map(d => typeof d.x === 'number' ? d.x : 0);
+    const xValues = allData.map(d => (typeof d.x === 'number' ? d.x : 0));
     const yValues = allData.map(d => d.y);
 
     const xMin = Math.min(...xValues);
@@ -347,8 +379,10 @@ const ScatterPlotRenderer: React.FC<ChartRendererProps> = ({ context, containerR
     const yMin = Math.min(...yValues);
     const yMax = Math.max(...yValues);
 
-    const scaleX = (x: number) => padding + ((x - xMin) / (xMax - xMin)) * chartWidth;
-    const scaleY = (y: number) => padding + chartHeight - ((y - yMin) / (yMax - yMin)) * chartHeight;
+    const scaleX = (x: number) =>
+      padding + ((x - xMin) / (xMax - xMin)) * chartWidth;
+    const scaleY = (y: number) =>
+      padding + chartHeight - ((y - yMin) / (yMax - yMin)) * chartHeight;
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -422,7 +456,6 @@ const ScatterPlotRenderer: React.FC<ChartRendererProps> = ({ context, containerR
       ctx.textAlign = 'center';
       ctx.fillText(context.config.title.text, canvas.width / 2, 30);
     }
-
   }, [context, containerRef]);
 
   return null;
@@ -440,7 +473,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
   events,
   onLoad,
   onError,
-  onExport
+  onExport,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [context, setContext] = useState<ChartContext | null>(null);
@@ -467,7 +500,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
 
         const chartConfig: ChartConfig = {
           type,
-          ...config
+          ...config,
         };
 
         const chartContext = await engineRef.current!.createChart(
@@ -480,7 +513,8 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
         setContext(chartContext);
         onLoad?.(chartContext);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        const errorMessage =
+          err instanceof Error ? err.message : 'Unknown error';
         setError(errorMessage);
         onError?.(new Error(errorMessage));
       } finally {
@@ -491,16 +525,19 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
     createChart();
   }, [id, type, data, config, events, onLoad, onError]);
 
-  const handleExport = useCallback(async (format: 'png' | 'svg' | 'pdf' | 'json') => {
-    if (!engineRef.current) return;
+  const handleExport = useCallback(
+    async (format: 'png' | 'svg' | 'pdf' | 'json') => {
+      if (!engineRef.current) return;
 
-    try {
-      const exportData = await engineRef.current.exportChart(id, format);
-      onExport?.(exportData);
-    } catch (err) {
-      onError?.(err instanceof Error ? err : new Error('Export failed'));
-    }
-  }, [id, onExport, onError]);
+      try {
+        const exportData = await engineRef.current.exportChart(id, format);
+        onExport?.(exportData);
+      } catch (err) {
+        onError?.(err instanceof Error ? err : new Error('Export failed'));
+      }
+    },
+    [id, onExport, onError]
+  );
 
   const renderChart = () => {
     if (!context) return null;
@@ -508,17 +545,31 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
     switch (type) {
       case ChartType.LINE:
       case ChartType.AREA:
-        return <LineChartRenderer context={context} containerRef={containerRef} />;
+        return (
+          <LineChartRenderer context={context} containerRef={containerRef} />
+        );
+
       case ChartType.BAR:
       case ChartType.COLUMN:
-        return <BarChartRenderer context={context} containerRef={containerRef} />;
+        return (
+          <BarChartRenderer context={context} containerRef={containerRef} />
+        );
+
       case ChartType.PIE:
       case ChartType.DOUGHNUT:
-        return <PieChartRenderer context={context} containerRef={containerRef} />;
+        return (
+          <PieChartRenderer context={context} containerRef={containerRef} />
+        );
+
       case ChartType.SCATTER:
-        return <ScatterPlotRenderer context={context} containerRef={containerRef} />;
+        return (
+          <ScatterPlotRenderer context={context} containerRef={containerRef} />
+        );
+
       default:
-        return <LineChartRenderer context={context} containerRef={containerRef} />;
+        return (
+          <LineChartRenderer context={context} containerRef={containerRef} />
+        );
     }
   };
 
@@ -529,20 +580,25 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
     border: '1px solid #e0e0e0',
     borderRadius: '4px',
     backgroundColor: '#ffffff',
-    ...style
+    ...style,
   };
 
   if (isLoading) {
     return (
-      <div className={`universal-chart loading ${className}`} style={containerStyle}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          fontSize: '14px',
-          color: '#666'
-        }}>
+      <div
+        className={`universal-chart loading ${className}`}
+        style={containerStyle}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            fontSize: '14px',
+            color: '#666',
+          }}
+        >
           Loading chart...
         </div>
       </div>
@@ -551,17 +607,22 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
 
   if (error) {
     return (
-      <div className={`universal-chart error ${className}`} style={containerStyle}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          fontSize: '14px',
-          color: '#d32f2f',
-          textAlign: 'center',
-          padding: '20px'
-        }}>
+      <div
+        className={`universal-chart error ${className}`}
+        style={containerStyle}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            fontSize: '14px',
+            color: '#d32f2f',
+            textAlign: 'center',
+            padding: '20px',
+          }}
+        >
           Error: {error}
         </div>
       </div>
@@ -575,7 +636,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         {renderChart()}
@@ -583,13 +644,15 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
 
       {/* Export controls (optional) */}
       {onExport && (
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          display: 'flex',
-          gap: '5px'
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            display: 'flex',
+            gap: '5px',
+          }}
+        >
           <button
             onClick={() => handleExport('png')}
             style={{
@@ -598,7 +661,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
               border: '1px solid #ccc',
               borderRadius: '3px',
               backgroundColor: '#fff',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             PNG
@@ -611,7 +674,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
               border: '1px solid #ccc',
               borderRadius: '3px',
               backgroundColor: '#fff',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             SVG
