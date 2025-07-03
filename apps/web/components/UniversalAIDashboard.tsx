@@ -255,7 +255,7 @@ const UniversalAIDashboard: React.FC = () => {
           {value || 0}
         </div>
         <div className='text-sm text-gray-600' data-oid='7-iwfhq'>
-          {title}
+          Sessions
         </div>
       </div>
       {trend && (
@@ -522,7 +522,6 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+12.3% this week'
               icon='VIS'
               data-oid='v5n_qu1'
-              key='olk-f7MT'
             />
 
             <StatCard
@@ -532,7 +531,6 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+8.7% today'
               icon='SES'
               data-oid='0yhfbak'
-              key='olk-1Pn5'
             />
 
             <StatCard
@@ -542,7 +540,15 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+2.1% improvement'
               icon='CVR'
               data-oid='s3w.8-g'
-              key='olk-7Lwy'
+            />
+
+            <StatCard
+              title='Revenue Generated'
+              value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
+              subtitle='Attribution modeling'
+              trend='+15.4% this month'
+              icon='REV'
+              data-oid='95e4wn_'
             />
 
             <StatCard
@@ -552,7 +558,6 @@ const UniversalAIDashboard: React.FC = () => {
               trend='3 completed today'
               icon='AB'
               data-oid='cv_tbrj'
-              key='olk-FOMR'
             />
 
             <StatCard
@@ -562,7 +567,6 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+1.8% improvement'
               icon='ML'
               data-oid='mjj1mtq'
-              key='olk-b7oV'
             />
           </div>
         </section>
@@ -573,7 +577,7 @@ const UniversalAIDashboard: React.FC = () => {
             className='text-xl font-semibold mb-6 text-blue-600'
             data-oid='h7q0c1k'
           >
-            SaaS Analytics Dashboard
+            Detailed Overview
           </h3>
 
           {/* Conversion Rate Trend Chart - Now First */}

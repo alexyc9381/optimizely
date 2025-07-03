@@ -102,7 +102,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     className='text-2xl font-bold text-gray-900'
                     data-oid='gyhpg40'
                   >
-                    Dashboard
+                    {title === 'Optelo'
+                      ? 'Dashboard'
+                      : title.replace('Optelo - ', '')}
                   </h1>
                   <p className='text-sm text-gray-500 mt-1' data-oid='ox5u4s7'>
                     Welcome to your Optelo Analytics Dashboard
