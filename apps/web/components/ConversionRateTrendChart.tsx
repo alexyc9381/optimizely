@@ -115,13 +115,10 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({ cla
     }, 300);
   }, [timeframe, selectedTest]);
 
-  // Calculate max value for chart scaling
-  const maxValue = Math.max(
-    ...data.flatMap(d => [d.control, d.variant_a, d.variant_b, d.variant_c].filter((x): x is number => x != null))
-  );
+  const maxValue = 20;
 
   // Generate SVG path for line chart
-  const generatePath = (values: number[], color: string) => {
+  const generatePath = (values: number[]) => {
     if (values.length === 0) return '';
 
     const width = 400;
@@ -283,7 +280,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({ cla
                 return (
                   <path
                     key={variant.id}
-                    d={generatePath(values, variant.color)}
+                    d={generatePath(values)}
                     stroke={variant.color}
                     strokeWidth={variant.isControl ? "3" : "2"}
                     strokeDasharray={variant.isControl ? "0" : "0"}
