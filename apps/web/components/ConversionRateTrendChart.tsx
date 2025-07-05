@@ -234,12 +234,12 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 setShowTimeDropdown(!showTimeDropdown);
                 setShowTestDropdown(false);
               }}
-              className='flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex items-center gap-1.5 px-2 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
               data-oid='etb4khc'
             >
-              <Calendar className='w-4 h-4' data-oid='._28642' />
+              <Calendar className='w-3 h-3' data-oid='._28642' />
               {currentTimeframe?.label}
-              <ChevronDown className='w-4 h-4' data-oid=':ncd2a3' />
+              <ChevronDown className='w-3 h-3' data-oid=':ncd2a3' />
             </button>
 
             {showTimeDropdown && (
