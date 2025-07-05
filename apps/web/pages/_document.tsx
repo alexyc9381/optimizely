@@ -24,7 +24,7 @@ export default function Document() {
           data-oid='-ux5w4a'
         />
       </Head>
-      <body data-oid='.nze9hk'>
+      <body data-oid='.nze9hk' className='h-[3416px]'>
         <Main data-oid='3-l7qat' />
         <NextScript data-oid='19okrik' />
       </body>
