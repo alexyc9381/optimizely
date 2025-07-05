@@ -155,7 +155,7 @@ const WebMetricsChart: React.FC = () => {
         <div className='relative' data-oid='td7aifr'>
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className='flex items-center space-x-1.5 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg border transition-colors'
+            className='flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-50 rounded-lg border transition-colors'
             data-oid='go-bnlw'
           >
             <span
