@@ -596,133 +596,204 @@ const UniversalAIDashboard: React.FC = () => {
               >
                 Conversion Funnel
               </h4>
-              <div className='space-y-3' data-oid='_4ox-_u'>
-                <div
-                  className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'
-                  data-oid='hzxw24k'
-                >
-                  <span
-                    className='text-sm font-medium text-gray-700'
-                    data-oid='7bym_qn'
-                  >
-                    Visitors
-                  </span>
+              <div
+                className='h-[420px] flex flex-col justify-center'
+                data-oid='_4ox-_u'
+              >
+                {/* Interactive Funnel Visualization */}
+                <div className='space-y-4' data-oid='7._3aqb'>
+                  {/* Visitors - Top of funnel */}
                   <div
-                    className='flex items-center space-x-2'
-                    data-oid='prqxz4r'
+                    className='relative group cursor-pointer transition-all duration-300 hover:scale-105'
+                    data-oid='qe09rh8'
                   >
                     <div
-                      className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='fei:aut'
+                      className='bg-gradient-to-r from-blue-500 to-blue-600 h-16 rounded-lg shadow-lg flex items-center justify-between px-6 text-white'
+                      data-oid='-d40968'
                     >
-                      <div
-                        className='bg-blue-600 h-2 rounded-full'
-                        style={{ width: '100%' }}
-                        data-oid='3gr30-c'
-                      ></div>
+                      <div data-oid='daev-rx'>
+                        <div className='text-lg font-bold' data-oid='bs-u55-'>
+                          24,789
+                        </div>
+                        <div className='text-sm opacity-90' data-oid='3e1-:9w'>
+                          Visitors
+                        </div>
+                      </div>
+                      <div className='text-right' data-oid='b63xqko'>
+                        <div className='text-sm opacity-90' data-oid='571x7_w'>
+                          100%
+                        </div>
+                        <div className='text-xs opacity-75' data-oid='ugruyar'>
+                          +12.3% vs last week
+                        </div>
+                      </div>
                     </div>
-                    <span
-                      className='text-sm font-bold text-gray-900'
-                      data-oid='i54.s86'
+                    {/* Tooltip */}
+                    <div
+                      className='absolute left-1/2 transform -translate-x-1/2 -top-12 bg-gray-900 text-white px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap'
+                      data-oid='c:yea6d'
                     >
-                      24,789
-                    </span>
+                      Total unique visitors across all channels
+                    </div>
+                  </div>
+
+                  {/* Sign-ups */}
+                  <div
+                    className='relative group cursor-pointer transition-all duration-300 hover:scale-105 ml-8'
+                    data-oid='2t-a-57'
+                  >
+                    <div
+                      className='bg-gradient-to-r from-green-500 to-green-600 h-14 rounded-lg shadow-lg flex items-center justify-between px-6 text-white'
+                      style={{ width: '85%' }}
+                      data-oid='ymntvyb'
+                    >
+                      <div data-oid='z5flwp9'>
+                        <div className='text-lg font-bold' data-oid='9bysfw1'>
+                          11,155
+                        </div>
+                        <div className='text-sm opacity-90' data-oid='bwo6vsh'>
+                          Sign-ups
+                        </div>
+                      </div>
+                      <div className='text-right' data-oid='iyxr.zx'>
+                        <div className='text-sm opacity-90' data-oid=':ptnfo4'>
+                          45%
+                        </div>
+                        <div className='text-xs opacity-75' data-oid='ti2esoy'>
+                          +8.7% conversion
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className='absolute left-1/2 transform -translate-x-1/2 -top-12 bg-gray-900 text-white px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap'
+                      data-oid='cvys4yc'
+                    >
+                      Users who completed registration
+                    </div>
+                  </div>
+
+                  {/* Trial Users */}
+                  <div
+                    className='relative group cursor-pointer transition-all duration-300 hover:scale-105 ml-16'
+                    data-oid='j1nlw2z'
+                  >
+                    <div
+                      className='bg-gradient-to-r from-orange-500 to-orange-600 h-12 rounded-lg shadow-lg flex items-center justify-between px-6 text-white'
+                      style={{ width: '70%' }}
+                      data-oid='t4on3um'
+                    >
+                      <div data-oid='55_qxpc'>
+                        <div className='text-lg font-bold' data-oid='npc9tff'>
+                          6,197
+                        </div>
+                        <div className='text-sm opacity-90' data-oid='p3ywn00'>
+                          Trial Users
+                        </div>
+                      </div>
+                      <div className='text-right' data-oid='be:.djg'>
+                        <div className='text-sm opacity-90' data-oid='aoj:ono'>
+                          25%
+                        </div>
+                        <div className='text-xs opacity-75' data-oid='vifjrbw'>
+                          55.6% from signups
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className='absolute left-1/2 transform -translate-x-1/2 -top-12 bg-gray-900 text-white px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap'
+                      data-oid='66v._xa'
+                    >
+                      Active trial subscriptions
+                    </div>
+                  </div>
+
+                  {/* Paid Customers */}
+                  <div
+                    className='relative group cursor-pointer transition-all duration-300 hover:scale-105 ml-24'
+                    data-oid='f-k0e8m'
+                  >
+                    <div
+                      className='bg-gradient-to-r from-purple-500 to-purple-600 h-10 rounded-lg shadow-lg flex items-center justify-between px-6 text-white'
+                      style={{ width: '55%' }}
+                      data-oid='kl25r1j'
+                    >
+                      <div data-oid='hhv7k2l'>
+                        <div className='text-lg font-bold' data-oid=':hny0mi'>
+                          1,983
+                        </div>
+                        <div className='text-sm opacity-90' data-oid='hvvsh11'>
+                          Paid Customers
+                        </div>
+                      </div>
+                      <div className='text-right' data-oid='ia68_.1'>
+                        <div className='text-sm opacity-90' data-oid='275hkqz'>
+                          8%
+                        </div>
+                        <div className='text-xs opacity-75' data-oid='woazb3k'>
+                          32% from trials
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className='absolute left-1/2 transform -translate-x-1/2 -top-12 bg-gray-900 text-white px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap'
+                      data-oid='7c:tb0n'
+                    >
+                      Converting paid subscribers
+                    </div>
                   </div>
                 </div>
+
+                {/* Funnel Insights */}
                 <div
-                  className='flex items-center justify-between p-3 bg-green-50 rounded-lg'
-                  data-oid='m0ll:_a'
+                  className='mt-6 pt-4 border-t border-gray-200'
+                  data-oid='xqlkoke'
                 >
-                  <span
-                    className='text-sm font-medium text-gray-700'
-                    data-oid='k.2xws.'
-                  >
-                    Sign-ups
-                  </span>
                   <div
-                    className='flex items-center space-x-2'
-                    data-oid='uq71f_y'
+                    className='grid grid-cols-3 gap-4 text-center'
+                    data-oid='3hgkjc2'
                   >
-                    <div
-                      className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='wy3uoet'
-                    >
+                    <div data-oid='2qq5-gg'>
                       <div
-                        className='bg-green-600 h-2 rounded-full'
-                        style={{ width: '45%' }}
-                        data-oid='3e29lm_'
-                      ></div>
+                        className='text-sm font-semibold text-green-600'
+                        data-oid='he.knn7'
+                      >
+                        Best Stage
+                      </div>
+                      <div className='text-xs text-gray-600' data-oid='.kkt12-'>
+                        Visitor → Signup
+                      </div>
+                      <div className='text-xs text-gray-500' data-oid='0b21rua'>
+                        45% conversion
+                      </div>
                     </div>
-                    <span
-                      className='text-sm font-bold text-gray-900'
-                      data-oid='kdj0it1'
-                    >
-                      11,155
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className='flex items-center justify-between p-3 bg-orange-50 rounded-lg'
-                  data-oid='9abicg.'
-                >
-                  <span
-                    className='text-sm font-medium text-gray-700'
-                    data-oid='f_fkbk3'
-                  >
-                    Trial Users
-                  </span>
-                  <div
-                    className='flex items-center space-x-2'
-                    data-oid='ggcl1dz'
-                  >
-                    <div
-                      className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='1e4a32x'
-                    >
+                    <div data-oid='ja-6x1l'>
                       <div
-                        className='bg-orange-600 h-2 rounded-full'
-                        style={{ width: '25%' }}
-                        data-oid='s:mbd93'
-                      ></div>
+                        className='text-sm font-semibold text-orange-600'
+                        data-oid='-cok_ax'
+                      >
+                        Opportunity
+                      </div>
+                      <div className='text-xs text-gray-600' data-oid='lajl.ln'>
+                        Trial → Paid
+                      </div>
+                      <div className='text-xs text-gray-500' data-oid='_hcza:i'>
+                        32% conversion
+                      </div>
                     </div>
-                    <span
-                      className='text-sm font-bold text-gray-900'
-                      data-oid='18wwejv'
-                    >
-                      6,197
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className='flex items-center justify-between p-3 bg-blue-50 rounded-lg'
-                  data-oid='cowx3-l'
-                >
-                  <span
-                    className='text-sm font-medium text-gray-700'
-                    data-oid='2wa-2o6'
-                  >
-                    Paid Customers
-                  </span>
-                  <div
-                    className='flex items-center space-x-2'
-                    data-oid='s2b026p'
-                  >
-                    <div
-                      className='w-32 bg-gray-200 rounded-full h-2'
-                      data-oid='ke.tnq7'
-                    >
+                    <div data-oid='mt5_v8k'>
                       <div
-                        className='bg-blue-600 h-2 rounded-full'
-                        style={{ width: '8%' }}
-                        data-oid='43_vqbh'
-                      ></div>
+                        className='text-sm font-semibold text-blue-600'
+                        data-oid='kx6wt6.'
+                      >
+                        Overall
+                      </div>
+                      <div className='text-xs text-gray-600' data-oid='8.7w8.9'>
+                        End-to-end
+                      </div>
+                      <div className='text-xs text-gray-500' data-oid='iith94d'>
+                        8% conversion
+                      </div>
                     </div>
-                    <span
-                      className='text-sm font-bold text-gray-900'
-                      data-oid='vxxk52q'
-                    >
-                      1,983
-                    </span>
                   </div>
                 </div>
               </div>
