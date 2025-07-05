@@ -639,7 +639,7 @@ const UniversalAIDashboard: React.FC = () => {
                     >
                       <div data-oid='_t8xlql'>
                         <div
-                          className='text-xl font-bold transition-all duration-500'
+                          className='text-lg font-bold transition-all duration-500'
                           data-oid='02r_i18'
                         >
                           {funnelData.signups.count.toLocaleString()}
@@ -680,17 +680,17 @@ const UniversalAIDashboard: React.FC = () => {
                     >
                       <div data-oid='71jqdd:'>
                         <div
-                          className='text-xl font-bold transition-all duration-500'
+                          className='text-base font-bold transition-all duration-500'
                           data-oid='o52a.f-'
                         >
                           {funnelData.trials.count.toLocaleString()}
                         </div>
-                        <div className='text-sm opacity-90' data-oid='txv:zdo'>
+                        <div className='text-xs opacity-90' data-oid='txv:zdo'>
                           Trial Users
                         </div>
                       </div>
                       <div className='text-right' data-oid='2rgjp4h'>
-                        <div className='text-sm opacity-90' data-oid='ziux-3z'>
+                        <div className='text-xs opacity-90' data-oid='ziux-3z'>
                           {funnelData.trials.percentage}%
                         </div>
                         <div className='text-xs opacity-75' data-oid='-3dvdko'>
@@ -721,17 +721,17 @@ const UniversalAIDashboard: React.FC = () => {
                     >
                       <div data-oid='s0w.m-g'>
                         <div
-                          className='text-xl font-bold transition-all duration-500'
+                          className='text-sm font-bold transition-all duration-500'
                           data-oid='89l6bs.'
                         >
                           {funnelData.paid.count.toLocaleString()}
                         </div>
-                        <div className='text-sm opacity-90' data-oid='i3.id3g'>
+                        <div className='text-xs opacity-90' data-oid='i3.id3g'>
                           Paid Customers
                         </div>
                       </div>
                       <div className='text-right' data-oid='d8ute-4'>
-                        <div className='text-sm opacity-90' data-oid='7_fbwr_'>
+                        <div className='text-xs opacity-90' data-oid='7_fbwr_'>
                           {funnelData.paid.percentage}%
                         </div>
                         <div className='text-xs opacity-75' data-oid='9vdlmrz'>
