@@ -186,17 +186,17 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 setShowTestDropdown(!showTestDropdown);
                 setShowTimeDropdown(false);
               }}
-              className='flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex items-center gap-1.5 px-2 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
               data-oid='khsvt7e'
             >
               <div
-                className='w-3 h-3 rounded-full'
+                className='w-2 h-2 rounded-full'
                 style={{ backgroundColor: currentTest?.color }}
                 data-oid='ax0t81_'
               />
 
               {currentTest?.name}
-              <ChevronDown className='w-4 h-4' data-oid='p03l3mw' />
+              <ChevronDown className='w-3 h-3' data-oid='p03l3mw' />
             </button>
 
             {showTestDropdown && (
