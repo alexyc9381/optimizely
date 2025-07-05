@@ -193,17 +193,17 @@ export const RealTimeExample: React.FC = () => {
     return (
       <div
         className='flex items-center justify-center min-h-screen'
-        data-oid='fsnrgc0'
+        data-oid='h.iuk4h'
       >
-        <div className='text-center' data-oid='o16uhj6'>
+        <div className='text-center' data-oid='78f1jxi'>
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4'
-            data-oid='ul1c7_0'
+            data-oid='lrkfi6e'
           ></div>
-          <p className='text-lg font-medium' data-oid='4.9929a'>
+          <p className='text-lg font-medium' data-oid='vzhrd63'>
             Initializing Real-Time System...
           </p>
-          <p className='text-sm text-gray-600 mt-2' data-oid='gpu.xca'>
+          <p className='text-sm text-gray-600 mt-2' data-oid='15wpwmk'>
             Status: {connectionStatus}
           </p>
         </div>
@@ -214,17 +214,17 @@ export const RealTimeExample: React.FC = () => {
   return (
     <div
       className='real-time-example min-h-screen bg-gray-50 p-6'
-      data-oid='zm3teid'
+      data-oid='e2h193r'
     >
       {/* Header */}
-      <div className='mb-8' data-oid='0u4o3hi'>
+      <div className='mb-8' data-oid='t2b559e'>
         <h1
           className='text-3xl font-bold text-gray-900 mb-2'
-          data-oid='5ejtdh1'
+          data-oid='1z-v1:i'
         >
           Real-Time Data Visualization System
         </h1>
-        <p className='text-gray-600' data-oid='u4.ir90'>
+        <p className='text-gray-600' data-oid='jxuet2m'>
           Live demonstration of WebSocket-powered real-time charts with
           performance optimization
         </p>
@@ -232,20 +232,20 @@ export const RealTimeExample: React.FC = () => {
         {/* Status Bar */}
         <div
           className='mt-4 flex items-center justify-between bg-white p-4 rounded-lg shadow'
-          data-oid='ya012fh'
+          data-oid='f_z3paf'
         >
-          <div className='flex items-center space-x-4' data-oid='e6trk1s'>
-            <div className='flex items-center space-x-2' data-oid='v4sbd9z'>
+          <div className='flex items-center space-x-4' data-oid='84v7fjf'>
+            <div className='flex items-center space-x-2' data-oid='jf2c8.-'>
               <div
                 className={`w-3 h-3 rounded-full ${
                   connectionStatus === 'connected'
                     ? 'bg-green-500'
                     : 'bg-red-500'
                 }`}
-                data-oid='wpjdwlr'
+                data-oid='n8lbl.x'
               />
 
-              <span className='font-medium' data-oid='vkzyg1a'>
+              <span className='font-medium' data-oid='s7esbb4'>
                 Connection: {connectionStatus}
               </span>
             </div>
@@ -253,26 +253,26 @@ export const RealTimeExample: React.FC = () => {
             {serviceStats && (
               <div
                 className='flex items-center space-x-4 text-sm text-gray-600'
-                data-oid='rgbpa1.'
+                data-oid='c1sl1lq'
               >
-                <span data-oid='uc.e0m-'>
+                <span data-oid='7ateyzs'>
                   Clients: {serviceStats.connectedClients}
                 </span>
-                <span data-oid='3p-5c1_'>
+                <span data-oid='t7uxphd'>
                   Subscriptions: {serviceStats.activeSubscriptions}
                 </span>
-                <span data-oid='gi6slas'>
+                <span data-oid='fv0poui'>
                   Streams: {serviceStats.dataStreams}
                 </span>
               </div>
             )}
           </div>
 
-          <div className='flex items-center space-x-2' data-oid='-hrh87m'>
+          <div className='flex items-center space-x-2' data-oid='_may-ft'>
             <button
               onClick={() => window.location.reload()}
               className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
-              data-oid='8l8iz4s'
+              data-oid='k3t337:'
             >
               Restart System
             </button>
@@ -281,25 +281,25 @@ export const RealTimeExample: React.FC = () => {
       </div>
 
       {/* Individual Chart Examples */}
-      <div className='mb-12' data-oid='phld1_i'>
-        <h2 className='text-2xl font-bold mb-6' data-oid='wl20:y4'>
+      <div className='mb-12' data-oid='nfcbhdd'>
+        <h2 className='text-2xl font-bold mb-6' data-oid='uutwrvg'>
           Individual Chart Examples
         </h2>
 
         <div
           className='grid grid-cols-1 lg:grid-cols-2 gap-8'
-          data-oid='m_vt7f7'
+          data-oid='3mxqc-m'
         >
           {/* Analytics Line Chart */}
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='q9kybq-'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='gd_grh1'>
             <div
               className='flex items-center justify-between mb-4'
-              data-oid='q1pv8r.'
+              data-oid='z5bi5il'
             >
-              <h3 className='text-lg font-semibold' data-oid='kzvu2e-'>
+              <h3 className='text-lg font-semibold' data-oid='tj_ntp9'>
                 Website Analytics (Line Chart)
               </h3>
-              <RealTimeControls chartId='analytics-chart' data-oid='gnc8fo6' />
+              <RealTimeControls chartId='analytics-chart' data-oid='0db.d1u' />
             </div>
 
             <RealTimeChart
@@ -311,22 +311,22 @@ export const RealTimeExample: React.FC = () => {
               showPerformanceMetrics={true}
               showTrend={true}
               colors={['#3b82f6', '#10b981', '#f59e0b']}
-              data-oid='q6aw3nu'
+              data-oid='7vqfwxi'
             />
           </div>
 
           {/* System Metrics Area Chart */}
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='fvnxx:x'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='dsphqp4'>
             <div
               className='flex items-center justify-between mb-4'
-              data-oid='h1fgorv'
+              data-oid='y:cdfrv'
             >
-              <h3 className='text-lg font-semibold' data-oid='l_s0n2e'>
+              <h3 className='text-lg font-semibold' data-oid='1qae:l:'>
                 System Metrics (Area Chart)
               </h3>
               <RealTimeControls
                 chartId='system-metrics-chart'
-                data-oid='jxg0nve'
+                data-oid='o62_s7m'
               />
             </div>
 
@@ -339,20 +339,20 @@ export const RealTimeExample: React.FC = () => {
               showPerformanceMetrics={true}
               showTrend={true}
               colors={['#ef4444', '#8b5cf6', '#06b6d4']}
-              data-oid='zb-fwdk'
+              data-oid='0a:3kc5'
             />
           </div>
 
           {/* A/B Testing Bar Chart */}
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='o7_bs5u'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='j:-0-n3'>
             <div
               className='flex items-center justify-between mb-4'
-              data-oid='26:gx2l'
+              data-oid='yog0q2h'
             >
-              <h3 className='text-lg font-semibold' data-oid='luco5tn'>
+              <h3 className='text-lg font-semibold' data-oid='gyn_k9u'>
                 A/B Test Results (Bar Chart)
               </h3>
-              <RealTimeControls chartId='ab-testing-chart' data-oid='4uce-y1' />
+              <RealTimeControls chartId='ab-testing-chart' data-oid='pohke-_' />
             </div>
 
             <RealTimeChart
@@ -364,22 +364,22 @@ export const RealTimeExample: React.FC = () => {
               showPerformanceMetrics={true}
               showTrend={false}
               colors={['#f97316', '#84cc16', '#ec4899']}
-              data-oid='gf_f1t.'
+              data-oid='r4ma-he'
             />
           </div>
 
           {/* Time Series Scatter Chart */}
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='u.:_ll0'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='es1gv49'>
             <div
               className='flex items-center justify-between mb-4'
-              data-oid='wjig1zh'
+              data-oid='n63w8lp'
             >
-              <h3 className='text-lg font-semibold' data-oid='jg0951s'>
+              <h3 className='text-lg font-semibold' data-oid='8lz33_5'>
                 Time Series Data (Scatter Chart)
               </h3>
               <RealTimeControls
                 chartId='time-series-chart'
-                data-oid='ju8mnf2'
+                data-oid='s..:sr_'
               />
             </div>
 
@@ -392,15 +392,15 @@ export const RealTimeExample: React.FC = () => {
               showPerformanceMetrics={true}
               showTrend={true}
               colors={['#6366f1']}
-              data-oid='4e02bo9'
+              data-oid='n-74fih'
             />
           </div>
         </div>
       </div>
 
       {/* Dashboard Example */}
-      <div className='mb-12' data-oid='8dyy1zb'>
-        <h2 className='text-2xl font-bold mb-6' data-oid='8xc1mwt'>
+      <div className='mb-12' data-oid='t:a.hpg'>
+        <h2 className='text-2xl font-bold mb-6' data-oid='bk4md-t'>
           Real-Time Dashboard
         </h2>
 
@@ -430,73 +430,73 @@ export const RealTimeExample: React.FC = () => {
           ]}
           layout='grid'
           showGlobalMetrics={true}
-          data-oid='.-.g2m_'
+          data-oid='kzuj.2o'
         />
       </div>
 
       {/* Performance Monitoring */}
-      <div className='mb-12' data-oid='e_68szj'>
-        <h2 className='text-2xl font-bold mb-6' data-oid='_b2.6xt'>
+      <div className='mb-12' data-oid='dwwx.:o'>
+        <h2 className='text-2xl font-bold mb-6' data-oid='sq0nqg.'>
           Performance Monitoring
         </h2>
 
-        <div className='bg-white p-6 rounded-lg shadow' data-oid='-qfc9v9'>
-          <h3 className='text-lg font-semibold mb-4' data-oid='zmsdkm3'>
+        <div className='bg-white p-6 rounded-lg shadow' data-oid='e4nhls6'>
+          <h3 className='text-lg font-semibold mb-4' data-oid='hrfz.h5'>
             Global Performance Metrics
           </h3>
           <RealTimeMetricsDisplay
             chartId='global'
             position='top'
             showDetails={true}
-            data-oid='420eikh'
+            data-oid='kdymqz7'
           />
 
           {/* Additional performance details */}
           <div
             className='mt-6 grid grid-cols-1 md:grid-cols-3 gap-4'
-            data-oid='d8y3a-3'
+            data-oid='ahq3c6p'
           >
-            <div className='p-4 bg-gray-50 rounded' data-oid='qvehyd3'>
-              <h4 className='font-medium text-gray-700 mb-2' data-oid='3lo-z1y'>
+            <div className='p-4 bg-gray-50 rounded' data-oid='1xc6:ya'>
+              <h4 className='font-medium text-gray-700 mb-2' data-oid='mj:b_11'>
                 Data Throughput
               </h4>
               <p
                 className='text-2xl font-bold text-blue-600'
-                data-oid='2gxvika'
+                data-oid='af5ymz:'
               >
                 {serviceStats?.dataStreams || 0} streams
               </p>
-              <p className='text-sm text-gray-600' data-oid='xovml58'>
+              <p className='text-sm text-gray-600' data-oid='a.2nwwe'>
                 Active data streams
               </p>
             </div>
 
-            <div className='p-4 bg-gray-50 rounded' data-oid='qwhilw6'>
-              <h4 className='font-medium text-gray-700 mb-2' data-oid='24pmoxd'>
+            <div className='p-4 bg-gray-50 rounded' data-oid='frq5-en'>
+              <h4 className='font-medium text-gray-700 mb-2' data-oid='vna6lpa'>
                 Client Connections
               </h4>
               <p
                 className='text-2xl font-bold text-green-600'
-                data-oid='4qu:rke'
+                data-oid='umyqz40'
               >
                 {serviceStats?.connectedClients || 0}
               </p>
-              <p className='text-sm text-gray-600' data-oid='2wst5lb'>
+              <p className='text-sm text-gray-600' data-oid='axhu3t0'>
                 WebSocket connections
               </p>
             </div>
 
-            <div className='p-4 bg-gray-50 rounded' data-oid='39cjx5t'>
-              <h4 className='font-medium text-gray-700 mb-2' data-oid='7va6.zg'>
+            <div className='p-4 bg-gray-50 rounded' data-oid='ujxnqb.'>
+              <h4 className='font-medium text-gray-700 mb-2' data-oid='m38ypej'>
                 Active Subscriptions
               </h4>
               <p
                 className='text-2xl font-bold text-purple-600'
-                data-oid='mhkny6t'
+                data-oid='s2oapjn'
               >
                 {serviceStats?.activeSubscriptions || 0}
               </p>
-              <p className='text-sm text-gray-600' data-oid='au9pzr0'>
+              <p className='text-sm text-gray-600' data-oid='y3petfk'>
                 Chart subscriptions
               </p>
             </div>
@@ -505,136 +505,136 @@ export const RealTimeExample: React.FC = () => {
       </div>
 
       {/* Technical Features */}
-      <div className='mb-12' data-oid=':fz72ud'>
-        <h2 className='text-2xl font-bold mb-6' data-oid='h9u2s8f'>
+      <div className='mb-12' data-oid='fzw1xbd'>
+        <h2 className='text-2xl font-bold mb-6' data-oid=':lcc7::'>
           Technical Features
         </h2>
 
         <div
           className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-          data-oid='nul159k'
+          data-oid='en24ft4'
         >
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='m.53f-a'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='53_5:in'>
             <h3
               className='font-semibold text-green-600 mb-2'
-              data-oid='nf-kuh4'
+              data-oid='_vzzfs7'
             >
               ✅ WebSocket Integration
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='t4azdzd'>
-              <li data-oid='e7fdu57'>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='ey7m4gy'>
+              <li data-oid=':euww2v'>
                 • Real-time bidirectional communication
               </li>
-              <li data-oid='diq7:uz'>• Automatic reconnection handling</li>
-              <li data-oid='nd75u6u'>• Heartbeat monitoring</li>
-              <li data-oid='m6-ze5y'>• Connection status tracking</li>
+              <li data-oid='2xupsw8'>• Automatic reconnection handling</li>
+              <li data-oid='54ycruu'>• Heartbeat monitoring</li>
+              <li data-oid='ejgeo7u'>• Connection status tracking</li>
             </ul>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='yn4-4i-'>
-            <h3 className='font-semibold text-blue-600 mb-2' data-oid='2locw_.'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='x7nsmrl'>
+            <h3 className='font-semibold text-blue-600 mb-2' data-oid='kgeu9xb'>
               ⚡ Performance Optimization
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='k76uzvs'>
-              <li data-oid='1f_ma9k'>• Data throttling and buffering</li>
-              <li data-oid='.szb_5s'>• Efficient rendering (no animations)</li>
-              <li data-oid=':0jowh2'>• Memory usage monitoring</li>
-              <li data-oid='ehwc5j4'>• Frame drop detection</li>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='0yc066b'>
+              <li data-oid='f1zjstn'>• Data throttling and buffering</li>
+              <li data-oid='ixoy6ts'>• Efficient rendering (no animations)</li>
+              <li data-oid='o41lcju'>• Memory usage monitoring</li>
+              <li data-oid='-gpuzjc'>• Frame drop detection</li>
             </ul>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='y1k3a36'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='1jg18rg'>
             <h3
               className='font-semibold text-purple-600 mb-2'
-              data-oid='.:.r0h3'
+              data-oid='tyixbd1'
             >
               📊 Advanced Analytics
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='f1cj:__'>
-              <li data-oid='pix3ujs'>• Real-time trend calculation</li>
-              <li data-oid='1tl863z'>• Data aggregation windows</li>
-              <li data-oid='-s6j6hk'>• Filtering and transformations</li>
-              <li data-oid='p1y1a.i'>• Multiple chart types support</li>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='nrzq909'>
+              <li data-oid='h.v24w-'>• Real-time trend calculation</li>
+              <li data-oid='qpntbkw'>• Data aggregation windows</li>
+              <li data-oid='_qc.nip'>• Filtering and transformations</li>
+              <li data-oid='sxfk78_'>• Multiple chart types support</li>
             </ul>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='hlaxd-:'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='q523d_v'>
             <h3
               className='font-semibold text-orange-600 mb-2'
-              data-oid='s52kmn4'
+              data-oid='uzjzl1o'
             >
               🎛️ Interactive Controls
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='_65f8n.'>
-              <li data-oid='rumml6c'>• Pause/resume streaming</li>
-              <li data-oid='1kgn52t'>• Clear chart data</li>
-              <li data-oid='kag7w4k'>• Export data functionality</li>
-              <li data-oid='hh-jkro'>• Real-time configuration</li>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='xh.2z6s'>
+              <li data-oid='eo.-9nu'>• Pause/resume streaming</li>
+              <li data-oid='i3c45u1'>• Clear chart data</li>
+              <li data-oid='2vgo97y'>• Export data functionality</li>
+              <li data-oid='ou2ih70'>• Real-time configuration</li>
             </ul>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='b50wvrk'>
-            <h3 className='font-semibold text-red-600 mb-2' data-oid='wd:0zgp'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='y9nym4n'>
+            <h3 className='font-semibold text-red-600 mb-2' data-oid='okrh9pa'>
               🔄 Data Streaming
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='kzt5v6q'>
-              <li data-oid='2fmlfje'>• Mock data generators</li>
-              <li data-oid='gr5k6r.'>• Multiple data sources</li>
-              <li data-oid='qy6yl:.'>• Data compression support</li>
-              <li data-oid='ebieb8k'>• Buffer overflow handling</li>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='z0:omf4'>
+              <li data-oid='wciyhup'>• Mock data generators</li>
+              <li data-oid='y_q-dzc'>• Multiple data sources</li>
+              <li data-oid='f4d.zby'>• Data compression support</li>
+              <li data-oid='twkt5::'>• Buffer overflow handling</li>
             </ul>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow' data-oid='t.1s.z5'>
+          <div className='bg-white p-6 rounded-lg shadow' data-oid='x6v:mho'>
             <h3
               className='font-semibold text-indigo-600 mb-2'
-              data-oid='ql69epo'
+              data-oid='bq8pz4h'
             >
               📱 Responsive Design
             </h3>
-            <ul className='text-sm text-gray-600 space-y-1' data-oid='4my-gg5'>
-              <li data-oid='9sqwbs-'>• Mobile-optimized layouts</li>
-              <li data-oid='0vlco6u'>• Adaptive chart sizing</li>
-              <li data-oid='bpzn.29'>• Touch-friendly controls</li>
-              <li data-oid='h7:djtw'>• Cross-browser compatibility</li>
+            <ul className='text-sm text-gray-600 space-y-1' data-oid='_adcqf3'>
+              <li data-oid='zwauz22'>• Mobile-optimized layouts</li>
+              <li data-oid='yrm8qkq'>• Adaptive chart sizing</li>
+              <li data-oid='5x7r2l9'>• Touch-friendly controls</li>
+              <li data-oid='zu.4cj3'>• Cross-browser compatibility</li>
             </ul>
           </div>
         </div>
       </div>
 
       {/* Usage Instructions */}
-      <div className='bg-blue-50 p-6 rounded-lg' data-oid='27kfd21'>
+      <div className='bg-blue-50 p-6 rounded-lg' data-oid='i1mlzug'>
         <h3
           className='text-lg font-semibold text-blue-900 mb-4'
-          data-oid='dy0k4uz'
+          data-oid='n36:sde'
         >
           🚀 How to Use This System
         </h3>
 
-        <div className='prose text-blue-800' data-oid='nj87z5_'>
-          <ol className='list-decimal list-inside space-y-2' data-oid='2.zaa.4'>
-            <li data-oid='v8i4.-5'>
-              <strong data-oid='da9_488'>WebSocket Connection:</strong> The
+        <div className='prose text-blue-800' data-oid='ikz7tem'>
+          <ol className='list-decimal list-inside space-y-2' data-oid='31k043c'>
+            <li data-oid='d0s09c7'>
+              <strong data-oid='bgciqpw'>WebSocket Connection:</strong> The
               system automatically connects to a WebSocket server for real-time
               data streaming. Connection status is shown in the top status bar.
             </li>
-            <li data-oid='7bwbbir'>
-              <strong data-oid='b-a5ta3'>Chart Interaction:</strong> Use the
+            <li data-oid='yc6op5m'>
+              <strong data-oid='ky.fzc7'>Chart Interaction:</strong> Use the
               control buttons to pause/resume data streaming, clear chart data,
               or export data to JSON format.
             </li>
-            <li data-oid='rfk349_'>
-              <strong data-oid='o_t_wdb'>Performance Monitoring:</strong> Watch
+            <li data-oid='0h7az6.'>
+              <strong data-oid='5kyar5o'>Performance Monitoring:</strong> Watch
               the performance metrics to see real-time update rates, latency,
               buffer utilization, and memory usage.
             </li>
-            <li data-oid='6x2vo0c'>
-              <strong data-oid='r:tstpw'>Trend Analysis:</strong> Charts with
+            <li data-oid='vtp.elg'>
+              <strong data-oid='f4bfo3y'>Trend Analysis:</strong> Charts with
               trend analysis enabled show directional indicators and strength
               percentages for data trends.
             </li>
-            <li data-oid='ek8p6fm'>
-              <strong data-oid='8_c22p.'>Dashboard View:</strong> The dashboard
+            <li data-oid='8gl77uh'>
+              <strong data-oid='tfz0g1c'>Dashboard View:</strong> The dashboard
               combines multiple charts with global performance metrics for
               comprehensive monitoring.
             </li>

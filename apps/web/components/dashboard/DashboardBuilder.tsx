@@ -396,12 +396,12 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   if (isLoading) {
     return (
-      <div className='flex items-center justify-center h-64' data-oid='ch66men'>
+      <div className='flex items-center justify-center h-64' data-oid='0sjxj3j'>
         <div
           className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'
-          data-oid='95sfgzo'
+          data-oid='hle5lkw'
         ></div>
-        <span className='ml-2' data-oid='w_q7v_3'>
+        <span className='ml-2' data-oid='v.el77t'>
           Loading dashboard...
         </span>
       </div>
@@ -412,18 +412,18 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     return (
       <div
         className='bg-red-50 border border-red-200 rounded-lg p-4'
-        data-oid='o51.8fy'
+        data-oid='q1wy.es'
       >
-        <h3 className='text-red-800 font-medium' data-oid='kpycu-l'>
+        <h3 className='text-red-800 font-medium' data-oid='hb8iy_h'>
           Error
         </h3>
-        <p className='text-red-600 mt-1' data-oid='kkd.3vm'>
+        <p className='text-red-600 mt-1' data-oid='jcdfap:'>
           {error}
         </p>
         <button
           onClick={() => dashboard?.id && loadDashboard(dashboard.id)}
           className='mt-2 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700'
-          data-oid='v45c0z-'
+          data-oid='h_t6auu'
         >
           Retry
         </button>
@@ -433,8 +433,8 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   if (!dashboard) {
     return (
-      <div className='text-center py-8' data-oid='-5-hckd'>
-        <p className='text-gray-500' data-oid='8wjc2ae'>
+      <div className='text-center py-8' data-oid='-2t421y'>
+        <p className='text-gray-500' data-oid='zjg4kdv'>
           No dashboard to display
         </p>
       </div>
@@ -445,17 +445,17 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     <div
       className='dashboard-builder h-full flex flex-col'
       ref={containerRef}
-      data-oid='r_5bnd0'
+      data-oid='95kkcj2'
     >
       {/* Header */}
       <div
         className='dashboard-header bg-white border-b border-gray-200 p-4 flex items-center justify-between'
-        data-oid='0d56:2v'
+        data-oid='ro-hhoc'
       >
-        <div className='flex items-center space-x-4' data-oid='8i5yhf0'>
+        <div className='flex items-center space-x-4' data-oid='pj_g._i'>
           <h1
             className='text-xl font-semibold text-gray-900'
-            data-oid='a1bgm9i'
+            data-oid='n5lszm7'
           >
             {dashboard.name}
           </h1>
@@ -467,7 +467,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                   ? 'text-yellow-600'
                   : 'text-red-600'
             }`}
-            data-oid='14u_99h'
+            data-oid='foh2djj'
           >
             <div
               className={`w-2 h-2 rounded-full ${
@@ -477,28 +477,28 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                     ? 'bg-yellow-500'
                     : 'bg-red-500'
               }`}
-              data-oid='0lx63lh'
+              data-oid='0h2ed0s'
             ></div>
-            <span className='capitalize' data-oid='d_q2hmz'>
+            <span className='capitalize' data-oid='5mohl3l'>
               {connectionStatus}
             </span>
           </div>
         </div>
 
-        <div className='flex items-center space-x-2' data-oid='tumsrov'>
+        <div className='flex items-center space-x-2' data-oid='d5b46vu'>
           {isEditable && (
             <>
               <button
                 onClick={() => setShowWidgetSelector(true)}
                 className='bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700'
-                data-oid='k1svc3y'
+                data-oid='yuw8ce9'
               >
                 Add Widget
               </button>
               <button
                 onClick={() => onSave?.(dashboard)}
                 className='bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700'
-                data-oid='4e4ikzg'
+                data-oid='bsdjnzi'
               >
                 Save
               </button>
@@ -507,7 +507,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
           <button
             onClick={refreshData}
             className='bg-gray-600 text-white px-3 py-2 rounded text-sm hover:bg-gray-700'
-            data-oid='03oc04z'
+            data-oid='doero7g'
           >
             Refresh
           </button>
@@ -517,13 +517,13 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
       {/* Dashboard Grid */}
       <div
         className='dashboard-grid flex-1 overflow-auto p-4'
-        data-oid='.mg0xq4'
+        data-oid='tr.es5f'
       >
-        <DragDropContext onDragEnd={handleDragEnd} data-oid='y2gmprl'>
+        <DragDropContext onDragEnd={handleDragEnd} data-oid='3n71ezq'>
           <Droppable
             droppableId='dashboard-grid'
             direction='vertical'
-            data-oid='quwyt6a'
+            data-oid='pqpip-9'
           >
             {provided => (
               <div
@@ -536,7 +536,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                   gap: `${dashboard.layout.gaps.vertical}px ${dashboard.layout.gaps.horizontal}px`,
                   gridAutoRows: `${dashboard.layout.rowHeight}px`,
                 }}
-                data-oid='apyuap3'
+                data-oid='wq.l-4d'
               >
                 {gridItems.map((item, index) => (
                   <Draggable
@@ -544,7 +544,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                     draggableId={item.id}
                     index={index}
                     isDragDisabled={!isEditable}
-                    data-oid='bmzwbom'
+                    data-oid='il:.._4'
                   >
                     {(provided, snapshot) => (
                       <div
@@ -566,7 +566,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                           setSelectedWidget(item.id);
                           onWidgetClick?.(item.widget);
                         }}
-                        data-oid='m6wcnk_'
+                        data-oid='oqz5jon'
                       >
                         <WidgetRenderer
                           widget={item.widget}
@@ -581,7 +581,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                           }
                           onRemove={() => removeWidget(item.id)}
                           onDuplicate={() => duplicateWidget(item.widget)}
-                          data-oid='1_f0rlv'
+                          data-oid='hgzal.z'
                         />
                       </div>
                     )}
@@ -599,7 +599,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         <WidgetSelectorModal
           onSelect={widgetType => addWidget(widgetType)}
           onClose={() => setShowWidgetSelector(false)}
-          data-oid='g.kchb1'
+          data-oid='.j1gned'
         />
       )}
     </div>
@@ -635,13 +635,13 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
       className='widget-wrapper h-full relative'
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
-      data-oid='65xe1_z'
+      data-oid='uf61pbl'
     >
       {/* Widget Controls */}
       {isEditable && showControls && (
         <div
           className='widget-controls absolute top-2 right-2 flex space-x-1 z-10'
-          data-oid='6mn.c43'
+          data-oid='ydy35:.'
         >
           <button
             onClick={e => {
@@ -650,16 +650,16 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             }}
             className='bg-blue-600 text-white p-1 rounded text-xs hover:bg-blue-700'
             title='Duplicate'
-            data-oid='u62.8n8'
+            data-oid='g-kplfy'
           >
             <svg
               className='w-3 h-3'
               fill='currentColor'
               viewBox='0 0 20 20'
-              data-oid='w_wug4w'
+              data-oid='y1_:ncl'
             >
-              <path d='M7 7h8v8H7z' data-oid='bc-8mnp' />
-              <path d='M5 5v8H3V5a2 2 0 012-2h8v2H5z' data-oid='-z2e7dc' />
+              <path d='M7 7h8v8H7z' data-oid='r7.bp-j' />
+              <path d='M5 5v8H3V5a2 2 0 012-2h8v2H5z' data-oid='qy-d2f.' />
             </svg>
           </button>
           <button
@@ -669,19 +669,19 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             }}
             className='bg-red-600 text-white p-1 rounded text-xs hover:bg-red-700'
             title='Remove'
-            data-oid='vtxua6g'
+            data-oid='3u1pv7s'
           >
             <svg
               className='w-3 h-3'
               fill='currentColor'
               viewBox='0 0 20 20'
-              data-oid='77r8ehd'
+              data-oid='436y153'
             >
               <path
                 fillRule='evenodd'
                 d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
                 clipRule='evenodd'
-                data-oid='yr:4sdw'
+                data-oid='b2:0sfi'
               />
             </svg>
           </button>
@@ -691,38 +691,38 @@ const WidgetRenderer: React.FC<WidgetRendererProps> = ({
       {/* Widget Header */}
       <div
         className='widget-header border-b border-gray-100 p-3'
-        data-oid='_j..y2q'
+        data-oid=':qgvr6z'
       >
-        <h3 className='font-medium text-gray-900 text-sm' data-oid='39i6j6.'>
+        <h3 className='font-medium text-gray-900 text-sm' data-oid='4mq5zrc'>
           {widget.title}
         </h3>
         {widget.description && (
-          <p className='text-xs text-gray-500 mt-1' data-oid='9830cgi'>
+          <p className='text-xs text-gray-500 mt-1' data-oid='qgxxy6t'>
             {widget.description}
           </p>
         )}
       </div>
 
       {/* Widget Content */}
-      <div className='widget-content p-3 h-full' data-oid='racdmi7'>
-        <WidgetContent widget={widget} data={data} data-oid='b7t7i_z' />
+      <div className='widget-content p-3 h-full' data-oid=':qysm5d'>
+        <WidgetContent widget={widget} data={data} data-oid='fyds82a' />
       </div>
 
       {/* Resize Handle */}
       {isEditable && (
         <div
           className='resize-handle absolute bottom-0 right-0 w-3 h-3 bg-gray-400 cursor-se-resize opacity-0 hover:opacity-100 transition-opacity'
-          data-oid='00n:oln'
+          data-oid='fikun9d'
         >
           <svg
             className='w-3 h-3'
             fill='currentColor'
             viewBox='0 0 20 20'
-            data-oid='c.cx_zt'
+            data-oid='3t78xmo'
           >
             <path
               d='M14 14l-1-1v-2h2l-1 1zm-4-4l-1-1v-2h2l-1 1zm-4-4l-1-1v-2h2l-1 1z'
-              data-oid='q8g26bi'
+              data-oid='ku5i1af'
             />
           </svg>
         </div>
@@ -743,17 +743,17 @@ const WidgetContent: React.FC<WidgetContentProps> = ({ widget, data }) => {
   return (
     <div
       className='h-full flex items-center justify-center text-gray-500'
-      data-oid='0x.7h_4'
+      data-oid='_jfbmv2'
     >
-      <div className='text-center' data-oid='s5cfqm1'>
-        <div className='text-2xl mb-2' data-oid='iyrus30'>
+      <div className='text-center' data-oid='95:7y69'>
+        <div className='text-2xl mb-2' data-oid='4.6:tar'>
           📊
         </div>
-        <div className='text-sm font-medium' data-oid='9srb7oi'>
+        <div className='text-sm font-medium' data-oid='m5616dx'>
           {widget.type.replace('_', ' ')}
         </div>
         {data && (
-          <div className='text-xs mt-1' data-oid='djumdc7'>
+          <div className='text-xs mt-1' data-oid='kdtr5g2'>
             Data: {JSON.stringify(data).substring(0, 50)}...
           </div>
         )}
@@ -786,54 +786,54 @@ const WidgetSelectorModal: React.FC<WidgetSelectorModalProps> = ({
   return (
     <div
       className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
-      data-oid='94.jriq'
+      data-oid='wt38qg9'
     >
       <div
         className='bg-white rounded-lg p-6 max-w-md w-full m-4'
-        data-oid='rhi7ex3'
+        data-oid='.t8hkqq'
       >
         <div
           className='flex items-center justify-between mb-4'
-          data-oid='ytfe7s1'
+          data-oid='ntqc.0-'
         >
-          <h2 className='text-lg font-semibold' data-oid='ym3kw72'>
+          <h2 className='text-lg font-semibold' data-oid='ubnt9v8'>
             Add Widget
           </h2>
           <button
             onClick={onClose}
             className='text-gray-400 hover:text-gray-600'
-            data-oid='zq1gy:t'
+            data-oid='z_1ha.6'
           >
             <svg
               className='w-6 h-6'
               fill='currentColor'
               viewBox='0 0 20 20'
-              data-oid='8nh50eq'
+              data-oid='e84zpbm'
             >
               <path
                 fillRule='evenodd'
                 d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
                 clipRule='evenodd'
-                data-oid='my9j7xd'
+                data-oid='4ct:n1w'
               />
             </svg>
           </button>
         </div>
 
-        <div className='grid grid-cols-2 gap-3' data-oid='c:b:gu0'>
+        <div className='grid grid-cols-2 gap-3' data-oid='3yp5tju'>
           {widgetTypes.map(({ type, name, icon }) => (
             <button
               key={type}
               onClick={() => onSelect(type)}
               className='p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center'
-              data-oid='g4h3ys.'
+              data-oid='t67f6n3'
             >
-              <div className='text-2xl mb-2' data-oid='7hf_qtx'>
+              <div className='text-2xl mb-2' data-oid='0ha6ojk'>
                 {icon}
               </div>
               <div
                 className='text-sm font-medium text-gray-900'
-                data-oid='_vwaijl'
+                data-oid='sbpunz7'
               >
                 {name}
               </div>

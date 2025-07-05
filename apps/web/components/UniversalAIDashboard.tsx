@@ -522,6 +522,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+12.3% this week'
               icon='VIS'
               data-oid='g-494xo'
+              key='olk--CZz'
             />
 
             <StatCard
@@ -531,6 +532,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+8.7% today'
               icon='SES'
               data-oid='fzvsc-_'
+              key='olk-pzli'
             />
 
             <StatCard
@@ -540,15 +542,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+2.1% improvement'
               icon='CVR'
               data-oid='21.snpj'
-            />
-
-            <StatCard
-              title='Revenue Generated'
-              value={`$${Math.round((dashboardStats?.revenueGenerated || 0) / 1000)}K`}
-              subtitle='Attribution modeling'
-              trend='+15.4% this month'
-              icon='REV'
-              data-oid='-cqzadf'
+              key='olk-0RSF'
             />
 
             <StatCard
@@ -558,6 +552,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='3 completed today'
               icon='AB'
               data-oid='ojc0-br'
+              key='olk-_fqI'
             />
 
             <StatCard
@@ -567,6 +562,7 @@ const UniversalAIDashboard: React.FC = () => {
               trend='+1.8% improvement'
               icon='ML'
               data-oid='4t:ou:d'
+              key='olk-Uqdb'
             />
           </div>
         </section>
@@ -577,7 +573,7 @@ const UniversalAIDashboard: React.FC = () => {
             className='text-xl font-semibold mb-6 text-blue-600'
             data-oid='z-4840b'
           >
-            SaaS Analytics Dashboard
+            Detailed Analytics
           </h3>
 
           {/* Conversion Rate Trend Chart - Now First */}

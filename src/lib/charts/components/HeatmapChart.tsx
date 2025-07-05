@@ -503,7 +503,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
     <div
       className={`heatmap-chart ${className}`}
       style={containerStyle}
-      data-oid='nvq3_0v'
+      data-oid=':--lb2h'
     >
       <div
         ref={containerRef}
@@ -512,7 +512,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
           height: '100%',
           overflow: 'hidden',
         }}
-        data-oid='3gohrio'
+        data-oid='07tan-r'
       />
 
       {/* Hover tooltip */}
@@ -530,16 +530,16 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
             pointerEvents: 'none',
             zIndex: 1000,
           }}
-          data-oid='v-o7.3h'
+          data-oid='rq94_o:'
         >
-          <div data-oid='3si.dls'>
-            <strong data-oid='uqtjwej'>X:</strong> {hoveredCell.x}
+          <div data-oid='1ag4ojb'>
+            <strong data-oid='bj_1a95'>X:</strong> {hoveredCell.x}
           </div>
-          <div data-oid='vw0s5ji'>
-            <strong data-oid='ld-16k-'>Y:</strong> {hoveredCell.y}
+          <div data-oid='hqrks_r'>
+            <strong data-oid='2hmdhrx'>Y:</strong> {hoveredCell.y}
           </div>
-          <div data-oid='bistchc'>
-            <strong data-oid='9zn811n'>Value:</strong>{' '}
+          <div data-oid='o25too8'>
+            <strong data-oid='_k5sifx'>Value:</strong>{' '}
             {hoveredCell.value.toFixed(3)}
           </div>
         </div>
@@ -559,18 +559,18 @@ const HeatmapChart: React.FC<HeatmapChartProps> = ({
             fontSize: '11px',
             maxWidth: '150px',
           }}
-          data-oid='q.-j6yk'
+          data-oid='2sz:s_k'
         >
           <div
             style={{ fontWeight: 'bold', marginBottom: '4px' }}
-            data-oid='z-98:s3'
+            data-oid='ke1ioe6'
           >
             Statistics
           </div>
-          <div data-oid='ep985w3'>Min: {colorScale.min.toFixed(3)}</div>
-          <div data-oid='7zcrjuj'>Max: {colorScale.max.toFixed(3)}</div>
-          <div data-oid='fxwg6ra'>Cells: {processedData.length}</div>
-          <div data-oid='reki72g'>
+          <div data-oid='r59q93m'>Min: {colorScale.min.toFixed(3)}</div>
+          <div data-oid='xaed57u'>Max: {colorScale.max.toFixed(3)}</div>
+          <div data-oid='75p44bc'>Cells: {processedData.length}</div>
+          <div data-oid='oz7v:_l'>
             Range: {(colorScale.max - colorScale.min).toFixed(3)}
           </div>
         </div>

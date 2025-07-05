@@ -57,7 +57,7 @@ const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(
     }, [isVisible, index, onRender]);
 
     if (!isVisible) {
-      return <div style={{ height }} data-oid='a6ekzsq' />;
+      return <div style={{ height }} data-oid='z36087s' />;
     }
 
     return (
@@ -66,14 +66,14 @@ const VirtualListItem: React.FC<VirtualListItemProps> = React.memo(
         style={{ height }}
         className='virtual-list-item'
         data-index={index}
-        data-oid='58lbddn'
+        data-oid='931f_-h'
       >
         {/* Render chart data point */}
-        <div className='data-point' data-oid='85j4.z8'>
-          <span className='index' data-oid='h97u3wn'>
+        <div className='data-point' data-oid='ji60s.:'>
+          <span className='index' data-oid='0p.vg9i'>
             {index}
           </span>
-          <span className='value' data-oid='m78shif'>
+          <span className='value' data-oid='1smpeal'>
             {JSON.stringify(data)}
           </span>
         </div>
@@ -409,7 +409,7 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
         className={`virtualized-chart ${className}`}
         data-testid={testId}
         style={{ width, height, position: 'relative', overflow: 'hidden' }}
-        data-oid='qgn3ceg'
+        data-oid='lb389gv'
       >
         {/* Canvas for chart rendering */}
         <canvas
@@ -420,7 +420,7 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
             left: 0,
             pointerEvents: 'none',
           }}
-          data-oid='gdn1l6g'
+          data-oid='d53d73i'
         />
 
         {/* Virtual scrollable container */}
@@ -431,9 +431,9 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
             overflowX: 'hidden',
           }}
           onScroll={handleScroll}
-          data-oid='pr6ecnj'
+          data-oid='i_yi8b_'
         >
-          <div style={{ height: totalHeight }} data-oid='0c7p9ff'>
+          <div style={{ height: totalHeight }} data-oid='s-ivgze'>
             {virtualData.map((item, index) => (
               <VirtualListItem
                 key={`${index}-${item.id || index}`}
@@ -441,19 +441,19 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
                 data={item}
                 height={virtualization?.itemHeight || 50}
                 isVisible={true}
-                data-oid='4ya.gwv'
+                data-oid=':z:ead_'
               />
             ))}
           </div>
         </div>
 
         {/* Performance overlay */}
-        <div className='performance-overlay' data-oid='4z8:6u8'>
-          <div className='metrics' data-oid='98jt1ke'>
-            <span data-oid='mo4zkj4'>Render: {renderTime.toFixed(2)}ms</span>
-            <span data-oid='otaadue'>Items: {virtualData.length}</span>
+        <div className='performance-overlay' data-oid='v0t-xnl'>
+          <div className='metrics' data-oid='7zk-j2n'>
+            <span data-oid='zw_38.z'>Render: {renderTime.toFixed(2)}ms</span>
+            <span data-oid='p1:m7cr'>Items: {virtualData.length}</span>
             {isScrolling && (
-              <span className='scrolling' data-oid='38sy24p'>
+              <span className='scrolling' data-oid='qywm3v.'>
                 Scrolling...
               </span>
             )}
@@ -461,12 +461,12 @@ export const VirtualizedChart = forwardRef<any, VirtualizedChartProps>(
 
           {/* Performance alerts */}
           {alerts.length > 0 && (
-            <div className='alerts' data-oid='rsh1kwb'>
+            <div className='alerts' data-oid='e6onyb6'>
               {alerts.slice(-3).map((alert, index) => (
                 <div
                   key={index}
                   className={`alert alert-${alert.type}`}
-                  data-oid='4w:ojh.'
+                  data-oid='lz8csop'
                 >
                   {alert.message || 'Performance warning'}
                 </div>
@@ -645,16 +645,16 @@ export const ProgressiveChart: React.FC<{
       <div
         className='progressive-loading'
         style={{ width, height }}
-        data-oid='v5c3159'
+        data-oid='dvgcth:'
       >
-        <div className='loading-progress' data-oid='2x2ee2a'>
+        <div className='loading-progress' data-oid='4r.2t3l'>
           <div
             className='progress-bar'
             style={{ width: `${progress}%` }}
-            data-oid='t.l2m2s'
+            data-oid='nogwl8m'
           />
 
-          <span data-oid='x.bl50n'>{progress.toFixed(1)}% loaded</span>
+          <span data-oid='yvu5bi1'>{progress.toFixed(1)}% loaded</span>
         </div>
       </div>
     );
@@ -665,10 +665,10 @@ export const ProgressiveChart: React.FC<{
       <div
         className='progressive-error'
         style={{ width, height }}
-        data-oid='..dm1li'
+        data-oid='.wl3x4e'
       >
-        <p data-oid='fwa:l6k'>Error loading data: {error.message}</p>
-        <button onClick={loadData} data-oid='-96_6jk'>
+        <p data-oid='ll97pn9'>Error loading data: {error.message}</p>
+        <button onClick={loadData} data-oid='w1ax4_6'>
           Retry
         </button>
       </div>
@@ -681,7 +681,7 @@ export const ProgressiveChart: React.FC<{
       type={type}
       height={height}
       width={width}
-      data-oid='iva5_9:'
+      data-oid='w_2rrg0'
     />
   );
 };
@@ -693,53 +693,53 @@ export const PerformanceDashboard: React.FC = () => {
 
   if (!latestMetrics) {
     return (
-      <div className='performance-dashboard' data-oid='ttd8_9w'>
+      <div className='performance-dashboard' data-oid='2nddhfv'>
         No performance data available
       </div>
     );
   }
 
   return (
-    <div className='performance-dashboard' data-oid='lyyy8_x'>
-      <h3 data-oid='88g7qlb'>Performance Metrics</h3>
-      <div className='metrics-grid' data-oid='hc9yf3-'>
-        <div className='metric' data-oid='0l6ss6o'>
-          <label data-oid='4f6-4_0'>Render Time</label>
-          <span data-oid='4:tlxpr'>
+    <div className='performance-dashboard' data-oid='viiyvvu'>
+      <h3 data-oid='cq5yynq'>Performance Metrics</h3>
+      <div className='metrics-grid' data-oid='mpa7jk7'>
+        <div className='metric' data-oid='y:zqcer'>
+          <label data-oid='i8al6lt'>Render Time</label>
+          <span data-oid='ty9ze8m'>
             {latestMetrics.renderTime.toFixed(2)}ms
           </span>
         </div>
-        <div className='metric' data-oid='.-celgb'>
-          <label data-oid='vtlab0j'>Frame Rate</label>
-          <span data-oid='zqgw3yh'>
+        <div className='metric' data-oid='r:zkrt8'>
+          <label data-oid='9d-fbf7'>Frame Rate</label>
+          <span data-oid='cq.l4er'>
             {latestMetrics.frameRate.toFixed(1)} fps
           </span>
         </div>
-        <div className='metric' data-oid='wi65u6d'>
-          <label data-oid='nm.-it3'>Memory Usage</label>
-          <span data-oid='63ct9cc'>
+        <div className='metric' data-oid='h.4wtt6'>
+          <label data-oid='zno3c-z'>Memory Usage</label>
+          <span data-oid='rrxqfdc'>
             {(latestMetrics.memoryUsage * 100).toFixed(1)}%
           </span>
         </div>
-        <div className='metric' data-oid='5izgfvz'>
-          <label data-oid='gky4dkt'>Cache Hit Rate</label>
-          <span data-oid='xovqs_e'>
+        <div className='metric' data-oid='l4s0-k_'>
+          <label data-oid='0n19_pl'>Cache Hit Rate</label>
+          <span data-oid='asqidti'>
             {(latestMetrics.cacheHitRate * 100).toFixed(1)}%
           </span>
         </div>
-        <div className='metric' data-oid='b8sy_d3'>
-          <label data-oid='mzyhq51'>Virtualized Items</label>
-          <span data-oid='w:.2r9m'>
+        <div className='metric' data-oid='ery6ew1'>
+          <label data-oid='advy0yx'>Virtualized Items</label>
+          <span data-oid='_khzkan'>
             {latestMetrics.virtualizedItems.toLocaleString()}
           </span>
         </div>
       </div>
 
       {alerts.length > 0 && (
-        <div className='alerts-section' data-oid='djzjrgm'>
-          <h4 data-oid='4ef.sf4'>Performance Alerts</h4>
+        <div className='alerts-section' data-oid='1.dmdai'>
+          <h4 data-oid='6ghn25m'>Performance Alerts</h4>
           {alerts.slice(-5).map((alert, index) => (
-            <div key={index} className='alert' data-oid='s7n7m8s'>
+            <div key={index} className='alert' data-oid='j81b8kd'>
               {alert.type}: {alert.message}
             </div>
           ))}

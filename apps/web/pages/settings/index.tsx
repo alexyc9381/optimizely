@@ -186,15 +186,15 @@ const SettingsPage: React.FC = () => {
     return (
       <DashboardLayout
         title='Settings - Universal AI Platform'
-        data-oid='liub.qa'
+        data-oid='giqr76x'
       >
         <div
           className='flex items-center justify-center h-64'
-          data-oid='ve3k3uq'
+          data-oid='15a0b42'
         >
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'
-            data-oid='wm0zrxs'
+            data-oid='_fiy709'
           ></div>
         </div>
       </DashboardLayout>
@@ -204,32 +204,32 @@ const SettingsPage: React.FC = () => {
   return (
     <DashboardLayout
       title='Settings - Universal AI Platform'
-      data-oid='6mywqww'
+      data-oid='gxgm10i'
     >
-      <div className='space-y-6' data-oid=':j5.pxr'>
+      <div className='space-y-6' data-oid='i6:uj5p'>
         {error && (
           <div
             className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'
-            data-oid='_lgce49'
+            data-oid='hg9:_:p'
           >
-            <div className='flex' data-oid='j7ly5_1'>
-              <div className='flex-shrink-0' data-oid='_9dy_j.'>
+            <div className='flex' data-oid='4bol5kg'>
+              <div className='flex-shrink-0' data-oid='y.t6k67'>
                 <svg
                   className='h-5 w-5 text-yellow-400'
                   viewBox='0 0 20 20'
                   fill='currentColor'
-                  data-oid='50oydry'
+                  data-oid='u0v:xnj'
                 >
                   <path
                     fillRule='evenodd'
                     d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
                     clipRule='evenodd'
-                    data-oid='itclwh7'
+                    data-oid='t3o3ajo'
                   />
                 </svg>
               </div>
-              <div className='ml-3' data-oid='--m.xbk'>
-                <p className='text-sm text-yellow-700' data-oid='etx3.tr'>
+              <div className='ml-3' data-oid='nwqcd7.'>
+                <p className='text-sm text-yellow-700' data-oid='z1qpl3k'>
                   {error}
                 </p>
               </div>
@@ -238,45 +238,45 @@ const SettingsPage: React.FC = () => {
         )}
 
         {/* Header */}
-        <div className='flex items-center justify-between' data-oid='jprj5o1'>
-          <div data-oid='_1xrso.'>
-            <h1 className='text-2xl font-bold text-gray-900' data-oid='bb5-u_x'>
+        <div className='flex items-center justify-between' data-oid='_-2-d_z'>
+          <div data-oid='9pc4w5_'>
+            <h1 className='text-2xl font-bold text-gray-900' data-oid='-rqa0ja'>
               Settings
             </h1>
-            <p className='text-sm text-gray-500 mt-1' data-oid='jar.h_u'>
+            <p className='text-sm text-gray-500 mt-1' data-oid='1_-la9j'>
               Manage your account, team, billing, and security preferences
             </p>
           </div>
         </div>
 
         {/* Settings Navigation */}
-        <div className='border-b border-gray-200' data-oid='zmonzsm'>
-          <nav className='-mb-px flex space-x-8' data-oid='v3c1_mo'>
+        <div className='border-b border-gray-200' data-oid='8y3ck8-'>
+          <nav className='-mb-px flex space-x-8' data-oid='lvitv.s'>
             {[
               {
                 key: 'account',
                 label: 'Account',
-                icon: <Users className='w-4 h-4' data-oid='siejiia' />,
+                icon: <Users className='w-4 h-4' data-oid='v8qcwr0' />,
               },
               {
                 key: 'team',
                 label: 'Team',
-                icon: <Users className='w-4 h-4' data-oid='n05.hv0' />,
+                icon: <Users className='w-4 h-4' data-oid='cczyn:_' />,
               },
               {
                 key: 'billing',
                 label: 'Billing',
-                icon: <Key className='w-4 h-4' data-oid='e9w2q5h' />,
+                icon: <Key className='w-4 h-4' data-oid='9ehlzj5' />,
               },
               {
                 key: 'security',
                 label: 'Security',
-                icon: <Shield className='w-4 h-4' data-oid='hwahvga' />,
+                icon: <Shield className='w-4 h-4' data-oid='5ytagmi' />,
               },
               {
                 key: 'integrations',
                 label: 'Integrations',
-                icon: <Mail className='w-4 h-4' data-oid='n.-0e_j' />,
+                icon: <Mail className='w-4 h-4' data-oid='129rms9' />,
               },
             ].map(tab => (
               <button
@@ -287,10 +287,10 @@ const SettingsPage: React.FC = () => {
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
-                data-oid='.iz_tsu'
+                data-oid='5k6tx.g'
               >
                 {tab.icon}
-                <span data-oid=':b41m_t'>{tab.label}</span>
+                <span data-oid='5e.weuc'>{tab.label}</span>
               </button>
             ))}
           </nav>
@@ -300,11 +300,11 @@ const SettingsPage: React.FC = () => {
         {activeTab === 'account' && settings && (
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='6i_ql3m'
+            data-oid='40bz.:0'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-6'
-              data-oid='8-g0sfm'
+              data-oid='-1b69he'
             >
               Account Information
             </h3>
@@ -312,23 +312,23 @@ const SettingsPage: React.FC = () => {
             <form
               onSubmit={handleProfileUpdate}
               className='space-y-6'
-              data-oid='kva2lo6'
+              data-oid='p5gfp6q'
             >
-              <div data-oid='d.efj1s'>
+              <div data-oid=':hg9:hs'>
                 <h4
                   className='text-sm font-medium text-gray-900 mb-3'
-                  data-oid='f6npo58'
+                  data-oid='iystpne'
                 >
                   Profile Information
                 </h4>
                 <div
                   className='grid grid-cols-1 md:grid-cols-2 gap-4'
-                  data-oid='jeyz0lr'
+                  data-oid='k16n5g_'
                 >
-                  <div data-oid='6ky:i29'>
+                  <div data-oid='2jbic:u'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-1'
-                      data-oid='-dyrocm'
+                      data-oid='sjy3v2:'
                     >
                       Full Name
                     </label>
@@ -346,13 +346,13 @@ const SettingsPage: React.FC = () => {
                         })
                       }
                       required
-                      data-oid='bgt4p-a'
+                      data-oid='ek247.i'
                     />
                   </div>
-                  <div data-oid='vmoc2sy'>
+                  <div data-oid='53xibbj'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-1'
-                      data-oid='j-_e_a9'
+                      data-oid='j1-rk2v'
                     >
                       Email Address
                     </label>
@@ -370,13 +370,13 @@ const SettingsPage: React.FC = () => {
                         })
                       }
                       required
-                      data-oid='cw1tw7r'
+                      data-oid='.6lm970'
                     />
                   </div>
-                  <div data-oid='tzzv84a'>
+                  <div data-oid='xzzurzb'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-1'
-                      data-oid='23o4wl8'
+                      data-oid='uriz-i4'
                     >
                       Company
                     </label>
@@ -393,13 +393,13 @@ const SettingsPage: React.FC = () => {
                           },
                         })
                       }
-                      data-oid='063.5cs'
+                      data-oid='nasnn2n'
                     />
                   </div>
-                  <div data-oid='rb7f:02'>
+                  <div data-oid='17pqhkb'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-1'
-                      data-oid='f3vowez'
+                      data-oid='io80h.-'
                     >
                       Role
                     </label>
@@ -416,25 +416,25 @@ const SettingsPage: React.FC = () => {
                           },
                         })
                       }
-                      data-oid='1veun5_'
+                      data-oid='q.p3x-_'
                     />
                   </div>
                 </div>
               </div>
 
               {/* Business Configuration */}
-              <div data-oid='fazk-rj'>
+              <div data-oid='vhi16_i'>
                 <h4
                   className='text-sm font-medium text-gray-900 mb-3'
-                  data-oid='fvzdyyi'
+                  data-oid='aprc-9h'
                 >
                   Business Configuration
                 </h4>
-                <div className='space-y-4' data-oid='_0smvf2'>
-                  <div data-oid='b93gxss'>
+                <div className='space-y-4' data-oid='pfwnrws'>
+                  <div data-oid='3js083c'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-2'
-                      data-oid='_ww6rdw'
+                      data-oid='_8.1zsp'
                     >
                       Primary Business Type
                     </label>
@@ -450,39 +450,39 @@ const SettingsPage: React.FC = () => {
                           },
                         })
                       }
-                      data-oid='ne0_wma'
+                      data-oid='q1ow9.s'
                     >
-                      <option value='saas' data-oid='nxr9_m2'>
+                      <option value='saas' data-oid='hymhq45'>
                         SaaS - Software as a Service
                       </option>
-                      <option value='manufacturing' data-oid='wqpk1.c'>
+                      <option value='manufacturing' data-oid='3cn20gf'>
                         Manufacturing
                       </option>
-                      <option value='healthcare' data-oid='65fv0fx'>
+                      <option value='healthcare' data-oid='fs3pkfe'>
                         Healthcare
                       </option>
-                      <option value='fintech' data-oid='owb2dv_'>
+                      <option value='fintech' data-oid='damh93w'>
                         FinTech
                       </option>
-                      <option value='college-consulting' data-oid='2l9xq6q'>
+                      <option value='college-consulting' data-oid=':o1xxh5'>
                         College Consulting
                       </option>
-                      <option value='ecommerce' data-oid='eak_799'>
+                      <option value='ecommerce' data-oid='ef8n25-'>
                         E-commerce
                       </option>
                     </select>
                     <p
                       className='text-xs text-gray-500 mt-1'
-                      data-oid='i_-6f2q'
+                      data-oid='fyyy:vo'
                     >
                       This configures your dashboard metrics, A/B testing
                       templates, and industry-specific analytics
                     </p>
                   </div>
-                  <div data-oid='k62ch-g'>
+                  <div data-oid='7f12ovl'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-2'
-                      data-oid='twsyalq'
+                      data-oid='14m1wiy'
                     >
                       Company Size
                     </label>
@@ -498,26 +498,26 @@ const SettingsPage: React.FC = () => {
                           },
                         })
                       }
-                      data-oid='hiws5qe'
+                      data-oid='4zysoj0'
                     >
-                      <option value='startup' data-oid='e1eki_v'>
+                      <option value='startup' data-oid='lw:iu6o'>
                         Startup (1-10 employees)
                       </option>
-                      <option value='small' data-oid='68ubl9d'>
+                      <option value='small' data-oid='u2lp3eo'>
                         Small Business (11-50 employees)
                       </option>
-                      <option value='medium' data-oid='k4pyab2'>
+                      <option value='medium' data-oid='5v95o92'>
                         Medium Business (51-200 employees)
                       </option>
-                      <option value='enterprise' data-oid='31r-rhu'>
+                      <option value='enterprise' data-oid='4s1myuu'>
                         Enterprise (200+ employees)
                       </option>
                     </select>
                   </div>
-                  <div data-oid='g2pubk1'>
+                  <div data-oid='jw635yo'>
                     <label
                       className='block text-sm font-medium text-gray-700 mb-2'
-                      data-oid='bqdt.sv'
+                      data-oid='bhz-jz7'
                     >
                       Monthly Traffic Volume
                     </label>
@@ -533,18 +533,18 @@ const SettingsPage: React.FC = () => {
                           },
                         })
                       }
-                      data-oid='8n679jp'
+                      data-oid='ga32iqm'
                     >
-                      <option value='low' data-oid='e_i4c5a'>
+                      <option value='low' data-oid='i5vk63n'>
                         Under 10K visitors/month
                       </option>
-                      <option value='medium' data-oid='fsufne7'>
+                      <option value='medium' data-oid='4knz:sv'>
                         10K - 100K visitors/month
                       </option>
-                      <option value='high' data-oid='h--3gzh'>
+                      <option value='high' data-oid='hhatygk'>
                         100K - 1M visitors/month
                       </option>
-                      <option value='enterprise' data-oid='zusnvqk'>
+                      <option value='enterprise' data-oid='e8_1n_3'>
                         1M+ visitors/month
                       </option>
                     </select>
@@ -553,14 +553,14 @@ const SettingsPage: React.FC = () => {
               </div>
 
               {/* Preferences Section */}
-              <div data-oid='1pl2tjv'>
+              <div data-oid='.w4_j:c'>
                 <h4
                   className='text-sm font-medium text-gray-900 mb-3'
-                  data-oid='71y2380'
+                  data-oid='raov36a'
                 >
                   Preferences
                 </h4>
-                <div className='space-y-4' data-oid='-puekhw'>
+                <div className='space-y-4' data-oid='qcwk9k2'>
                   {[
                     {
                       key: 'emailNotifications',
@@ -587,22 +587,22 @@ const SettingsPage: React.FC = () => {
                     <div
                       key={pref.key}
                       className='flex items-center justify-between'
-                      data-oid='oh3vs9_'
+                      data-oid='a8s:rsx'
                     >
-                      <div data-oid=':m99rc:'>
+                      <div data-oid='wu309-r'>
                         <h5
                           className='font-medium text-gray-900'
-                          data-oid='ifn.522'
+                          data-oid='feey8:a'
                         >
                           {pref.label}
                         </h5>
-                        <p className='text-sm text-gray-500' data-oid='lfycjp.'>
+                        <p className='text-sm text-gray-500' data-oid='dnz7t2n'>
                           {pref.description}
                         </p>
                       </div>
                       <label
                         className='relative inline-flex items-center cursor-pointer'
-                        data-oid='r8ka.by'
+                        data-oid='a4._ocy'
                       >
                         <input
                           type='checkbox'
@@ -617,12 +617,12 @@ const SettingsPage: React.FC = () => {
                             })
                           }
                           className='sr-only peer'
-                          data-oid='t6ag3yi'
+                          data-oid='hw8i2id'
                         />
 
                         <div
                           className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
-                          data-oid='0g0n1gy'
+                          data-oid='75n55sw'
                         ></div>
                       </label>
                     </div>
@@ -633,13 +633,13 @@ const SettingsPage: React.FC = () => {
               {/* Save Button */}
               <div
                 className='mt-6 pt-6 border-t border-gray-200'
-                data-oid='b1.pb5.'
+                data-oid='yfy77ln'
               >
                 <div
                   className='flex items-center justify-between'
-                  data-oid='f.s0hyy'
+                  data-oid='goc9k7s'
                 >
-                  <p className='text-sm text-gray-600' data-oid='427e7uj'>
+                  <p className='text-sm text-gray-600' data-oid='6nytlyl'>
                     Changes will be applied to your dashboard and analytics
                     configuration
                   </p>
@@ -647,20 +647,20 @@ const SettingsPage: React.FC = () => {
                     type='submit'
                     disabled={saving}
                     className='bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-                    data-oid='ywon7mx'
+                    data-oid='2kfush0'
                   >
                     {saving ? (
                       <>
                         <div
                           className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'
-                          data-oid='i:qem_4'
+                          data-oid='gbp55cu'
                         ></div>
-                        <span data-oid='_6wso1f'>Saving...</span>
+                        <span data-oid='8.gbgg2'>Saving...</span>
                       </>
                     ) : (
                       <>
-                        <Save className='w-4 h-4' data-oid='0r41-j:' />
-                        <span data-oid='qwa6lab'>Save Changes</span>
+                        <Save className='w-4 h-4' data-oid='6t1tcdx' />
+                        <span data-oid='8nr4wa5'>Save Changes</span>
                       </>
                     )}
                   </button>
@@ -674,44 +674,44 @@ const SettingsPage: React.FC = () => {
         {activeTab === 'team' && (
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='o_wa5no'
+            data-oid='_:8.u-x'
           >
             <div
               className='flex items-center justify-between mb-6'
-              data-oid='1gv3gwp'
+              data-oid='tsh67r.'
             >
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='8qp70.y'
+                data-oid='n5u3w17'
               >
                 Team Management
               </h3>
               <button
                 className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-                data-oid='b1wd2kx'
+                data-oid='tr4eig_'
               >
                 Invite Member
               </button>
             </div>
 
-            <div className='space-y-4' data-oid='kvix085'>
+            <div className='space-y-4' data-oid='g6ovtht'>
               {teamMembers.map(member => (
                 <div
                   key={member.id}
                   className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'
-                  data-oid=':m1l-85'
+                  data-oid='y5zl_1-'
                 >
                   <div
                     className='flex items-center space-x-4'
-                    data-oid='gk6ystn'
+                    data-oid='ubg4i4k'
                   >
                     <div
                       className='w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center'
-                      data-oid='cpwcxnc'
+                      data-oid='ok7n7w7'
                     >
                       <span
                         className='text-sm font-medium text-blue-600'
-                        data-oid='j.e:h6a'
+                        data-oid='2tarqb8'
                       >
                         {member.name
                           .split(' ')
@@ -719,21 +719,21 @@ const SettingsPage: React.FC = () => {
                           .join('')}
                       </span>
                     </div>
-                    <div data-oid='vrzp._1'>
+                    <div data-oid='13ukbbv'>
                       <h4
                         className='font-medium text-gray-900'
-                        data-oid='eu9baqn'
+                        data-oid='a3oc4a:'
                       >
                         {member.name}
                       </h4>
-                      <p className='text-sm text-gray-500' data-oid='8t50vkv'>
+                      <p className='text-sm text-gray-500' data-oid='sf9en7a'>
                         {member.email}
                       </p>
                     </div>
                   </div>
                   <div
                     className='flex items-center space-x-4'
-                    data-oid='axca.0s'
+                    data-oid='re2g6r9'
                   >
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -741,16 +741,16 @@ const SettingsPage: React.FC = () => {
                           ? 'bg-green-100 text-green-800'
                           : 'bg-yellow-100 text-yellow-800'
                       }`}
-                      data-oid='okba.6f'
+                      data-oid='sckq1a_'
                     >
                       {member.status}
                     </span>
-                    <span className='text-sm text-gray-500' data-oid='ed421.u'>
+                    <span className='text-sm text-gray-500' data-oid='fg_mm0v'>
                       {member.role}
                     </span>
                     <button
                       className='text-red-600 hover:text-red-700 text-sm'
-                      data-oid='2cb7xtx'
+                      data-oid='g_zkw-2'
                     >
                       Remove
                     </button>
@@ -763,121 +763,121 @@ const SettingsPage: React.FC = () => {
 
         {/* Billing Settings */}
         {activeTab === 'billing' && billingInfo && (
-          <div className='space-y-6' data-oid='batmylw'>
+          <div className='space-y-6' data-oid='t719tyd'>
             <div
               className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-              data-oid='rgbfidi'
+              data-oid='xfull7q'
             >
               <h3
                 className='text-lg font-semibold text-gray-900 mb-6'
-                data-oid='urxxq3_'
+                data-oid='wsmnbfl'
               >
                 Billing Information
               </h3>
 
               <div
                 className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'
-                data-oid='cq4-zkb'
+                data-oid='nq97zaj'
               >
                 <div
                   className='text-center p-4 bg-blue-50 rounded-lg'
-                  data-oid='8lc9zw1'
+                  data-oid='l_j6jux'
                 >
-                  <p className='text-sm text-blue-600 mb-1' data-oid='tik.bte'>
+                  <p className='text-sm text-blue-600 mb-1' data-oid='4ju4o1z'>
                     Current Plan
                   </p>
                   <p
                     className='text-xl font-bold text-blue-900'
-                    data-oid='c9ra5zh'
+                    data-oid='z3hqcmb'
                   >
                     {billingInfo.plan}
                   </p>
                 </div>
                 <div
                   className='text-center p-4 bg-green-50 rounded-lg'
-                  data-oid='u.wd4uq'
+                  data-oid='s8sfm:c'
                 >
-                  <p className='text-sm text-green-600 mb-1' data-oid='gi7td0i'>
+                  <p className='text-sm text-green-600 mb-1' data-oid='ju2723e'>
                     Monthly Cost
                   </p>
                   <p
                     className='text-xl font-bold text-green-900'
-                    data-oid='mecz8xl'
+                    data-oid='lpe4712'
                   >
                     ${billingInfo.amount}
                   </p>
                 </div>
                 <div
                   className='text-center p-4 bg-purple-50 rounded-lg'
-                  data-oid=':5z5ep-'
+                  data-oid='z38ehou'
                 >
                   <p
                     className='text-sm text-purple-600 mb-1'
-                    data-oid='9zlzcmv'
+                    data-oid='k47zyu_'
                   >
                     Next Billing
                   </p>
                   <p
                     className='text-xl font-bold text-purple-900'
-                    data-oid='1078vck'
+                    data-oid='1_m.cvy'
                   >
                     {new Date(billingInfo.nextBilling).toLocaleDateString()}
                   </p>
                 </div>
               </div>
 
-              <div className='border-t pt-6' data-oid='ad2sjh_'>
+              <div className='border-t pt-6' data-oid='_.s6rmq'>
                 <h4
                   className='font-medium text-gray-900 mb-4'
-                  data-oid='p:k3ml5'
+                  data-oid='6-1iv_l'
                 >
                   Usage This Month
                 </h4>
-                <div className='space-y-3' data-oid='a2oft6w'>
-                  <div data-oid='91jz_o.'>
+                <div className='space-y-3' data-oid='oli_ld_'>
+                  <div data-oid='.4sr:l1'>
                     <div
                       className='flex justify-between text-sm mb-1'
-                      data-oid='kwf2.:2'
+                      data-oid='bzu83at'
                     >
-                      <span data-oid='f2ppyrb'>Visitors Tracked</span>
-                      <span data-oid='az5jt29'>
+                      <span data-oid='qn.kezr'>Visitors Tracked</span>
+                      <span data-oid='k.j2dib'>
                         {billingInfo.usage.visitors.toLocaleString()} /{' '}
                         {billingInfo.usage.limit.toLocaleString()}
                       </span>
                     </div>
                     <div
                       className='w-full bg-gray-200 rounded-full h-2'
-                      data-oid='pwvph-9'
+                      data-oid='v1d.j1t'
                     >
                       <div
                         className='bg-blue-600 h-2 rounded-full'
                         style={{
                           width: `${(billingInfo.usage.visitors / billingInfo.usage.limit) * 100}%`,
                         }}
-                        data-oid='m1ow.9w'
+                        data-oid='4ea0n3q'
                       ></div>
                     </div>
                   </div>
-                  <div data-oid='f04wxrq'>
+                  <div data-oid='rolc0xq'>
                     <div
                       className='flex justify-between text-sm mb-1'
-                      data-oid='ezi:wt6'
+                      data-oid='yxkl98m'
                     >
-                      <span data-oid='89-06lu'>Active Tests</span>
-                      <span data-oid='-9ccotl'>
+                      <span data-oid='ru-0-m7'>Active Tests</span>
+                      <span data-oid='27ro7py'>
                         {billingInfo.usage.tests} / 25
                       </span>
                     </div>
                     <div
                       className='w-full bg-gray-200 rounded-full h-2'
-                      data-oid='gz6uk97'
+                      data-oid='.onhx_3'
                     >
                       <div
                         className='bg-green-600 h-2 rounded-full'
                         style={{
                           width: `${(billingInfo.usage.tests / 25) * 100}%`,
                         }}
-                        data-oid='hjf810i'
+                        data-oid='bky72-g'
                       ></div>
                     </div>
                   </div>
@@ -891,72 +891,72 @@ const SettingsPage: React.FC = () => {
         {activeTab === 'security' && settings && (
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='.9efba_'
+            data-oid='iufa76k'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-6'
-              data-oid='a2nzdi_'
+              data-oid='4lr21il'
             >
               Security Settings
             </h3>
 
-            <div className='space-y-6' data-oid='b:6o346'>
-              <div data-oid='qd2u2ai'>
+            <div className='space-y-6' data-oid='nx9c-n_'>
+              <div data-oid='.28zfa:'>
                 <h4
                   className='text-sm font-medium text-gray-900 mb-3'
-                  data-oid='geik-a_'
+                  data-oid='xm2u.w5'
                 >
                   API Access
                 </h4>
-                <div className='bg-gray-50 p-4 rounded-lg' data-oid='g4sl5l1'>
+                <div className='bg-gray-50 p-4 rounded-lg' data-oid='a-lnedj'>
                   <div
                     className='flex items-center justify-between mb-2'
-                    data-oid='tedo-y_'
+                    data-oid='i4ofe1c'
                   >
                     <label
                       className='text-sm font-medium text-gray-700'
-                      data-oid='u6mki9.'
+                      data-oid='9_:77k_'
                     >
                       API Key
                     </label>
                     <button
                       onClick={() => setShowApiKey(!showApiKey)}
                       className='text-blue-600 hover:text-blue-700 text-sm flex items-center space-x-1'
-                      data-oid='v1qdmw-'
+                      data-oid='ysa8djm'
                     >
                       {showApiKey ? (
-                        <EyeOff className='w-4 h-4' data-oid='qum7crz' />
+                        <EyeOff className='w-4 h-4' data-oid='62mcav7' />
                       ) : (
-                        <Eye className='w-4 h-4' data-oid='z3g5w65' />
+                        <Eye className='w-4 h-4' data-oid='rn_pbvu' />
                       )}
-                      <span data-oid='1uhr-wi'>
+                      <span data-oid='wbj5je2'>
                         {showApiKey ? 'Hide' : 'Show'}
                       </span>
                     </button>
                   </div>
                   <div
                     className='font-mono text-sm bg-white p-2 rounded border'
-                    data-oid='8ps34x:'
+                    data-oid='4o922w_'
                   >
                     {showApiKey ? apiKey : apiKey.replace(/[a-z0-9]/g, '•')}
                   </div>
                   <button
                     className='mt-2 text-blue-600 hover:text-blue-700 text-sm'
-                    data-oid='d.e9an6'
+                    data-oid='5_uvedx'
                   >
                     Regenerate API Key
                   </button>
                 </div>
               </div>
 
-              <div data-oid='ldzpvk6'>
+              <div data-oid='9g8.cdl'>
                 <h4
                   className='text-sm font-medium text-gray-900 mb-3'
-                  data-oid='vg84t7j'
+                  data-oid='kkoh:tn'
                 >
                   Security Options
                 </h4>
-                <div className='space-y-4' data-oid='qe8:s7h'>
+                <div className='space-y-4' data-oid='-w:ljuo'>
                   {[
                     {
                       key: 'twoFactorEnabled',
@@ -974,22 +974,22 @@ const SettingsPage: React.FC = () => {
                     <div
                       key={option.key}
                       className='flex items-center justify-between'
-                      data-oid='4p:s_7.'
+                      data-oid='xxi:9c.'
                     >
-                      <div data-oid='lcx849p'>
+                      <div data-oid='ebu9ewm'>
                         <h5
                           className='font-medium text-gray-900'
-                          data-oid='sjqu0hw'
+                          data-oid='m16683m'
                         >
                           {option.label}
                         </h5>
-                        <p className='text-sm text-gray-500' data-oid='u9gjhui'>
+                        <p className='text-sm text-gray-500' data-oid='ur6nvar'>
                           {option.description}
                         </p>
                       </div>
                       <label
                         className='relative inline-flex items-center cursor-pointer'
-                        data-oid='-0h9y22'
+                        data-oid='9g:e5b2'
                       >
                         <input
                           type='checkbox'
@@ -1008,12 +1008,12 @@ const SettingsPage: React.FC = () => {
                             })
                           }
                           className='sr-only peer'
-                          data-oid='juctxsp'
+                          data-oid='s-w9ak9'
                         />
 
                         <div
                           className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
-                          data-oid='nn0ksfz'
+                          data-oid='0sdmik_'
                         ></div>
                       </label>
                     </div>
@@ -1028,38 +1028,38 @@ const SettingsPage: React.FC = () => {
         {activeTab === 'integrations' && (
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='mujfjbq'
+            data-oid='.81e:.x'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-6'
-              data-oid='6wq-e-j'
+              data-oid='64rn0un'
             >
               Integration Settings
             </h3>
 
-            <div className='space-y-4' data-oid='qqvhcua'>
+            <div className='space-y-4' data-oid='h_tk55l'>
               <div
                 className='text-center p-8 border-2 border-dashed border-gray-300 rounded-lg'
-                data-oid='i-5c0kw'
+                data-oid='g9amwkn'
               >
                 <Mail
                   className='w-12 h-12 text-gray-400 mx-auto mb-4'
-                  data-oid='32ebez.'
+                  data-oid='ql6g1e2'
                 />
 
                 <h4
                   className='text-lg font-medium text-gray-900 mb-2'
-                  data-oid='jm1b.rk'
+                  data-oid='2yzpt4l'
                 >
                   No Integrations Configured
                 </h4>
-                <p className='text-gray-500 mb-4' data-oid='-qftg-t'>
+                <p className='text-gray-500 mb-4' data-oid='lev5hix'>
                   Connect your favorite tools to sync data and automate
                   workflows
                 </p>
                 <button
                   className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-                  data-oid='mb4y4wf'
+                  data-oid='eutvicd'
                 >
                   Browse Integrations
                 </button>

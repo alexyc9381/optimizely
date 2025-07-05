@@ -173,14 +173,14 @@ const AnalyticsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <DashboardLayout title='Analytics - Optelo' data-oid='7ez.29e'>
+      <DashboardLayout title='Analytics - Optelo' data-oid='ac5oexh'>
         <div
           className='flex items-center justify-center h-64'
-          data-oid='jwtpie4'
+          data-oid='6xz5fn9'
         >
           <div
             className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'
-            data-oid='segmeej'
+            data-oid='xc:9cxg'
           ></div>
         </div>
       </DashboardLayout>
@@ -188,56 +188,56 @@ const AnalyticsPage: React.FC = () => {
   }
 
   return (
-    <DashboardLayout title='Analytics - Optelo' data-oid='xlnzut8'>
-      <div className='space-y-6' data-oid=':nq4b6u'>
+    <DashboardLayout title='Analytics - Optelo' data-oid='r85hs8v'>
+      <div className='space-y-6' data-oid='bdlw2hf'>
         {/* Header */}
-        <div className='flex items-center justify-between' data-oid='z174lms'>
-          <div data-oid='h8hypoi'>
-            <h1 className='text-3xl font-bold text-gray-900' data-oid='ecy_d_w'>
+        <div className='flex items-center justify-between' data-oid='eq.q.6d'>
+          <div data-oid='ey9cg-t'>
+            <h1 className='text-3xl font-bold text-gray-900' data-oid='bowyalf'>
               Analytics Dashboard
             </h1>
-            <p className='text-gray-600 mt-1' data-oid='fxr9ro6'>
+            <p className='text-gray-600 mt-1' data-oid='f3tc-1d'>
               Real-time performance metrics and insights across all your
               experiments
             </p>
           </div>
 
-          <div className='flex items-center space-x-3' data-oid='s615a9-'>
-            <div className='flex items-center space-x-2' data-oid='523errx'>
-              <Calendar className='w-4 h-4 text-gray-500' data-oid='r1sv:kx' />
+          <div className='flex items-center space-x-3' data-oid=':8bx2m9'>
+            <div className='flex items-center space-x-2' data-oid='12ji8or'>
+              <Calendar className='w-4 h-4 text-gray-500' data-oid='gpmg1uk' />
               <select
                 value={timeRange}
                 onChange={e => setTimeRange(e.target.value as any)}
                 className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                data-oid='c781c-s'
+                data-oid='fykt4jt'
               >
-                <option value='7d' data-oid='2782l78'>
+                <option value='7d' data-oid='j_j95a5'>
                   Last 7 days
                 </option>
-                <option value='30d' data-oid='fheg305'>
+                <option value='30d' data-oid='cste1c7'>
                   Last 30 days
                 </option>
-                <option value='90d' data-oid='07utj1.'>
+                <option value='90d' data-oid='l_1v5si'>
                   Last 90 days
                 </option>
-                <option value='1y' data-oid='c.2o4.f'>
+                <option value='1y' data-oid='2n2.u8t'>
                   Last year
                 </option>
               </select>
             </div>
             <button
               className='flex items-center space-x-2 border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-              data-oid='ay911ix'
+              data-oid='n.q8hp8'
             >
-              <Filter className='w-4 h-4' data-oid='uekqu9w' />
-              <span data-oid='gjteho-'>Filters</span>
+              <Filter className='w-4 h-4' data-oid='eyi9xzt' />
+              <span data-oid='2vsquri'>Filters</span>
             </button>
             <button
               className='flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-              data-oid='.uda3pn'
+              data-oid='-bzd1a3'
             >
-              <Download className='w-4 h-4' data-oid='b1k_x6a' />
-              <span data-oid='okvj.xb'>Export Report</span>
+              <Download className='w-4 h-4' data-oid='igt-3vl' />
+              <span data-oid='w4:::y:'>Export Report</span>
             </button>
           </div>
         </div>
@@ -245,9 +245,9 @@ const AnalyticsPage: React.FC = () => {
         {error && (
           <div
             className='bg-red-50 border border-red-200 rounded-lg p-4'
-            data-oid='p41.4ef'
+            data-oid='xk--7_1'
           >
-            <p className='text-red-800' data-oid='v8mt7dk'>
+            <p className='text-red-800' data-oid='8nwc1yu'>
               {error}
             </p>
           </div>
@@ -256,26 +256,26 @@ const AnalyticsPage: React.FC = () => {
         {/* Key Metrics Cards */}
         <div
           className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6'
-          data-oid='h5pt-v4'
+          data-oid='iyvo7xb'
         >
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='_n_qlbb'
+            data-oid='nidismj'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='uuw-s08'
+              data-oid='sn94d_-'
             >
-              <div className='flex-1' data-oid='bt2mpg2'>
+              <div className='flex-1' data-oid='e11j7kg'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='6:rztqk'
+                  data-oid='.yejjo8'
                 >
                   Total Visitors
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='0df-mh5'
+                  data-oid='pe6t8zz'
                 >
                   {analyticsData
                     ? formatNumber(analyticsData.totalVisitors)
@@ -283,39 +283,39 @@ const AnalyticsPage: React.FC = () => {
                 </p>
                 <p
                   className='text-xs text-green-600 mt-1 flex items-center'
-                  data-oid='i7l19xf'
+                  data-oid='gbiooox'
                 >
-                  <TrendingUp className='w-3 h-3 mr-1' data-oid='-i6c9f0' />
+                  <TrendingUp className='w-3 h-3 mr-1' data-oid='tzyld7k' />
                   +12.5% vs last period
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='vv:ci7e'
+                data-oid='4hx3wy4'
               >
-                <Users className='w-5 h-5 text-blue-600' data-oid='yp.-we4' />
+                <Users className='w-5 h-5 text-blue-600' data-oid='f_0zxr1' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='kvw:gru'
+            data-oid='97kkkxf'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='-ym9kje'
+              data-oid='y:kix08'
             >
-              <div className='flex-1' data-oid='sxqa3p4'>
+              <div className='flex-1' data-oid='w_drjjv'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='r5d:_35'
+                  data-oid='t96t-qv'
                 >
                   Conversion Rate
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='upjryf3'
+                  data-oid='tco30bi'
                 >
                   {analyticsData
                     ? formatPercentage(analyticsData.conversionRate)
@@ -323,57 +323,57 @@ const AnalyticsPage: React.FC = () => {
                 </p>
                 <p
                   className='text-xs text-green-600 mt-1 flex items-center'
-                  data-oid='6ir60hl'
+                  data-oid='-gozvzn'
                 >
-                  <TrendingUp className='w-3 h-3 mr-1' data-oid='hwqxwmi' />
+                  <TrendingUp className='w-3 h-3 mr-1' data-oid='mitq4zl' />
                   +0.8% vs last period
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='2cijbd:'
+                data-oid='8qmvzp2'
               >
-                <Target className='w-5 h-5 text-green-600' data-oid='_0iyawn' />
+                <Target className='w-5 h-5 text-green-600' data-oid='ily5o_b' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='wbtenkb'
+            data-oid='9f_.emg'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='eqp:ql2'
+              data-oid='uuhbahl'
             >
-              <div className='flex-1' data-oid=':k:lde4'>
+              <div className='flex-1' data-oid='1k16s9b'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='e:fvh9x'
+                  data-oid='6uvu3uh'
                 >
                   Revenue
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='szx017c'
+                  data-oid='uf2q2jp'
                 >
                   {analyticsData ? formatCurrency(analyticsData.revenue) : '$0'}
                 </p>
                 <p
                   className='text-xs text-green-600 mt-1 flex items-center'
-                  data-oid='s4ho6.g'
+                  data-oid='7pyq5bq'
                 >
-                  <TrendingUp className='w-3 h-3 mr-1' data-oid='zuzyt9g' />
+                  <TrendingUp className='w-3 h-3 mr-1' data-oid='kl:8p9d' />
                   +18.2% vs last period
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='.6j8x9n'
+                data-oid='-mi912e'
               >
                 <DollarSign
                   className='w-5 h-5 text-green-600'
-                  data-oid='cs8jw4_'
+                  data-oid='v7y2-u1'
                 />
               </div>
             </div>
@@ -381,40 +381,40 @@ const AnalyticsPage: React.FC = () => {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid=':-_0ib3'
+            data-oid='2pc83m8'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='eq0079n'
+              data-oid='8zhod:m'
             >
-              <div className='flex-1' data-oid=':7005wg'>
+              <div className='flex-1' data-oid='b7hsf6f'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='_pnsk8u'
+                  data-oid='qffayo3'
                 >
                   Tests Running
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='9vu_qx1'
+                  data-oid='pd3.x56'
                 >
                   {analyticsData ? analyticsData.testsRunning : 0}
                 </p>
                 <p
                   className='text-xs text-blue-600 mt-1 flex items-center'
-                  data-oid='he_n61v'
+                  data-oid='5rmuv4c'
                 >
-                  <Activity className='w-3 h-3 mr-1' data-oid='6.0gjls' />
+                  <Activity className='w-3 h-3 mr-1' data-oid='27clz_n' />
                   Active experiments
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='npu.y7-'
+                data-oid='i8t5ty6'
               >
                 <BarChart3
                   className='w-5 h-5 text-blue-600'
-                  data-oid='kaxh8yb'
+                  data-oid='-efdy0o'
                 />
               </div>
             </div>
@@ -422,36 +422,36 @@ const AnalyticsPage: React.FC = () => {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid=':eu3i83'
+            data-oid='vj_hb13'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='i9oo25l'
+              data-oid='3swhfkw'
             >
-              <div className='flex-1' data-oid='-3z8a7k'>
+              <div className='flex-1' data-oid='qambedd'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='5my7z5a'
+                  data-oid='v.qimig'
                 >
                   Avg. Duration
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='o41yx-a'
+                  data-oid='al-thlh'
                 >
                   {analyticsData ? `${analyticsData.avgTestDuration}d` : '0d'}
                 </p>
-                <p className='text-xs text-gray-500 mt-1' data-oid='qitwxhc'>
+                <p className='text-xs text-gray-500 mt-1' data-oid='fen2rwo'>
                   Test duration
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center'
-                data-oid='srl-5q0'
+                data-oid='srg02zj'
               >
                 <Calendar
                   className='w-5 h-5 text-purple-600'
-                  data-oid='._-g2vp'
+                  data-oid='06jys67'
                 />
               </div>
             </div>
@@ -459,34 +459,34 @@ const AnalyticsPage: React.FC = () => {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='zqrj3xi'
+            data-oid='mw5flue'
           >
             <div
               className='flex items-center justify-between'
-              data-oid='jmsmex8'
+              data-oid='34k5p9f'
             >
-              <div className='flex-1' data-oid='6ghakv3'>
+              <div className='flex-1' data-oid='wpik8:o'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='bh-cs0s'
+                  data-oid='3oz4k7j'
                 >
                   Significant Results
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='4fjsuu-'
+                  data-oid='5ebg0r8'
                 >
                   {analyticsData ? analyticsData.significantResults : 0}
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='19e6yjs'>
+                <p className='text-xs text-green-600 mt-1' data-oid='l0.ovmk'>
                   95%+ confidence
                 </p>
               </div>
               <div
                 className='w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='00-rmmk'
+                data-oid='2ilea74'
               >
-                <Target className='w-5 h-5 text-green-600' data-oid='6i8iit9' />
+                <Target className='w-5 h-5 text-green-600' data-oid='77s5yc-' />
               </div>
             </div>
           </div>
@@ -495,24 +495,24 @@ const AnalyticsPage: React.FC = () => {
         {/* Chart Placeholder */}
         <div
           className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-          data-oid='pcr2ajc'
+          data-oid='d-y3.pu'
         >
           <div
             className='flex items-center justify-between mb-6'
-            data-oid='.3omasv'
+            data-oid='pj.ycua'
           >
-            <div data-oid='bj0i:8u'>
+            <div data-oid='zz9:pi2'>
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='imc9p4b'
+                data-oid='sk43:xn'
               >
                 Performance Trends
               </h3>
-              <p className='text-sm text-gray-500' data-oid='m._3anp'>
+              <p className='text-sm text-gray-500' data-oid='ifzixyj'>
                 {getTimeRangeLabel(timeRange)} performance overview
               </p>
             </div>
-            <div className='flex items-center space-x-2' data-oid='uwhntb0'>
+            <div className='flex items-center space-x-2' data-oid='4.mgefx'>
               <button
                 onClick={() => setSelectedMetric('visitors')}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
@@ -520,7 +520,7 @@ const AnalyticsPage: React.FC = () => {
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
-                data-oid='.j8ifa5'
+                data-oid='haa4zl5'
               >
                 Visitors
               </button>
@@ -531,7 +531,7 @@ const AnalyticsPage: React.FC = () => {
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
-                data-oid='h8r6qyi'
+                data-oid='cnsn76k'
               >
                 Conversions
               </button>
@@ -542,7 +542,7 @@ const AnalyticsPage: React.FC = () => {
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
-                data-oid='e36cjpa'
+                data-oid='fkup5hn'
               >
                 Revenue
               </button>
@@ -552,18 +552,18 @@ const AnalyticsPage: React.FC = () => {
           {/* Chart placeholder - would integrate with a charting library */}
           <div
             className='h-64 bg-gray-50 rounded-lg flex items-center justify-center'
-            data-oid='12wur48'
+            data-oid='8bx:-fp'
           >
-            <div className='text-center' data-oid='59sz39l'>
+            <div className='text-center' data-oid='ftwxwo-'>
               <BarChart3
                 className='w-12 h-12 text-gray-400 mx-auto mb-3'
-                data-oid='0sm-_4p'
+                data-oid='4fn-8hi'
               />
 
-              <p className='text-gray-500' data-oid='xe4yp:e'>
+              <p className='text-gray-500' data-oid='5pams31'>
                 Chart visualization for {selectedMetric}
               </p>
-              <p className='text-sm text-gray-400 mt-1' data-oid='8pkhk_u'>
+              <p className='text-sm text-gray-400 mt-1' data-oid='ccdifte'>
                 Chart implementation with libraries like Chart.js or Recharts
               </p>
             </div>
@@ -573,64 +573,64 @@ const AnalyticsPage: React.FC = () => {
         {/* Two Column Layout */}
         <div
           className='grid grid-cols-1 lg:grid-cols-2 gap-6'
-          data-oid='9.xvr81'
+          data-oid='kku7ft5'
         >
           {/* Industry Breakdown */}
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='7d55-t5'
+            data-oid='y0g2h2h'
           >
             <div
               className='flex items-center justify-between mb-6'
-              data-oid='-kbe:i-'
+              data-oid='3:.nqru'
             >
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='q-1v2dq'
+                data-oid='4jj8:9y'
               >
                 Industry Breakdown
               </h3>
-              <span className='text-sm text-gray-500' data-oid='1_gpue-'>
+              <span className='text-sm text-gray-500' data-oid='3jr7t1p'>
                 {getTimeRangeLabel(timeRange)}
               </span>
             </div>
 
-            <div className='space-y-4' data-oid='b-s79bl'>
+            <div className='space-y-4' data-oid='6br73p4'>
               {industryBreakdown.map((industry, index) => (
                 <div
                   key={index}
                   className='border border-gray-200 rounded-lg p-4'
-                  data-oid='xvbh4ta'
+                  data-oid='2uif9oe'
                 >
                   <div
                     className='flex items-center justify-between mb-3'
-                    data-oid='fpf7deo'
+                    data-oid='2j3_z7j'
                   >
                     <div
                       className='flex items-center space-x-3'
-                      data-oid='2iq_s:2'
+                      data-oid='1xuc2jp'
                     >
                       <div
                         className={`w-3 h-3 rounded-full ${getIndustryColor(industry.color)}`}
-                        data-oid='y47rhdw'
+                        data-oid='uxb7jhg'
                       ></div>
                       <h4
                         className='font-medium text-gray-900'
-                        data-oid='0_-7v5_'
+                        data-oid='i5woq.m'
                       >
                         {industry.name}
                       </h4>
                       <span
                         className='text-sm text-green-600 font-medium'
-                        data-oid='au4cauq'
+                        data-oid='-_3h26l'
                       >
                         {industry.growth}
                       </span>
                     </div>
-                    <div className='text-right' data-oid='epv4eev'>
+                    <div className='text-right' data-oid='jsmla3x'>
                       <p
                         className='text-sm font-medium text-gray-900'
-                        data-oid='dxce03:'
+                        data-oid='vyp._t0'
                       >
                         {formatCurrency(industry.revenue)}
                       </p>
@@ -639,37 +639,37 @@ const AnalyticsPage: React.FC = () => {
 
                   <div
                     className='grid grid-cols-3 gap-4 text-sm'
-                    data-oid='0l1psqz'
+                    data-oid='sh3vf2l'
                   >
-                    <div data-oid='x3ftx6y'>
-                      <p className='text-gray-500' data-oid='ufk5sab'>
+                    <div data-oid='_7pf9jp'>
+                      <p className='text-gray-500' data-oid='7dbiq0.'>
                         Visitors
                       </p>
                       <p
                         className='font-medium text-gray-900'
-                        data-oid='70jh36z'
+                        data-oid='9.c6:.b'
                       >
                         {formatNumber(industry.visitors)}
                       </p>
                     </div>
-                    <div data-oid='r0-:q_8'>
-                      <p className='text-gray-500' data-oid='eiy21:w'>
+                    <div data-oid='vo.:4zb'>
+                      <p className='text-gray-500' data-oid='39ghqwk'>
                         Conversions
                       </p>
                       <p
                         className='font-medium text-gray-900'
-                        data-oid='riz2eax'
+                        data-oid='.di-:zv'
                       >
                         {formatNumber(industry.conversions)}
                       </p>
                     </div>
-                    <div data-oid='7wonpt:'>
-                      <p className='text-gray-500' data-oid='f-a6npo'>
+                    <div data-oid='fm-2zfn'>
+                      <p className='text-gray-500' data-oid='ucbmq00'>
                         Conv. Rate
                       </p>
                       <p
                         className='font-medium text-gray-900'
-                        data-oid='1-n_l.m'
+                        data-oid='7-qz:da'
                       >
                         {formatPercentage(
                           (industry.conversions / industry.visitors) * 100
@@ -685,51 +685,51 @@ const AnalyticsPage: React.FC = () => {
           {/* Top Performing Tests */}
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='n8qak59'
+            data-oid='nwu30g9'
           >
             <div
               className='flex items-center justify-between mb-6'
-              data-oid='-ajt0u-'
+              data-oid='i3p-vrc'
             >
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='b2t4v-9'
+                data-oid='0j3pujz'
               >
                 Top Performing Tests
               </h3>
               <button
                 className='text-blue-600 hover:text-blue-700 text-sm font-medium'
-                data-oid='_i869je'
+                data-oid='-lzanrn'
               >
                 View All →
               </button>
             </div>
 
-            <div className='space-y-4' data-oid='7g6_2oj'>
+            <div className='space-y-4' data-oid='0_q4rp8'>
               {topTests.map((test, index) => (
                 <div
                   key={index}
                   className='border border-gray-200 rounded-lg p-4'
-                  data-oid='qouwn2r'
+                  data-oid='awfofjb'
                 >
                   <div
                     className='flex items-start justify-between mb-2'
-                    data-oid='dg2gvuk'
+                    data-oid='-0vatti'
                   >
-                    <div className='flex-1' data-oid='hgm7g7r'>
+                    <div className='flex-1' data-oid='m3y6tgo'>
                       <h4
                         className='font-medium text-gray-900 mb-1'
-                        data-oid='8qo3_lr'
+                        data-oid='qz5hf.d'
                       >
                         {test.name}
                       </h4>
                       <div
                         className='flex items-center space-x-2'
-                        data-oid='p2usax8'
+                        data-oid='e.5rnwn'
                       >
                         <span
                           className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'
-                          data-oid='0vod2gg'
+                          data-oid='k4-5_zv'
                         >
                           {test.industry}
                         </span>
@@ -739,20 +739,20 @@ const AnalyticsPage: React.FC = () => {
                               ? 'bg-green-100 text-green-700'
                               : 'bg-blue-100 text-blue-700'
                           }`}
-                          data-oid='fh:iev6'
+                          data-oid='f:puned'
                         >
                           {test.status}
                         </span>
                       </div>
                     </div>
-                    <div className='text-right' data-oid='678hbzx'>
+                    <div className='text-right' data-oid='xsscuhm'>
                       <p
                         className='text-lg font-bold text-green-600'
-                        data-oid='-3becwv'
+                        data-oid='xvsiamn'
                       >
                         {test.improvement}
                       </p>
-                      <p className='text-xs text-gray-500' data-oid='e1-uvc2'>
+                      <p className='text-xs text-gray-500' data-oid='e..4awx'>
                         {test.confidence} confidence
                       </p>
                     </div>
@@ -760,17 +760,17 @@ const AnalyticsPage: React.FC = () => {
 
                   <div
                     className='bg-green-50 rounded-md p-2 mt-3'
-                    data-oid='9rpqc58'
+                    data-oid='af2a34j'
                   >
-                    <div className='flex items-center' data-oid='0rl2jop'>
+                    <div className='flex items-center' data-oid='pt7xzsj'>
                       <TrendingUp
                         className='w-4 h-4 text-green-600 mr-2'
-                        data-oid='w_39gwd'
+                        data-oid='su.xskt'
                       />
 
                       <span
                         className='text-sm text-green-800'
-                        data-oid='_q4c6ts'
+                        data-oid='tb6zti5'
                       >
                         Significant improvement detected
                       </span>
@@ -785,46 +785,46 @@ const AnalyticsPage: React.FC = () => {
         {/* Insights Section */}
         <div
           className='bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6'
-          data-oid=':pd4h34'
+          data-oid='2m:6ed3'
         >
-          <div className='flex items-start space-x-4' data-oid='rvb4ngl'>
+          <div className='flex items-start space-x-4' data-oid='0y_d1rz'>
             <div
               className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0'
-              data-oid='f6yzzfo'
+              data-oid='0569dkh'
             >
-              <Activity className='w-5 h-5 text-blue-600' data-oid='5-c3b6e' />
+              <Activity className='w-5 h-5 text-blue-600' data-oid='4zxt1rz' />
             </div>
-            <div data-oid='n0-51sq'>
+            <div data-oid='hj8u1p6'>
               <h3
                 className='text-lg font-semibold text-gray-900 mb-2'
-                data-oid='pk2bbhp'
+                data-oid='ogfvub-'
               >
                 AI-Powered Insights
               </h3>
               <div
                 className='space-y-2 text-sm text-gray-700'
-                data-oid='5.kkt0g'
+                data-oid='80qqs4f'
               >
-                <p data-oid='led0_4m'>
+                <p data-oid='paj:gf-'>
                   • Your SaaS industry tests are performing 15% above average
                   this period
                 </p>
-                <p data-oid='gia70qe'>
+                <p data-oid='zn1f95a'>
                   • Consider running more tests on checkout flows - they show
                   highest uplift potential
                 </p>
-                <p data-oid='4ni6u2d'>
+                <p data-oid='u_nkqda'>
                   • Mobile traffic has increased 23% but conversion rate is 8%
                   lower than desktop
                 </p>
-                <p data-oid='24t4rsf'>
+                <p data-oid='6:be:ar'>
                   • Tests with social proof elements are showing 31% higher
                   success rates
                 </p>
               </div>
               <button
                 className='mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium'
-                data-oid='px1-o_2'
+                data-oid='hmwwstq'
               >
                 View Detailed Insights →
               </button>

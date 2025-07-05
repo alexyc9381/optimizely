@@ -5,14 +5,14 @@ import Dashboard from '../../components/Dashboard';
 
 describe('Dashboard', () => {
   it('renders dashboard title', () => {
-    render(<Dashboard data-oid='5g9lo2u' />);
+    render(<Dashboard data-oid='ug1dy2f' />);
 
     const title = screen.getByText(/AI-Powered B2B Website Optimization/i);
     expect(title).toBeDefined();
   });
 
   it('renders key metrics cards', () => {
-    render(<Dashboard data-oid='77ykxp2' />);
+    render(<Dashboard data-oid='q8yjc03' />);
 
     // Check for key metric cards
     expect(screen.getByText(/Total Visitors/i)).toBeDefined();
@@ -22,7 +22,7 @@ describe('Dashboard', () => {
   });
 
   it('renders charts section', () => {
-    render(<Dashboard data-oid='way73uj' />);
+    render(<Dashboard data-oid='j_n4t0.' />);
 
     // Check for charts presence
     expect(screen.getByText(/Visitor Intent Distribution/i)).toBeDefined();
@@ -30,7 +30,7 @@ describe('Dashboard', () => {
   });
 
   it('renders recent activity section', () => {
-    render(<Dashboard data-oid='gceiey_' />);
+    render(<Dashboard data-oid='e067qp5' />);
 
     expect(screen.getByText(/Recent Activity/i)).toBeDefined();
   });

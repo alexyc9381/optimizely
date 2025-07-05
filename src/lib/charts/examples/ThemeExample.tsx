@@ -295,23 +295,23 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
   }, [currentTheme, applyThemeToDocument]);
 
   return (
-    <div className='theme-example' data-oid='1a659id'>
+    <div className='theme-example' data-oid='qi5319u'>
       {/* Header */}
-      <div className='theme-example-header' data-oid='hsct62p'>
-        <div className='header-content' data-oid='srb99fm'>
-          <h1 data-oid='3ngj4l7'>Theme System Demonstration</h1>
-          <p data-oid='tg26tc-'>
+      <div className='theme-example-header' data-oid='o9syvu-'>
+        <div className='header-content' data-oid='vhox1r2'>
+          <h1 data-oid='_g5tsm1'>Theme System Demonstration</h1>
+          <p data-oid='4v.5i_l'>
             Comprehensive theming and customization capabilities with live
             preview
           </p>
         </div>
 
-        <div className='header-actions' data-oid='5k0p44k'>
+        <div className='header-actions' data-oid='748sfg4'>
           <button
             className='btn btn-outline'
             onClick={generateRandomTheme}
             disabled={isLoading}
-            data-oid='myt-u2v'
+            data-oid='2rf.tn3'
           >
             🎲 Random Theme
           </button>
@@ -320,7 +320,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
             className='btn btn-outline'
             onClick={resetToDefault}
             disabled={isLoading}
-            data-oid='dl-267s'
+            data-oid='6d_19js'
           >
             🔄 Reset Default
           </button>
@@ -329,7 +329,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
             className='btn btn-secondary'
             onClick={handleExportTheme}
             disabled={isLoading}
-            data-oid='ai3nvq4'
+            data-oid='cf1h.r.'
           >
             📁 Export Theme
           </button>
@@ -337,7 +337,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
           <label
             className='btn btn-primary'
             style={{ cursor: 'pointer' }}
-            data-oid='liv9_we'
+            data-oid='gshx4aa'
           >
             📂 Import Theme
             <input
@@ -345,70 +345,70 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
               accept='.json'
               onChange={handleImportTheme}
               style={{ display: 'none' }}
-              data-oid='n:qmfc1'
+              data-oid='hsmh6pp'
             />
           </label>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className='theme-example-nav' data-oid='nf2y9al'>
+      <div className='theme-example-nav' data-oid='4j04xf2'>
         <button
           className={`nav-tab ${activeTab === 'preview' ? 'active' : ''}`}
           onClick={() => setActiveTab('preview')}
-          data-oid='q5moqog'
+          data-oid='zapv6w8'
         >
           🎨 Live Preview
         </button>
         <button
           className={`nav-tab ${activeTab === 'customizer' ? 'active' : ''}`}
           onClick={() => setActiveTab('customizer')}
-          data-oid='x60qmbp'
+          data-oid='h:z9fr7'
         >
           ⚙️ Theme Editor
         </button>
         <button
           className={`nav-tab ${activeTab === 'examples' ? 'active' : ''}`}
           onClick={() => setActiveTab('examples')}
-          data-oid='fvtq2kp'
+          data-oid='my-hgjl'
         >
           📊 Chart Examples
         </button>
       </div>
 
       {/* Content */}
-      <div className='theme-example-content' data-oid='wdeblxo'>
+      <div className='theme-example-content' data-oid='d_etjmn'>
         {/* Live Preview Tab */}
         {activeTab === 'preview' && (
-          <div className='preview-section' data-oid=':ha0opw'>
-            <div className='preview-header' data-oid='qj:bjb-'>
-              <h2 data-oid='rchz85g'>Live Theme Preview</h2>
-              <div className='chart-type-selector' data-oid='1vgg:y6'>
-                <label data-oid='ml7gizp'>Chart Type:</label>
+          <div className='preview-section' data-oid='msrk-lv'>
+            <div className='preview-header' data-oid='hxiplth'>
+              <h2 data-oid='swh-08g'>Live Theme Preview</h2>
+              <div className='chart-type-selector' data-oid='sksvgmr'>
+                <label data-oid='6axa5tp'>Chart Type:</label>
                 <select
                   value={previewChartType}
                   onChange={e => setPreviewChartType(e.target.value as any)}
                   className='form-select'
-                  data-oid='po4jges'
+                  data-oid='0fk9pa:'
                 >
-                  <option value='line' data-oid=':oeghk8'>
+                  <option value='line' data-oid='c1bfjtw'>
                     Line Chart
                   </option>
-                  <option value='bar' data-oid='6-yfhgk'>
+                  <option value='bar' data-oid='lbycizn'>
                     Bar Chart
                   </option>
-                  <option value='doughnut' data-oid='z04osuo'>
+                  <option value='doughnut' data-oid='j1fp2x3'>
                     Doughnut Chart
                   </option>
-                  <option value='scatter' data-oid='ba474wp'>
+                  <option value='scatter' data-oid='8mhw91a'>
                     Scatter Plot
                   </option>
                 </select>
               </div>
             </div>
 
-            <div className='preview-container' data-oid='uqb7z7p'>
-              <div className='preview-chart' data-oid='s882qxh'>
+            <div className='preview-container' data-oid='pdciz74'>
+              <div className='preview-chart' data-oid='cvs6e-e'>
                 <UniversalChart
                   type={previewChartType}
                   data={sampleData[`${previewChartType}Data`]}
@@ -461,44 +461,44 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                           }
                         : undefined,
                   }}
-                  data-oid='ufs4may'
+                  data-oid='49gj.lh'
                 />
               </div>
 
-              <div className='theme-info' data-oid='t_fcso1'>
-                <div className='theme-info-card' data-oid='syj5bny'>
-                  <h3 data-oid='h-:6wyz'>Current Theme</h3>
-                  <div className='theme-details' data-oid='hh8d29e'>
-                    <div className='detail-item' data-oid='6xs_u:r'>
-                      <label data-oid='qc1ovxf'>Name:</label>
-                      <span data-oid='.vgw:4g'>{currentTheme.name}</span>
+              <div className='theme-info' data-oid='x93g5-m'>
+                <div className='theme-info-card' data-oid='exqmyhu'>
+                  <h3 data-oid='ly3f813'>Current Theme</h3>
+                  <div className='theme-details' data-oid='lkagm.8'>
+                    <div className='detail-item' data-oid='ar47bi6'>
+                      <label data-oid='gjt6h4h'>Name:</label>
+                      <span data-oid='3frtl51'>{currentTheme.name}</span>
                     </div>
-                    <div className='detail-item' data-oid='o32_:yv'>
-                      <label data-oid='b473fj3'>Category:</label>
+                    <div className='detail-item' data-oid='dkesy6y'>
+                      <label data-oid='9gu7_yn'>Category:</label>
                       <span
                         className={`category-badge ${currentTheme.category}`}
-                        data-oid='9j2iaq0'
+                        data-oid='18khb75'
                       >
                         {currentTheme.category}
                       </span>
                     </div>
-                    <div className='detail-item' data-oid='zd_2hng'>
-                      <label data-oid='uplnhvl'>Version:</label>
-                      <span data-oid='9k2lbm.'>{currentTheme.version}</span>
+                    <div className='detail-item' data-oid='l6d-zjb'>
+                      <label data-oid='svc4:g5'>Version:</label>
+                      <span data-oid='9nvtlik'>{currentTheme.version}</span>
                     </div>
-                    <div className='detail-item' data-oid='h8ub1r4'>
-                      <label data-oid='1fvx9wm'>Author:</label>
-                      <span data-oid='xcjkslx'>{currentTheme.author}</span>
+                    <div className='detail-item' data-oid='1-7ixag'>
+                      <label data-oid='dz0jyv3'>Author:</label>
+                      <span data-oid='bf9khim'>{currentTheme.author}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className='color-palette-preview' data-oid='_b69gv0'>
-                  <h4 data-oid='3vx1oz8'>Color Palette</h4>
-                  <div className='palette-colors' data-oid='u95y.zz'>
-                    <div className='color-group' data-oid='jm_tp13'>
-                      <label data-oid='orhbna1'>Primary</label>
-                      <div className='color-swatches' data-oid='a4kqmqx'>
+                <div className='color-palette-preview' data-oid='g-idczt'>
+                  <h4 data-oid='dv_z0e8'>Color Palette</h4>
+                  <div className='palette-colors' data-oid='db9q-:u'>
+                    <div className='color-group' data-oid='go0o130'>
+                      <label data-oid='82uk8kw'>Primary</label>
+                      <div className='color-swatches' data-oid='yui.nl4'>
                         {currentTheme.colorPalette.primary.map(
                           (color, index) => (
                             <div
@@ -506,15 +506,15 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                               className='color-swatch'
                               style={{ backgroundColor: color }}
                               title={color}
-                              data-oid='pp4zvb8'
+                              data-oid='yxqpi:i'
                             />
                           )
                         )}
                       </div>
                     </div>
-                    <div className='color-group' data-oid='6n_3p9d'>
-                      <label data-oid='rlfz611'>Secondary</label>
-                      <div className='color-swatches' data-oid='hu4-yz-'>
+                    <div className='color-group' data-oid='p:l9ay:'>
+                      <label data-oid='inms7nf'>Secondary</label>
+                      <div className='color-swatches' data-oid='j5c97dn'>
                         {currentTheme.colorPalette.secondary.map(
                           (color, index) => (
                             <div
@@ -522,7 +522,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                               className='color-swatch'
                               style={{ backgroundColor: color }}
                               title={color}
-                              data-oid='s.rme3e'
+                              data-oid='.4i4.we'
                             />
                           )
                         )}
@@ -537,25 +537,25 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
 
         {/* Theme Editor Tab */}
         {activeTab === 'customizer' && (
-          <div className='customizer-section' data-oid='6jr23yh'>
+          <div className='customizer-section' data-oid='wkk-_q5'>
             <ThemeCustomizer
               onThemeChange={handleThemeChange}
               showPreview={false}
               className='full-customizer'
-              data-oid='mxu9hmn'
+              data-oid=':ur-nir'
             />
           </div>
         )}
 
         {/* Chart Examples Tab */}
         {activeTab === 'examples' && (
-          <div className='examples-section' data-oid='ej1zj6-'>
-            <h2 data-oid='xhr6c4l'>Chart Examples Gallery</h2>
-            <div className='examples-grid' data-oid='gsqs:k5'>
+          <div className='examples-section' data-oid='0neb5bm'>
+            <h2 data-oid='i-2ij.r'>Chart Examples Gallery</h2>
+            <div className='examples-grid' data-oid='23p931r'>
               {/* Line Chart Example */}
-              <div className='example-card' data-oid='2h36zkh'>
-                <h3 data-oid='vq8sozh'>📈 Line Chart</h3>
-                <div className='example-chart' data-oid='b2j-qg-'>
+              <div className='example-card' data-oid='-cv9d-z'>
+                <h3 data-oid='j.dx8c.'>📈 Line Chart</h3>
+                <div className='example-chart' data-oid='o.qbnjc'>
                   <UniversalChart
                     type='line'
                     data={sampleData.lineData}
@@ -566,19 +566,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'bottom' as const },
                       },
                     }}
-                    data-oid='js--bdb'
+                    data-oid='_.5d_q3'
                   />
                 </div>
-                <div className='example-description' data-oid='gvfsnb:'>
+                <div className='example-description' data-oid='kjkvid.'>
                   Perfect for showing trends over time with multiple data
                   series.
                 </div>
               </div>
 
               {/* Bar Chart Example */}
-              <div className='example-card' data-oid='y04jy_-'>
-                <h3 data-oid='kkpmo5b'>📊 Bar Chart</h3>
-                <div className='example-chart' data-oid='8f6jqyo'>
+              <div className='example-card' data-oid='g6:h_o4'>
+                <h3 data-oid='21j7uat'>📊 Bar Chart</h3>
+                <div className='example-chart' data-oid='uejy_cd'>
                   <UniversalChart
                     type='bar'
                     data={sampleData.barData}
@@ -589,19 +589,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { display: false },
                       },
                     }}
-                    data-oid='go6y4-1'
+                    data-oid='y0-e.pa'
                   />
                 </div>
-                <div className='example-description' data-oid='0848:k5'>
+                <div className='example-description' data-oid='35lf.kv'>
                   Ideal for comparing categorical data with clear visual
                   distinction.
                 </div>
               </div>
 
               {/* Doughnut Chart Example */}
-              <div className='example-card' data-oid='k-e2.d-'>
-                <h3 data-oid='0ir_9.a'>🍩 Doughnut Chart</h3>
-                <div className='example-chart' data-oid='8.24exo'>
+              <div className='example-card' data-oid='mq70j2j'>
+                <h3 data-oid='7i-:290'>🍩 Doughnut Chart</h3>
+                <div className='example-chart' data-oid='pa3i5df'>
                   <UniversalChart
                     type='doughnut'
                     data={sampleData.doughnutData}
@@ -612,19 +612,19 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'right' as const },
                       },
                     }}
-                    data-oid='n00so.h'
+                    data-oid='tkrflb_'
                   />
                 </div>
-                <div className='example-description' data-oid='kuzf6.h'>
+                <div className='example-description' data-oid='abid7:-'>
                   Great for showing proportional data and part-to-whole
                   relationships.
                 </div>
               </div>
 
               {/* Scatter Plot Example */}
-              <div className='example-card' data-oid='.5iyxne'>
-                <h3 data-oid='b669wol'>🎯 Scatter Plot</h3>
-                <div className='example-chart' data-oid='vtg-gfn'>
+              <div className='example-card' data-oid='g4g2ba-'>
+                <h3 data-oid=':pfk3hh'>🎯 Scatter Plot</h3>
+                <div className='example-chart' data-oid='elxyc_-'>
                   <UniversalChart
                     type='scatter'
                     data={sampleData.scatterData}
@@ -635,18 +635,18 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                         legend: { position: 'top' as const },
                       },
                     }}
-                    data-oid='k2dlown'
+                    data-oid='onvp5ur'
                   />
                 </div>
-                <div className='example-description' data-oid='hi0v2_a'>
+                <div className='example-description' data-oid='l-h0.3z'>
                   Excellent for visualizing correlations between two variables.
                 </div>
               </div>
 
               {/* Real-time Chart Example */}
-              <div className='example-card full-width' data-oid='vo97f-w'>
-                <h3 data-oid='hik1g:5'>⚡ Real-time Chart</h3>
-                <div className='example-chart' data-oid='rpt8:7l'>
+              <div className='example-card full-width' data-oid='5v:4jty'>
+                <h3 data-oid='3pu00d:'>⚡ Real-time Chart</h3>
+                <div className='example-chart' data-oid='ppj96sx'>
                   <RealTimeChart
                     type='line'
                     dataSource='analytics'
@@ -656,10 +656,10 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                       maxDataPoints: 50,
                       updateInterval: 1000,
                     }}
-                    data-oid='j4zjx-w'
+                    data-oid='cuv6j5_'
                   />
                 </div>
-                <div className='example-description' data-oid='3y13p:1'>
+                <div className='example-description' data-oid='ceio_ha'>
                   Live data streaming with automatic updates and trend analysis.
                 </div>
               </div>
@@ -669,22 +669,22 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
       </div>
 
       {/* Notifications */}
-      <div className='notifications-container' data-oid='p4w75sy'>
+      <div className='notifications-container' data-oid='ftblas3'>
         {notifications.map(notification => (
           <div
             key={notification.id}
             className={`theme-notification ${notification.type}`}
             onClick={() => removeNotification(notification.id)}
-            data-oid='lc54bkj'
+            data-oid='6-kl_vr'
           >
-            <div className='notification-content' data-oid='u-l3all'>
-              <span className='notification-icon' data-oid='b5kip9y'>
+            <div className='notification-content' data-oid='unn_piz'>
+              <span className='notification-icon' data-oid='0w_3qd9'>
                 {notification.type === 'success' && '✅'}
                 {notification.type === 'error' && '❌'}
                 {notification.type === 'warning' && '⚠️'}
                 {notification.type === 'info' && 'ℹ️'}
               </span>
-              <span className='notification-message' data-oid='n4:szzt'>
+              <span className='notification-message' data-oid='zj9qom2'>
                 {notification.message}
               </span>
             </div>
@@ -695,7 +695,7 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
                 removeNotification(notification.id);
               }}
               aria-label='Close notification'
-              data-oid='d:xa2wl'
+              data-oid='zyj0u4j'
             >
               ×
             </button>
@@ -705,9 +705,9 @@ export const ThemeExample: React.FC<ThemeExampleProps> = ({
 
       {/* Loading overlay */}
       {isLoading && (
-        <div className='loading-overlay' data-oid='2pchs08'>
-          <div className='loading-spinner' data-oid='ih18qv8' />
-          <span data-oid='556bf-i'>Processing...</span>
+        <div className='loading-overlay' data-oid='yuhk:w1'>
+          <div className='loading-spinner' data-oid='8gcn._k' />
+          <span data-oid='bfwu-x3'>Processing...</span>
         </div>
       )}
     </div>

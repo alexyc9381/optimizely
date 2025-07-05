@@ -300,15 +300,15 @@ const IndustriesPage: React.FC = () => {
     return (
       <DashboardLayout
         title='Industry Insights - Universal AI Platform'
-        data-oid='_j:x6v7'
+        data-oid='.wf3hka'
       >
         <div
           className='flex items-center justify-center h-64'
-          data-oid='n-y:cp.'
+          data-oid='33pk.lp'
         >
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'
-            data-oid='l4q-s.a'
+            data-oid='0:b0f81'
           ></div>
         </div>
       </DashboardLayout>
@@ -318,32 +318,32 @@ const IndustriesPage: React.FC = () => {
   return (
     <DashboardLayout
       title='Industry Insights - Universal AI Platform'
-      data-oid='oc1.-3o'
+      data-oid='869tttq'
     >
-      <div className='space-y-6' data-oid='__p4f8o'>
+      <div className='space-y-6' data-oid='ascin1e'>
         {error && (
           <div
             className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'
-            data-oid='gy15yd2'
+            data-oid='l9v413y'
           >
-            <div className='flex' data-oid='9k2wb:9'>
-              <div className='flex-shrink-0' data-oid='vdy6nta'>
+            <div className='flex' data-oid='5o_fzsi'>
+              <div className='flex-shrink-0' data-oid='924_5jw'>
                 <svg
                   className='h-5 w-5 text-yellow-400'
                   viewBox='0 0 20 20'
                   fill='currentColor'
-                  data-oid='luxdr7_'
+                  data-oid='7s3a.0j'
                 >
                   <path
                     fillRule='evenodd'
                     d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
                     clipRule='evenodd'
-                    data-oid='-6ofq:p'
+                    data-oid='zjf3n66'
                   />
                 </svg>
               </div>
-              <div className='ml-3' data-oid='o.1psvs'>
-                <p className='text-sm text-yellow-700' data-oid='jv8m23a'>
+              <div className='ml-3' data-oid='fh0xdho'>
+                <p className='text-sm text-yellow-700' data-oid='9i:w_ab'>
                   {error}
                 </p>
               </div>
@@ -352,32 +352,32 @@ const IndustriesPage: React.FC = () => {
         )}
 
         {/* Header */}
-        <div className='flex items-center justify-between' data-oid='oba1ivc'>
-          <div data-oid='q1wemcm'>
-            <h1 className='text-2xl font-bold text-gray-900' data-oid='wx7iwh5'>
+        <div className='flex items-center justify-between' data-oid='te95t-s'>
+          <div data-oid='4gkec5p'>
+            <h1 className='text-2xl font-bold text-gray-900' data-oid='uqzx4w8'>
               Industry Insights
             </h1>
-            <p className='text-sm text-gray-500 mt-1' data-oid='iq0po-d'>
+            <p className='text-sm text-gray-500 mt-1' data-oid='t.9_ui2'>
               AI-powered insights and best practices tailored to your industry
             </p>
           </div>
 
-          <div className='flex items-center space-x-3' data-oid='t:_yb-z'>
+          <div className='flex items-center space-x-3' data-oid='c.o:m6g'>
             <button
               onClick={handleExportInsights}
               className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='6_g.vj0'
+              data-oid='mvuajab'
             >
-              <Download className='h-4 w-4' data-oid='uq4u5zj' />
-              <span data-oid='6dw0p0l'>Export Insights</span>
+              <Download className='h-4 w-4' data-oid='o-w_p3-' />
+              <span data-oid='y7ca7lg'>Export Insights</span>
             </button>
             <button
               onClick={handleGenerateReport}
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='i-40sue'
+              data-oid='1frtq8_'
             >
-              <FileText className='h-4 w-4' data-oid='rcttolb' />
-              <span data-oid='gwro-vi'>Generate Report</span>
+              <FileText className='h-4 w-4' data-oid='7l40sr8' />
+              <span data-oid='merbf1h'>Generate Report</span>
             </button>
           </div>
         </div>
@@ -385,7 +385,7 @@ const IndustriesPage: React.FC = () => {
         {/* Industry Selector */}
         <div
           className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4'
-          data-oid='_3578ce'
+          data-oid='fboz4a-'
         >
           {(Object.entries(industries).length > 0
             ? Object.entries(industries)
@@ -399,13 +399,13 @@ const IndustriesPage: React.FC = () => {
                   ? getColorClasses(industry.color)
                   : 'bg-white border-gray-200 hover:border-gray-300'
               }`}
-              data-oid='yzwf8k8'
+              data-oid='opsop8k'
             >
-              <div className='text-center' data-oid='l.ksack'>
-                <h3 className='font-semibold text-lg' data-oid='tdvzcv1'>
+              <div className='text-center' data-oid='2u_2b8v'>
+                <h3 className='font-semibold text-lg' data-oid='4-bqq.-'>
                   {industry.name}
                 </h3>
-                <p className='text-sm opacity-75 mt-1' data-oid='w4lo3.d'>
+                <p className='text-sm opacity-75 mt-1' data-oid='mgxnz80'>
                   CR: {industry.metrics.conversionRate}% |{' '}
                   {industry.metrics.avgTestDuration}d avg
                 </p>
@@ -417,130 +417,130 @@ const IndustriesPage: React.FC = () => {
         {/* Industry Metrics */}
         <div
           className='grid grid-cols-1 md:grid-cols-4 gap-6'
-          data-oid='83ud9s-'
+          data-oid='0l1pq24'
         >
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='.50jigh'
+            data-oid='ifnpndn'
           >
-            <div className='flex items-center' data-oid='7390d6x'>
-              <div className='flex-1' data-oid='vp5x7xs'>
+            <div className='flex items-center' data-oid='9wxlyez'>
+              <div className='flex-1' data-oid='qo43tqc'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='hvlb7xc'
+                  data-oid='q:73112'
                 >
                   Conversion Rate
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='xqdvg_z'
+                  data-oid='a-pffv6'
                 >
                   {currentIndustry?.metrics.conversionRate}%
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='65y5336'>
+                <p className='text-xs text-green-600 mt-1' data-oid='o258qgp'>
                   Industry average
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='os3501d'
+                data-oid='e4-n9r:'
               >
-                <Target className='w-4 h-4 text-blue-600' data-oid='h6pnf20' />
+                <Target className='w-4 h-4 text-blue-600' data-oid='k9p7bwl' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='jsy0u88'
+            data-oid='.c-b:-6'
           >
-            <div className='flex items-center' data-oid='7dvecvt'>
-              <div className='flex-1' data-oid='h5k8h20'>
+            <div className='flex items-center' data-oid='hk754ft'>
+              <div className='flex-1' data-oid='q_ga_oc'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='2qsm1b.'
+                  data-oid='x-ym8gt'
                 >
                   Avg Test Duration
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='hc5.2sh'
+                  data-oid='kom6.rt'
                 >
                   {currentIndustry?.metrics.avgTestDuration}
                 </p>
-                <p className='text-xs text-blue-600 mt-1' data-oid='f7yqyfc'>
+                <p className='text-xs text-blue-600 mt-1' data-oid='-5ua1lr'>
                   days to significance
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='51l.tzc'
+                data-oid='h.zhdtv'
               >
-                <Clock className='w-4 h-4 text-green-600' data-oid='kms8d_4' />
+                <Clock className='w-4 h-4 text-green-600' data-oid='b7._:06' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='m13mdf5'
+            data-oid='cgrynec'
           >
-            <div className='flex items-center' data-oid='qsz3:bj'>
-              <div className='flex-1' data-oid='6ox_n17'>
+            <div className='flex items-center' data-oid='diz:9f3'>
+              <div className='flex-1' data-oid='qjjgtlb'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='pjn__6w'
+                  data-oid='3ghy4q5'
                 >
                   Top Element
                 </p>
                 <p
                   className='text-lg font-bold text-gray-900'
-                  data-oid='on5fct1'
+                  data-oid='oudoj2c'
                 >
                   {currentIndustry?.metrics.topPerformingElement}
                 </p>
-                <p className='text-xs text-purple-600 mt-1' data-oid='v1ms65q'>
+                <p className='text-xs text-purple-600 mt-1' data-oid='kfys8iq'>
                   highest impact
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center'
-                data-oid='7w-8.4_'
+                data-oid='f7jyd.o'
               >
-                <Award className='w-4 h-4 text-purple-600' data-oid='ef507bn' />
+                <Award className='w-4 h-4 text-purple-600' data-oid='sqgrqqv' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='tr9.-1-'
+            data-oid='l1albvu'
           >
-            <div className='flex items-center' data-oid='r66aebo'>
-              <div className='flex-1' data-oid='-lxsr1o'>
+            <div className='flex items-center' data-oid='67.g4b3'>
+              <div className='flex-1' data-oid='p864ymr'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='xwok1c7'
+                  data-oid='wu1lcox'
                 >
                   Best Improvement
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='la-d.jr'
+                  data-oid='enp99mq'
                 >
                   {currentIndustry?.metrics.improvement}
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='77o:ft:'>
+                <p className='text-xs text-green-600 mt-1' data-oid='o5g10o7'>
                   maximum uplift
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center'
-                data-oid='3p77hyv'
+                data-oid='11i781d'
               >
                 <TrendingUp
                   className='w-4 h-4 text-orange-600'
-                  data-oid='2cfwo08'
+                  data-oid='8h0767i'
                 />
               </div>
             </div>
@@ -550,42 +550,42 @@ const IndustriesPage: React.FC = () => {
         {/* Industry Insights */}
         <div
           className='grid grid-cols-1 lg:grid-cols-2 gap-6'
-          data-oid='a.9.tmo'
+          data-oid='tsn55k0'
         >
           {/* Key Insights */}
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='y-tw07-'
+            data-oid='3ofpgne'
           >
-            <div className='flex items-center mb-4' data-oid='s:b5s50'>
+            <div className='flex items-center mb-4' data-oid='w4c29vr'>
               <Lightbulb
                 className='w-5 h-5 text-yellow-600 mr-2'
-                data-oid='4yfmce_'
+                data-oid='i8my6.5'
               />
 
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='5yg5lht'
+                data-oid='rni5utb'
               >
                 Key Insights
               </h3>
             </div>
-            <div className='space-y-3' data-oid='vd6n9b1'>
+            <div className='space-y-3' data-oid='ccghy.p'>
               {currentIndustry?.insights.map((insight, index) => (
                 <div
                   key={index}
                   className='flex items-start space-x-3'
-                  data-oid='9c4qzzw'
+                  data-oid='mtx_rdc'
                 >
                   <div
                     className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mt-0.5'
-                    data-oid='9ut26j0'
+                    data-oid='h1vw_9l'
                   >
                     {index + 1}
                   </div>
                   <p
                     className='text-gray-700 text-sm flex-1'
-                    data-oid='1dld5xv'
+                    data-oid='9g62pvd'
                   >
                     {insight}
                   </p>
@@ -597,43 +597,43 @@ const IndustriesPage: React.FC = () => {
           {/* Top Performing Tests */}
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'
-            data-oid='q0qj7ij'
+            data-oid='78fta0r'
           >
-            <div className='flex items-center mb-4' data-oid='g5jevev'>
+            <div className='flex items-center mb-4' data-oid='znw8leb'>
               <BarChart3
                 className='w-5 h-5 text-green-600 mr-2'
-                data-oid='jweffa3'
+                data-oid='8e_tqg.'
               />
 
               <h3
                 className='text-lg font-semibold text-gray-900'
-                data-oid='7wi9z0h'
+                data-oid='57s2eqa'
               >
                 Top Performing Tests
               </h3>
             </div>
-            <div className='space-y-4' data-oid='gl6x8jp'>
+            <div className='space-y-4' data-oid='168_6cr'>
               {currentIndustry?.topTests.map((test, index) => (
                 <div
                   key={index}
                   className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors'
-                  data-oid='ws0ys91'
+                  data-oid='jejyfxh'
                 >
-                  <div className='flex-1' data-oid='2ksc2le'>
+                  <div className='flex-1' data-oid='8--t9a9'>
                     <p
                       className='font-medium text-gray-900 text-sm'
-                      data-oid='7sliy1g'
+                      data-oid='sb0t5qo'
                     >
                       {test.name}
                     </p>
-                    <p className='text-xs text-gray-500' data-oid='s6_e0r5'>
+                    <p className='text-xs text-gray-500' data-oid='itx6nos'>
                       Confidence: {test.confidence}
                     </p>
                   </div>
-                  <div className='text-right' data-oid='n2kvdkf'>
+                  <div className='text-right' data-oid='xise5gn'>
                     <span
                       className='inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800'
-                      data-oid='bmfx1ek'
+                      data-oid='-m.--9v'
                     >
                       {test.improvement}
                     </span>
@@ -647,65 +647,65 @@ const IndustriesPage: React.FC = () => {
         {/* Industry-Specific Recommendations */}
         <div
           className='bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6'
-          data-oid='y536p6n'
+          data-oid='pdi4rky'
         >
           <h3
             className='text-lg font-semibold text-gray-900 mb-4'
-            data-oid='8c15ow7'
+            data-oid='vfcq9j5'
           >
             Recommended A/B Tests for {currentIndustry?.name}
           </h3>
           <div
             className='grid grid-cols-1 md:grid-cols-3 gap-4'
-            data-oid='iu8ust6'
+            data-oid='9wwjbih'
           >
             <div
               className='bg-white rounded-lg p-4 border border-blue-100'
-              data-oid='fsyinbd'
+              data-oid='kdppifj'
             >
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='ocwjcz3'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='5:e_hm6'>
                 High Priority
               </h4>
-              <p className='text-sm text-gray-600' data-oid='mvx13kv'>
+              <p className='text-sm text-gray-600' data-oid='hk.s1t8'>
                 Test pricing page elements and CTAs for immediate impact
               </p>
               <span
                 className='inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mt-2'
-                data-oid='a6xel.6'
+                data-oid='qyimuiw'
               >
                 High Impact
               </span>
             </div>
             <div
               className='bg-white rounded-lg p-4 border border-blue-100'
-              data-oid='ztdu0vx'
+              data-oid='10ave.w'
             >
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='.167omt'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='0guuodg'>
                 Medium Priority
               </h4>
-              <p className='text-sm text-gray-600' data-oid='.pc9rz9'>
+              <p className='text-sm text-gray-600' data-oid='cj9t0b_'>
                 Optimize navigation and user flow for better engagement
               </p>
               <span
                 className='inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2'
-                data-oid='9z.3n_x'
+                data-oid='r54w1i0'
               >
                 Medium Impact
               </span>
             </div>
             <div
               className='bg-white rounded-lg p-4 border border-blue-100'
-              data-oid='5q42lps'
+              data-oid='d9zu8cx'
             >
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='nhayuna'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='qkp.h_0'>
                 Low Priority
               </h4>
-              <p className='text-sm text-gray-600' data-oid='nwjv:4g'>
+              <p className='text-sm text-gray-600' data-oid='wkmokpb'>
                 Test visual elements and design variations
               </p>
               <span
                 className='inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2'
-                data-oid='-_0fzs2'
+                data-oid='ybezztt'
               >
                 Low Impact
               </span>

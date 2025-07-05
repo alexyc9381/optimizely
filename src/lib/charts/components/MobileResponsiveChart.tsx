@@ -310,7 +310,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
         touchAction: 'none',
         userSelect: 'none',
       }}
-      data-oid='-1l.9c6'
+      data-oid='_b6e3f5'
     >
       <canvas
         ref={canvasRef}
@@ -323,7 +323,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
         }}
         role='img'
         aria-label={`${type} chart with ${data.length} data points`}
-        data-oid='qc0378-'
+        data-oid='e4m97vq'
       />
 
       {/* Mobile-optimized legend */}
@@ -333,7 +333,7 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
           position={mobileConfig.ui.legendPosition}
           fontSize={mobileConfig.ui.fontSize}
           touchTargetSize={mobileConfig.ui.touchTargetSize}
-          data-oid='wlzvth.'
+          data-oid='rl_ylcr'
         />
       )}
 
@@ -343,14 +343,14 @@ export const MobileResponsiveChart: React.FC<MobileChartProps> = ({
           chartId={chartId}
           config={mobileConfig}
           onDataSelect={onDataSelect}
-          data-oid='5710cse'
+          data-oid='u_jehpf'
         />
       )}
 
       {/* Performance indicator for debug */}
       {process.env.NODE_ENV === 'development' && (
-        <div className='mobile-chart-debug' data-oid='zziwi5_'>
-          <small data-oid='7.1gu-v'>
+        <div className='mobile-chart-debug' data-oid='.vp.611'>
+          <small data-oid='4ewxpnb'>
             {deviceInfo?.type} | {currentBreakpoint?.name} | {orientation}
           </small>
         </div>
@@ -387,7 +387,7 @@ const MobileLegend: React.FC<MobileLegendProps> = ({
         padding: '4px 8px',
         cursor: 'pointer',
       }}
-      data-oid='xcgu_ak'
+      data-oid='jf-semt'
     >
       <div
         className='legend-color'
@@ -398,17 +398,17 @@ const MobileLegend: React.FC<MobileLegendProps> = ({
           marginRight: 8,
           borderRadius: 2,
         }}
-        data-oid='j2oc2ih'
+        data-oid='ic3o83p'
       />
 
-      <span data-oid='e.x9y-8'>{item.label || `Series ${index + 1}`}</span>
+      <span data-oid='npput0i'>{item.label || `Series ${index + 1}`}</span>
     </div>
   ));
 
   const legendClasses = `mobile-legend position-${position}`;
 
   return (
-    <div className={legendClasses} data-oid='ta.sy3c'>
+    <div className={legendClasses} data-oid='9xi33cs'>
       {legendItems}
     </div>
   );
@@ -463,7 +463,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           fontSize: config.ui.fontSize,
         }}
         aria-label='Show chart controls'
-        data-oid='lw71f1d'
+        data-oid='1:klrfp'
       >
         ⚙️
       </button>
@@ -485,7 +485,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
         gap: 4,
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
       }}
-      data-oid='gwwuyj0'
+      data-oid='8p12il:'
     >
       <button
         onClick={handleZoomIn}
@@ -499,7 +499,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           fontSize: config.ui.fontSize,
         }}
         aria-label='Zoom in'
-        data-oid='y407ov_'
+        data-oid='xl39hyy'
       >
         +
       </button>
@@ -516,7 +516,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           fontSize: config.ui.fontSize,
         }}
         aria-label='Zoom out'
-        data-oid='ef2pzc4'
+        data-oid='6cp0w_.'
       >
         −
       </button>
@@ -533,7 +533,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           fontSize: config.ui.fontSize - 2,
         }}
         aria-label='Reset zoom'
-        data-oid='y8v.57e'
+        data-oid='a2ybyyd'
       >
         ↺
       </button>
@@ -550,7 +550,7 @@ const MobileTouchControls: React.FC<MobileTouchControlsProps> = ({
           fontSize: config.ui.fontSize,
         }}
         aria-label='Hide controls'
-        data-oid='5ixgrkn'
+        data-oid='xy5glh_'
       >
         ×
       </button>

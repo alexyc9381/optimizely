@@ -5,9 +5,9 @@ export default function Home() {
   return (
     <DashboardLayout
       title='Universal AI Platform - Dashboard'
-      data-oid='lta:gyd'
+      data-oid='2:2att-'
     >
-      <UniversalAIDashboard data-oid='hz2y:2c' />
+      <UniversalAIDashboard data-oid='5i4y-0.' />
     </DashboardLayout>
   );
 }

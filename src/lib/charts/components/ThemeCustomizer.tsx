@@ -63,18 +63,18 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   };
 
   return (
-    <div className='color-picker' ref={pickerRef} data-oid='3s2.qu_'>
-      <label className='color-picker-label' data-oid='1b9o01v'>
+    <div className='color-picker' ref={pickerRef} data-oid='b-1q_yu'>
+      <label className='color-picker-label' data-oid='icarorr'>
         {label}
       </label>
-      <div className='color-picker-container' data-oid='yhpmwpz'>
+      <div className='color-picker-container' data-oid='jh3ujqq'>
         <button
           className='color-picker-trigger'
           style={{ backgroundColor: color }}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
           aria-label={`Select color for ${label}`}
-          data-oid='2oe3cqc'
+          data-oid='keiu2i9'
         />
 
         <input
@@ -84,20 +84,20 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           className='color-picker-input'
           placeholder='#000000'
           disabled={disabled}
-          data-oid='z8z2h29'
+          data-oid='6qho-fe'
         />
       </div>
       {isOpen && !disabled && (
-        <div className='color-picker-panel' data-oid='.b4lrp:'>
+        <div className='color-picker-panel' data-oid='glqq:yt'>
           <input
             type='color'
             value={tempColor}
             onChange={e => handleColorChange(e.target.value)}
             className='color-picker-native'
-            data-oid='2zvpya8'
+            data-oid='-y2jzn-'
           />
 
-          <div className='color-presets' data-oid='8_mznow'>
+          <div className='color-presets' data-oid='avnkfah'>
             {[
               '#3b82f6',
               '#1d4ed8',
@@ -114,7 +114,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                 style={{ backgroundColor: presetColor }}
                 onClick={() => handleColorChange(presetColor)}
                 aria-label={`Select preset color ${presetColor}`}
-                data-oid='97o5za.'
+                data-oid='l0rfhs6'
               />
             ))}
           </div>
@@ -177,49 +177,49 @@ const ColorPaletteEditor: React.FC<ColorPaletteEditorProps> = ({
   };
 
   return (
-    <div className='color-palette-editor' data-oid='t-o8bpa'>
-      <div className='palette-header' data-oid='b2r4ae0'>
-        <h3 data-oid='yiiwuwf'>Color Palette</h3>
+    <div className='color-palette-editor' data-oid=':y4i-l2'>
+      <div className='palette-header' data-oid='89ag0w0'>
+        <h3 data-oid='-355y:6'>Color Palette</h3>
         <button
           onClick={generatePalette}
           className='btn-secondary'
-          data-oid='wko.l6q'
+          data-oid='q_z2gbu'
         >
           Generate from Primary
         </button>
       </div>
 
-      <div className='palette-categories' data-oid='_f765_9'>
+      <div className='palette-categories' data-oid='g7y1qe3'>
         {['primary', 'secondary', 'neutral', 'accent'].map(category => (
           <button
             key={category}
             className={`category-tab ${selectedCategory === category ? 'active' : ''}`}
             onClick={() => setSelectedCategory(category as any)}
-            data-oid='ar0ckxn'
+            data-oid='dmbmr9.'
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}
           </button>
         ))}
       </div>
 
-      <div className='palette-colors' data-oid='q5-db.2'>
+      <div className='palette-colors' data-oid='73c_dun'>
         {(palette as any)[selectedCategory]?.map(
           (color: string, index: number) => (
-            <div key={index} className='palette-color-item' data-oid='_20dbqz'>
+            <div key={index} className='palette-color-item' data-oid='f7-161f'>
               <ColorPicker
                 color={color}
                 onChange={newColor =>
                   updateColorInCategory(selectedCategory, index, newColor)
                 }
                 label={`${selectedCategory} ${index + 1}`}
-                data-oid='_:fvbxb'
+                data-oid='qb9ae.0'
               />
 
               <button
                 className='remove-color-btn'
                 onClick={() => removeColorFromCategory(selectedCategory, index)}
                 aria-label='Remove color'
-                data-oid='nra_sx1'
+                data-oid='jeemb1_'
               >
                 ×
               </button>
@@ -229,20 +229,20 @@ const ColorPaletteEditor: React.FC<ColorPaletteEditorProps> = ({
         <button
           className='add-color-btn'
           onClick={() => addColorToCategory(selectedCategory)}
-          data-oid='_pllcz:'
+          data-oid='pr:rfcl'
         >
           + Add Color
         </button>
       </div>
 
-      <div className='semantic-colors' data-oid='qiqupxl'>
-        <h4 data-oid='99c-g30'>Semantic Colors</h4>
+      <div className='semantic-colors' data-oid='d9e88hc'>
+        <h4 data-oid='ojn-cmp'>Semantic Colors</h4>
         {Object.entries(palette.semantic).map(([type, colors]) => (
-          <div key={type} className='semantic-color-group' data-oid=':q11g20'>
-            <label data-oid='4bwr9k.'>
+          <div key={type} className='semantic-color-group' data-oid='6flq7uz'>
+            <label data-oid='xngct8p'>
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </label>
-            <div className='semantic-colors-row' data-oid='z-:71ek'>
+            <div className='semantic-colors-row' data-oid='1jz:c1f'>
               {colors.map((color, index) => (
                 <ColorPicker
                   key={index}
@@ -253,7 +253,7 @@ const ColorPaletteEditor: React.FC<ColorPaletteEditorProps> = ({
                     onChange({ ...palette, semantic: newSemantic });
                   }}
                   label={`${type} ${index + 1}`}
-                  data-oid='._q4xzq'
+                  data-oid='1qroqxn'
                 />
               ))}
             </div>
@@ -338,33 +338,33 @@ const TypographyEditor: React.FC<TypographyEditorProps> = ({
   };
 
   return (
-    <div className='typography-editor' data-oid='td3impc'>
-      <div className='typography-header' data-oid='4yhk.c6'>
-        <h3 data-oid='2k95.1:'>Typography</h3>
+    <div className='typography-editor' data-oid='45pmavf'>
+      <div className='typography-header' data-oid='qq3n1_5'>
+        <h3 data-oid='8:q0_34'>Typography</h3>
         <button
           onClick={loadGoogleFonts}
           className='btn-secondary'
-          data-oid='x2b6.ku'
+          data-oid='1.2h1g6'
         >
           Load Google Fonts
         </button>
       </div>
 
-      <div className='font-families' data-oid='hkeiut8'>
-        <h4 data-oid='pp:rqvo'>Font Families</h4>
+      <div className='font-families' data-oid='.5u3nc2'>
+        <h4 data-oid='9r_w0t6'>Font Families</h4>
         {Object.entries(typography.fontFamily).map(([type, font]) => (
-          <div key={type} className='font-family-control' data-oid='q2nk08-'>
-            <label data-oid='--rxiur'>
+          <div key={type} className='font-family-control' data-oid='vfvps2j'>
+            <label data-oid='kcm2cf6'>
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </label>
             <select
               value={font}
               onChange={e => updateFontFamily(type as any, e.target.value)}
               className='font-select'
-              data-oid='af237w3'
+              data-oid='20361at'
             >
               {availableFonts.map(fontOption => (
-                <option key={fontOption} value={fontOption} data-oid='evkz31c'>
+                <option key={fontOption} value={fontOption} data-oid='xke3w63'>
                   {fontOption}
                 </option>
               ))}
@@ -372,7 +372,7 @@ const TypographyEditor: React.FC<TypographyEditorProps> = ({
             <div
               className='font-preview'
               style={{ fontFamily: font }}
-              data-oid='i964ye7'
+              data-oid='hrs0-mj'
             >
               The quick brown fox jumps over the lazy dog
             </div>
@@ -380,25 +380,25 @@ const TypographyEditor: React.FC<TypographyEditorProps> = ({
         ))}
       </div>
 
-      <div className='font-sizes' data-oid='75:tr.u'>
-        <h4 data-oid='26yccxu'>Font Sizes</h4>
-        <div className='size-controls' data-oid='oqsyk6t'>
+      <div className='font-sizes' data-oid='6z.g5mu'>
+        <h4 data-oid='c23v4kr'>Font Sizes</h4>
+        <div className='size-controls' data-oid='pdq4zmk'>
           {Object.entries(typography.fontSize).map(([size, value]) => (
-            <div key={size} className='size-control' data-oid='2saut:x'>
-              <label data-oid='5qdjv00'>{size}</label>
+            <div key={size} className='size-control' data-oid='8qphrs1'>
+              <label data-oid='o9o.rr_'>{size}</label>
               <input
                 type='text'
                 value={value}
                 onChange={e => updateFontSize(size, e.target.value)}
                 className='size-input'
                 placeholder='1rem'
-                data-oid='-qfmd-3'
+                data-oid='6w9sj3a'
               />
 
               <div
                 className='size-preview'
                 style={{ fontSize: value }}
-                data-oid='0.50zjg'
+                data-oid='.le:9-7'
               >
                 Sample Text
               </div>
@@ -407,50 +407,50 @@ const TypographyEditor: React.FC<TypographyEditorProps> = ({
         </div>
       </div>
 
-      <div className='font-weights' data-oid='l.cf.g8'>
-        <h4 data-oid='z8ao.es'>Font Weights</h4>
-        <div className='weight-controls' data-oid='zni-3x3'>
+      <div className='font-weights' data-oid='-:etu-k'>
+        <h4 data-oid='8_klwqx'>Font Weights</h4>
+        <div className='weight-controls' data-oid='593nect'>
           {Object.entries(typography.fontWeight).map(([weight, value]) => (
-            <div key={weight} className='weight-control' data-oid='r-:xaji'>
-              <label data-oid='t5_ekee'>{weight}</label>
+            <div key={weight} className='weight-control' data-oid='2ot8cqp'>
+              <label data-oid='or4pa0x'>{weight}</label>
               <select
                 value={value}
                 onChange={e => updateFontWeight(weight, e.target.value)}
                 className='weight-select'
-                data-oid='h1a7j9x'
+                data-oid='4tyzeex'
               >
-                <option value='100' data-oid='_5ahypp'>
+                <option value='100' data-oid='x6ly9a5'>
                   100 - Thin
                 </option>
-                <option value='200' data-oid='h:h.h8.'>
+                <option value='200' data-oid='g48xkn5'>
                   200 - Extra Light
                 </option>
-                <option value='300' data-oid='jgt95-p'>
+                <option value='300' data-oid=':b1_2md'>
                   300 - Light
                 </option>
-                <option value='400' data-oid='bl8p7hg'>
+                <option value='400' data-oid='4j8ewaw'>
                   400 - Normal
                 </option>
-                <option value='500' data-oid='w0odj:p'>
+                <option value='500' data-oid='vyl25mh'>
                   500 - Medium
                 </option>
-                <option value='600' data-oid='7er1vz-'>
+                <option value='600' data-oid='h078rkz'>
                   600 - Semi Bold
                 </option>
-                <option value='700' data-oid='7yqek9w'>
+                <option value='700' data-oid='tr__co2'>
                   700 - Bold
                 </option>
-                <option value='800' data-oid='nsp22-f'>
+                <option value='800' data-oid='td4x.s9'>
                   800 - Extra Bold
                 </option>
-                <option value='900' data-oid='s_2jyzk'>
+                <option value='900' data-oid='dt5x8-f'>
                   900 - Black
                 </option>
               </select>
               <div
                 className='weight-preview'
                 style={{ fontWeight: value }}
-                data-oid='e22q8r.'
+                data-oid='2f28x-u'
               >
                 Sample Text
               </div>
@@ -502,22 +502,22 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
   };
 
   return (
-    <div className='branding-editor' data-oid='yh5j3bj'>
-      <div className='branding-header' data-oid='gnu04-m'>
-        <h3 data-oid='biil1:i'>Branding & White Label</h3>
+    <div className='branding-editor' data-oid='zjywfzd'>
+      <div className='branding-header' data-oid='1.l-2a5'>
+        <h3 data-oid='3a:tlc0'>Branding & White Label</h3>
         <button
           onClick={enableWhiteLabel}
           className={`btn-${branding.whiteLabel ? 'primary' : 'secondary'}`}
-          data-oid='_0zalkb'
+          data-oid='m9-4p-q'
         >
           {branding.whiteLabel ? 'White Label Enabled' : 'Enable White Label'}
         </button>
       </div>
 
-      <div className='company-info' data-oid='9jfqt:0'>
-        <h4 data-oid='10buj3d'>Company Information</h4>
-        <div className='form-group' data-oid='3vt2f-.'>
-          <label data-oid='sl:swfg'>Company Name</label>
+      <div className='company-info' data-oid='-zhj4gu'>
+        <h4 data-oid='qksn:7f'>Company Information</h4>
+        <div className='form-group' data-oid='2gcq6n8'>
+          <label data-oid='73qjj1z'>Company Name</label>
           <input
             type='text'
             value={branding.companyName}
@@ -526,18 +526,18 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
             }
             className='form-input'
             placeholder='Your Company Name'
-            data-oid='e:g6t3l'
+            data-oid='c8plu3r'
           />
         </div>
 
-        <div className='brand-colors' data-oid='e.:8djv'>
-          <h4 data-oid='1.stn4a'>Brand Colors</h4>
-          <div className='color-row' data-oid='r51neh0'>
+        <div className='brand-colors' data-oid='8kmtfkq'>
+          <h4 data-oid='ayy7:zw'>Brand Colors</h4>
+          <div className='color-row' data-oid='ro.y0.i'>
             <ColorPicker
               color={branding.primaryColor}
               onChange={color => onChange({ ...branding, primaryColor: color })}
               label='Primary Color'
-              data-oid='0-jeabp'
+              data-oid='soh3rwp'
             />
 
             <ColorPicker
@@ -546,35 +546,35 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 onChange({ ...branding, secondaryColor: color })
               }
               label='Secondary Color'
-              data-oid='-jelymn'
+              data-oid='xz-hr7u'
             />
 
             <ColorPicker
               color={branding.accentColor}
               onChange={color => onChange({ ...branding, accentColor: color })}
               label='Accent Color'
-              data-oid='-k:uvbo'
+              data-oid='qeqksnu'
             />
           </div>
         </div>
       </div>
 
-      <div className='logo-section' data-oid='g_vtn26'>
-        <h4 data-oid='.b84f2i'>Logo</h4>
-        <div className='logo-upload' data-oid='6nrcgk:'>
+      <div className='logo-section' data-oid='52:kve5'>
+        <h4 data-oid='b2vebxp'>Logo</h4>
+        <div className='logo-upload' data-oid='tg7ax3a'>
           <input
             ref={fileInputRef}
             type='file'
             accept='image/*'
             onChange={handleLogoUpload}
             style={{ display: 'none' }}
-            data-oid='oiw-19p'
+            data-oid='oue34ye'
           />
 
           <button
             onClick={() => fileInputRef.current?.click()}
             className='btn-secondary'
-            data-oid='gpkgn0y'
+            data-oid='cistluh'
           >
             Upload Logo
           </button>
@@ -588,14 +588,14 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 height: branding.logo.height,
                 opacity: branding.logo.opacity,
               }}
-              data-oid='erl:b6r'
+              data-oid='h7d_tic'
             />
           )}
         </div>
 
-        <div className='logo-controls' data-oid='yom_iyy'>
-          <div className='form-group' data-oid='.h5mrx2'>
-            <label data-oid='tv5gdcu'>Width (px)</label>
+        <div className='logo-controls' data-oid='dj74jc0'>
+          <div className='form-group' data-oid='9:bvgzf'>
+            <label data-oid='w54q6ee'>Width (px)</label>
             <input
               type='number'
               value={branding.logo.width}
@@ -607,11 +607,11 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
               }
               className='form-input'
               min='1'
-              data-oid='jrg:ocl'
+              data-oid='la0bgnk'
             />
           </div>
-          <div className='form-group' data-oid='g.op1uj'>
-            <label data-oid='k3e76lf'>Height (px)</label>
+          <div className='form-group' data-oid='4mr6nit'>
+            <label data-oid='h5ynav_'>Height (px)</label>
             <input
               type='number'
               value={branding.logo.height}
@@ -623,11 +623,11 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
               }
               className='form-input'
               min='1'
-              data-oid='nxnj4kn'
+              data-oid='a50ct.p'
             />
           </div>
-          <div className='form-group' data-oid='sd0ufid'>
-            <label data-oid='gugyok:'>Position</label>
+          <div className='form-group' data-oid='ifukzsk'>
+            <label data-oid='khuxhq9'>Position</label>
             <select
               value={branding.logo.position}
               onChange={e =>
@@ -637,27 +637,27 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 })
               }
               className='form-select'
-              data-oid='g:tqklz'
+              data-oid='l4ssm79'
             >
-              <option value='top-left' data-oid='drxmynd'>
+              <option value='top-left' data-oid='f6ryj21'>
                 Top Left
               </option>
-              <option value='top-right' data-oid='qh_hs6z'>
+              <option value='top-right' data-oid='n56-xw:'>
                 Top Right
               </option>
-              <option value='bottom-left' data-oid='27ytc:a'>
+              <option value='bottom-left' data-oid='ztadl1e'>
                 Bottom Left
               </option>
-              <option value='bottom-right' data-oid='wpe3ptz'>
+              <option value='bottom-right' data-oid='ois-fr5'>
                 Bottom Right
               </option>
-              <option value='center' data-oid='aezivga'>
+              <option value='center' data-oid='3qh_oa9'>
                 Center
               </option>
             </select>
           </div>
-          <div className='form-group' data-oid='i_zz1_:'>
-            <label data-oid='enf3htx'>Opacity</label>
+          <div className='form-group' data-oid='89vxjak'>
+            <label data-oid='9b5:nq4'>Opacity</label>
             <input
               type='range'
               min='0'
@@ -674,18 +674,18 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 })
               }
               className='form-range'
-              data-oid='2gwwqlz'
+              data-oid='5m8cf8:'
             />
 
-            <span data-oid='fpnw19l'>{branding.logo.opacity}</span>
+            <span data-oid='2lqo3np'>{branding.logo.opacity}</span>
           </div>
         </div>
       </div>
 
-      <div className='watermark-section' data-oid='ghl5:rg'>
-        <h4 data-oid='ditkm38'>Watermark</h4>
-        <div className='form-group' data-oid='heio9w0'>
-          <label data-oid='yn8z-7m'>Watermark Text</label>
+      <div className='watermark-section' data-oid='0uloj1c'>
+        <h4 data-oid='c5_4cn0'>Watermark</h4>
+        <div className='form-group' data-oid='82nvvkn'>
+          <label data-oid='.1d9y.9'>Watermark Text</label>
           <input
             type='text'
             value={branding.watermark.text || ''}
@@ -697,10 +697,10 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
             }
             className='form-input'
             placeholder='© Your Company 2024'
-            data-oid='0-._ntz'
+            data-oid='5.i:dye'
           />
         </div>
-        <div className='watermark-controls' data-oid='uel6.ri'>
+        <div className='watermark-controls' data-oid='fe.u0js'>
           <ColorPicker
             color={branding.watermark.color}
             onChange={color =>
@@ -710,11 +710,11 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
               })
             }
             label='Watermark Color'
-            data-oid='grx_mex'
+            data-oid='._rbggd'
           />
 
-          <div className='form-group' data-oid='ss0psks'>
-            <label data-oid='47jw6vh'>Font Size</label>
+          <div className='form-group' data-oid='n_irfcv'>
+            <label data-oid='7.bxny7'>Font Size</label>
             <input
               type='text'
               value={branding.watermark.fontSize}
@@ -729,11 +729,11 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
               }
               className='form-input'
               placeholder='12px'
-              data-oid=':7_f_00'
+              data-oid='gjmr1:0'
             />
           </div>
-          <div className='form-group' data-oid='d5girh7'>
-            <label data-oid='h2zwweu'>Position</label>
+          <div className='form-group' data-oid='r56ubzo'>
+            <label data-oid='2xt00ix'>Position</label>
             <select
               value={branding.watermark.position}
               onChange={e =>
@@ -746,18 +746,18 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 })
               }
               className='form-select'
-              data-oid='cjb_2yl'
+              data-oid='lm:1pdo'
             >
-              <option value='top-left' data-oid='dfz6no:'>
+              <option value='top-left' data-oid='dc268o:'>
                 Top Left
               </option>
-              <option value='top-right' data-oid='m9g9e6t'>
+              <option value='top-right' data-oid='v2k8stn'>
                 Top Right
               </option>
-              <option value='bottom-left' data-oid='0lthx99'>
+              <option value='bottom-left' data-oid='3eb-udv'>
                 Bottom Left
               </option>
-              <option value='bottom-right' data-oid='_pf.o:5'>
+              <option value='bottom-right' data-oid='o9x:_l8'>
                 Bottom Right
               </option>
             </select>
@@ -765,20 +765,20 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
         </div>
       </div>
 
-      <div className='custom-css-section' data-oid='v.yufha'>
-        <h4 data-oid='4003si_'>Custom CSS</h4>
+      <div className='custom-css-section' data-oid='c_93sf9'>
+        <h4 data-oid='9z94gvz'>Custom CSS</h4>
         <textarea
           value={branding.customCSS || ''}
           onChange={e => onChange({ ...branding, customCSS: e.target.value })}
           className='custom-css-editor'
           placeholder='/* Add your custom CSS here */'
           rows={8}
-          data-oid='l2v9s6c'
+          data-oid='_d-qkwg'
         />
       </div>
 
-      <div className='advanced-options' data-oid='lb60a_q'>
-        <label className='checkbox-label' data-oid='4zre.ys'>
+      <div className='advanced-options' data-oid='t9x87iu'>
+        <label className='checkbox-label' data-oid='xlz031r'>
           <input
             type='checkbox'
             checked={branding.hideOptimizelyBranding}
@@ -788,7 +788,7 @@ const BrandingEditor: React.FC<BrandingEditorProps> = ({
                 hideOptimizelyBranding: e.target.checked,
               })
             }
-            data-oid='c:6t92e'
+            data-oid='jl8nnuy'
           />
           Hide Optimizely Branding
         </label>
@@ -808,13 +808,13 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
   onChange,
 }) => {
   return (
-    <div className='chart-theme-editor' data-oid='pb-7fdh'>
-      <h3 data-oid='5vsjslc'>Chart Styling</h3>
+    <div className='chart-theme-editor' data-oid='3vq7yaj'>
+      <h3 data-oid='ev3iv6k'>Chart Styling</h3>
 
-      <div className='chart-sections' data-oid='udkyz9j'>
-        <div className='chart-section' data-oid='py95v_p'>
-          <h4 data-oid='o05i7dm'>Grid</h4>
-          <label className='checkbox-label' data-oid='zj_ytzw'>
+      <div className='chart-sections' data-oid='6tdq9fv'>
+        <div className='chart-section' data-oid='7xm66bg'>
+          <h4 data-oid='dai:a7n'>Grid</h4>
+          <label className='checkbox-label' data-oid='wf93w:u'>
             <input
               type='checkbox'
               checked={chartTheme.grid.show}
@@ -824,12 +824,12 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   grid: { ...chartTheme.grid, show: e.target.checked },
                 })
               }
-              data-oid='2c-7q8l'
+              data-oid='evj8pr3'
             />
             Show Grid
           </label>
           {chartTheme.grid.show && (
-            <div className='grid-controls' data-oid='ai8omrv'>
+            <div className='grid-controls' data-oid='u.ji-mf'>
               <ColorPicker
                 color={chartTheme.grid.color}
                 onChange={color =>
@@ -839,11 +839,11 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Grid Color'
-                data-oid='9ptxj3p'
+                data-oid='3tn15iz'
               />
 
-              <div className='form-group' data-oid='ayi.9xo'>
-                <label data-oid='gwg4917'>Opacity</label>
+              <div className='form-group' data-oid='z29sad.'>
+                <label data-oid='di0zv3c'>Opacity</label>
                 <input
                   type='range'
                   min='0'
@@ -860,13 +860,13 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                     })
                   }
                   className='form-range'
-                  data-oid='3orthl5'
+                  data-oid='nv_i.ku'
                 />
 
-                <span data-oid='ls_sraw'>{chartTheme.grid.opacity}</span>
+                <span data-oid='bjsradw'>{chartTheme.grid.opacity}</span>
               </div>
-              <div className='form-group' data-oid='bnbt:3v'>
-                <label data-oid='465t.z9'>Stroke Width</label>
+              <div className='form-group' data-oid='s1.qfcg'>
+                <label data-oid='3dbc:.5'>Stroke Width</label>
                 <input
                   type='number'
                   value={chartTheme.grid.strokeWidth}
@@ -881,16 +881,16 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   }
                   className='form-input'
                   min='1'
-                  data-oid='a545nl-'
+                  data-oid='5y4m4nm'
                 />
               </div>
             </div>
           )}
         </div>
 
-        <div className='chart-section' data-oid='7tvy8ki'>
-          <h4 data-oid='p_1uwcw'>Axes</h4>
-          <label className='checkbox-label' data-oid='ld9qfjj'>
+        <div className='chart-section' data-oid='i7f0wa:'>
+          <h4 data-oid='8xt965x'>Axes</h4>
+          <label className='checkbox-label' data-oid='4t81g-.'>
             <input
               type='checkbox'
               checked={chartTheme.axes.show}
@@ -900,12 +900,12 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   axes: { ...chartTheme.axes, show: e.target.checked },
                 })
               }
-              data-oid='pyepcpd'
+              data-oid='xjw4sx1'
             />
             Show Axes
           </label>
           {chartTheme.axes.show && (
-            <div className='axes-controls' data-oid='3j:d6nh'>
+            <div className='axes-controls' data-oid='l-on_rx'>
               <ColorPicker
                 color={chartTheme.axes.color}
                 onChange={color =>
@@ -915,7 +915,7 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Axes Color'
-                data-oid='z7:dg1v'
+                data-oid='jsgu9m_'
               />
 
               <ColorPicker
@@ -927,7 +927,7 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Label Color'
-                data-oid='ihbm81.'
+                data-oid='0460rod'
               />
 
               <ColorPicker
@@ -939,15 +939,15 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Title Color'
-                data-oid='g0b08dt'
+                data-oid='ezwkg8i'
               />
             </div>
           )}
         </div>
 
-        <div className='chart-section' data-oid='kmtrmdy'>
-          <h4 data-oid='2ej2mui'>Legend</h4>
-          <label className='checkbox-label' data-oid='36za5_r'>
+        <div className='chart-section' data-oid='1o5yvm4'>
+          <h4 data-oid='1zzjzpz'>Legend</h4>
+          <label className='checkbox-label' data-oid='z29n2xi'>
             <input
               type='checkbox'
               checked={chartTheme.legend.show}
@@ -957,14 +957,14 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   legend: { ...chartTheme.legend, show: e.target.checked },
                 })
               }
-              data-oid='hk6jljz'
+              data-oid='6mig04-'
             />
             Show Legend
           </label>
           {chartTheme.legend.show && (
-            <div className='legend-controls' data-oid='-n9oxuk'>
-              <div className='form-group' data-oid='7cmt5io'>
-                <label data-oid='jo46em6'>Position</label>
+            <div className='legend-controls' data-oid=':75u_ob'>
+              <div className='form-group' data-oid='k6c1t_i'>
+                <label data-oid='hmktdta'>Position</label>
                 <select
                   value={chartTheme.legend.position}
                   onChange={e =>
@@ -977,30 +977,30 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                     })
                   }
                   className='form-select'
-                  data-oid='36b1zu9'
+                  data-oid='g:qnr6:'
                 >
-                  <option value='top' data-oid='odk34sn'>
+                  <option value='top' data-oid='5-9kqmn'>
                     Top
                   </option>
-                  <option value='right' data-oid='d-skfwz'>
+                  <option value='right' data-oid='ohoq-9:'>
                     Right
                   </option>
-                  <option value='bottom' data-oid='o-0igvy'>
+                  <option value='bottom' data-oid='ak5r0we'>
                     Bottom
                   </option>
-                  <option value='left' data-oid='ffm8rig'>
+                  <option value='left' data-oid='s33ngfm'>
                     Left
                   </option>
-                  <option value='top-left' data-oid='kf8p5s_'>
+                  <option value='top-left' data-oid='8srbg5x'>
                     Top Left
                   </option>
-                  <option value='top-right' data-oid='hi2ptu8'>
+                  <option value='top-right' data-oid=':zk06ic'>
                     Top Right
                   </option>
-                  <option value='bottom-left' data-oid='8ecg5.z'>
+                  <option value='bottom-left' data-oid='8pri78e'>
                     Bottom Left
                   </option>
-                  <option value='bottom-right' data-oid='tshgvkn'>
+                  <option value='bottom-right' data-oid='x7yqh-t'>
                     Bottom Right
                   </option>
                 </select>
@@ -1014,7 +1014,7 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Background Color'
-                data-oid='vu_ih:v'
+                data-oid='qi:u.:q'
               />
 
               <ColorPicker
@@ -1026,7 +1026,7 @@ const ChartThemeEditor: React.FC<ChartThemeEditorProps> = ({
                   })
                 }
                 label='Text Color'
-                data-oid='o9pizlo'
+                data-oid=':8uvj_h'
               />
             </div>
           )}
@@ -1055,42 +1055,42 @@ const ThemePresetSelector: React.FC<ThemePresetSelectorProps> = ({
   }, []);
 
   return (
-    <div className='theme-preset-selector' data-oid='py5.0vj'>
-      <h3 data-oid='x:28f._'>Theme Presets</h3>
+    <div className='theme-preset-selector' data-oid='0cjwb2f'>
+      <h3 data-oid='zcq9jwb'>Theme Presets</h3>
 
-      <div className='built-in-themes' data-oid='7u9jqpw'>
-        <h4 data-oid='nbf_v4u'>Built-in Themes</h4>
-        <div className='theme-grid' data-oid='bjnbhq1'>
+      <div className='built-in-themes' data-oid='-.cujvs'>
+        <h4 data-oid='4y9gcyy'>Built-in Themes</h4>
+        <div className='theme-grid' data-oid='t2vb3.1'>
           {availableThemes.map(theme => (
             <div
               key={theme.id}
               className={`theme-card ${currentThemeId === theme.id ? 'active' : ''}`}
               onClick={() => themeEngine.setTheme(theme.id)}
-              data-oid='5h89yx6'
+              data-oid='igls_zh'
             >
-              <div className='theme-thumbnail' data-oid='aoet.d2'>
+              <div className='theme-thumbnail' data-oid='yfjav:w'>
                 <div
                   className='color-bar'
                   style={{ backgroundColor: theme.colorPalette.primary[0] }}
-                  data-oid='ye8l.l9'
+                  data-oid='xg7r49b'
                 />
 
                 <div
                   className='color-bar'
                   style={{ backgroundColor: theme.colorPalette.secondary[0] }}
-                  data-oid='lhy-c:v'
+                  data-oid='jf6t04n'
                 />
 
                 <div
                   className='color-bar'
                   style={{ backgroundColor: theme.colorPalette.accent[0] }}
-                  data-oid='.ew2fii'
+                  data-oid='vg9szct'
                 />
               </div>
-              <div className='theme-info' data-oid='5qa5pp4'>
-                <h5 data-oid='n-9it3y'>{theme.name}</h5>
-                <p data-oid='l7h-2oz'>{theme.description}</p>
-                <span className='theme-category' data-oid='zl9h30a'>
+              <div className='theme-info' data-oid='grtzv-x'>
+                <h5 data-oid='vequq.f'>{theme.name}</h5>
+                <p data-oid='o-y:84v'>{theme.description}</p>
+                <span className='theme-category' data-oid='1i5uo80'>
                   {theme.category}
                 </span>
               </div>
@@ -1099,26 +1099,26 @@ const ThemePresetSelector: React.FC<ThemePresetSelectorProps> = ({
         </div>
       </div>
 
-      <div className='custom-presets' data-oid='ok2ee-h'>
-        <h4 data-oid='ax-0w:l'>Custom Presets</h4>
-        <div className='preset-grid' data-oid='dkkdq5q'>
+      <div className='custom-presets' data-oid='hof5tat'>
+        <h4 data-oid='z5qr9_8'>Custom Presets</h4>
+        <div className='preset-grid' data-oid='s6_zbce'>
           {presets.map(preset => (
             <div
               key={preset.id}
               className='preset-card'
               onClick={() => onApplyPreset(preset.id)}
-              data-oid='rga1rjg'
+              data-oid='_0jxzdb'
             >
               <img
                 src={preset.thumbnail}
                 alt={preset.name}
                 className='preset-thumbnail'
-                data-oid='c296dkn'
+                data-oid='8iqxgp5'
               />
 
-              <div className='preset-info' data-oid='8rfs:dw'>
-                <h5 data-oid='ysum_0o'>{preset.name}</h5>
-                <span className='preset-category' data-oid='k6u:lyd'>
+              <div className='preset-info' data-oid='dut7eln'>
+                <h5 data-oid='gdywdks'>{preset.name}</h5>
+                <span className='preset-category' data-oid='pj.swo1'>
                   {preset.category}
                 </span>
               </div>
@@ -1230,24 +1230,24 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
   };
 
   return (
-    <div className={`theme-customizer ${className}`} data-oid='5bwq7i0'>
-      <div className='customizer-header' data-oid='.80ud6j'>
-        <h2 data-oid='gw3an05'>Theme Customizer</h2>
-        <div className='header-actions' data-oid='npyc8y8'>
-          <label className='import-btn' data-oid='k3ii04k'>
+    <div className={`theme-customizer ${className}`} data-oid='5o.x4t8'>
+      <div className='customizer-header' data-oid='ecgxfm-'>
+        <h2 data-oid='uz6xkvl'>Theme Customizer</h2>
+        <div className='header-actions' data-oid='dt-mrg4'>
+          <label className='import-btn' data-oid='d2sgkfh'>
             <input
               type='file'
               accept='.json'
               onChange={importTheme}
               style={{ display: 'none' }}
-              data-oid='74icr-2'
+              data-oid='p2iimqs'
             />
             Import Theme
           </label>
           <button
             onClick={exportTheme}
             className='btn-secondary'
-            data-oid='l3dwngw'
+            data-oid='fz73gq:'
           >
             Export Theme
           </button>
@@ -1255,11 +1255,11 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
       </div>
 
       {!validation.isValid && (
-        <div className='validation-errors' data-oid='6vcjjsd'>
-          <h4 data-oid='1c-_np0'>Theme Validation Errors:</h4>
-          <ul data-oid='_7s8f1_'>
+        <div className='validation-errors' data-oid='ufdpwob'>
+          <h4 data-oid='rv.14fa'>Theme Validation Errors:</h4>
+          <ul data-oid='k8bw_xx'>
             {validation.errors.map((error, index) => (
-              <li key={index} className='error' data-oid='7c1nn_s'>
+              <li key={index} className='error' data-oid='a0yha6h'>
                 {error}
               </li>
             ))}
@@ -1268,11 +1268,11 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
       )}
 
       {validation.warnings.length > 0 && (
-        <div className='validation-warnings' data-oid='j-yy02a'>
-          <h4 data-oid='0fti:ic'>Warnings:</h4>
-          <ul data-oid='ki1tnp-'>
+        <div className='validation-warnings' data-oid='f7efspv'>
+          <h4 data-oid='9d._p4m'>Warnings:</h4>
+          <ul data-oid='oy498wz'>
             {validation.warnings.map((warning, index) => (
-              <li key={index} className='warning' data-oid='c447fe_'>
+              <li key={index} className='warning' data-oid='1ez10:l'>
                 {warning}
               </li>
             ))}
@@ -1280,7 +1280,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
         </div>
       )}
 
-      <div className='customizer-tabs' data-oid='1n886lb'>
+      <div className='customizer-tabs' data-oid='8va3hwg'>
         {[
           { id: 'presets', label: 'Presets' },
           { id: 'colors', label: 'Colors' },
@@ -1292,62 +1292,62 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
             key={tab.id}
             className={`tab ${activeTab === tab.id ? 'active' : ''}`}
             onClick={() => setActiveTab(tab.id as any)}
-            data-oid='oaes5lm'
+            data-oid='2_wbv7x'
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      <div className='customizer-content' data-oid='8nrcnnw'>
-        <div className='customizer-panel' data-oid='0irra2m'>
+      <div className='customizer-content' data-oid='ta:k.ny'>
+        <div className='customizer-panel' data-oid='dzg3o7z'>
           {activeTab === 'presets' && (
             <ThemePresetSelector
               onApplyPreset={handleApplyPreset}
               currentThemeId={currentTheme.id}
-              data-oid='ep-8k1l'
+              data-oid='9xvzk.r'
             />
           )}
           {activeTab === 'colors' && (
             <ColorPaletteEditor
               palette={currentTheme.colorPalette}
               onChange={handleColorPaletteChange}
-              data-oid='_.jlxrz'
+              data-oid='j8__o0y'
             />
           )}
           {activeTab === 'typography' && (
             <TypographyEditor
               typography={currentTheme.typography}
               onChange={handleTypographyChange}
-              data-oid='7.o9e91'
+              data-oid='n20excs'
             />
           )}
           {activeTab === 'branding' && (
             <BrandingEditor
               branding={currentTheme.branding}
               onChange={handleBrandingChange}
-              data-oid='pe.fviz'
+              data-oid='n_s7-82'
             />
           )}
           {activeTab === 'chart' && (
             <ChartThemeEditor
               chartTheme={currentTheme.chart}
               onChange={handleChartThemeChange}
-              data-oid='ni.me9r'
+              data-oid='rpe3a-6'
             />
           )}
         </div>
 
         {showPreview && (
-          <div className='theme-preview' data-oid='yb6i23v'>
-            <h3 data-oid='5b3r4ku'>Live Preview</h3>
-            <div className='preview-container' data-oid='aj2-1bs'>
-              <div className='preview-chart' data-oid='istsb-n'>
+          <div className='theme-preview' data-oid='u.7oo_c'>
+            <h3 data-oid='juffira'>Live Preview</h3>
+            <div className='preview-container' data-oid='5wh0h73'>
+              <div className='preview-chart' data-oid='20ge7ck'>
                 <svg
                   width='300'
                   height='200'
                   viewBox='0 0 300 200'
-                  data-oid='sse.qy_'
+                  data-oid='08yfsa5'
                 >
                   {/* Simple bar chart preview */}
                   {previewData.map((item, index) => (
@@ -1362,7 +1362,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                           index % currentTheme.colorPalette.primary.length
                         ]
                       }
-                      data-oid='09j832x'
+                      data-oid='muya-hx'
                     />
                   ))}
 
@@ -1377,7 +1377,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                         stroke={currentTheme.chart.grid.color}
                         strokeWidth={currentTheme.chart.grid.strokeWidth}
                         opacity={currentTheme.chart.grid.opacity}
-                        data-oid='dn4zrqy'
+                        data-oid='t5ftiu5'
                       />
 
                       <line
@@ -1388,7 +1388,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                         stroke={currentTheme.chart.grid.color}
                         strokeWidth={currentTheme.chart.grid.strokeWidth}
                         opacity={currentTheme.chart.grid.opacity}
-                        data-oid='y6i2bew'
+                        data-oid='w6zg:t.'
                       />
 
                       <line
@@ -1399,7 +1399,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                         stroke={currentTheme.chart.grid.color}
                         strokeWidth={currentTheme.chart.grid.strokeWidth}
                         opacity={currentTheme.chart.grid.opacity}
-                        data-oid='-byh5:7'
+                        data-oid='nb4.l-0'
                       />
                     </>
                   )}
@@ -1414,7 +1414,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                         y2='200'
                         stroke={currentTheme.chart.axes.color}
                         strokeWidth={currentTheme.chart.axes.strokeWidth}
-                        data-oid='w0gfxi:'
+                        data-oid='_uwj2j1'
                       />
 
                       <line
@@ -1424,7 +1424,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                         y2='200'
                         stroke={currentTheme.chart.axes.color}
                         strokeWidth={currentTheme.chart.axes.strokeWidth}
-                        data-oid='kfx8ne9'
+                        data-oid='9n9wk-8'
                       />
                     </>
                   )}
@@ -1438,7 +1438,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                       fill={currentTheme.chart.axes.labelColor}
                       fontSize='10'
                       textAnchor='middle'
-                      data-oid='q0yr.xi'
+                      data-oid='3q.lfje'
                     >
                       {item.name}
                     </text>
@@ -1446,17 +1446,17 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                 </svg>
               </div>
 
-              <div className='preview-elements' data-oid='gix2dui'>
+              <div className='preview-elements' data-oid='xlrrtrs'>
                 <div
                   className='preview-text'
                   style={{
                     fontFamily: currentTheme.typography.fontFamily.primary,
                     color: currentTheme.chart.axes.titleColor,
                   }}
-                  data-oid='o0o-de:'
+                  data-oid='k8a2e0:'
                 >
-                  <h4 data-oid='gluc134'>Sample Chart Title</h4>
-                  <p data-oid='xwg_2i4'>
+                  <h4 data-oid='6fjhqal'>Sample Chart Title</h4>
+                  <p data-oid='55kktea'>
                     This is how your text will appear with the current
                     typography settings.
                   </p>
@@ -1473,7 +1473,7 @@ export const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({
                       color: currentTheme.chart.legend.textColor,
                       fontSize: currentTheme.chart.legend.fontSize,
                     }}
-                    data-oid='24_0hyl'
+                    data-oid='y4c1po7'
                   >
                     Legend Item 1
                   </div>

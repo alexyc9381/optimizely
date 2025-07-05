@@ -170,15 +170,15 @@ const ModelsPage: React.FC = () => {
     return (
       <DashboardLayout
         title='AI Models - Universal AI Platform'
-        data-oid='7w791.o'
+        data-oid='_5qvjca'
       >
         <div
           className='flex items-center justify-center h-64'
-          data-oid='j33gt8-'
+          data-oid='6x_jsqg'
         >
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'
-            data-oid='45sxg5k'
+            data-oid='a5qlwfx'
           ></div>
         </div>
       </DashboardLayout>
@@ -188,32 +188,32 @@ const ModelsPage: React.FC = () => {
   return (
     <DashboardLayout
       title='AI Models - Universal AI Platform'
-      data-oid='ijhstbp'
+      data-oid='0eqmsti'
     >
-      <div className='space-y-6' data-oid='8mku-_1'>
+      <div className='space-y-6' data-oid='ib_8mnr'>
         {error && (
           <div
             className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'
-            data-oid='wjlv_zg'
+            data-oid='p93fwz8'
           >
-            <div className='flex' data-oid='rp9izwu'>
-              <div className='flex-shrink-0' data-oid='wvk4n6.'>
+            <div className='flex' data-oid='9tuggjb'>
+              <div className='flex-shrink-0' data-oid='z4.t75h'>
                 <svg
                   className='h-5 w-5 text-yellow-400'
                   viewBox='0 0 20 20'
                   fill='currentColor'
-                  data-oid='g0wggr8'
+                  data-oid='97hzw9d'
                 >
                   <path
                     fillRule='evenodd'
                     d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
                     clipRule='evenodd'
-                    data-oid='jq_zv.v'
+                    data-oid='wa0oevy'
                   />
                 </svg>
               </div>
-              <div className='ml-3' data-oid='b-244r3'>
-                <p className='text-sm text-yellow-700' data-oid='q_s6jg0'>
+              <div className='ml-3' data-oid='h-t7o75'>
+                <p className='text-sm text-yellow-700' data-oid='ccphkpc'>
                   {error}
                 </p>
               </div>
@@ -221,31 +221,31 @@ const ModelsPage: React.FC = () => {
           </div>
         )}
 
-        <div className='flex items-center justify-between' data-oid='x-1tu-5'>
-          <div data-oid='ynrs88_'>
-            <h1 className='text-2xl font-bold text-gray-900' data-oid='pty3n.o'>
+        <div className='flex items-center justify-between' data-oid='-4r3pme'>
+          <div data-oid='chptn:o'>
+            <h1 className='text-2xl font-bold text-gray-900' data-oid='faulq:6'>
               AI Models
             </h1>
-            <p className='text-sm text-gray-500 mt-1' data-oid='woso:i4'>
+            <p className='text-sm text-gray-500 mt-1' data-oid='_563h25'>
               Manage and monitor your AI models across all industries and use
               cases
             </p>
           </div>
 
-          <div className='flex items-center space-x-3' data-oid='6jvkt4s'>
+          <div className='flex items-center space-x-3' data-oid='7ltwo37'>
             <button
               className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='tlz1a:g'
+              data-oid='5w.sye6'
             >
-              <Settings className='h-4 w-4' data-oid='z0:j3kr' />
-              <span data-oid='aif8siw'>Import Model</span>
+              <Settings className='h-4 w-4' data-oid='08-66om' />
+              <span data-oid='e4mnosn'>Import Model</span>
             </button>
             <button
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='-b_lktv'
+              data-oid='8ktyx54'
             >
-              <Brain className='h-4 w-4' data-oid='ryseko5' />
-              <span data-oid='5ja-s.c'>Train New Model</span>
+              <Brain className='h-4 w-4' data-oid='h8-6xb7' />
+              <span data-oid='xl98i-h'>Train New Model</span>
             </button>
           </div>
         </div>
@@ -253,69 +253,69 @@ const ModelsPage: React.FC = () => {
         {/* Metrics Cards */}
         <div
           className='grid grid-cols-1 md:grid-cols-4 gap-6'
-          data-oid='1fzks5s'
+          data-oid='068o1mc'
         >
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='znwh53b'
+            data-oid='23h8d83'
           >
-            <div className='flex items-center' data-oid='aqvvd6h'>
-              <div className='flex-1' data-oid='.827za7'>
+            <div className='flex items-center' data-oid='bb8hywc'>
+              <div className='flex-1' data-oid='ei08--5'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='k5qvbcv'
+                  data-oid='lbpk9zo'
                 >
                   Total Models
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='2sd.ahh'
+                  data-oid='9qdk1._'
                 >
                   {totalModels}
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='u5-16q:'>
+                <p className='text-xs text-green-600 mt-1' data-oid='5nljpr1'>
                   +3 this month
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='j3947i2'
+                data-oid='dmfd5nv'
               >
-                <Brain className='w-4 h-4 text-blue-600' data-oid='0x2:9nv' />
+                <Brain className='w-4 h-4 text-blue-600' data-oid='94-rpy3' />
               </div>
             </div>
           </div>
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='o2dqaf_'
+            data-oid='j90-riy'
           >
-            <div className='flex items-center' data-oid='_vofsda'>
-              <div className='flex-1' data-oid='n_dgvqw'>
+            <div className='flex items-center' data-oid='ck1r:yl'>
+              <div className='flex-1' data-oid='rlyku:l'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='.x8qfha'
+                  data-oid='iwnam.f'
                 >
                   Active Models
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='uon_fqg'
+                  data-oid='p9w13u0'
                 >
                   {activeModels}
                 </p>
-                <p className='text-xs text-blue-600 mt-1' data-oid='143r7vd'>
+                <p className='text-xs text-blue-600 mt-1' data-oid='tt_v:-1'>
                   {((activeModels / totalModels) * 100).toFixed(0)}% deployment
                   rate
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='9kkb7lw'
+                data-oid='yoj_x63'
               >
                 <CheckCircle
                   className='w-4 h-4 text-green-600'
-                  data-oid='37pzqh1'
+                  data-oid='wam7oh1'
                 />
               </div>
             </div>
@@ -323,33 +323,33 @@ const ModelsPage: React.FC = () => {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='qu3x6nu'
+            data-oid='l382lbb'
           >
-            <div className='flex items-center' data-oid='k.77njn'>
-              <div className='flex-1' data-oid='vft84n9'>
+            <div className='flex items-center' data-oid='bzkehsl'>
+              <div className='flex-1' data-oid='nschnsg'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='w7647j2'
+                  data-oid='fuxc9_b'
                 >
                   Average Accuracy
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='g5e8_rg'
+                  data-oid='rj1sc-8'
                 >
                   {avgAccuracy}%
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='xqk17j:'>
+                <p className='text-xs text-green-600 mt-1' data-oid='hsg9mkd'>
                   +2.1% improvement
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='ur3nh7p'
+                data-oid=':cy1375'
               >
                 <TrendingUp
                   className='w-4 h-4 text-blue-600'
-                  data-oid='2a7vqe.'
+                  data-oid='e694_0l'
                 />
               </div>
             </div>
@@ -357,33 +357,33 @@ const ModelsPage: React.FC = () => {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='8hy59dp'
+            data-oid='unfsyzg'
           >
-            <div className='flex items-center' data-oid='daf6mpv'>
-              <div className='flex-1' data-oid='2t9q_ic'>
+            <div className='flex items-center' data-oid='gccxpyf'>
+              <div className='flex-1' data-oid='hz:-3va'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='ovxxpeo'
+                  data-oid='lrjcw48'
                 >
                   Total Predictions
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='dhsob0q'
+                  data-oid='5n:y-_2'
                 >
                   {totalPredictions.toLocaleString()}
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='8r7.9ya'>
+                <p className='text-xs text-green-600 mt-1' data-oid='auu1hh-'>
                   +15.3% this week
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center'
-                data-oid='-6p7gvy'
+                data-oid='3luf5zq'
               >
                 <Activity
                   className='w-4 h-4 text-orange-600'
-                  data-oid='5mt9npd'
+                  data-oid='65lo4j-'
                 />
               </div>
             </div>
@@ -393,75 +393,75 @@ const ModelsPage: React.FC = () => {
         {/* Models Table */}
         <div
           className='bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden'
-          data-oid='lkhcwc1'
+          data-oid='roj05:5'
         >
           <div
             className='px-6 py-4 border-b border-gray-200'
-            data-oid='qd_sc77'
+            data-oid='8at4eq4'
           >
             <h3
               className='text-lg font-semibold text-gray-900'
-              data-oid='8makqfg'
+              data-oid='.up5397'
             >
               Model Inventory
             </h3>
           </div>
 
-          <div className='overflow-x-auto' data-oid='h23i-q8'>
-            <table className='w-full' data-oid='grhrps1'>
-              <thead className='bg-gray-50' data-oid=':quilzn'>
-                <tr data-oid='8rv8eib'>
+          <div className='overflow-x-auto' data-oid='tz91w9a'>
+            <table className='w-full' data-oid='3w_z9d7'>
+              <thead className='bg-gray-50' data-oid='w-ijgf2'>
+                <tr data-oid='s3vokz8'>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='62td8h.'
+                    data-oid='pq0nhga'
                   >
                     Model Name
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='11bnpfb'
+                    data-oid='fca:1ar'
                   >
                     Type
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='w_3lhqa'
+                    data-oid='5vs-:6o'
                   >
                     Industry
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='0r0bqcr'
+                    data-oid='dhn_u1o'
                   >
                     Status
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='z3ffom8'
+                    data-oid='d4wdilz'
                   >
                     Accuracy
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='2g1sw44'
+                    data-oid='n:gda2_'
                   >
                     Usage
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='b3l1.pb'
+                    data-oid='-c-t6hm'
                   >
                     Version
                   </th>
                   <th
                     className='text-left py-3 px-6 font-medium text-gray-700'
-                    data-oid='z80.1fk'
+                    data-oid='ja1jt4j'
                   >
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody data-oid='wrfol.w'>
+              <tbody data-oid='o0ljw9p'>
                 {models.map(model => (
                   <tr
                     key={model.id}
@@ -473,17 +473,17 @@ const ModelsPage: React.FC = () => {
                         selectedModel === model.id ? null : model.id
                       )
                     }
-                    data-oid='yuiq3l7'
+                    data-oid='yfczigr'
                   >
-                    <td className='py-4 px-6' data-oid='vxabhj7'>
-                      <div className='flex items-center' data-oid='j5t8z15'>
+                    <td className='py-4 px-6' data-oid='c4r2h8d'>
+                      <div className='flex items-center' data-oid='p291qay'>
                         <div
                           className='w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3'
-                          data-oid='nx5vmpx'
+                          data-oid='x7s9ium'
                         >
                           <span
                             className='text-white font-medium text-xs'
-                            data-oid='9_kw_n7'
+                            data-oid='9k0nddz'
                           >
                             {model.name
                               .split(' ')
@@ -492,92 +492,92 @@ const ModelsPage: React.FC = () => {
                               .substring(0, 2)}
                           </span>
                         </div>
-                        <div data-oid='-o0sffa'>
+                        <div data-oid='560zr34'>
                           <p
                             className='font-medium text-gray-900'
-                            data-oid='g4ed9eq'
+                            data-oid='919st3g'
                           >
                             {model.name}
                           </p>
                           <p
                             className='text-sm text-gray-500'
-                            data-oid='9fm6_2g'
+                            data-oid='o0my6o9'
                           >
                             Machine Learning Model
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className='py-4 px-6' data-oid='.m4ebkd'>
+                    <td className='py-4 px-6' data-oid='poasi7b'>
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(model.type)}`}
-                        data-oid='amugu0c'
+                        data-oid='_t7pjfk'
                       >
                         {model.type}
                       </span>
                     </td>
-                    <td className='py-4 px-6' data-oid='31ffzyo'>
-                      <span className='text-gray-900' data-oid='cd6wtar'>
+                    <td className='py-4 px-6' data-oid='lgpj.l5'>
+                      <span className='text-gray-900' data-oid='35t.yov'>
                         {model.industry}
                       </span>
                     </td>
-                    <td className='py-4 px-6' data-oid='5zoumhq'>
+                    <td className='py-4 px-6' data-oid='6zg6xuc'>
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(model.status)}`}
-                        data-oid='v.6cra1'
+                        data-oid='164c_ef'
                       >
                         {model.status}
                       </span>
                     </td>
-                    <td className='py-4 px-6' data-oid='-mscuqe'>
-                      <div className='flex items-center' data-oid='98c3rhu'>
+                    <td className='py-4 px-6' data-oid='m-73u6-'>
+                      <div className='flex items-center' data-oid='z5-p_72'>
                         <span
                           className='text-gray-900 font-medium'
-                          data-oid='my69vmq'
+                          data-oid='2ne_lvb'
                         >
                           {model.accuracy}%
                         </span>
                         <div
                           className='ml-2 w-16 bg-gray-200 rounded-full h-2'
-                          data-oid='gad-t05'
+                          data-oid='531fgf0'
                         >
                           <div
                             className='bg-green-600 h-2 rounded-full'
                             style={{ width: `${model.accuracy}%` }}
-                            data-oid='wv_gtu-'
+                            data-oid='yya150j'
                           ></div>
                         </div>
                       </div>
                     </td>
-                    <td className='py-4 px-6' data-oid='650nxux'>
-                      <div className='flex items-center' data-oid='a:ihdy_'>
-                        <span className='text-gray-900' data-oid='nhrqfb0'>
+                    <td className='py-4 px-6' data-oid='sbblgwu'>
+                      <div className='flex items-center' data-oid='2pg3yl0'>
+                        <span className='text-gray-900' data-oid='3p43ic0'>
                           {model.usage}%
                         </span>
                         <div
                           className='ml-2 w-12 bg-gray-200 rounded-full h-2'
-                          data-oid='4.om8m1'
+                          data-oid='l:36n-y'
                         >
                           <div
                             className='bg-blue-600 h-2 rounded-full'
                             style={{ width: `${model.usage}%` }}
-                            data-oid='n..n8ac'
+                            data-oid='o3tpk__'
                           ></div>
                         </div>
                       </div>
                     </td>
-                    <td className='py-4 px-6' data-oid='no74wxc'>
+                    <td className='py-4 px-6' data-oid='_3qx8d4'>
                       <span
                         className='text-gray-900 font-mono text-sm'
-                        data-oid='.ih3h4r'
+                        data-oid='_0gqqq8'
                       >
                         {model.version}
                       </span>
                     </td>
-                    <td className='py-4 px-6' data-oid='-7qrr8.'>
+                    <td className='py-4 px-6' data-oid='4d20rbj'>
                       <div
                         className='flex items-center space-x-2'
-                        data-oid='7er-k:6'
+                        data-oid='u7ndinr'
                       >
                         <button
                           onClick={e => {
@@ -586,9 +586,9 @@ const ModelsPage: React.FC = () => {
                           }}
                           className='text-blue-600 hover:text-blue-700 p-1 rounded transition-colors'
                           title='View Details'
-                          data-oid='oi0x5:v'
+                          data-oid='yf1seq3'
                         >
-                          <Eye className='h-4 w-4' data-oid='7s2npob' />
+                          <Eye className='h-4 w-4' data-oid='r8bp77z' />
                         </button>
                         <button
                           onClick={e => {
@@ -597,9 +597,9 @@ const ModelsPage: React.FC = () => {
                           }}
                           className='text-gray-600 hover:text-gray-700 p-1 rounded transition-colors'
                           title='Edit Model'
-                          data-oid='kpsatz4'
+                          data-oid='gpcc1md'
                         >
-                          <Edit2 className='h-4 w-4' data-oid='yp6-5s1' />
+                          <Edit2 className='h-4 w-4' data-oid='o73uaif' />
                         </button>
                         {model.status === 'Active' ? (
                           <button
@@ -609,9 +609,9 @@ const ModelsPage: React.FC = () => {
                             }}
                             className='text-yellow-600 hover:text-yellow-700 p-1 rounded transition-colors'
                             title='Pause Model'
-                            data-oid='eqx2o6v'
+                            data-oid='9b8m3og'
                           >
-                            <Pause className='h-4 w-4' data-oid='x1po0nm' />
+                            <Pause className='h-4 w-4' data-oid='vbba2oy' />
                           </button>
                         ) : (
                           <button
@@ -621,9 +621,9 @@ const ModelsPage: React.FC = () => {
                             }}
                             className='text-green-600 hover:text-green-700 p-1 rounded transition-colors'
                             title='Activate Model'
-                            data-oid='seyeiyg'
+                            data-oid='shd56jr'
                           >
-                            <Play className='h-4 w-4' data-oid='q:.4z1i' />
+                            <Play className='h-4 w-4' data-oid='6jw:4ne' />
                           </button>
                         )}
                         <button
@@ -633,9 +633,9 @@ const ModelsPage: React.FC = () => {
                           }}
                           className='text-red-600 hover:text-red-700 p-1 rounded transition-colors'
                           title='Delete Model'
-                          data-oid='v9kcslb'
+                          data-oid='s6cep4m'
                         >
-                          <Trash2 className='h-4 w-4' data-oid='526nrnt' />
+                          <Trash2 className='h-4 w-4' data-oid='lo.d6jy' />
                         </button>
                       </div>
                     </td>
@@ -649,37 +649,37 @@ const ModelsPage: React.FC = () => {
         {/* Model Insights Card */}
         <div
           className='bg-white rounded-xl shadow-lg p-6 border border-gray-200'
-          data-oid='o7nn25n'
+          data-oid='nlqjf53'
         >
           <div
             className='flex items-center justify-between mb-6'
-            data-oid=':yay_..'
+            data-oid='o2377is'
           >
-            <div className='flex items-center' data-oid='y4an-e:'>
+            <div className='flex items-center' data-oid='-xm7teq'>
               <div
                 className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='3px4v22'
+                data-oid='-lmn4f-'
               >
-                <Brain className='w-4 h-4 text-blue-600' data-oid='7vouz.x' />
+                <Brain className='w-4 h-4 text-blue-600' data-oid='.:al060' />
               </div>
-              <div className='ml-3' data-oid='_hm_im5'>
+              <div className='ml-3' data-oid='ot:fl1m'>
                 <h3
                   className='text-lg font-semibold text-gray-900'
-                  data-oid='zdi-b01'
+                  data-oid='9xgfm-u'
                 >
                   Model Insights
                 </h3>
-                <p className='text-sm text-gray-600' data-oid='29is7ab'>
+                <p className='text-sm text-gray-600' data-oid='31153gq'>
                   Performance analytics and recommendations
                 </p>
               </div>
             </div>
             <button
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-              data-oid='en1baff'
+              data-oid='swb6mky'
             >
-              <TrendingUp className='h-4 w-4' data-oid='pq7e:x_' />
-              <span data-oid='s-7lze5'>View Performance</span>
+              <TrendingUp className='h-4 w-4' data-oid='ffhro:w' />
+              <span data-oid='t08bu4u'>View Performance</span>
             </button>
           </div>
         </div>

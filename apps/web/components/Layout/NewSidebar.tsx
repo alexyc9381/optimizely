@@ -72,26 +72,26 @@ export function NewSidebar() {
             ? 'text-neutral-200'
             : 'text-neutral-700 dark:text-neutral-200'
         )}
-        data-oid='90w3qi0'
+        data-oid='7ohc7wl'
       />
     ),
   }));
 
   return (
-    <Sidebar open={open} setOpen={setOpen} data-oid='43el3if'>
-      <SidebarBody className='justify-between gap-10' data-oid='23sybr7'>
+    <Sidebar open={open} setOpen={setOpen} data-oid='lqe_l9d'>
+      <SidebarBody className='justify-between gap-10' data-oid=':g7czth'>
         <div
           className='flex flex-col flex-1 overflow-y-auto overflow-x-hidden'
-          data-oid='4fzz28f'
+          data-oid='7_rcz.d'
         >
-          {open ? <Logo data-oid='bg1tddf' /> : <LogoIcon data-oid='yrpvqza' />}
-          <div className='mt-8 flex flex-col gap-2' data-oid='i_jfy5x'>
+          {open ? <Logo data-oid='v6qc3u9' /> : <LogoIcon data-oid='.daju_l' />}
+          <div className='mt-8 flex flex-col gap-2' data-oid='0_ktc9n'>
             {links.map((link, idx) => (
-              <SidebarLink key={idx} link={link} data-oid='_r2iwg0' />
+              <SidebarLink key={idx} link={link} data-oid='r97jk-i' />
             ))}
           </div>
         </div>
-        <div data-oid='.5ruga4'>
+        <div data-oid='f:ablxt'>
           <SidebarLink
             link={{
               label: 'User',
@@ -99,18 +99,18 @@ export function NewSidebar() {
               icon: (
                 <div
                   className='h-7 w-7 flex-shrink-0 rounded-full bg-neutral-300 flex items-center justify-center'
-                  data-oid='8rma9xt'
+                  data-oid='-4k2ohw'
                 >
                   <span
                     className='text-neutral-700 text-sm font-medium'
-                    data-oid='1dy6q3c'
+                    data-oid='weh-d1f'
                   >
                     U
                   </span>
                 </div>
               ),
             }}
-            data-oid='27jl0wz'
+            data-oid='fltee82'
           />
         </div>
       </SidebarBody>
@@ -123,16 +123,16 @@ export const Logo = () => {
     <Link
       href='/'
       className='font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20'
-      data-oid='l.70y1c'
+      data-oid='-_fwekm'
     >
       <div
         className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
-        data-oid='.bq7-u3'
+        data-oid='y0hgett'
       />
 
       <span
         className='font-medium text-black dark:text-white whitespace-pre'
-        data-oid='f1zuxpc'
+        data-oid='ue-h8:0'
       >
         Optelo
       </span>
@@ -145,11 +145,11 @@ export const LogoIcon = () => {
     <Link
       href='/'
       className='font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20'
-      data-oid='2_dwckr'
+      data-oid='o7aq:80'
     >
       <div
         className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
-        data-oid='xq:ho7q'
+        data-oid='uyzag53'
       />
     </Link>
   );
