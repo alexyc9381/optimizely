@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     // Initialize Stagewise toolbar only in development mode and only once
-    // eslint-disable-next-line no-undef
+
     if (
       process.env.NODE_ENV === 'development' &&
       !stagewiseInitialized.current

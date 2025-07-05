@@ -273,7 +273,6 @@ const WebMetricsChart: React.FC = () => {
 
               {/* Y-axis labels */}
               {[0, 5, 10, 15, 20].map((step, index) => {
-                const percent = (index / 4) * 100;
                 const value = minValue + (range * (4 - index)) / 4;
                 const displayValue =
                   selectedMetric === 'traffic'
