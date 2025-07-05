@@ -56,7 +56,7 @@ const LineChart: React.FC<{ data: any[]; title: string }> = ({
     }
   }, [data, title]);
 
-  return <div ref={chartRef} className='chart-container' data-oid='ix7r_zo' />;
+  return <div ref={chartRef} className='chart-container' data-oid='7y42ub_' />;
 };
 
 const BarChart: React.FC<{ data: any[]; title: string }> = ({
@@ -103,7 +103,7 @@ const BarChart: React.FC<{ data: any[]; title: string }> = ({
     }
   }, [data, title]);
 
-  return <div ref={chartRef} className='chart-container' data-oid='pq99x3j' />;
+  return <div ref={chartRef} className='chart-container' data-oid='5hap103' />;
 };
 
 // Main example component
@@ -217,16 +217,16 @@ export const ExportExample: React.FC = () => {
   }, []);
 
   return (
-    <div className='export-example' data-oid='8-ygt5j'>
-      <div className='container mx-auto p-6' data-oid=':rdamrx'>
-        <header className='mb-8' data-oid='yoecezy'>
+    <div className='export-example' data-oid='-92fa28'>
+      <div className='container mx-auto p-6' data-oid='0zmhbde'>
+        <header className='mb-8' data-oid='sm14756'>
           <h1
             className='text-3xl font-bold text-gray-900 mb-2'
-            data-oid='gyvmay7'
+            data-oid='4j50419'
           >
             Export & Sharing System Demo
           </h1>
-          <p className='text-gray-600' data-oid='dffz0dr'>
+          <p className='text-gray-600' data-oid='-4g76xh'>
             Comprehensive demonstration of chart export, sharing, and reporting
             functionality. Test all export formats, create shareable links,
             generate embed codes, and schedule reports.
@@ -235,12 +235,12 @@ export const ExportExample: React.FC = () => {
 
         {/* Notifications */}
         {notifications.length > 0 && (
-          <div className='notifications mb-6' data-oid='hotj9yg'>
+          <div className='notifications mb-6' data-oid='q7y19g8'>
             {notifications.map((notification, index) => (
               <div
                 key={index}
                 className='notification bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md mb-2'
-                data-oid='8frj2j-'
+                data-oid='gm4xgls'
               >
                 {notification}
               </div>
@@ -250,22 +250,22 @@ export const ExportExample: React.FC = () => {
 
         <div
           className='grid grid-cols-1 lg:grid-cols-3 gap-6'
-          data-oid='u7ikqsn'
+          data-oid='-y5f230'
         >
           {/* Chart Display */}
-          <div className='lg:col-span-2' data-oid='cbfgmgl'>
+          <div className='lg:col-span-2' data-oid='q0d7.x5'>
             <div
               className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-              data-oid='r-tuja-'
+              data-oid='xw4l6lr'
             >
-              <div className='mb-4' data-oid='7.:56hq'>
+              <div className='mb-4' data-oid='3b3klnl'>
                 <h2
                   className='text-xl font-semibold text-gray-900 mb-2'
-                  data-oid='dod:9pg'
+                  data-oid='8ru:mz.'
                 >
                   Sample Charts
                 </h2>
-                <div className='flex space-x-4' data-oid='nu3t4io'>
+                <div className='flex space-x-4' data-oid='d.xm:sk'>
                   <button
                     onClick={() => setSelectedChart('line')}
                     className={`px-4 py-2 rounded-md ${
@@ -273,7 +273,7 @@ export const ExportExample: React.FC = () => {
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
-                    data-oid='9-ivm.p'
+                    data-oid='c481tsa'
                   >
                     Line Chart
                   </button>
@@ -284,104 +284,104 @@ export const ExportExample: React.FC = () => {
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
-                    data-oid='5bbief9'
+                    data-oid='bl5.0a3'
                   >
                     Bar Chart
                   </button>
                 </div>
               </div>
 
-              <div className='chart-display' data-oid='v.:3_kw'>
+              <div className='chart-display' data-oid='xtf.6m:'>
                 {selectedChart === 'line' && (
-                  <div ref={lineChartRef} data-oid='yd5e46x'>
+                  <div ref={lineChartRef} data-oid='e_li9sb'>
                     <LineChart
                       data={lineData}
                       title='Monthly Performance Trends'
-                      data-oid='33lz3zx'
+                      data-oid='4boicv-'
                     />
                   </div>
                 )}
 
                 {selectedChart === 'bar' && (
-                  <div ref={barChartRef} data-oid='4z1p.b0'>
+                  <div ref={barChartRef} data-oid='b82z5d.'>
                     <BarChart
                       data={barData}
                       title='Product Performance Comparison'
-                      data-oid='7w-w5je'
+                      data-oid='fg5:xb.'
                     />
                   </div>
                 )}
               </div>
 
               {/* Data Table */}
-              <div className='mt-6' data-oid='jcrnl.a'>
+              <div className='mt-6' data-oid='1hb20at'>
                 <h3
                   className='text-lg font-semibold text-gray-900 mb-3'
-                  data-oid='r9y_yqn'
+                  data-oid='ofa78pe'
                 >
                   Sample Data Table
                 </h3>
-                <div className='overflow-x-auto' data-oid='jlv:5sd'>
+                <div className='overflow-x-auto' data-oid='e2uzh:0'>
                   <table
                     className='min-w-full border border-gray-200 rounded-lg'
-                    data-oid='g62ygdd'
+                    data-oid='4tjswvx'
                   >
-                    <thead className='bg-gray-50' data-oid='8:.uf6b'>
-                      <tr data-oid='xasvhq9'>
+                    <thead className='bg-gray-50' data-oid='my2mzul'>
+                      <tr data-oid='cyp-4:p'>
                         <th
                           className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'
-                          data-oid='o4ol.dd'
+                          data-oid='ttanwo3'
                         >
                           Month
                         </th>
                         <th
                           className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'
-                          data-oid='2pflhvl'
+                          data-oid='av8kbj:'
                         >
                           Conversions
                         </th>
                         <th
                           className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'
-                          data-oid='yq:5zmb'
+                          data-oid='w4s0ef9'
                         >
                           Revenue
                         </th>
                         <th
                           className='px-4 py-2 text-left text-sm font-medium text-gray-700 border-b'
-                          data-oid='-wyki3j'
+                          data-oid='4-6mlhx'
                         >
                           CTR (%)
                         </th>
                       </tr>
                     </thead>
-                    <tbody data-oid='w_kykhh'>
+                    <tbody data-oid='p1rz1c:'>
                       {tableData.map((row, index) => (
                         <tr
                           key={index}
                           className='border-b border-gray-100'
-                          data-oid='y.moiru'
+                          data-oid='uoonlv4'
                         >
                           <td
                             className='px-4 py-2 text-sm text-gray-900'
-                            data-oid='8vmkc7w'
+                            data-oid='7pa6kse'
                           >
                             {row.month}
                           </td>
                           <td
                             className='px-4 py-2 text-sm text-gray-900'
-                            data-oid='pv56ni4'
+                            data-oid='sqtp4eo'
                           >
                             {row.conversions}
                           </td>
                           <td
                             className='px-4 py-2 text-sm text-gray-900'
-                            data-oid='bet9702'
+                            data-oid='xonefrj'
                           >
                             ${row.revenue.toLocaleString()}
                           </td>
                           <td
                             className='px-4 py-2 text-sm text-gray-900'
-                            data-oid='ee4nf_n'
+                            data-oid='wk-aq8z'
                           >
                             {row.ctr}%
                           </td>
@@ -395,7 +395,7 @@ export const ExportExample: React.FC = () => {
           </div>
 
           {/* Export Controls */}
-          <div className='space-y-6' data-oid='89cq5l0'>
+          <div className='space-y-6' data-oid='mez.jax'>
             <ExportControls
               chartElement={getCurrentChartElement()}
               chartId={`chart-${selectedChart}`}
@@ -403,18 +403,18 @@ export const ExportExample: React.FC = () => {
               onExportStart={handleExportStart}
               onExportComplete={handleExportComplete}
               onExportError={handleExportError}
-              data-oid='289lsyl'
+              data-oid='efp--0a'
             />
 
             {/* Report Scheduler */}
             <div
               className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-              data-oid='n_l3kod'
+              data-oid='4dfqyz2'
             >
               <ReportScheduler
                 chartIds={['chart-line', 'chart-bar']}
                 onReportScheduled={handleReportScheduled}
-                data-oid='089_uxf'
+                data-oid='0uneopr'
               />
             </div>
           </div>
@@ -424,40 +424,40 @@ export const ExportExample: React.FC = () => {
         {exportHistory.length > 0 && (
           <div
             className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-            data-oid='1fvidg0'
+            data-oid='krlqig1'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-4'
-              data-oid='8mb2wie'
+              data-oid='cey86wg'
             >
               Export History
             </h3>
-            <div className='space-y-3' data-oid='fcdd2_l'>
+            <div className='space-y-3' data-oid='j:ofb6i'>
               {exportHistory.map((export_, index) => (
                 <div
                   key={index}
                   className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
-                  data-oid='-yi9oyv'
+                  data-oid='bbfxmg0'
                 >
                   <div
                     className='flex items-center space-x-3'
-                    data-oid='p3lu1.-'
+                    data-oid='-x9n_7x'
                   >
                     <div
                       className={`file-icon ${export_.metadata?.format || 'image'}`}
-                      data-oid=':xd_h-f'
+                      data-oid='jmq_.vx'
                     >
                       {export_.metadata?.format?.toUpperCase().slice(0, 3) ||
                         'IMG'}
                     </div>
-                    <div data-oid='9t9dspw'>
+                    <div data-oid='8ie000e'>
                       <p
                         className='text-sm font-medium text-gray-900'
-                        data-oid='dw0qsxb'
+                        data-oid='8yjbuau'
                       >
                         {export_.filename}
                       </p>
-                      <p className='text-xs text-gray-500' data-oid='c:khwyg'>
+                      <p className='text-xs text-gray-500' data-oid='j-u81zs'>
                         {export_.metadata?.fileSize &&
                           `${(export_.metadata.fileSize / 1024).toFixed(1)} KB`}
                         {export_.metadata?.exportTime &&
@@ -467,7 +467,7 @@ export const ExportExample: React.FC = () => {
                   </div>
                   <div
                     className={`status-indicator ${export_.success ? 'success' : 'error'}`}
-                    data-oid='.9nybgn'
+                    data-oid='m13:w2n'
                   >
                     {export_.success ? 'Success' : 'Failed'}
                   </div>
@@ -481,39 +481,39 @@ export const ExportExample: React.FC = () => {
         {shareableLinks.length > 0 && (
           <div
             className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-            data-oid='uxm:nbt'
+            data-oid='c928m52'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-4'
-              data-oid='d78w.2s'
+              data-oid='n83m363'
             >
               Shareable Links
             </h3>
-            <div className='space-y-3' data-oid='wp8409a'>
+            <div className='space-y-3' data-oid='owo7npd'>
               {shareableLinks.map((link, index) => (
                 <div
                   key={index}
                   className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
-                  data-oid='uf3.fwy'
+                  data-oid='fle_gew'
                 >
-                  <div data-oid='y.642fa'>
+                  <div data-oid='xg_-_u3'>
                     <p
                       className='text-sm font-medium text-gray-900'
-                      data-oid='713flih'
+                      data-oid='r47yx6w'
                     >
                       Chart: {link.chartId}
                     </p>
-                    <p className='text-xs text-gray-500' data-oid='l-7r9kn'>
+                    <p className='text-xs text-gray-500' data-oid='.p69008'>
                       Created: {link.createdAt.toLocaleDateString()} • Views:{' '}
                       {link.viewCount} •
                       {link.accessControl.isPublic ? 'Public' : 'Private'}
                     </p>
                   </div>
-                  <div className='flex space-x-2' data-oid='y69kzsz'>
+                  <div className='flex space-x-2' data-oid='t55bk16'>
                     <button
                       onClick={() => navigator.clipboard.writeText(link.url)}
                       className='px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700'
-                      data-oid='-6wjlx2'
+                      data-oid='.9qjrff'
                     >
                       Copy Link
                     </button>
@@ -528,29 +528,29 @@ export const ExportExample: React.FC = () => {
         {scheduledReports.length > 0 && (
           <div
             className='mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-            data-oid='.i0lx7u'
+            data-oid=':8krri4'
           >
             <h3
               className='text-lg font-semibold text-gray-900 mb-4'
-              data-oid='9tmla:_'
+              data-oid='ae5mbj2'
             >
               Scheduled Reports
             </h3>
-            <div className='space-y-3' data-oid='6mg6nlh'>
+            <div className='space-y-3' data-oid='p:82pn_'>
               {scheduledReports.map((report, index) => (
                 <div
                   key={index}
                   className='flex items-center justify-between p-3 bg-gray-50 rounded-md'
-                  data-oid='r7dyg14'
+                  data-oid='28.gpvn'
                 >
-                  <div data-oid='88ak20u'>
+                  <div data-oid='0:fec-b'>
                     <p
                       className='text-sm font-medium text-gray-900'
-                      data-oid='agoq2r5'
+                      data-oid='aha0xf1'
                     >
                       {report.name}
                     </p>
-                    <p className='text-xs text-gray-500' data-oid='vp4lpso'>
+                    <p className='text-xs text-gray-500' data-oid='h7i2g6:'>
                       {report.frequency} • {report.format.toUpperCase()} • Next:{' '}
                       {report.nextRun.toLocaleDateString()} • Recipients:{' '}
                       {report.recipients.length}
@@ -558,7 +558,7 @@ export const ExportExample: React.FC = () => {
                   </div>
                   <div
                     className={`status-indicator ${report.isActive ? 'success' : 'error'}`}
-                    data-oid='hyhggh-'
+                    data-oid='--2bm19'
                   >
                     {report.isActive ? 'Active' : 'Inactive'}
                   </div>
@@ -569,117 +569,117 @@ export const ExportExample: React.FC = () => {
         )}
 
         {/* Technical Features */}
-        <div className='mt-8 bg-gray-50 rounded-lg p-6' data-oid='lyqir87'>
+        <div className='mt-8 bg-gray-50 rounded-lg p-6' data-oid='sfglk6.'>
           <h3
             className='text-lg font-semibold text-gray-900 mb-4'
-            data-oid='rqkw-zq'
+            data-oid='ry6qf8z'
           >
             Technical Features Demonstrated
           </h3>
           <div
             className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
-            data-oid='fqz9yf-'
+            data-oid='e:agfur'
           >
-            <div className='bg-white p-4 rounded-md' data-oid='3p6.._8'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='2c3j6.6'>
+            <div className='bg-white p-4 rounded-md' data-oid='016sarm'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='0qn1j8d'>
                 Export Formats
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='vauqoxd'
+                data-oid='n91smzf'
               >
-                <li data-oid='hu._vgz'>• PNG/JPG/SVG Images</li>
-                <li data-oid='ryi::kk'>• PDF Reports</li>
-                <li data-oid='k5.-jph'>• Excel Spreadsheets</li>
-                <li data-oid='92zjnbl'>• CSV Data Files</li>
-                <li data-oid='m88un1s'>• JSON Data Export</li>
+                <li data-oid='ucjqprs'>• PNG/JPG/SVG Images</li>
+                <li data-oid='1u.ry6d'>• PDF Reports</li>
+                <li data-oid='ly:lk6h'>• Excel Spreadsheets</li>
+                <li data-oid='rqkl4ht'>• CSV Data Files</li>
+                <li data-oid='pepsmqp'>• JSON Data Export</li>
               </ul>
             </div>
 
-            <div className='bg-white p-4 rounded-md' data-oid='h1v5gb-'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='qgk23c7'>
+            <div className='bg-white p-4 rounded-md' data-oid='n0xcbfg'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='1druy2j'>
                 Sharing Features
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='p0rq-0p'
+                data-oid='7394qss'
               >
-                <li data-oid='84hh0g5'>• Shareable Links</li>
-                <li data-oid='owg14sg'>• Access Control</li>
-                <li data-oid='zv-rpzm'>• Password Protection</li>
-                <li data-oid='7s2y1dz'>• Expiration Dates</li>
-                <li data-oid='3.xz0of'>• View Tracking</li>
+                <li data-oid='od3rebh'>• Shareable Links</li>
+                <li data-oid='58rdxfn'>• Access Control</li>
+                <li data-oid='91fk:b8'>• Password Protection</li>
+                <li data-oid='5x_09u1'>• Expiration Dates</li>
+                <li data-oid='h50cbn2'>• View Tracking</li>
               </ul>
             </div>
 
-            <div className='bg-white p-4 rounded-md' data-oid='hf5q4z8'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='j1p4s6z'>
+            <div className='bg-white p-4 rounded-md' data-oid='k3okf9w'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='wj5r0ro'>
                 Embed Options
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='60.tq36'
+                data-oid='6k_4giq'
               >
-                <li data-oid='rvoau3e'>• Responsive iFrames</li>
-                <li data-oid='jry9k8n'>• Theme Selection</li>
-                <li data-oid='67a88zm'>• Auto Refresh</li>
-                <li data-oid='68w9gvw'>• White Label Mode</li>
-                <li data-oid='u2:t7cd'>• Custom Styling</li>
+                <li data-oid='06uly3n'>• Responsive iFrames</li>
+                <li data-oid='a28pun0'>• Theme Selection</li>
+                <li data-oid='e-:kwpe'>• Auto Refresh</li>
+                <li data-oid='ap0l.td'>• White Label Mode</li>
+                <li data-oid='y0bj.md'>• Custom Styling</li>
               </ul>
             </div>
 
-            <div className='bg-white p-4 rounded-md' data-oid='8jhyuqc'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='tz-:uaw'>
+            <div className='bg-white p-4 rounded-md' data-oid='zj4iulr'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='9w.wwql'>
                 Reporting
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='8d5j1le'
+                data-oid='o82ow2w'
               >
-                <li data-oid='reuhidc'>• Scheduled Reports</li>
-                <li data-oid='6bgy5:v'>• Multiple Recipients</li>
-                <li data-oid='r.f0t.r'>• Custom Templates</li>
-                <li data-oid='htkfqrr'>• Frequency Options</li>
-                <li data-oid='2a3h7e3'>• Email Integration</li>
+                <li data-oid='5mrvsq-'>• Scheduled Reports</li>
+                <li data-oid='k6h87u9'>• Multiple Recipients</li>
+                <li data-oid='ogvqtt1'>• Custom Templates</li>
+                <li data-oid='1310rz2'>• Frequency Options</li>
+                <li data-oid=':j-b3_0'>• Email Integration</li>
               </ul>
             </div>
 
-            <div className='bg-white p-4 rounded-md' data-oid='dpafo05'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid='4gko-x.'>
+            <div className='bg-white p-4 rounded-md' data-oid='af2hfky'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='z8ios7-'>
                 Advanced Features
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='qf36u2u'
+                data-oid='.id4cmv'
               >
-                <li data-oid='6d.qmee'>• Watermark Support</li>
-                <li data-oid='v72mdu2'>• High DPI Export</li>
-                <li data-oid='gncd-0-'>• Compression Options</li>
-                <li data-oid='d2xuv8w'>• Metadata Inclusion</li>
-                <li data-oid='_kbhol8'>• Progress Tracking</li>
+                <li data-oid='13bkjzi'>• Watermark Support</li>
+                <li data-oid='wgum.t:'>• High DPI Export</li>
+                <li data-oid='3x9c6jq'>• Compression Options</li>
+                <li data-oid='ftr-e0v'>• Metadata Inclusion</li>
+                <li data-oid='58f:fhx'>• Progress Tracking</li>
               </ul>
             </div>
 
-            <div className='bg-white p-4 rounded-md' data-oid='sbje8iz'>
-              <h4 className='font-medium text-gray-900 mb-2' data-oid=':oelbdj'>
+            <div className='bg-white p-4 rounded-md' data-oid='f2qsj1g'>
+              <h4 className='font-medium text-gray-900 mb-2' data-oid='s5d_qsm'>
                 Performance
               </h4>
               <ul
                 className='text-sm text-gray-600 space-y-1'
-                data-oid='n6xwydg'
+                data-oid='wzp2d:0'
               >
-                <li data-oid='jr97j57'>• Dynamic Imports</li>
-                <li data-oid='j7:ubo-'>• Bundle Optimization</li>
-                <li data-oid='-9.xd8h'>• Memory Management</li>
-                <li data-oid='mzql-fz'>• Error Handling</li>
-                <li data-oid='wg_5x25'>• Event-Driven Architecture</li>
+                <li data-oid='esy92ov'>• Dynamic Imports</li>
+                <li data-oid='rcthxa1'>• Bundle Optimization</li>
+                <li data-oid='5idcg97'>• Memory Management</li>
+                <li data-oid='_jzitd6'>• Error Handling</li>
+                <li data-oid='46c0dl:'>• Event-Driven Architecture</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx data-oid='1u2-2_e'>{`
+      <style jsx data-oid='c2ekf_k'>{`
         .chart-container {
           display: flex;
           justify-content: center;

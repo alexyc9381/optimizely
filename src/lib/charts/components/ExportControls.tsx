@@ -130,20 +130,20 @@ export const ExportControls: React.FC<ExportControlsProps> = ({
   ]);
 
   return (
-    <div className={`export-controls ${className}`} data-oid='jjtjwx-'>
-      <div className='export-controls-header' data-oid='p3balc-'>
+    <div className={`export-controls ${className}`} data-oid='6abe8..'>
+      <div className='export-controls-header' data-oid='8w.5f4h'>
         <h3
           className='text-lg font-semibold text-gray-900 mb-4'
-          data-oid='l0aclj:'
+          data-oid='5j4vs-:'
         >
           Export & Share
         </h3>
       </div>
 
-      <div className='export-format-selector mb-4' data-oid='3f_0pm0'>
+      <div className='export-format-selector mb-4' data-oid='184us7b'>
         <label
           className='block text-sm font-medium text-gray-700 mb-2'
-          data-oid='i5ms3lh'
+          data-oid='o3.kv6u'
         >
           Export Format
         </label>
@@ -151,41 +151,41 @@ export const ExportControls: React.FC<ExportControlsProps> = ({
           value={exportFormat}
           onChange={e => setExportFormat(e.target.value as any)}
           className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-          data-oid='46esib3'
+          data-oid='.n2pnvj'
         >
-          <option value='png' data-oid='r4.e1pw'>
+          <option value='png' data-oid='c2o4r2k'>
             PNG Image
           </option>
-          <option value='pdf' data-oid='etacac0'>
+          <option value='pdf' data-oid='a42li58'>
             PDF Report
           </option>
-          <option value='csv' data-oid='oah_vs6'>
+          <option value='csv' data-oid='hgfj8d2'>
             CSV Data
           </option>
-          <option value='json' data-oid='k1:mfes'>
+          <option value='json' data-oid='i-vdh4z'>
             JSON Data
           </option>
-          <option value='excel' data-oid='haqiays'>
+          <option value='excel' data-oid='xfe86r2'>
             Excel Spreadsheet
           </option>
         </select>
       </div>
 
-      <div className='export-actions space-y-3' data-oid=':tgvskj'>
+      <div className='export-actions space-y-3' data-oid='v3w66mt'>
         <button
           onClick={handleExport}
           disabled={isExporting}
           className='w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200'
-          data-oid='_2jm9k-'
+          data-oid='.hok-fr'
         >
           {isExporting ? (
             <div
               className='flex items-center justify-center'
-              data-oid='8pkx:yt'
+              data-oid='jpsvva1'
             >
               <div
                 className='animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2'
-                data-oid='eliliz7'
+                data-oid='01zizh7'
               ></div>
               Exporting...
             </div>
@@ -197,7 +197,7 @@ export const ExportControls: React.FC<ExportControlsProps> = ({
         <button
           onClick={() => setShowShareDialog(true)}
           className='w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200'
-          data-oid='nfzyr0-'
+          data-oid='uursl8l'
         >
           Create Shareable Link
         </button>
@@ -212,7 +212,7 @@ export const ExportControls: React.FC<ExportControlsProps> = ({
             console.log('Shareable link created:', link);
             setShowShareDialog(false);
           }}
-          data-oid='d4o:3ce'
+          data-oid='j2jl7tc'
         />
       )}
     </div>
@@ -270,49 +270,49 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
   return (
     <div
       className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
-      data-oid='n3hrl0s'
+      data-oid='7:.5xm_'
     >
       <div
         className='bg-white rounded-lg p-6 w-full max-w-md mx-4'
-        data-oid='83761hl'
+        data-oid='98jqdna'
       >
         <div
           className='flex justify-between items-center mb-4'
-          data-oid='nm5419-'
+          data-oid='gd6ts60'
         >
           <h3
             className='text-lg font-semibold text-gray-900'
-            data-oid='e1im_8s'
+            data-oid='a9g2ihx'
           >
             Share Chart
           </h3>
           <button
             onClick={onClose}
             className='text-gray-400 hover:text-gray-600'
-            data-oid='2vfprlq'
+            data-oid='zq:kh:y'
           >
             <svg
               className='w-6 h-6'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
-              data-oid='m8g0yxc'
+              data-oid='_b1kdiu'
             >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
                 strokeWidth={2}
                 d='M6 18L18 6M6 6l12 12'
-                data-oid='oeu6al-'
+                data-oid='ktzm:ie'
               />
             </svg>
           </button>
         </div>
 
         {!createdLink ? (
-          <div className='space-y-4' data-oid='mdv-2az'>
-            <div data-oid='h-bi34o'>
-              <label className='flex items-center' data-oid=':.qv1mv'>
+          <div className='space-y-4' data-oid='fxsuvlo'>
+            <div data-oid='nji6mhe'>
+              <label className='flex items-center' data-oid='_ynckkq'>
                 <input
                   type='checkbox'
                   checked={accessControl.isPublic}
@@ -323,17 +323,17 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                     })
                   }
                   className='mr-2'
-                  data-oid='_aiv:qr'
+                  data-oid='50a3f8s'
                 />
                 Make link public
               </label>
             </div>
 
             {!accessControl.isPublic && (
-              <div data-oid='yk0hz1x'>
+              <div data-oid='1eytd40'>
                 <label
                   className='block text-sm font-medium text-gray-700 mb-1'
-                  data-oid='5jzrim7'
+                  data-oid='0ry9mkr'
                 >
                   Password (optional)
                 </label>
@@ -343,15 +343,15 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                   onChange={e => setPassword(e.target.value)}
                   placeholder='Enter password'
                   className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  data-oid='ypn48i-'
+                  data-oid=':43s2-s'
                 />
               </div>
             )}
 
-            <div data-oid='.p--7te'>
+            <div data-oid='1h5hu1u'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='t10_g-6'
+                data-oid='jq:5m3o'
               >
                 Expires in (days)
               </label>
@@ -362,12 +362,12 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                 min='1'
                 max='365'
                 className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-                data-oid=':o.n.0p'
+                data-oid='k:kzj8p'
               />
             </div>
 
-            <div className='space-y-2' data-oid='-s-l0wz'>
-              <label className='flex items-center' data-oid='t08frr9'>
+            <div className='space-y-2' data-oid='nvgqbua'>
+              <label className='flex items-center' data-oid='5618gxj'>
                 <input
                   type='checkbox'
                   checked={accessControl.downloadEnabled}
@@ -378,12 +378,12 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                     })
                   }
                   className='mr-2'
-                  data-oid='.uu-xsk'
+                  data-oid='-phfhmb'
                 />
                 Allow downloads
               </label>
 
-              <label className='flex items-center' data-oid='kse.:wk'>
+              <label className='flex items-center' data-oid='5h6zlfn'>
                 <input
                   type='checkbox'
                   checked={accessControl.embedEnabled}
@@ -394,7 +394,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                     })
                   }
                   className='mr-2'
-                  data-oid='yx3o0tt'
+                  data-oid='.te0a_5'
                 />
                 Allow embedding
               </label>
@@ -403,51 +403,51 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
             <button
               onClick={handleCreateLink}
               className='w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200'
-              data-oid='7a4o.l2'
+              data-oid='pzbfh5d'
             >
               Create Shareable Link
             </button>
           </div>
         ) : (
-          <div className='space-y-4' data-oid='g6xtpa4'>
-            <div data-oid='e:cfz:0'>
+          <div className='space-y-4' data-oid='wkx2yhl'>
+            <div data-oid='g6bbmmj'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='0.15yd:'
+                data-oid='q25jrw_'
               >
                 Shareable Link
               </label>
-              <div className='flex' data-oid='l.wl2z2'>
+              <div className='flex' data-oid='w6ho38i'>
                 <input
                   type='text'
                   value={createdLink.url}
                   readOnly
                   className='flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-50'
-                  data-oid='13rifyz'
+                  data-oid='c0_28b-'
                 />
 
                 <button
                   onClick={() => copyToClipboard(createdLink.url)}
                   className='px-3 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300 transition-colors duration-200'
-                  data-oid='1mjuz4d'
+                  data-oid='2x_-2uc'
                 >
                   Copy
                 </button>
               </div>
             </div>
 
-            <div className='text-sm text-gray-600' data-oid='koqned1'>
-              <p data-oid='_sq4yzl'>
+            <div className='text-sm text-gray-600' data-oid='bi19xx_'>
+              <p data-oid='n5-yocf'>
                 Link expires: {createdLink.expiresAt?.toLocaleDateString()}
               </p>
-              <p data-oid='lkea.0r'>Views: {createdLink.viewCount}</p>
+              <p data-oid='lfvj1c_'>Views: {createdLink.viewCount}</p>
             </div>
 
-            <div className='space-y-2' data-oid='qqcv17q'>
+            <div className='space-y-2' data-oid='08bkreu'>
               <button
                 onClick={() => setShowEmbedDialog(true)}
                 className='w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200'
-                data-oid='s8a80g6'
+                data-oid='s_5hgvo'
               >
                 Generate Embed Code
               </button>
@@ -458,7 +458,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                   setPassword('');
                 }}
                 className='w-full bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-200'
-                data-oid='h5t9lgh'
+                data-oid='39xg56d'
               >
                 Create Another Link
               </button>
@@ -475,7 +475,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
               console.log('Embed code generated:', embedCode);
               setShowEmbedDialog(false);
             }}
-            data-oid='pcmg_bo'
+            data-oid='.cxrmac'
           />
         )}
       </div>
@@ -524,51 +524,51 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
   return (
     <div
       className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
-      data-oid='d.si8tf'
+      data-oid='ss:x18a'
     >
       <div
         className='bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-screen overflow-y-auto'
-        data-oid='p-y0w:o'
+        data-oid='o13nm_f'
       >
         <div
           className='flex justify-between items-center mb-4'
-          data-oid='d.4.nhm'
+          data-oid='k5u.fi9'
         >
           <h3
             className='text-lg font-semibold text-gray-900'
-            data-oid='9097r:7'
+            data-oid='qdlzz5j'
           >
             Generate Embed Code
           </h3>
           <button
             onClick={onClose}
             className='text-gray-400 hover:text-gray-600'
-            data-oid='1fwdi__'
+            data-oid='pfogjp0'
           >
             <svg
               className='w-6 h-6'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
-              data-oid='hn2qm_v'
+              data-oid='k9ojpla'
             >
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
                 strokeWidth={2}
                 d='M6 18L18 6M6 6l12 12'
-                data-oid='b4h8d7a'
+                data-oid='xy4o-4p'
               />
             </svg>
           </button>
         </div>
 
-        <div className='space-y-4' data-oid='-z3onn3'>
-          <div className='grid grid-cols-2 gap-4' data-oid='57pr6oj'>
-            <div data-oid='t4lp11_'>
+        <div className='space-y-4' data-oid='84s:w24'>
+          <div className='grid grid-cols-2 gap-4' data-oid='e4mj0-.'>
+            <div data-oid='gfucm4a'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='-kh0-.3'
+                data-oid='tppz6zw'
               >
                 Width
               </label>
@@ -582,14 +582,14 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                   })
                 }
                 className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-                data-oid='-co-v-e'
+                data-oid='fwq.-ni'
               />
             </div>
 
-            <div data-oid='reew_fb'>
+            <div data-oid='1-ec1-p'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='wra3sbr'
+                data-oid='fa_2iii'
               >
                 Height
               </label>
@@ -603,15 +603,15 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                   })
                 }
                 className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-                data-oid='fkj_8w-'
+                data-oid='o.fice3'
               />
             </div>
           </div>
 
-          <div data-oid='rp1xc6i'>
+          <div data-oid='h9icci5'>
             <label
               className='block text-sm font-medium text-gray-700 mb-1'
-              data-oid='83q900n'
+              data-oid='8t86ueo'
             >
               Theme
             </label>
@@ -624,22 +624,22 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                 })
               }
               className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              data-oid='eoa7k90'
+              data-oid='ajyvw6_'
             >
-              <option value='light' data-oid='pvlybsf'>
+              <option value='light' data-oid='98da-kt'>
                 Light
               </option>
-              <option value='dark' data-oid='roo-t.0'>
+              <option value='dark' data-oid='lh79a01'>
                 Dark
               </option>
-              <option value='auto' data-oid='_gym6nc'>
+              <option value='auto' data-oid='u303yn3'>
                 Auto
               </option>
             </select>
           </div>
 
-          <div className='space-y-2' data-oid='1av_yuu'>
-            <label className='flex items-center' data-oid='a3mtmo-'>
+          <div className='space-y-2' data-oid='p3rbhr7'>
+            <label className='flex items-center' data-oid='rjq68it'>
               <input
                 type='checkbox'
                 checked={embedConfig.showControls}
@@ -650,12 +650,12 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                   })
                 }
                 className='mr-2'
-                data-oid='th7.3rf'
+                data-oid='-954dtq'
               />
               Show controls
             </label>
 
-            <label className='flex items-center' data-oid='jkw9gek'>
+            <label className='flex items-center' data-oid='d3di0eq'>
               <input
                 type='checkbox'
                 checked={embedConfig.autoRefresh}
@@ -666,12 +666,12 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                   })
                 }
                 className='mr-2'
-                data-oid='inblky4'
+                data-oid='dyqee77'
               />
               Auto refresh
             </label>
 
-            <label className='flex items-center' data-oid='b241__o'>
+            <label className='flex items-center' data-oid=':bta254'>
               <input
                 type='checkbox'
                 checked={embedConfig.whiteLabel}
@@ -682,17 +682,17 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                   })
                 }
                 className='mr-2'
-                data-oid='kr75l3b'
+                data-oid='55o-y.6'
               />
               White label (remove branding)
             </label>
           </div>
 
           {embedConfig.autoRefresh && (
-            <div data-oid='i:aru4f'>
+            <div data-oid='7wzd42l'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='xpm0vi3'
+                data-oid='7xkzqcp'
               >
                 Refresh Interval (seconds)
               </label>
@@ -708,7 +708,7 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
                 min='10'
                 max='3600'
                 className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-                data-oid='0i72zul'
+                data-oid='irf_hnv'
               />
             </div>
           )}
@@ -716,32 +716,32 @@ export const EmbedDialog: React.FC<EmbedDialogProps> = ({
           <button
             onClick={generateEmbedCode}
             className='w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200'
-            data-oid='gri23by'
+            data-oid='83f_yoi'
           >
             Generate Embed Code
           </button>
 
           {embedCode && (
-            <div data-oid='mg8naj9'>
+            <div data-oid='nyzk0tt'>
               <label
                 className='block text-sm font-medium text-gray-700 mb-1'
-                data-oid='1sz.qu_'
+                data-oid='4simlxb'
               >
                 Embed Code
               </label>
-              <div className='relative' data-oid='9g6ifrc'>
+              <div className='relative' data-oid=':c4f4b2'>
                 <textarea
                   value={embedCode}
                   readOnly
                   rows={8}
                   className='w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 font-mono text-sm'
-                  data-oid='qaywizh'
+                  data-oid='yfyd287'
                 />
 
                 <button
                   onClick={() => copyToClipboard(embedCode)}
                   className='absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300 transition-colors duration-200'
-                  data-oid='xfu--n_'
+                  data-oid='9pyd:hj'
                 >
                   Copy
                 </button>
@@ -830,20 +830,20 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
   );
 
   return (
-    <div className='report-scheduler space-y-4' data-oid='0ohg5l:'>
-      <div data-oid='wah:d9:'>
+    <div className='report-scheduler space-y-4' data-oid='iitj.05'>
+      <div data-oid='mgkg4hd'>
         <h3
           className='text-lg font-semibold text-gray-900 mb-4'
-          data-oid='r5ig0w-'
+          data-oid='a7idrsx'
         >
           Schedule Report
         </h3>
       </div>
 
-      <div data-oid='5xna0s2'>
+      <div data-oid='5z963rk'>
         <label
           className='block text-sm font-medium text-gray-700 mb-1'
-          data-oid='q2g:zxv'
+          data-oid='b.0dag3'
         >
           Report Name
         </label>
@@ -858,15 +858,15 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
           }
           placeholder='Weekly Analytics Report'
           className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-          data-oid='mnz-sm2'
+          data-oid='ni6:09a'
         />
       </div>
 
-      <div className='grid grid-cols-2 gap-4' data-oid='ykhzl54'>
-        <div data-oid='1b6ssi3'>
+      <div className='grid grid-cols-2 gap-4' data-oid='rj00kg1'>
+        <div data-oid='focm4_l'>
           <label
             className='block text-sm font-medium text-gray-700 mb-1'
-            data-oid='.u5zpz0'
+            data-oid='kjhg7li'
           >
             Frequency
           </label>
@@ -879,27 +879,27 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
               })
             }
             className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            data-oid='a3-z6wl'
+            data-oid='47s_112'
           >
-            <option value='daily' data-oid='r2lcja0'>
+            <option value='daily' data-oid='cd1zz3u'>
               Daily
             </option>
-            <option value='weekly' data-oid='vz7n766'>
+            <option value='weekly' data-oid='gm8yclg'>
               Weekly
             </option>
-            <option value='monthly' data-oid='r9tqm7i'>
+            <option value='monthly' data-oid='s.cx0x2'>
               Monthly
             </option>
-            <option value='quarterly' data-oid='jfnncsn'>
+            <option value='quarterly' data-oid='jxxxg7n'>
               Quarterly
             </option>
           </select>
         </div>
 
-        <div data-oid='ckm1pev'>
+        <div data-oid='6bvhav9'>
           <label
             className='block text-sm font-medium text-gray-700 mb-1'
-            data-oid='-:spsnb'
+            data-oid='ylw_n_v'
           >
             Format
           </label>
@@ -912,40 +912,40 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
               })
             }
             className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            data-oid='wozm09f'
+            data-oid='rvu:_va'
           >
-            <option value='pdf' data-oid='_z.3b8a'>
+            <option value='pdf' data-oid='5forbcq'>
               PDF
             </option>
-            <option value='excel' data-oid='b0ds4o7'>
+            <option value='excel' data-oid=':p01on_'>
               Excel
             </option>
           </select>
         </div>
       </div>
 
-      <div data-oid='yeg_luu'>
+      <div data-oid='gqhjlnf'>
         <label
           className='block text-sm font-medium text-gray-700 mb-1'
-          data-oid='mbfywby'
+          data-oid='n.rtu3m'
         >
           Recipients
         </label>
         {reportConfig.recipients.map((email, index) => (
-          <div key={index} className='flex mb-2' data-oid='2kv11cz'>
+          <div key={index} className='flex mb-2' data-oid='ujva07e'>
             <input
               type='email'
               value={email}
               onChange={e => updateRecipient(index, e.target.value)}
               placeholder='recipient@example.com'
               className='flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              data-oid='m.heb2:'
+              data-oid='cp5m06h'
             />
 
             <button
               onClick={() => removeRecipient(index)}
               className='px-3 py-2 bg-red-500 text-white rounded-r-md hover:bg-red-600 transition-colors duration-200'
-              data-oid='gf3cpt9'
+              data-oid='bkv87sk'
             >
               Remove
             </button>
@@ -954,7 +954,7 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
         <button
           onClick={addRecipient}
           className='text-blue-600 hover:text-blue-800 text-sm'
-          data-oid='ric-m5.'
+          data-oid='5coplv3'
         >
           + Add Recipient
         </button>
@@ -967,7 +967,7 @@ export const ReportScheduler: React.FC<ReportSchedulerProps> = ({
           reportConfig.recipients.every(email => !email.trim())
         }
         className='w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200'
-        data-oid='w_t8pcp'
+        data-oid='u99hp7t'
       >
         Schedule Report
       </button>

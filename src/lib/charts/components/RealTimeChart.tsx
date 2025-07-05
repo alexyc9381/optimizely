@@ -239,25 +239,25 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
     switch (chartType) {
       case 'line':
         return (
-          <LineChart {...commonProps} data-oid='d92r7o9'>
-            <CartesianGrid strokeDasharray='3 3' data-oid='5agvjgr' />
+          <LineChart {...commonProps} data-oid='x3glt2i'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='6i-y3g9' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
-              data-oid='kh:mu4b'
+              data-oid='jwnr62z'
             />
 
-            <YAxis data-oid='rpbqug9' />
+            <YAxis data-oid='_genwf:' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
-              data-oid='i-3n-23'
+              data-oid='qluqk3c'
             />
 
-            <Legend data-oid='ee2kr7t' />
+            <Legend data-oid='oyiw1yl' />
             <Line
               type='monotone'
               dataKey='y'
@@ -265,7 +265,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
               strokeWidth={2}
               dot={false}
               isAnimationActive={false}
-              data-oid='m-igbik'
+              data-oid='f-8np9w'
             />
 
             {showTrend && trendData && (
@@ -274,7 +274,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
                 stroke={trendData.direction === 'up' ? '#4ade80' : '#f87171'}
                 strokeDasharray='5 5'
                 label={`Trend: ${trendData.direction}`}
-                data-oid='1z40w6n'
+                data-oid='wdlj70f'
               />
             )}
           </LineChart>
@@ -282,25 +282,25 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
 
       case 'area':
         return (
-          <AreaChart {...commonProps} data-oid='7yqiyjs'>
-            <CartesianGrid strokeDasharray='3 3' data-oid='9gckaw8' />
+          <AreaChart {...commonProps} data-oid='fff:c7-'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='2-gxunh' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
-              data-oid='ev2ai_i'
+              data-oid='z_5j4pi'
             />
 
-            <YAxis data-oid='5bhonm.' />
+            <YAxis data-oid='aj9jdlt' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
-              data-oid='axi-8eh'
+              data-oid='t-_y7s-'
             />
 
-            <Legend data-oid='xm-z3_e' />
+            <Legend data-oid='7x1x:_f' />
             <Area
               type='monotone'
               dataKey='y'
@@ -308,87 +308,87 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
               fill={colors[0]}
               fillOpacity={0.3}
               isAnimationActive={false}
-              data-oid='f3b7d:a'
+              data-oid=':awgx7-'
             />
           </AreaChart>
         );
 
       case 'bar':
         return (
-          <BarChart {...commonProps} data-oid='krzuvi0'>
-            <CartesianGrid strokeDasharray='3 3' data-oid='8wt_lme' />
+          <BarChart {...commonProps} data-oid='kebwaw0'>
+            <CartesianGrid strokeDasharray='3 3' data-oid=':qjhqb3' />
             <XAxis
               dataKey='name'
               tickFormatter={(value, index) => `${index + 1}`}
-              data-oid='-ybcrjr'
+              data-oid='k:ip_2z'
             />
 
-            <YAxis data-oid='-czrai2' />
+            <YAxis data-oid='vuxtjlc' />
             <Tooltip
               formatter={(value: number) => [value.toFixed(2), 'Value']}
-              data-oid='6cf5z.6'
+              data-oid='3yx5o5:'
             />
 
-            <Legend data-oid='6_jyw5g' />
+            <Legend data-oid='i8o.wik' />
             <Bar
               dataKey='y'
               fill={colors[0]}
               isAnimationActive={false}
-              data-oid='8zmm:d7'
+              data-oid='4tspz1k'
             />
           </BarChart>
         );
 
       case 'scatter':
         return (
-          <ScatterChart {...commonProps} data-oid='ggdbbtz'>
-            <CartesianGrid strokeDasharray='3 3' data-oid='wovbzk2' />
+          <ScatterChart {...commonProps} data-oid='-d1a5zp'>
+            <CartesianGrid strokeDasharray='3 3' data-oid='au24-4h' />
             <XAxis
               dataKey='timestamp'
               type='number'
               scale='time'
               domain={['dataMin', 'dataMax']}
               tickFormatter={formatTimestamp}
-              data-oid='vwvnr05'
+              data-oid='244:16t'
             />
 
-            <YAxis dataKey='y' data-oid='frl65dy' />
+            <YAxis dataKey='y' data-oid='xugjxeo' />
             <Tooltip
               labelFormatter={value => formatTimestamp(value as number)}
               formatter={(value: number) => [value.toFixed(2), 'Value']}
-              data-oid='n66f6fy'
+              data-oid='kzfxtsd'
             />
 
-            <Legend data-oid='2lfczei' />
-            <Scatter dataKey='y' fill={colors[0]} data-oid='5cqc:bb' />
+            <Legend data-oid='quxzdqz' />
+            <Scatter dataKey='y' fill={colors[0]} data-oid='c.4g79y' />
           </ScatterChart>
         );
 
       default:
-        return <div data-oid='7xgj9:l'>Unsupported chart type</div>;
+        return <div data-oid='sctzfgo'>Unsupported chart type</div>;
     }
   };
 
   return (
-    <div className={`real-time-chart ${className}`} data-oid='hagthxh'>
+    <div className={`real-time-chart ${className}`} data-oid='kfvb1mw'>
       {/* Connection Status */}
       <div
         className='flex items-center justify-between mb-4'
-        data-oid='73fn0u9'
+        data-oid='5e_8u19'
       >
-        <div className='flex items-center space-x-2' data-oid=':pv8fvp'>
+        <div className='flex items-center space-x-2' data-oid='fdn81qk'>
           <div
             className={`w-3 h-3 rounded-full ${
               isConnected ? 'bg-green-500' : 'bg-red-500'
             }`}
-            data-oid='me6tqx9'
+            data-oid='9bmx9iq'
           />
 
-          <span className='text-sm text-gray-600' data-oid='9hl3871'>
+          <span className='text-sm text-gray-600' data-oid='x1m756x'>
             {isConnected ? 'Connected' : 'Disconnected'}
           </span>
           {isPaused && (
-            <span className='text-sm text-orange-600 ml-2' data-oid='dzedux7'>
+            <span className='text-sm text-orange-600 ml-2' data-oid='n0dl1.u'>
               Paused
             </span>
           )}
@@ -397,9 +397,9 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
         {showTrend && trendData && (
           <div
             className='flex items-center space-x-2 text-sm'
-            data-oid='-fj1x7d'
+            data-oid='4wfx:j.'
           >
-            <span data-oid='uipcc:g'>Trend:</span>
+            <span data-oid='s2xzjsn'>Trend:</span>
             <span
               className={`font-medium ${
                 trendData.direction === 'up'
@@ -408,7 +408,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
                     ? 'text-red-600'
                     : 'text-gray-600'
               }`}
-              data-oid='t1:it8f'
+              data-oid='7jl3k2k'
             >
               {trendData.direction} ({trendData.strength.toFixed(1)}%)
             </span>
@@ -420,14 +420,14 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
       {error && (
         <div
           className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4'
-          data-oid='2cx9t32'
+          data-oid='d:w52h4'
         >
           Error: {error}
         </div>
       )}
 
       {/* Chart */}
-      <ResponsiveContainer width={width} height={height} data-oid='c9ohdmu'>
+      <ResponsiveContainer width={width} height={height} data-oid='_8-s:s_'>
         {renderChart()}
       </ResponsiveContainer>
 
@@ -436,7 +436,7 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
         <RealTimeMetricsDisplay
           chartId={chartId}
           position='bottom'
-          data-oid='oetyghf'
+          data-oid='7l2469f'
         />
       )}
     </div>
@@ -464,44 +464,44 @@ export const RealTimeMetricsDisplay: React.FC<RealTimeMetricsDisplayProps> = ({
   return (
     <div
       className={`real-time-metrics ${positionClasses[position]}`}
-      data-oid='flnfmvl'
+      data-oid='_y_cb2m'
     >
       <div
         className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm'
-        data-oid='-j3jxpo'
+        data-oid='8oc-fj8'
       >
-        <div className='text-center' data-oid='wl349gr'>
-          <div className='font-medium text-gray-600' data-oid='1rn_yjd'>
+        <div className='text-center' data-oid='1p86594'>
+          <div className='font-medium text-gray-600' data-oid='y6nxlbr'>
             Update Rate
           </div>
-          <div className='text-lg font-bold' data-oid='tfyn-8z'>
+          <div className='text-lg font-bold' data-oid='tgr3hoz'>
             {metrics.updateRate.toFixed(1)} Hz
           </div>
         </div>
 
-        <div className='text-center' data-oid='t2v5fl6'>
-          <div className='font-medium text-gray-600' data-oid='c_.otdn'>
+        <div className='text-center' data-oid='4kal97n'>
+          <div className='font-medium text-gray-600' data-oid='v2_h5q.'>
             Latency
           </div>
-          <div className='text-lg font-bold' data-oid='q5uqh-4'>
+          <div className='text-lg font-bold' data-oid='4n8--1x'>
             {metrics.averageLatency.toFixed(0)}ms
           </div>
         </div>
 
-        <div className='text-center' data-oid='e-eff8q'>
-          <div className='font-medium text-gray-600' data-oid='1vxbvml'>
+        <div className='text-center' data-oid='ggijo:g'>
+          <div className='font-medium text-gray-600' data-oid='zx8w5mz'>
             Buffer
           </div>
-          <div className='text-lg font-bold' data-oid='j7r1lbp'>
+          <div className='text-lg font-bold' data-oid='wt3a60z'>
             {metrics.bufferUtilization.toFixed(1)}%
           </div>
         </div>
 
-        <div className='text-center' data-oid='s.yt:zb'>
-          <div className='font-medium text-gray-600' data-oid='xr.eb-l'>
+        <div className='text-center' data-oid='bg.v:a4'>
+          <div className='font-medium text-gray-600' data-oid='qhxbr:d'>
             Memory
           </div>
-          <div className='text-lg font-bold' data-oid='395lk_1'>
+          <div className='text-lg font-bold' data-oid='z-kw8f3'>
             {metrics.memoryUsage.toFixed(1)}MB
           </div>
         </div>
@@ -510,7 +510,7 @@ export const RealTimeMetricsDisplay: React.FC<RealTimeMetricsDisplayProps> = ({
       {showDetails && (
         <div
           className='mt-2 text-xs text-gray-500 text-center'
-          data-oid='r64ucp1'
+          data-oid='c:kkqz8'
         >
           Dropped: {metrics.droppedFrames} | Last Update:{' '}
           {new Date(metrics.lastUpdate).toLocaleTimeString()}
@@ -570,7 +570,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
   return (
     <div
       className='real-time-controls flex items-center space-x-2'
-      data-oid='elsk.ri'
+      data-oid='a8odxlm'
     >
       <button
         onClick={isPaused ? handleResume : handlePause}
@@ -579,7 +579,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
             ? 'bg-green-500 hover:bg-green-600 text-white'
             : 'bg-orange-500 hover:bg-orange-600 text-white'
         }`}
-        data-oid='ub:s8.q'
+        data-oid='e7o1ibv'
       >
         {isPaused ? 'Resume' : 'Pause'}
       </button>
@@ -587,7 +587,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
       <button
         onClick={handleClear}
         className='px-3 py-1 rounded text-sm font-medium bg-red-500 hover:bg-red-600 text-white'
-        data-oid='9_2ie4z'
+        data-oid='d9rc:-.'
       >
         Clear
       </button>
@@ -595,7 +595,7 @@ export const RealTimeControls: React.FC<RealTimeControlsProps> = ({
       <button
         onClick={handleExport}
         className='px-3 py-1 rounded text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white'
-        data-oid='hjlwu0u'
+        data-oid='-1dpvl0'
       >
         Export
       </button>
@@ -628,32 +628,32 @@ export const RealTimeDashboard: React.FC<RealTimeDashboardProps> = ({
   };
 
   return (
-    <div className='real-time-dashboard' data-oid='me:9ae:'>
+    <div className='real-time-dashboard' data-oid='y1d4skv'>
       {showGlobalMetrics && (
-        <div className='mb-6 p-4 bg-gray-50 rounded-lg' data-oid='94y0pqf'>
-          <h3 className='text-lg font-medium mb-4' data-oid='siy9q1m'>
+        <div className='mb-6 p-4 bg-gray-50 rounded-lg' data-oid='mfd3jnz'>
+          <h3 className='text-lg font-medium mb-4' data-oid='8xesiyf'>
             Global Performance Metrics
           </h3>
           <RealTimeMetricsDisplay
             chartId='global'
             position='top'
             showDetails={true}
-            data-oid='kaxd2a0'
+            data-oid='zpykbag'
           />
         </div>
       )}
 
-      <div className={layoutClasses[layout]} data-oid='vek0jo4'>
+      <div className={layoutClasses[layout]} data-oid='9opi8yc'>
         {charts.map(chart => (
-          <div key={chart.id} className='chart-container' data-oid='x76g.jc'>
+          <div key={chart.id} className='chart-container' data-oid='y083u7h'>
             <div
               className='mb-2 flex items-center justify-between'
-              data-oid='gtgofjx'
+              data-oid='-nfgb-k'
             >
-              <h4 className='font-medium' data-oid='dhzzdtf'>
+              <h4 className='font-medium' data-oid='xuesi5y'>
                 {chart.title}
               </h4>
-              <RealTimeControls chartId={chart.id} data-oid='9exm42.' />
+              <RealTimeControls chartId={chart.id} data-oid='-it:1rn' />
             </div>
 
             <RealTimeChart
@@ -665,7 +665,7 @@ export const RealTimeDashboard: React.FC<RealTimeDashboardProps> = ({
               showPerformanceMetrics={false}
               showTrend={true}
               className='border border-gray-200 rounded p-4'
-              data-oid='pe93p43'
+              data-oid='cd-01c3'
             />
           </div>
         ))}

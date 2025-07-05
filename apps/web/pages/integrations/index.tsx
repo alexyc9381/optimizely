@@ -154,22 +154,22 @@ const IntegrationsPage: React.FC = () => {
     switch (status) {
       case 'Installed':
         return (
-          <CheckCircle className='w-4 h-4 text-green-600' data-oid='xyh.rel' />
+          <CheckCircle className='w-4 h-4 text-green-600' data-oid='4k_w2pj' />
         );
 
       case 'Available':
         return (
-          <Download className='w-4 h-4 text-blue-600' data-oid='wwabwsh' />
+          <Download className='w-4 h-4 text-blue-600' data-oid='kbf6uxt' />
         );
 
       case 'Setup Required':
         return (
-          <AlertCircle className='w-4 h-4 text-yellow-600' data-oid='e85x0mf' />
+          <AlertCircle className='w-4 h-4 text-yellow-600' data-oid='gfnn0l7' />
         );
 
       default:
         return (
-          <Settings className='w-4 h-4 text-gray-600' data-oid='bvd-88:' />
+          <Settings className='w-4 h-4 text-gray-600' data-oid='3t-d-4m' />
         );
     }
   };
@@ -184,42 +184,42 @@ const IntegrationsPage: React.FC = () => {
   ).length;
 
   const WebsiteIntegration = () => (
-    <div className='space-y-8' data-oid='goomosg'>
+    <div className='space-y-8' data-oid='81v309i'>
       {/* Quick Start */}
       <div
         className='bg-blue-50 rounded-lg p-6 border border-blue-200'
-        data-oid='yp9cqnb'
+        data-oid='uffes4l'
       >
         <h3
           className='text-lg font-semibold text-gray-900 mb-4 flex items-center'
-          data-oid='z1s5yru'
+          data-oid='gd_v09m'
         >
           <svg
             className='w-5 h-5 text-blue-600 mr-2'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
-            data-oid='8pf.m-r'
+            data-oid='fsuuup6'
           >
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth={2}
               d='M13 10V3L4 14h7v7l9-11h-7z'
-              data-oid='9mfiu:3'
+              data-oid=':r4y_as'
             />
           </svg>
           Quick Start - Add to Any Website
         </h3>
-        <p className='text-gray-700 mb-4' data-oid='jkvsht-'>
+        <p className='text-gray-700 mb-4' data-oid='r0c:m05'>
           Add this script tag to your website's &lt;head&gt; section to start
           collecting data and running A/B tests.
         </p>
         <div
           className='bg-gray-900 rounded-lg p-4 overflow-x-auto'
-          data-oid='t51eog3'
+          data-oid='8gkt960'
         >
-          <code className='text-green-400 text-sm font-mono' data-oid='z8a_5td'>
+          <code className='text-green-400 text-sm font-mono' data-oid='nrk0ow0'>
             {`<!-- Universal AI Platform Integration -->
 <script async src="https://cdn.universalai.com/tracker.js"></script>
 <script>
@@ -229,16 +229,16 @@ const IntegrationsPage: React.FC = () => {
 </script>`}
           </code>
         </div>
-        <div className='mt-4 flex space-x-3' data-oid='by0pqwu'>
+        <div className='mt-4 flex space-x-3' data-oid='q1iamw3'>
           <button
             className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-            data-oid='ud3r5__'
+            data-oid='3_v2ij6'
           >
             Copy Code
           </button>
           <button
             className='bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-            data-oid='8roks65'
+            data-oid='vzh4f9k'
           >
             Download Script
           </button>
@@ -246,50 +246,50 @@ const IntegrationsPage: React.FC = () => {
       </div>
 
       {/* Available Integrations */}
-      <div className='space-y-6' data-oid='qfy2k4d'>
-        <h3 className='text-lg font-semibold text-gray-900' data-oid='4art8qk'>
+      <div className='space-y-6' data-oid='i81sr.v'>
+        <h3 className='text-lg font-semibold text-gray-900' data-oid='9uziz:p'>
           Available Integrations
         </h3>
 
         {loading ? (
           <div
             className='flex items-center justify-center h-32'
-            data-oid='vi4ik:f'
+            data-oid='0g9m4b8'
           >
             <div
               className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'
-              data-oid='0htpjij'
+              data-oid='2zev1pq'
             ></div>
           </div>
         ) : (
           <div
             className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-            data-oid='2teg-f-'
+            data-oid='6ii9a5.'
           >
             {integrations.map(integration => (
               <div
                 key={integration.name}
                 className='bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200'
-                data-oid='madm8__'
+                data-oid='kd.o_r_'
               >
                 <div
                   className='flex items-center justify-between mb-4'
-                  data-oid='.p1v2gp'
+                  data-oid='_0:n-8a'
                 >
-                  <div className='flex items-center' data-oid='xt4zpcd'>
-                    <span className='text-2xl mr-3' data-oid='dgp7rko'>
+                  <div className='flex items-center' data-oid='y2:3gb9'>
+                    <span className='text-2xl mr-3' data-oid='zdz8dwr'>
                       {integration.logo}
                     </span>
-                    <div data-oid='ohrs0ki'>
+                    <div data-oid='8amkg3o'>
                       <h4
                         className='text-lg font-semibold text-gray-900'
-                        data-oid='b.15yei'
+                        data-oid='11m2bo:'
                       >
                         {integration.name}
                       </h4>
                       <span
                         className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded'
-                        data-oid='0h23e77'
+                        data-oid='spops50'
                       >
                         {integration.category}
                       </span>
@@ -298,24 +298,24 @@ const IntegrationsPage: React.FC = () => {
                   {getStatusIcon(integration.status)}
                 </div>
 
-                <p className='text-gray-600 mb-4 text-sm' data-oid='k9abnl5'>
+                <p className='text-gray-600 mb-4 text-sm' data-oid='kvh64sz'>
                   {integration.description}
                 </p>
 
                 <div
                   className='flex items-center justify-between'
-                  data-oid='i1kltby'
+                  data-oid='n2le9gn'
                 >
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(integration.status)}`}
-                    data-oid='j6y0m.b'
+                    data-oid='_ly600u'
                   >
                     {integration.status}
                   </span>
 
                   <div
                     className='flex items-center space-x-2'
-                    data-oid='m5p08ln'
+                    data-oid='2cwefe2'
                   >
                     {integration.status === 'Available' && (
                       <button
@@ -324,17 +324,17 @@ const IntegrationsPage: React.FC = () => {
                         }
                         disabled={actionLoading === integration.name}
                         className='bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
-                        data-oid='vb-7up4'
+                        data-oid='65p_y73'
                       >
                         {actionLoading === integration.name ? (
                           <Loader
                             className='w-3 h-3 animate-spin'
-                            data-oid='w9a-h3z'
+                            data-oid='k2efkod'
                           />
                         ) : (
-                          <Download className='w-3 h-3' data-oid='ivi6r3f' />
+                          <Download className='w-3 h-3' data-oid='3itim9.' />
                         )}
-                        <span data-oid='xfi0tba'>Install</span>
+                        <span data-oid='qj5008s'>Install</span>
                       </button>
                     )}
 
@@ -342,10 +342,10 @@ const IntegrationsPage: React.FC = () => {
                       <>
                         <button
                           className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
-                          data-oid='n8fi76g'
+                          data-oid='0kmeyzn'
                         >
-                          <Settings className='w-3 h-3' data-oid='3gtnq-t' />
-                          <span data-oid='_.d.2d.'>Configure</span>
+                          <Settings className='w-3 h-3' data-oid='fbx6qr_' />
+                          <span data-oid='pebksb:'>Configure</span>
                         </button>
                         <button
                           onClick={() =>
@@ -356,17 +356,17 @@ const IntegrationsPage: React.FC = () => {
                           }
                           disabled={actionLoading === integration.name}
                           className='bg-red-100 hover:bg-red-200 disabled:opacity-50 text-red-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
-                          data-oid='sc8y9qc'
+                          data-oid='n:t8wu6'
                         >
                           {actionLoading === integration.name ? (
                             <Loader
                               className='w-3 h-3 animate-spin'
-                              data-oid='bmb2e3m'
+                              data-oid='c4nx6-k'
                             />
                           ) : (
-                            <Trash2 className='w-3 h-3' data-oid='x:v_t_b' />
+                            <Trash2 className='w-3 h-3' data-oid='wijmiss' />
                           )}
-                          <span data-oid='0g2cmed'>Remove</span>
+                          <span data-oid='7jvj3lx'>Remove</span>
                         </button>
                       </>
                     )}
@@ -374,10 +374,10 @@ const IntegrationsPage: React.FC = () => {
                     {integration.status === 'Setup Required' && (
                       <button
                         className='bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded text-sm font-medium transition-colors flex items-center space-x-1'
-                        data-oid='qq4rv2:'
+                        data-oid='.gga.4e'
                       >
-                        <Settings className='w-3 h-3' data-oid='h-.uhur' />
-                        <span data-oid='n290:ho'>Setup</span>
+                        <Settings className='w-3 h-3' data-oid='-_a21s9' />
+                        <span data-oid='fc.zpu2'>Setup</span>
                       </button>
                     )}
                   </div>
@@ -389,64 +389,64 @@ const IntegrationsPage: React.FC = () => {
       </div>
 
       {/* Installation Methods */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6' data-oid='69e_pcg'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6' data-oid='cxbtdh8'>
         {/* WordPress */}
         <div
           className='bg-blue-50 rounded-lg p-6 border border-blue-200'
-          data-oid=':r4fqa9'
+          data-oid='0:hrl.l'
         >
           <h3
             className='text-lg font-semibold text-gray-900 mb-4 flex items-center'
-            data-oid='hazjn7_'
+            data-oid='ztlwm4n'
           >
             <span
               className='w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3'
-              data-oid='c9.h408'
+              data-oid='gy-j5qs'
             >
               WP
             </span>
             WordPress Integration
           </h3>
-          <div className='space-y-3' data-oid=':bnvioq'>
-            <div className='flex items-center' data-oid='qjrji3d'>
+          <div className='space-y-3' data-oid='xgc.flp'>
+            <div className='flex items-center' data-oid='xi5gcob'>
               <span
                 className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'
-                data-oid='on0aeh1'
+                data-oid='rqg5xls'
               >
                 1
               </span>
-              <p className='text-gray-700 text-sm' data-oid='6fw7yfw'>
+              <p className='text-gray-700 text-sm' data-oid='k7vdwx8'>
                 Install the Universal AI WordPress plugin
               </p>
             </div>
-            <div className='flex items-center' data-oid='svomkxc'>
+            <div className='flex items-center' data-oid='y_e6fvq'>
               <span
                 className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'
-                data-oid='ixf8seg'
+                data-oid='ihi-:q6'
               >
                 2
               </span>
-              <p className='text-gray-700 text-sm' data-oid='x7uf9tz'>
+              <p className='text-gray-700 text-sm' data-oid='-5z9rv5'>
                 Add your API key in the plugin settings
               </p>
             </div>
-            <div className='flex items-center' data-oid='-nwni6f'>
+            <div className='flex items-center' data-oid='wn_u34t'>
               <span
                 className='w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-3'
-                data-oid='9swmw-v'
+                data-oid='7wflyjg'
               >
                 3
               </span>
-              <p className='text-gray-700 text-sm' data-oid='y.r5557'>
+              <p className='text-gray-700 text-sm' data-oid='k00vxgf'>
                 Configure A/B tests from your WordPress admin
               </p>
             </div>
             <button
               className='mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'
-              data-oid='c51a36h'
+              data-oid='v:ytb9q'
             >
-              <Download className='w-4 h-4' data-oid=':tmhv3s' />
-              <span data-oid='._bdeno'>Download Plugin</span>
+              <Download className='w-4 h-4' data-oid='izfxyf4' />
+              <span data-oid='3rqapvg'>Download Plugin</span>
             </button>
           </div>
         </div>
@@ -454,34 +454,34 @@ const IntegrationsPage: React.FC = () => {
         {/* React/Next.js SDK */}
         <div
           className='bg-white rounded-lg border border-gray-200 p-6'
-          data-oid='_f96s-m'
+          data-oid='yww9uim'
         >
-          <div className='flex items-center mb-4' data-oid='8bvkn7_'>
-            <span className='text-2xl mr-3' data-oid='_:hv4bg'>
+          <div className='flex items-center mb-4' data-oid=':0fxjcs'>
+            <span className='text-2xl mr-3' data-oid='0wj0lkf'>
               ⚛️
             </span>
             <h4
               className='text-lg font-semibold text-gray-900'
-              data-oid='9z5sktu'
+              data-oid='y8:8qr-'
             >
               React/Next.js SDK
             </h4>
           </div>
-          <p className='text-gray-600 mb-4' data-oid='_j-0h_p'>
+          <p className='text-gray-600 mb-4' data-oid='xrwa-.6'>
             npm package for React and Next.js applications.
           </p>
-          <div className='bg-gray-900 rounded-lg p-3 mb-4' data-oid='bbvma96'>
+          <div className='bg-gray-900 rounded-lg p-3 mb-4' data-oid='.7paa2m'>
             <code
               className='text-green-400 text-sm font-mono'
-              data-oid='_ovk:u-'
+              data-oid='hii1-jl'
             >
               npm install @universal-ai/react
             </code>
           </div>
-          <div className='bg-gray-900 rounded-lg p-3 mb-4' data-oid='3i_3vqc'>
+          <div className='bg-gray-900 rounded-lg p-3 mb-4' data-oid='anhtj3i'>
             <code
               className='text-green-400 text-sm font-mono'
-              data-oid='584.y1.'
+              data-oid='v.9w5_f'
             >
               {`import { UniversalAI } from '@universal-ai/react';
 
@@ -496,10 +496,10 @@ export default function App() {
           </div>
           <button
             className='w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2'
-            data-oid='4mawtw7'
+            data-oid='ec7p0hq'
           >
-            <ExternalLink className='w-4 h-4' data-oid='z4gzdhi' />
-            <span data-oid=':87p-pu'>View Documentation</span>
+            <ExternalLink className='w-4 h-4' data-oid=':b0oylm' />
+            <span data-oid='.6q_20w'>View Documentation</span>
           </button>
         </div>
       </div>
@@ -507,78 +507,78 @@ export default function App() {
   );
 
   const APIKeysSection = () => (
-    <div className='space-y-6' data-oid='zdw_ri5'>
+    <div className='space-y-6' data-oid='rn_qxe_'>
       <div
         className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-        data-oid='flmvbpm'
+        data-oid='-sj:3ib'
       >
         <h3
           className='text-lg font-semibold text-gray-900 mb-6'
-          data-oid='.vpmo07'
+          data-oid='bxm0mep'
         >
           API Configuration
         </h3>
 
-        <div className='space-y-6' data-oid='yq0sloc'>
-          <div data-oid='dttzwl4'>
+        <div className='space-y-6' data-oid='xot.rq-'>
+          <div data-oid='3gvep2p'>
             <label
               className='block text-sm font-medium text-gray-700 mb-2'
-              data-oid='e:b:y9u'
+              data-oid=':38pw5u'
             >
               Production API Key
             </label>
-            <div className='flex items-center space-x-3' data-oid='17m001f'>
+            <div className='flex items-center space-x-3' data-oid='dy:w:n9'>
               <input
                 type='text'
                 readOnly
                 value={apiKey}
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
-                data-oid='ls56ndj'
+                data-oid='sfkkyr:'
               />
 
               <button
                 className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-                data-oid='6b-3h7t'
+                data-oid='m0k014a'
               >
                 Copy
               </button>
               <button
                 className='bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-                data-oid='5bde:4z'
+                data-oid='v8t6l4l'
               >
-                <RefreshCw className='w-4 h-4' data-oid='7f8ek9w' />
-                <span data-oid='54o7zw4'>Regenerate</span>
+                <RefreshCw className='w-4 h-4' data-oid='h5kg:ad' />
+                <span data-oid='y838-f9'>Regenerate</span>
               </button>
             </div>
-            <p className='text-xs text-gray-500 mt-1' data-oid='78wu:86'>
+            <p className='text-xs text-gray-500 mt-1' data-oid='iiuyp5u'>
               Keep this key secure. Never expose it in client-side code.
             </p>
           </div>
 
-          <div data-oid='karqgg4'>
+          <div data-oid='tckm5lz'>
             <label
               className='block text-sm font-medium text-gray-700 mb-2'
-              data-oid='cd.wo:q'
+              data-oid='n:cwgko'
             >
               Test Environment Key
             </label>
-            <div className='flex items-center space-x-3' data-oid='45x96oi'>
+            <div className='flex items-center space-x-3' data-oid='w:dr5t_'>
               <input
                 type='text'
                 readOnly
                 value='ai_test_abcdef1234567890'
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 font-mono text-sm'
-                data-oid='qr666x.'
+                data-oid='oh2twvm'
               />
 
               <button
                 className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-                data-oid='cdmj66:'
+                data-oid='s83a-_t'
               >
                 Copy
               </button>
             </div>
-            <p className='text-xs text-gray-500 mt-1' data-oid='1-h2gb2'>
+            <p className='text-xs text-gray-500 mt-1' data-oid='cidnyxh'>
               Use this key for development and testing environments.
             </p>
           </div>
@@ -588,81 +588,81 @@ export default function App() {
       {/* REST API Documentation */}
       <div
         className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-        data-oid='e0s6nzb'
+        data-oid='fhuuf9r'
       >
         <h3
           className='text-lg font-semibold text-gray-900 mb-4'
-          data-oid='ooih0jh'
+          data-oid='7y-oc8x'
         >
           REST API Endpoints
         </h3>
 
-        <div className='space-y-4' data-oid='5wlxn.e'>
-          <div className='bg-gray-50 rounded-lg p-4' data-oid='t4vslcq'>
+        <div className='space-y-4' data-oid='oi9xg41'>
+          <div className='bg-gray-50 rounded-lg p-4' data-oid='cc64zzg'>
             <div
               className='flex items-center justify-between mb-2'
-              data-oid='ucseowo'
+              data-oid='v5sq.m_'
             >
               <span
                 className='text-sm font-mono text-gray-900'
-                data-oid='fdu6xlg'
+                data-oid='-6jwq-o'
               >
                 POST /api/events
               </span>
               <span
                 className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'
-                data-oid='qrk_a8f'
+                data-oid='_p0y85k'
               >
                 Track Events
               </span>
             </div>
-            <p className='text-sm text-gray-600' data-oid='6_6ifn2'>
+            <p className='text-sm text-gray-600' data-oid='kvpi7el'>
               Send custom events and conversions to your account
             </p>
           </div>
 
-          <div className='bg-gray-50 rounded-lg p-4' data-oid='l.uleyk'>
+          <div className='bg-gray-50 rounded-lg p-4' data-oid='fp_girr'>
             <div
               className='flex items-center justify-between mb-2'
-              data-oid='hlxzthl'
+              data-oid='v2b9is8'
             >
               <span
                 className='text-sm font-mono text-gray-900'
-                data-oid='dq-n_fl'
+                data-oid='juoofm1'
               >
                 GET /api/tests
               </span>
               <span
                 className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'
-                data-oid='._ev--9'
+                data-oid='c-h.1a3'
               >
                 A/B Tests
               </span>
             </div>
-            <p className='text-sm text-gray-600' data-oid='389f6jt'>
+            <p className='text-sm text-gray-600' data-oid='_x8pdu-'>
               Retrieve active A/B tests and configurations
             </p>
           </div>
 
-          <div className='bg-gray-50 rounded-lg p-4' data-oid='348x26a'>
+          <div className='bg-gray-50 rounded-lg p-4' data-oid='7hp.0p_'>
             <div
               className='flex items-center justify-between mb-2'
-              data-oid='gkn7:27'
+              data-oid='5l4l9.3'
             >
               <span
                 className='text-sm font-mono text-gray-900'
-                data-oid='d-o460x'
+                data-oid='quf6szf'
               >
                 GET /api/analytics
               </span>
               <span
                 className='text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded'
-                data-oid='mk9de5z'
+                data-oid='bvs8ode'
               >
                 Analytics
               </span>
             </div>
-            <p className='text-sm text-gray-600' data-oid='doghj_2'>
+            <p className='text-sm text-gray-600' data-oid='cb-k_do'>
               Access detailed analytics and performance metrics
             </p>
           </div>
@@ -670,33 +670,33 @@ export default function App() {
 
         <button
           className='mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-          data-oid='h96l0bl'
+          data-oid='doddpo-'
         >
-          <ExternalLink className='w-4 h-4' data-oid='nnwtsrs' />
-          <span data-oid='7fc-i8e'>View Full API Documentation</span>
+          <ExternalLink className='w-4 h-4' data-oid='bp1r.3f' />
+          <span data-oid='tuss434'>View Full API Documentation</span>
         </button>
       </div>
     </div>
   );
 
   const WebhooksSection = () => (
-    <div className='space-y-6' data-oid='47gq72j'>
+    <div className='space-y-6' data-oid='823wmki'>
       <div
         className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-        data-oid='ckyvge2'
+        data-oid='flk1yef'
       >
         <h3
           className='text-lg font-semibold text-gray-900 mb-6'
-          data-oid='9lel.o3'
+          data-oid='b3fcwhd'
         >
           Webhook Configuration
         </h3>
 
-        <div className='space-y-6' data-oid='9kvm.a1'>
-          <div data-oid='0-c-exi'>
+        <div className='space-y-6' data-oid='..uz2d4'>
+          <div data-oid='lod-:a:'>
             <label
               className='block text-sm font-medium text-gray-700 mb-2'
-              data-oid='05htcek'
+              data-oid='h59:nf2'
             >
               Endpoint URL
             </label>
@@ -704,22 +704,22 @@ export default function App() {
               type='url'
               placeholder='https://your-app.com/webhooks/universal-ai'
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-              data-oid='ihepxdj'
+              data-oid='scac02g'
             />
 
-            <p className='text-xs text-gray-500 mt-1' data-oid='tkj325j'>
+            <p className='text-xs text-gray-500 mt-1' data-oid='ytka_31'>
               We'll send POST requests to this URL when events occur.
             </p>
           </div>
 
-          <div data-oid='u3osksr'>
+          <div data-oid='oxi.837'>
             <label
               className='block text-sm font-medium text-gray-700 mb-2'
-              data-oid='f-lg6mm'
+              data-oid='xk0-u.2'
             >
               Events to Send
             </label>
-            <div className='space-y-2' data-oid='vralzrf'>
+            <div className='space-y-2' data-oid='bpmzgsk'>
               {[
                 'Test Started',
                 'Test Completed',
@@ -729,18 +729,18 @@ export default function App() {
                 <label
                   key={event}
                   className='flex items-center'
-                  data-oid='4.dmkgo'
+                  data-oid='jeyec7p'
                 >
                   <input
                     type='checkbox'
                     defaultChecked
                     className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
-                    data-oid='a00t9a2'
+                    data-oid='9o13h9a'
                   />
 
                   <span
                     className='ml-2 text-sm text-gray-700'
-                    data-oid='d_ogar4'
+                    data-oid='f15um_q'
                   >
                     {event}
                   </span>
@@ -749,10 +749,10 @@ export default function App() {
             </div>
           </div>
 
-          <div data-oid='auqvuhj'>
+          <div data-oid='laf4bd1'>
             <label
               className='block text-sm font-medium text-gray-700 mb-2'
-              data-oid=':amvhul'
+              data-oid='vzmlj83'
             >
               Secret Key (Optional)
             </label>
@@ -760,17 +760,17 @@ export default function App() {
               type='text'
               placeholder='webhook_secret_key'
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-              data-oid='z.fnjzh'
+              data-oid='w3_6.z8'
             />
 
-            <p className='text-xs text-gray-500 mt-1' data-oid='samxxkj'>
+            <p className='text-xs text-gray-500 mt-1' data-oid='2-dr-37'>
               Used to verify webhook authenticity via HMAC signature.
             </p>
           </div>
 
           <button
             className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors'
-            data-oid='yp6wqeu'
+            data-oid='5ylsqfi'
           >
             Save Webhook Configuration
           </button>
@@ -780,78 +780,78 @@ export default function App() {
   );
 
   const ConnectedAppsSection = () => (
-    <div className='space-y-6' data-oid='.u8165a'>
+    <div className='space-y-6' data-oid='30awy:u'>
       <div
         className='bg-white rounded-lg shadow-sm border border-gray-200 p-6'
-        data-oid='7_963r-'
+        data-oid='vkp.0z1'
       >
         <h3
           className='text-lg font-semibold text-gray-900 mb-6'
-          data-oid='iwgk_c.'
+          data-oid='mghbpso'
         >
           Connected Applications
         </h3>
 
-        <div className='space-y-4' data-oid='6l::m::'>
+        <div className='space-y-4' data-oid=':1epk9f'>
           {integrations
             .filter(i => i.status === 'Installed')
             .map(app => (
               <div
                 key={app.name}
                 className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'
-                data-oid='.o18rxq'
+                data-oid='h70jrk4'
               >
-                <div className='flex items-center' data-oid=':9ab8-f'>
-                  <span className='text-2xl mr-3' data-oid='34bot42'>
+                <div className='flex items-center' data-oid='-7wz83:'>
+                  <span className='text-2xl mr-3' data-oid='17lu1v5'>
                     {app.logo}
                   </span>
-                  <div data-oid='21fkcfg'>
+                  <div data-oid='g6k9dyy'>
                     <h4
                       className='font-medium text-gray-900'
-                      data-oid='0i5.qia'
+                      data-oid='mu4mjee'
                     >
                       {app.name}
                     </h4>
-                    <p className='text-sm text-gray-500' data-oid='ryb4-h2'>
+                    <p className='text-sm text-gray-500' data-oid='cot3yur'>
                       {app.description}
                     </p>
                   </div>
                 </div>
-                <div className='flex items-center space-x-2' data-oid='2b:0gta'>
+                <div className='flex items-center space-x-2' data-oid='01g-mhj'>
                   <span
                     className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded'
-                    data-oid='ptp:h9p'
+                    data-oid='nbboi:c'
                   >
                     Connected
                   </span>
                   <button
                     className='text-gray-400 hover:text-gray-600 transition-colors'
-                    data-oid='.x394by'
+                    data-oid='jr1b_an'
                   >
-                    <Settings className='w-4 h-4' data-oid='ply189i' />
+                    <Settings className='w-4 h-4' data-oid='int.f9.' />
                   </button>
                   <button
                     onClick={() =>
                       handleIntegrationAction('uninstall', app.name)
                     }
                     className='text-red-400 hover:text-red-600 transition-colors'
-                    data-oid='ktzqhc:'
+                    data-oid='kqsputr'
                   >
-                    <Trash2 className='w-4 h-4' data-oid='gmh8yb:' />
+                    <Trash2 className='w-4 h-4' data-oid='j1u:f5s' />
                   </button>
                 </div>
               </div>
             ))}
 
           {integrations.filter(i => i.status === 'Installed').length === 0 && (
-            <div className='text-center py-8' data-oid='g-::rml'>
-              <p className='text-gray-500' data-oid='cknvbis'>
+            <div className='text-center py-8' data-oid='6fkfuz7'>
+              <p className='text-gray-500' data-oid='u6t78jn'>
                 No connected applications yet.
               </p>
               <button
                 onClick={() => setSelectedTab('website')}
                 className='mt-2 text-blue-600 hover:text-blue-700 text-sm font-medium'
-                data-oid='nhrw65k'
+                data-oid='4kibc6-'
               >
                 Browse available integrations
               </button>
@@ -866,15 +866,15 @@ export default function App() {
     return (
       <DashboardLayout
         title='Integrations - Universal AI Platform'
-        data-oid='.5od7em'
+        data-oid='s9a6o:7'
       >
         <div
           className='flex items-center justify-center h-64'
-          data-oid='f.yez-f'
+          data-oid='w2wf5un'
         >
           <div
             className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'
-            data-oid='h:lo4ee'
+            data-oid='b6tet36'
           ></div>
         </div>
       </DashboardLayout>
@@ -884,32 +884,32 @@ export default function App() {
   return (
     <DashboardLayout
       title='Integrations - Universal AI Platform'
-      data-oid='f8q2q6v'
+      data-oid='g89yrk9'
     >
-      <div className='space-y-6' data-oid='ktmo5h8'>
+      <div className='space-y-6' data-oid='jfltn51'>
         {error && (
           <div
             className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'
-            data-oid='g282kw3'
+            data-oid=':0s1o24'
           >
-            <div className='flex' data-oid='bj3ox3c'>
-              <div className='flex-shrink-0' data-oid='ba96rhj'>
+            <div className='flex' data-oid='2jrk_oj'>
+              <div className='flex-shrink-0' data-oid='e.1.:wa'>
                 <svg
                   className='h-5 w-5 text-yellow-400'
                   viewBox='0 0 20 20'
                   fill='currentColor'
-                  data-oid='3nd5nu1'
+                  data-oid='r8voywg'
                 >
                   <path
                     fillRule='evenodd'
                     d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
                     clipRule='evenodd'
-                    data-oid='_bhf:dg'
+                    data-oid='9vptc3j'
                   />
                 </svg>
               </div>
-              <div className='ml-3' data-oid=':_a1zi8'>
-                <p className='text-sm text-yellow-700' data-oid='7.j_h75'>
+              <div className='ml-3' data-oid='u1p48ai'>
+                <p className='text-sm text-yellow-700' data-oid='j-w4dmg'>
                   {error}
                 </p>
               </div>
@@ -918,31 +918,31 @@ export default function App() {
         )}
 
         {/* Header */}
-        <div className='flex items-center justify-between' data-oid='gdgmet9'>
-          <div data-oid='fqibgn.'>
-            <h1 className='text-2xl font-bold text-gray-900' data-oid='ha5acgs'>
+        <div className='flex items-center justify-between' data-oid='v6h3k33'>
+          <div data-oid='oy1x4hj'>
+            <h1 className='text-2xl font-bold text-gray-900' data-oid='lt-0jmd'>
               Integrations
             </h1>
-            <p className='text-sm text-gray-500 mt-1' data-oid='nry5piq'>
+            <p className='text-sm text-gray-500 mt-1' data-oid='ve3y451'>
               Connect Universal AI Platform with your favorite tools and
               services
             </p>
           </div>
 
-          <div className='flex items-center space-x-3' data-oid='1mb:v.c'>
+          <div className='flex items-center space-x-3' data-oid='zc8p-qj'>
             <button
               className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='kwhtx-n'
+              data-oid='h.yjn27'
             >
-              <ExternalLink className='h-4 w-4' data-oid='7qch6c_' />
-              <span data-oid='pq9p1_b'>Documentation</span>
+              <ExternalLink className='h-4 w-4' data-oid=':6esh7-' />
+              <span data-oid='j.5hj6s'>Documentation</span>
             </button>
             <button
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
-              data-oid='_aur9rv'
+              data-oid='6vlx5tq'
             >
-              <Download className='h-4 w-4' data-oid='doqzlgu' />
-              <span data-oid='b2gf:0n'>Request Integration</span>
+              <Download className='h-4 w-4' data-oid='fax.xpc' />
+              <span data-oid='2zt0.ut'>Request Integration</span>
             </button>
           </div>
         </div>
@@ -950,37 +950,37 @@ export default function App() {
         {/* Metrics Cards */}
         <div
           className='grid grid-cols-1 md:grid-cols-3 gap-6'
-          data-oid='nv1lm6o'
+          data-oid='o5q2hjo'
         >
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='6m8u8ep'
+            data-oid='srfgxqo'
           >
-            <div className='flex items-center' data-oid='el8xxk0'>
-              <div className='flex-1' data-oid='.bx1zim'>
+            <div className='flex items-center' data-oid='n6mtp6h'>
+              <div className='flex-1' data-oid=':7vh5av'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='shres0m'
+                  data-oid='qes4xbx'
                 >
                   Total Integrations
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='v3pi.6m'
+                  data-oid='d-rsglq'
                 >
                   {totalIntegrations}
                 </p>
-                <p className='text-xs text-blue-600 mt-1' data-oid='epux_76'>
+                <p className='text-xs text-blue-600 mt-1' data-oid='3s8ucm3'>
                   +2 this month
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
-                data-oid='0jg_mwd'
+                data-oid='0wsc.5r'
               >
                 <Settings
                   className='w-4 h-4 text-blue-600'
-                  data-oid='g967wrb'
+                  data-oid='5o3ehw3'
                 />
               </div>
             </div>
@@ -988,33 +988,33 @@ export default function App() {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='3z6aj6n'
+            data-oid='noncbwm'
           >
-            <div className='flex items-center' data-oid='4-zo73.'>
-              <div className='flex-1' data-oid='8q2.nba'>
+            <div className='flex items-center' data-oid='zed1ehm'>
+              <div className='flex-1' data-oid='p7k6lq1'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='p1c2asf'
+                  data-oid='ei2_f4q'
                 >
                   Installed
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='7y9hiiz'
+                  data-oid='t2.8hf1'
                 >
                   {installedIntegrations}
                 </p>
-                <p className='text-xs text-green-600 mt-1' data-oid='x3zxdj2'>
+                <p className='text-xs text-green-600 mt-1' data-oid=':b8ta9q'>
                   Active connections
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'
-                data-oid='.4cvhj7'
+                data-oid='s:noszi'
               >
                 <CheckCircle
                   className='w-4 h-4 text-green-600'
-                  data-oid='s6s6-qi'
+                  data-oid='wr779qf'
                 />
               </div>
             </div>
@@ -1022,33 +1022,33 @@ export default function App() {
 
           <div
             className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow'
-            data-oid='xaxcogv'
+            data-oid='2ffq2gy'
           >
-            <div className='flex items-center' data-oid='xdfv6qs'>
-              <div className='flex-1' data-oid='y7t-b9-'>
+            <div className='flex items-center' data-oid='sq8ehph'>
+              <div className='flex-1' data-oid='xjcnw94'>
                 <p
                   className='text-sm font-medium text-gray-600'
-                  data-oid='r189zqz'
+                  data-oid=':sac2rp'
                 >
                   Available
                 </p>
                 <p
                   className='text-2xl font-bold text-gray-900'
-                  data-oid='0oue09m'
+                  data-oid='d_akbov'
                 >
                   {availableIntegrations}
                 </p>
-                <p className='text-xs text-gray-600 mt-1' data-oid='znc91p3'>
+                <p className='text-xs text-gray-600 mt-1' data-oid='869k5-p'>
                   Ready to install
                 </p>
               </div>
               <div
                 className='w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center'
-                data-oid='n.xg7i5'
+                data-oid='_-jmc58'
               >
                 <Download
                   className='w-4 h-4 text-gray-600'
-                  data-oid=':re96ms'
+                  data-oid='2g.28bc'
                 />
               </div>
             </div>
@@ -1056,8 +1056,8 @@ export default function App() {
         </div>
 
         {/* Integration Tabs */}
-        <div className='border-b border-gray-200' data-oid='fdpxfnb'>
-          <nav className='-mb-px flex space-x-8' data-oid='hy7meur'>
+        <div className='border-b border-gray-200' data-oid='m4-q:av'>
+          <nav className='-mb-px flex space-x-8' data-oid='xw2rkmt'>
             {[
               { key: 'website', label: 'Website', icon: '🌐' },
               { key: 'api', label: 'API & SDK', icon: '⚡' },
@@ -1072,24 +1072,24 @@ export default function App() {
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
-                data-oid='.z-4yqh'
+                data-oid='-72y35s'
               >
-                <span data-oid='ypq3o92'>{tab.icon}</span>
-                <span data-oid='54.6_oi'>{tab.label}</span>
+                <span data-oid='hncfzx9'>{tab.icon}</span>
+                <span data-oid='.1:yswy'>{tab.label}</span>
               </button>
             ))}
           </nav>
         </div>
 
         {/* Tab Content */}
-        <div className='py-6' data-oid='l3a_20g'>
+        <div className='py-6' data-oid='kffe.-8'>
           {selectedTab === 'website' && (
-            <WebsiteIntegration data-oid='mcdrf5-' />
+            <WebsiteIntegration data-oid='aywzorb' />
           )}
-          {selectedTab === 'api' && <APIKeysSection data-oid='er1.c3c' />}
-          {selectedTab === 'webhooks' && <WebhooksSection data-oid='vl9b89z' />}
+          {selectedTab === 'api' && <APIKeysSection data-oid='jqi6qcq' />}
+          {selectedTab === 'webhooks' && <WebhooksSection data-oid='1jar_vp' />}
           {selectedTab === 'apps' && (
-            <ConnectedAppsSection data-oid='6tcasij' />
+            <ConnectedAppsSection data-oid='9a3byvl' />
           )}
         </div>
       </div>

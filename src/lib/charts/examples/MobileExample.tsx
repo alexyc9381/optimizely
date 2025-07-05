@@ -212,28 +212,28 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
 
   if (!deviceInfo) {
     return (
-      <div className='loading' data-oid='qe28u55'>
+      <div className='loading' data-oid='2sw.hey'>
         Loading mobile chart engine...
       </div>
     );
   }
 
   return (
-    <div className={`mobile-example ${className}`} data-oid='bmcs-tx'>
+    <div className={`mobile-example ${className}`} data-oid='hf668zk'>
       {/* Header with device info */}
-      <div className='example-header' data-oid='1yvkmzw'>
-        <h2 data-oid='zee7dop'>Mobile Chart System Demo</h2>
-        <div className='device-info' data-oid='cqlyk-1'>
-          <span className='device-badge' data-oid='jbk91-j'>
+      <div className='example-header' data-oid='05eggti'>
+        <h2 data-oid='c4cz5-b'>Mobile Chart System Demo</h2>
+        <div className='device-info' data-oid='jj5am1z'>
+          <span className='device-badge' data-oid='5bz-x4x'>
             {deviceInfo.type}
           </span>
-          <span className='os-badge' data-oid='49562cb'>
+          <span className='os-badge' data-oid='qevu22e'>
             {deviceInfo.os}
           </span>
-          <span className='orientation-badge' data-oid='fxujbht'>
+          <span className='orientation-badge' data-oid='d5odd3m'>
             {deviceInfo.orientation}
           </span>
-          <span className='touch-badge' data-oid='s047n:w'>
+          <span className='touch-badge' data-oid='zsuj9j4'>
             {deviceInfo.touchCapabilities.supportsMultiTouch
               ? 'Multi-touch'
               : 'Single-touch'}
@@ -242,16 +242,16 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
       </div>
 
       {/* Chart type selector */}
-      <div className='chart-controls' data-oid='o-kpdr.'>
-        <h3 data-oid='9l:1z57'>Chart Type</h3>
-        <div className='button-group' data-oid='aso9aa9'>
+      <div className='chart-controls' data-oid='87:zm0w'>
+        <h3 data-oid='.u5pog0'>Chart Type</h3>
+        <div className='button-group' data-oid='gyc69ko'>
           {(['line', 'bar', 'pie'] as const).map(type => (
             <button
               key={type}
               className={`control-button ${currentChartType === type ? 'active' : ''}`}
               onClick={() => setCurrentChartType(type)}
               style={{ minHeight: deviceInfo.type === 'mobile' ? 44 : 36 }}
-              data-oid='gvjeci0'
+              data-oid='jrul2da'
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
@@ -260,7 +260,7 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
       </div>
 
       {/* Main chart display */}
-      <div className='chart-container' data-oid='jb2.vws'>
+      <div className='chart-container' data-oid='jidafwd'>
         <MobileResponsiveChart
           data={getCurrentData()}
           type={currentChartType}
@@ -269,45 +269,45 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
           onDataSelect={handleDataSelect}
           className='demo-chart'
           testId='mobile-demo-chart'
-          data-oid='uk_ue8t'
+          data-oid='4p2yisl'
         />
       </div>
 
       {/* Feature showcase panels */}
-      <div className='feature-panels' data-oid='d8yemqz'>
+      <div className='feature-panels' data-oid=':f5u:zw'>
         {/* Touch Metrics Panel */}
-        <div className='panel touch-metrics' data-oid='h707b.i'>
-          <h3 data-oid='9t77bfg'>Touch Metrics</h3>
-          <div className='metrics-grid' data-oid='uuotfhx'>
-            <div className='metric' data-oid=':nom2sx'>
-              <span className='metric-label' data-oid='e.9q-w0'>
+        <div className='panel touch-metrics' data-oid='qhfngly'>
+          <h3 data-oid='3fb5wz3'>Touch Metrics</h3>
+          <div className='metrics-grid' data-oid='1yg-s26'>
+            <div className='metric' data-oid='e36bia5'>
+              <span className='metric-label' data-oid='1jd6ivt'>
                 Total Touches
               </span>
-              <span className='metric-value' data-oid='kq.nk1_'>
+              <span className='metric-value' data-oid='pw9_-u1'>
                 {touchMetrics.totalTouches}
               </span>
             </div>
-            <div className='metric' data-oid='nslab2i'>
-              <span className='metric-label' data-oid='izpjq73'>
+            <div className='metric' data-oid='x65a:ny'>
+              <span className='metric-label' data-oid='s5ndvvh'>
                 Taps
               </span>
-              <span className='metric-value' data-oid='5s:5ufw'>
+              <span className='metric-value' data-oid='yc-.qcb'>
                 {touchMetrics.gestureCount.tap}
               </span>
             </div>
-            <div className='metric' data-oid='ja7:ss_'>
-              <span className='metric-label' data-oid='gm9w7b6'>
+            <div className='metric' data-oid='u6vd:c8'>
+              <span className='metric-label' data-oid='0f3z4wr'>
                 Swipes
               </span>
-              <span className='metric-value' data-oid='9dl.5kt'>
+              <span className='metric-value' data-oid='nzb79o5'>
                 {touchMetrics.gestureCount.swipe}
               </span>
             </div>
-            <div className='metric' data-oid='5jt28vh'>
-              <span className='metric-label' data-oid='v4x0l_r'>
+            <div className='metric' data-oid='w4.uxz:'>
+              <span className='metric-label' data-oid='7rh-nad'>
                 Pinches
               </span>
-              <span className='metric-value' data-oid='zp-91qe'>
+              <span className='metric-value' data-oid='_jml4s2'>
                 {touchMetrics.gestureCount.pinch}
               </span>
             </div>
@@ -315,26 +315,26 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
         </div>
 
         {/* Recent Gestures Panel */}
-        <div className='panel gesture-history' data-oid='cn-3c-r'>
-          <h3 data-oid='vs8w7pl'>Recent Gestures</h3>
-          <div className='gesture-list' data-oid='w8rz7wg'>
+        <div className='panel gesture-history' data-oid='wv53.f1'>
+          <h3 data-oid='lz6.bh_'>Recent Gestures</h3>
+          <div className='gesture-list' data-oid='jj_xbnu'>
             {gestureHistory.map((gesture, index) => (
-              <div key={index} className='gesture-item' data-oid='lkj6_wt'>
-                <span className='gesture-type' data-oid='hfr9tb_'>
+              <div key={index} className='gesture-item' data-oid='ebne27_'>
+                <span className='gesture-type' data-oid='6o-7tke'>
                   {gesture.type}
                 </span>
-                <span className='gesture-duration' data-oid='lzdil26'>
+                <span className='gesture-duration' data-oid=':zup3:n'>
                   {gesture.duration}ms
                 </span>
                 {gesture.direction && (
-                  <span className='gesture-direction' data-oid='1yv.3dp'>
+                  <span className='gesture-direction' data-oid='hy2vmgq'>
                     {gesture.direction}
                   </span>
                 )}
               </div>
             ))}
             {gestureHistory.length === 0 && (
-              <p className='no-gestures' data-oid='69o9qy_'>
+              <p className='no-gestures' data-oid='cznqs8m'>
                 Interact with the chart to see gestures
               </p>
             )}
@@ -342,60 +342,60 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
         </div>
 
         {/* Device Capabilities Panel */}
-        <div className='panel device-capabilities' data-oid=':cxjd8h'>
-          <h3 data-oid='eucanyz'>Device Capabilities</h3>
-          <div className='capabilities-list' data-oid=':c2wvqu'>
-            <div className='capability' data-oid='85.-wel'>
-              <span className='capability-label' data-oid='thhjxb6'>
+        <div className='panel device-capabilities' data-oid=':k2srlx'>
+          <h3 data-oid='eqh4ts8'>Device Capabilities</h3>
+          <div className='capabilities-list' data-oid='d74ecz_'>
+            <div className='capability' data-oid=':n1y._v'>
+              <span className='capability-label' data-oid='f:gb0zm'>
                 Multi-touch
               </span>
               <span
                 className={`capability-status ${deviceInfo.touchCapabilities.supportsMultiTouch ? 'supported' : 'not-supported'}`}
-                data-oid='hq1nvm4'
+                data-oid='phban3:'
               >
                 {deviceInfo.touchCapabilities.supportsMultiTouch ? '✓' : '✗'}
               </span>
             </div>
-            <div className='capability' data-oid='-yge-86'>
-              <span className='capability-label' data-oid='m-xxz.f'>
+            <div className='capability' data-oid='jiupz-7'>
+              <span className='capability-label' data-oid='kclc3ac'>
                 Pressure Sensitivity
               </span>
               <span
                 className={`capability-status ${deviceInfo.touchCapabilities.supportsPressure ? 'supported' : 'not-supported'}`}
-                data-oid='xkrlyev'
+                data-oid='8_z-lpi'
               >
                 {deviceInfo.touchCapabilities.supportsPressure ? '✓' : '✗'}
               </span>
             </div>
-            <div className='capability' data-oid='smx5bge'>
-              <span className='capability-label' data-oid='orcewac'>
+            <div className='capability' data-oid='tn.sh9j'>
+              <span className='capability-label' data-oid='jw_gd18'>
                 Hover Support
               </span>
               <span
                 className={`capability-status ${deviceInfo.touchCapabilities.supportsHover ? 'supported' : 'not-supported'}`}
-                data-oid='38vqi9e'
+                data-oid='bc2__0h'
               >
                 {deviceInfo.touchCapabilities.supportsHover ? '✓' : '✗'}
               </span>
             </div>
-            <div className='capability' data-oid='oc-dhen'>
-              <span className='capability-label' data-oid='sentjz-'>
+            <div className='capability' data-oid='adhtb_b'>
+              <span className='capability-label' data-oid=':bx:_-1'>
                 Haptic Feedback
               </span>
               <span
                 className={`capability-status ${mobileChartEngine.supportsFeature('haptic') ? 'supported' : 'not-supported'}`}
-                data-oid='5l_6:6c'
+                data-oid='mgaupeq'
               >
                 {mobileChartEngine.supportsFeature('haptic') ? '✓' : '✗'}
               </span>
             </div>
-            <div className='capability' data-oid='mrzh1pl'>
-              <span className='capability-label' data-oid='w.rg_4f'>
+            <div className='capability' data-oid='p39if5.'>
+              <span className='capability-label' data-oid='xt:3q1:'>
                 WebGL
               </span>
               <span
                 className={`capability-status ${mobileChartEngine.supportsFeature('webgl') ? 'supported' : 'not-supported'}`}
-                data-oid='v46212y'
+                data-oid='xpo1m8p'
               >
                 {mobileChartEngine.supportsFeature('webgl') ? '✓' : '✗'}
               </span>
@@ -404,38 +404,38 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
         </div>
 
         {/* Screen Info Panel */}
-        <div className='panel screen-info' data-oid='bgfg5pc'>
-          <h3 data-oid='c_qc_3-'>Screen Information</h3>
-          <div className='info-grid' data-oid='hrh_:gp'>
-            <div className='info-item' data-oid='bbkl.81'>
-              <span className='info-label' data-oid='0aiuid:'>
+        <div className='panel screen-info' data-oid='gihdpd9'>
+          <h3 data-oid='w8mq.ga'>Screen Information</h3>
+          <div className='info-grid' data-oid='augl17l'>
+            <div className='info-item' data-oid='n:j--0c'>
+              <span className='info-label' data-oid='6q14z4w'>
                 Dimensions
               </span>
-              <span className='info-value' data-oid='qd50nx9'>
+              <span className='info-value' data-oid='00h5s8l'>
                 {deviceInfo.screenSize.width} × {deviceInfo.screenSize.height}
               </span>
             </div>
-            <div className='info-item' data-oid='jdzo56m'>
-              <span className='info-label' data-oid='su:_j3m'>
+            <div className='info-item' data-oid='7oqm7t8'>
+              <span className='info-label' data-oid='84lsjil'>
                 Device Pixel Ratio
               </span>
-              <span className='info-value' data-oid='k85q3im'>
+              <span className='info-value' data-oid='dhfb-o4'>
                 {deviceInfo.screenSize.devicePixelRatio}
               </span>
             </div>
-            <div className='info-item' data-oid='-dlz:ej'>
-              <span className='info-label' data-oid='_z4:xqq'>
+            <div className='info-item' data-oid='-b.ofe_'>
+              <span className='info-label' data-oid='j-y_sp7'>
                 Max Touch Points
               </span>
-              <span className='info-value' data-oid='b0k.ld8'>
+              <span className='info-value' data-oid='ibe9-q0'>
                 {deviceInfo.touchCapabilities.maxTouchPoints}
               </span>
             </div>
-            <div className='info-item' data-oid='do:fyw7'>
-              <span className='info-label' data-oid='1v3zu0p'>
+            <div className='info-item' data-oid='u6n74ql'>
+              <span className='info-label' data-oid='y5pfou0'>
                 Current Breakpoint
               </span>
-              <span className='info-value' data-oid='pqlj1.q'>
+              <span className='info-value' data-oid='1o34ksp'>
                 {mobileChartEngine.getCurrentBreakpoint().name}
               </span>
             </div>
@@ -444,39 +444,39 @@ export const MobileExample: React.FC<MobileExampleProps> = ({
       </div>
 
       {/* Instructions for testing */}
-      <div className='testing-instructions' data-oid='v0_ocoj'>
-        <h3 data-oid='n8l2xy3'>Testing Instructions</h3>
-        <div className='instruction-grid' data-oid='86kzr1t'>
-          <div className='instruction-item' data-oid='2zn56d:'>
-            <strong data-oid='455_q0k'>Touch Gestures:</strong>
-            <ul data-oid='u6n0pas'>
-              <li data-oid='d7wxyea'>Single tap: Select data points</li>
-              <li data-oid='g.mjwba'>Double tap: Zoom in/out</li>
-              <li data-oid='01cbodq'>Long press: Show context menu</li>
-              <li data-oid='._ubr.9'>Pinch: Zoom (multi-touch devices)</li>
-              <li data-oid='_otg0uz'>Swipe: Navigate or scroll</li>
+      <div className='testing-instructions' data-oid='n4r_gob'>
+        <h3 data-oid='emewqsx'>Testing Instructions</h3>
+        <div className='instruction-grid' data-oid='n.864y.'>
+          <div className='instruction-item' data-oid='1sh8ws6'>
+            <strong data-oid='l7x2w-2'>Touch Gestures:</strong>
+            <ul data-oid='58rf4g-'>
+              <li data-oid='a4d:cgw'>Single tap: Select data points</li>
+              <li data-oid='yt2jkye'>Double tap: Zoom in/out</li>
+              <li data-oid='kin0w9o'>Long press: Show context menu</li>
+              <li data-oid='.s_n4re'>Pinch: Zoom (multi-touch devices)</li>
+              <li data-oid='vzj.8tk'>Swipe: Navigate or scroll</li>
             </ul>
           </div>
-          <div className='instruction-item' data-oid='qftl6_j'>
-            <strong data-oid='4hc8qeu'>Responsive Features:</strong>
-            <ul data-oid='e6ir61y'>
-              <li data-oid='ve73890'>
+          <div className='instruction-item' data-oid='slgai0h'>
+            <strong data-oid='3wlnlak'>Responsive Features:</strong>
+            <ul data-oid='-p.bnuq'>
+              <li data-oid='khunn6l'>
                 Rotate device to test orientation changes
               </li>
-              <li data-oid='yv4ntm6'>Resize browser to test breakpoints</li>
-              <li data-oid='x-m49fk'>Try different chart types</li>
-              <li data-oid='-wj.p80'>Toggle touch controls</li>
+              <li data-oid='u67gq5b'>Resize browser to test breakpoints</li>
+              <li data-oid='p59oerl'>Try different chart types</li>
+              <li data-oid='eed_hoz'>Toggle touch controls</li>
             </ul>
           </div>
-          <div className='instruction-item' data-oid='xmzuwwo'>
-            <strong data-oid='w37spsw'>Accessibility:</strong>
-            <ul data-oid='_l.srzj'>
-              <li data-oid='s87r5ow'>
+          <div className='instruction-item' data-oid='8734k5f'>
+            <strong data-oid='650w.pf'>Accessibility:</strong>
+            <ul data-oid='w7i:chq'>
+              <li data-oid='l4gx8nb'>
                 Use keyboard navigation (Tab, Arrow keys)
               </li>
-              <li data-oid='znaip48'>Test with screen reader</li>
-              <li data-oid='diink47'>Try high contrast mode</li>
-              <li data-oid='_okaf17'>Enable reduced motion</li>
+              <li data-oid='-jwbe7-'>Test with screen reader</li>
+              <li data-oid='n2u8ps4'>Try high contrast mode</li>
+              <li data-oid='lirbzy5'>Enable reduced motion</li>
             </ul>
           </div>
         </div>
@@ -504,20 +504,20 @@ export const ResponsiveTestGrid: React.FC = () => {
   }, []);
 
   return (
-    <div className='responsive-test-grid' data-oid='68ecz29'>
-      <h3 data-oid='158xej6'>Responsive Breakpoint Testing</h3>
-      <div className='breakpoint-indicator' data-oid='l3mi77j'>
-        Current: <strong data-oid='xwnygev'>{activeBreakpoint}</strong>
+    <div className='responsive-test-grid' data-oid='jtv4ohj'>
+      <h3 data-oid='zb8ve0l'>Responsive Breakpoint Testing</h3>
+      <div className='breakpoint-indicator' data-oid='vkyth._'>
+        Current: <strong data-oid='8_q8rm3'>{activeBreakpoint}</strong>
       </div>
 
-      <div className='test-charts' data-oid='dsjhzm_'>
+      <div className='test-charts' data-oid='..03wl7'>
         {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(breakpoint => (
           <div
             key={breakpoint}
             className={`test-chart breakpoint-${breakpoint}`}
-            data-oid='9rwh6bo'
+            data-oid='yo9298s'
           >
-            <h4 data-oid='_01i_fr'>{breakpoint.toUpperCase()}</h4>
+            <h4 data-oid='_2o-4.6'>{breakpoint.toUpperCase()}</h4>
             <MobileResponsiveChart
               data={sampleData.line}
               type='line'
@@ -526,7 +526,7 @@ export const ResponsiveTestGrid: React.FC = () => {
                 ui: { legendPosition: 'bottom' },
               }}
               className={`test-chart-${breakpoint}`}
-              data-oid='4noutpr'
+              data-oid='4sm4_oa'
             />
           </div>
         ))}

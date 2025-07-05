@@ -549,7 +549,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           <LineChartRenderer
             context={context}
             containerRef={containerRef}
-            data-oid='cxa557d'
+            data-oid='n947tpc'
           />
         );
 
@@ -559,7 +559,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           <BarChartRenderer
             context={context}
             containerRef={containerRef}
-            data-oid='3ae.k6v'
+            data-oid='wjsdub2'
           />
         );
 
@@ -569,7 +569,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           <PieChartRenderer
             context={context}
             containerRef={containerRef}
-            data-oid='6syjb8z'
+            data-oid='_2.ibb5'
           />
         );
 
@@ -578,7 +578,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           <ScatterPlotRenderer
             context={context}
             containerRef={containerRef}
-            data-oid='mu9289k'
+            data-oid='.3klvs1'
           />
         );
 
@@ -587,7 +587,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           <LineChartRenderer
             context={context}
             containerRef={containerRef}
-            data-oid='hget31-'
+            data-oid='1v-hywb'
           />
         );
     }
@@ -608,7 +608,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
       <div
         className={`universal-chart loading ${className}`}
         style={containerStyle}
-        data-oid='tf9z:ni'
+        data-oid='w-mxsc-'
       >
         <div
           style={{
@@ -619,7 +619,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
             fontSize: '14px',
             color: '#666',
           }}
-          data-oid='z8bd3:q'
+          data-oid='v66-zi1'
         >
           Loading chart...
         </div>
@@ -632,7 +632,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
       <div
         className={`universal-chart error ${className}`}
         style={containerStyle}
-        data-oid='hegse4s'
+        data-oid='5x9mpi0'
       >
         <div
           style={{
@@ -645,7 +645,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
             textAlign: 'center',
             padding: '20px',
           }}
-          data-oid='3-y3528'
+          data-oid='oqdaqek'
         >
           Error: {error}
         </div>
@@ -657,7 +657,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
     <div
       className={`universal-chart ${className}`}
       style={containerStyle}
-      data-oid='i98hr:6'
+      data-oid='3w-1v2t'
     >
       <div
         ref={containerRef}
@@ -666,7 +666,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
           height: '100%',
           overflow: 'hidden',
         }}
-        data-oid='hrq.4xu'
+        data-oid='89wxw1e'
       >
         {renderChart()}
       </div>
@@ -681,7 +681,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
             display: 'flex',
             gap: '5px',
           }}
-          data-oid='8:826h0'
+          data-oid='z--6kp:'
         >
           <button
             onClick={() => handleExport('png')}
@@ -693,7 +693,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
               backgroundColor: '#fff',
               cursor: 'pointer',
             }}
-            data-oid='ctac2hg'
+            data-oid='r7e8oht'
           >
             PNG
           </button>
@@ -707,7 +707,7 @@ const UniversalChart: React.FC<UniversalChartProps> = ({
               backgroundColor: '#fff',
               cursor: 'pointer',
             }}
-            data-oid='8nr6lxe'
+            data-oid='hng0zhb'
           >
             SVG
           </button>

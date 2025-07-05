@@ -198,57 +198,57 @@ export const AnalyticsExample: React.FC = () => {
   }, []);
 
   return (
-    <div className='analytics-example' data-oid='hri9l_o'>
-      <div className='example-header' data-oid='wy-_snz'>
-        <h1 data-oid='d3zk3j0'>
+    <div className='analytics-example' data-oid='.a6fy01'>
+      <div className='example-header' data-oid='vzz2i6q'>
+        <h1 data-oid='u6mtwrj'>
           🧠 Advanced Analytics & Statistical Tools Demo
         </h1>
-        <p data-oid='d50yawn'>
+        <p data-oid=':rp2zow'>
           This example demonstrates the comprehensive statistical analysis
           capabilities of the Advanced Analytics Engine using real business data
           scenarios.
         </p>
 
-        <div className='example-stats' data-oid='d4ltuyk'>
+        <div className='example-stats' data-oid='fw3o-st'>
           {results && (
-            <div className='stats-grid' data-oid='fr:6av5'>
-              <div className='stat-card' data-oid='0i6_0er'>
-                <h3 data-oid='wzgq4k3'>Statistical Tests</h3>
-                <div className='stat-value' data-oid='b4kk77w'>
+            <div className='stats-grid' data-oid='lx78dbq'>
+              <div className='stat-card' data-oid='i06m86d'>
+                <h3 data-oid='ma0g6oj'>Statistical Tests</h3>
+                <div className='stat-value' data-oid='gpzmaqb'>
                   {results.summary.totalTests}
                 </div>
-                <div className='stat-label' data-oid='3:.4bpr'>
+                <div className='stat-label' data-oid='s9hs..h'>
                   Tests Performed
                 </div>
               </div>
 
-              <div className='stat-card' data-oid='2n2q9jo'>
-                <h3 data-oid='6fjkif-'>Correlations</h3>
-                <div className='stat-value' data-oid='.ydxzli'>
+              <div className='stat-card' data-oid='rxmp-ca'>
+                <h3 data-oid='dg9dm1z'>Correlations</h3>
+                <div className='stat-value' data-oid='7l3i--6'>
                   {results.summary.significantCorrelations}/
                   {results.summary.totalCorrelations}
                 </div>
-                <div className='stat-label' data-oid='6.oe.vz'>
+                <div className='stat-label' data-oid='st2k9r9'>
                   Significant Correlations
                 </div>
               </div>
 
-              <div className='stat-card' data-oid='g.5v-t8'>
-                <h3 data-oid='g2:55-o'>Model Accuracy</h3>
-                <div className='stat-value' data-oid='jft.3hv'>
+              <div className='stat-card' data-oid='8k3l0xw'>
+                <h3 data-oid='kqla.vs'>Model Accuracy</h3>
+                <div className='stat-value' data-oid='dd1i32c'>
                   {(results.summary.regressionRSquared * 100).toFixed(1)}%
                 </div>
-                <div className='stat-label' data-oid='d_et_0o'>
+                <div className='stat-label' data-oid=':vnk.l7'>
                   R-Squared Value
                 </div>
               </div>
 
-              <div className='stat-card' data-oid='8zao1wb'>
-                <h3 data-oid='3xeg93_'>Key Insights</h3>
-                <div className='stat-value' data-oid='1tlkuw0'>
+              <div className='stat-card' data-oid='o7aisl6'>
+                <h3 data-oid='l28oo_m'>Key Insights</h3>
+                <div className='stat-value' data-oid='bi1zy27'>
                   {results.summary.highPriorityInsights}
                 </div>
-                <div className='stat-label' data-oid='7utoj3l'>
+                <div className='stat-label' data-oid='ab-2f_i'>
                   High Priority
                 </div>
               </div>
@@ -256,12 +256,12 @@ export const AnalyticsExample: React.FC = () => {
           )}
         </div>
 
-        <div className='example-actions' data-oid='-zehsj3'>
+        <div className='example-actions' data-oid='9n8472o'>
           <button
             onClick={runAdvancedAnalysis}
             disabled={loading}
             className='btn btn-primary'
-            data-oid='0mmwcsn'
+            data-oid='xkc:8r-'
           >
             {loading ? 'Analyzing...' : 'Run Advanced Analysis'}
           </button>
@@ -269,16 +269,16 @@ export const AnalyticsExample: React.FC = () => {
           <button
             onClick={() => console.log('Sample Data:', sampleBusinessData)}
             className='btn btn-outline'
-            data-oid='d7tyyqs'
+            data-oid='nicamho'
           >
             View Sample Data
           </button>
         </div>
       </div>
 
-      <div className='example-content' data-oid='jba8k:9'>
-        <h2 data-oid='lassonl'>Interactive Analytics Interface</h2>
-        <p data-oid='17.dpky'>
+      <div className='example-content' data-oid='wd-65q4'>
+        <h2 data-oid='zmu:vyh'>Interactive Analytics Interface</h2>
+        <p data-oid='dxr00qo'>
           The interface below provides interactive access to all advanced
           statistical tools. The sample business data includes sales, marketing,
           and customer metrics from a typical SaaS business.
@@ -293,19 +293,19 @@ export const AnalyticsExample: React.FC = () => {
             significanceLevel: 0.05,
             confidenceLevel: 0.95,
           }}
-          data-oid='9-q2.d9'
+          data-oid='x:g5t6g'
         />
       </div>
 
       {results && (
-        <div className='analysis-summary' data-oid='gvjxb3v'>
-          <h2 data-oid='9kklyzu'>Analysis Summary</h2>
+        <div className='analysis-summary' data-oid='dq.h9zw'>
+          <h2 data-oid=':jlg:z:'>Analysis Summary</h2>
 
-          <div className='summary-section' data-oid='zd2tiw6'>
-            <h3 data-oid='uevtol7'>🧪 Statistical Test Results</h3>
-            <ul data-oid='u:eqkj5'>
-              <li data-oid='kq3ks:_'>
-                <strong data-oid='ila0nfh'>A/B Test Analysis:</strong> Group B
+          <div className='summary-section' data-oid='6.2hc3t'>
+            <h3 data-oid='tw0zc_o'>🧪 Statistical Test Results</h3>
+            <ul data-oid='g:cf:z0'>
+              <li data-oid='xovtdf7'>
+                <strong data-oid='ts:o_6:'>A/B Test Analysis:</strong> Group B
                 shows{' '}
                 {results.statisticalTests[0].isSignificant
                   ? 'statistically significant'
@@ -313,8 +313,8 @@ export const AnalyticsExample: React.FC = () => {
                 improvement over Group A (p ={' '}
                 {results.statisticalTests[0].pValue.toFixed(4)})
               </li>
-              <li data-oid=':y:2lb_'>
-                <strong data-oid='wppn2.0'>Sales Target Analysis:</strong>{' '}
+              <li data-oid='4c_6d:s'>
+                <strong data-oid='6wo2brg'>Sales Target Analysis:</strong>{' '}
                 Monthly sales{' '}
                 {results.statisticalTests[1].isSignificant
                   ? 'significantly exceed'
@@ -325,17 +325,17 @@ export const AnalyticsExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className='summary-section' data-oid='n6soyz1'>
-            <h3 data-oid='h3fgk_c'>📊 Key Correlations Discovered</h3>
-            <ul data-oid='ysoky3v'>
-              <li data-oid='kbm40n6'>
-                <strong data-oid='g1yr.4l'>Sales ↔ Advertising:</strong>{' '}
+          <div className='summary-section' data-oid='2q_s5td'>
+            <h3 data-oid='cg5jj8a'>📊 Key Correlations Discovered</h3>
+            <ul data-oid='onymbst'>
+              <li data-oid='7blzt22'>
+                <strong data-oid='bt839g9'>Sales ↔ Advertising:</strong>{' '}
                 {results.correlations[0].strength.replace('_', ' ')}{' '}
                 {results.correlations[0].direction} correlation (r ={' '}
                 {results.correlations[0].coefficient.toFixed(3)})
               </li>
-              <li data-oid='bvyktnh'>
-                <strong data-oid='tfikxdr'>
+              <li data-oid='1.o0qn:'>
+                <strong data-oid=':5ludk9'>
                   Satisfaction ↔ Support Tickets:
                 </strong>{' '}
                 {results.correlations[1].strength.replace('_', ' ')}{' '}
@@ -345,25 +345,25 @@ export const AnalyticsExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className='summary-section' data-oid='qvle5jw'>
-            <h3 data-oid='.vuw5_c'>📈 Predictive Models</h3>
-            <ul data-oid='cmspkzb'>
-              <li data-oid='mq5ezyi'>
-                <strong data-oid='5pomq9h'>Sales Prediction Model:</strong> R² ={' '}
+          <div className='summary-section' data-oid='-l2cb9n'>
+            <h3 data-oid='0_-p12x'>📈 Predictive Models</h3>
+            <ul data-oid='8n-wxzu'>
+              <li data-oid='lxpz12_'>
+                <strong data-oid='5vjwm4k'>Sales Prediction Model:</strong> R² ={' '}
                 {(results.regressions[0].rSquared * 100).toFixed(1)}% -{' '}
                 {results.regressions[0].isSignificant
                   ? 'Highly predictive'
                   : 'Needs improvement'}
               </li>
-              <li data-oid='q4n:gfy'>
-                <strong data-oid='bt0_gf4'>Model Equation:</strong>{' '}
-                <code data-oid='ms4o04s'>
+              <li data-oid='o9h8:21'>
+                <strong data-oid='xw4p_0:'>Model Equation:</strong>{' '}
+                <code data-oid='lo2zxyl'>
                   {results.regressions[0].equation}
                 </code>
               </li>
               {results.regressions[0].outliers.length > 0 && (
-                <li data-oid='uvs:577'>
-                  <strong data-oid='ydq4-u9'>Outliers Detected:</strong>{' '}
+                <li data-oid='ncd2z4a'>
+                  <strong data-oid='2o3ws:x'>Outliers Detected:</strong>{' '}
                   {results.regressions[0].outliers.length} data points require
                   investigation
                 </li>
@@ -371,38 +371,38 @@ export const AnalyticsExample: React.FC = () => {
             </ul>
           </div>
 
-          <div className='summary-section' data-oid='ueytm20'>
-            <h3 data-oid='6.1_b9r'>📉 Trend Analysis</h3>
-            <ul data-oid='5_f-n6o'>
-              <li data-oid='mfr5uoy'>
-                <strong data-oid='shqn._o'>Seasonal Sales:</strong>{' '}
+          <div className='summary-section' data-oid='c98nr4d'>
+            <h3 data-oid='nnr__di'>📉 Trend Analysis</h3>
+            <ul data-oid='_rfs697'>
+              <li data-oid='q-bvz7n'>
+                <strong data-oid='j-xu7w6'>Seasonal Sales:</strong>{' '}
                 {results.trends.seasonalSales.trend} trend detected with{' '}
                 {results.trends.seasonalSales.anomalies.indices.length}{' '}
                 anomalies
               </li>
-              <li data-oid='bb48wf5'>
-                <strong data-oid='y33wht7'>Customer Satisfaction:</strong>{' '}
+              <li data-oid='1b7rrrl'>
+                <strong data-oid='lorpr-i'>Customer Satisfaction:</strong>{' '}
                 {results.trends.customerSatisfaction.trend} trend (strength:{' '}
                 {results.trends.customerSatisfaction.strength.toFixed(3)})
               </li>
             </ul>
           </div>
 
-          <div className='summary-section' data-oid='83a1-e4'>
-            <h3 data-oid='tnhh7bv'>🤖 Automated Insights</h3>
-            <div className='insights-preview' data-oid='si:s.4c'>
+          <div className='summary-section' data-oid='.6t9.r6'>
+            <h3 data-oid='.1vrrt_'>🤖 Automated Insights</h3>
+            <div className='insights-preview' data-oid='odyb6o7'>
               {results.insights
                 .slice(0, 3)
                 .map((insight: any, index: number) => (
                   <div
                     key={index}
                     className={`insight-preview significance-${insight.significance}`}
-                    data-oid='r8j_u-n'
+                    data-oid='7sj7-i2'
                   >
-                    <div className='insight-title' data-oid='bva8d4n'>
+                    <div className='insight-title' data-oid='svzerkh'>
                       {insight.title}
                     </div>
-                    <div className='insight-confidence' data-oid='metu5eq'>
+                    <div className='insight-confidence' data-oid='7-t2_e8'>
                       {(insight.confidence * 100).toFixed(0)}% confidence
                     </div>
                   </div>
@@ -412,77 +412,77 @@ export const AnalyticsExample: React.FC = () => {
         </div>
       )}
 
-      <div className='example-footer' data-oid='jp8s_xq'>
-        <h3 data-oid='u:20tyn'>🔬 Technical Capabilities Demonstrated</h3>
-        <div className='capabilities-grid' data-oid='huzu1m5'>
-          <div className='capability' data-oid='ov2mt8r'>
-            <h4 data-oid='0fk2zmz'>Statistical Testing</h4>
-            <ul data-oid='wqt-gq7'>
-              <li data-oid='wu::ip7'>
+      <div className='example-footer' data-oid='82901ty'>
+        <h3 data-oid='vk4_-3h'>🔬 Technical Capabilities Demonstrated</h3>
+        <div className='capabilities-grid' data-oid='ym-95y_'>
+          <div className='capability' data-oid='115m1dy'>
+            <h4 data-oid='g4jnu:a'>Statistical Testing</h4>
+            <ul data-oid='ow11vin'>
+              <li data-oid='8iztpcn'>
                 One-sample, two-sample, and paired t-tests
               </li>
-              <li data-oid='2cf_jy_'>Chi-square goodness of fit tests</li>
-              <li data-oid='n10zdq9'>
+              <li data-oid='n2:.0da'>Chi-square goodness of fit tests</li>
+              <li data-oid='oj1dyf1'>
                 Proper p-value calculations and interpretations
               </li>
-              <li data-oid='fwjcl86'>Confidence interval estimation</li>
+              <li data-oid='i8wlwk3'>Confidence interval estimation</li>
             </ul>
           </div>
 
-          <div className='capability' data-oid='of_g5w6'>
-            <h4 data-oid='u2g83_6'>Correlation Analysis</h4>
-            <ul data-oid='9ks0avt'>
-              <li data-oid='bnx3tll'>
+          <div className='capability' data-oid='yy.b1ir'>
+            <h4 data-oid='bbvrul7'>Correlation Analysis</h4>
+            <ul data-oid='n2us6p6'>
+              <li data-oid='qgd.tz-'>
                 Pearson, Spearman, and Kendall correlations
               </li>
-              <li data-oid='c1tms:1'>Statistical significance testing</li>
-              <li data-oid='1rmi0l3'>Fisher's z-transformation for CI</li>
-              <li data-oid='kz0:7cn'>Strength and direction classification</li>
+              <li data-oid='i8jin9i'>Statistical significance testing</li>
+              <li data-oid='2i2:_61'>Fisher's z-transformation for CI</li>
+              <li data-oid='ycxuv9z'>Strength and direction classification</li>
             </ul>
           </div>
 
-          <div className='capability' data-oid='j_7pevv'>
-            <h4 data-oid='f:o:xrc'>Regression Modeling</h4>
-            <ul data-oid='kf.a3fj'>
-              <li data-oid='o-v8-ic'>Simple and multiple linear regression</li>
-              <li data-oid='hd.0:5o'>R-squared and adjusted R-squared</li>
-              <li data-oid='3pqvr5x'>F-statistic significance testing</li>
-              <li data-oid='8ogc3u8'>Outlier detection and analysis</li>
+          <div className='capability' data-oid='w26mebb'>
+            <h4 data-oid='jkm.jrn'>Regression Modeling</h4>
+            <ul data-oid='d164o-3'>
+              <li data-oid='vt4yq3m'>Simple and multiple linear regression</li>
+              <li data-oid='kkw_fql'>R-squared and adjusted R-squared</li>
+              <li data-oid='pylpesm'>F-statistic significance testing</li>
+              <li data-oid='4tqbqxk'>Outlier detection and analysis</li>
             </ul>
           </div>
 
-          <div className='capability' data-oid='w1anb37'>
-            <h4 data-oid='m6cm0y4'>Trend Analysis</h4>
-            <ul data-oid='dgj_9kj'>
-              <li data-oid='3gzua3q'>Trend direction and strength detection</li>
-              <li data-oid='6nqlrw5'>
+          <div className='capability' data-oid='hai7573'>
+            <h4 data-oid='9wck3vv'>Trend Analysis</h4>
+            <ul data-oid='5g_71w.'>
+              <li data-oid='hg6bcvv'>Trend direction and strength detection</li>
+              <li data-oid='k:2ijf_'>
                 Seasonality analysis via autocorrelation
               </li>
-              <li data-oid='zr4a2-z'>Change point detection</li>
-              <li data-oid='_l4kg:m'>Anomaly identification</li>
-              <li data-oid='39fpjmt'>Forecasting with confidence intervals</li>
+              <li data-oid='7rmaue4'>Change point detection</li>
+              <li data-oid='fagj3bl'>Anomaly identification</li>
+              <li data-oid='vbt-u1b'>Forecasting with confidence intervals</li>
             </ul>
           </div>
 
-          <div className='capability' data-oid='uf0:15j'>
-            <h4 data-oid='m5xw9en'>Automated Insights</h4>
-            <ul data-oid='4.kauz6'>
-              <li data-oid='u:ucfmw'>Pattern recognition across variables</li>
-              <li data-oid='3vyjhk1'>Contextual interpretation generation</li>
-              <li data-oid='8j8hxsc'>Significance-based prioritization</li>
-              <li data-oid='57v39wn'>Actionable business recommendations</li>
+          <div className='capability' data-oid='vi688eo'>
+            <h4 data-oid='go7nlrk'>Automated Insights</h4>
+            <ul data-oid='rgjf59t'>
+              <li data-oid='94xvv0t'>Pattern recognition across variables</li>
+              <li data-oid='inippr5'>Contextual interpretation generation</li>
+              <li data-oid='84hh8ka'>Significance-based prioritization</li>
+              <li data-oid='s2es7ma'>Actionable business recommendations</li>
             </ul>
           </div>
 
-          <div className='capability' data-oid='bvafuf5'>
-            <h4 data-oid='lgtlzig'>Enterprise Features</h4>
-            <ul data-oid='6q38f4c'>
-              <li data-oid='h3xw9.7'>Configurable significance levels</li>
-              <li data-oid='7nz:blo'>
+          <div className='capability' data-oid='wkzennk'>
+            <h4 data-oid='u:rygvt'>Enterprise Features</h4>
+            <ul data-oid='dd32smx'>
+              <li data-oid='1bcem-h'>Configurable significance levels</li>
+              <li data-oid='ed13g86'>
                 Performance optimization for large datasets
               </li>
-              <li data-oid='zdje_wv'>Robust error handling</li>
-              <li data-oid='g_pp85:'>Event-driven architecture</li>
+              <li data-oid='t-r--_:'>Robust error handling</li>
+              <li data-oid='lsh1:lg'>Event-driven architecture</li>
             </ul>
           </div>
         </div>

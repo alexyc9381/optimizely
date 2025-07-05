@@ -323,14 +323,14 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
   );
 
   return (
-    <div className='analytics-interface' data-oid='tstrr-t'>
-      <div className='analytics-header' data-oid='8pj8pkd'>
-        <h2 data-oid='1m638pj'>Advanced Analytics & Statistical Tools</h2>
-        <div className='analytics-controls' data-oid=':8xu6-x'>
+    <div className='analytics-interface' data-oid='bsc83qk'>
+      <div className='analytics-header' data-oid='4:i2mm6'>
+        <h2 data-oid='pr7q8f3'>Advanced Analytics & Statistical Tools</h2>
+        <div className='analytics-controls' data-oid='zy3p6bh'>
           <button
             onClick={clearResults}
             className='btn btn-secondary'
-            data-oid='8x05gjz'
+            data-oid='on:hhho'
           >
             Clear Results
           </button>
@@ -338,7 +338,7 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
             onClick={generateAutomatedInsights}
             disabled={loading}
             className='btn btn-primary'
-            data-oid='k4eugyt'
+            data-oid='i58rm7d'
           >
             {loading ? 'Analyzing...' : 'Generate Insights'}
           </button>
@@ -346,24 +346,24 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
       </div>
 
       {error && (
-        <div className='error-message' data-oid='0xz3:vh'>
-          <span className='error-icon' data-oid='j-u-wyh'>
+        <div className='error-message' data-oid='vxs7ch7'>
+          <span className='error-icon' data-oid='6eyftfe'>
             ⚠️
           </span>
           {error}
         </div>
       )}
 
-      <div className='analytics-tabs' data-oid='df75thj'>
-        <nav className='tab-navigation' data-oid='evtaigw'>
+      <div className='analytics-tabs' data-oid='wqf15m-'>
+        <nav className='tab-navigation' data-oid='o3oget4'>
           <button
             onClick={() => setActiveTab('insights')}
             className={`tab-button ${activeTab === 'insights' ? 'active' : ''}`}
-            data-oid='ge.z-.1'
+            data-oid='5vqief0'
           >
             Automated Insights
             {results.insights.length > 0 && (
-              <span className='badge' data-oid='m:jcgm-'>
+              <span className='badge' data-oid='zk1di31'>
                 {results.insights.length}
               </span>
             )}
@@ -371,80 +371,80 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           <button
             onClick={() => setActiveTab('tests')}
             className={`tab-button ${activeTab === 'tests' ? 'active' : ''}`}
-            data-oid='4:.8oh1'
+            data-oid='3d-g8cq'
           >
             Statistical Tests
           </button>
           <button
             onClick={() => setActiveTab('correlations')}
             className={`tab-button ${activeTab === 'correlations' ? 'active' : ''}`}
-            data-oid='a48vr0i'
+            data-oid='j6p4q6e'
           >
             Correlations
           </button>
           <button
             onClick={() => setActiveTab('regression')}
             className={`tab-button ${activeTab === 'regression' ? 'active' : ''}`}
-            data-oid='ahndqld'
+            data-oid=':eyy:eb'
           >
             Regression
           </button>
           <button
             onClick={() => setActiveTab('trends')}
             className={`tab-button ${activeTab === 'trends' ? 'active' : ''}`}
-            data-oid='pldko_p'
+            data-oid='tz1rk5a'
           >
             Trend Analysis
           </button>
         </nav>
 
-        <div className='tab-content' data-oid='cncf:1_'>
+        <div className='tab-content' data-oid='pp014cf'>
           {activeTab === 'insights' && (
-            <div className='insights-panel' data-oid='fcv1rsr'>
-              <div className='panel-header' data-oid='8p-8-qr'>
-                <h3 data-oid='1e8_ubi'>Automated Statistical Insights</h3>
+            <div className='insights-panel' data-oid='h6lwjhr'>
+              <div className='panel-header' data-oid=':dcalma'>
+                <h3 data-oid='y:u6lva'>Automated Statistical Insights</h3>
               </div>
 
               {sortedInsights.length === 0 ? (
-                <div className='empty-state' data-oid='jb2:_19'>
-                  <p data-oid=':va_wu2'>
+                <div className='empty-state' data-oid='nq5bhrq'>
+                  <p data-oid='f4_g7am'>
                     No insights generated yet. The system will analyze your data
                     automatically.
                   </p>
                 </div>
               ) : (
-                <div className='insights-list' data-oid='3s.zx_y'>
+                <div className='insights-list' data-oid='xlpzre9'>
                   {sortedInsights.map((insight, index) => (
                     <div
                       key={index}
                       className={`insight-card significance-${insight.significance}`}
-                      data-oid='90kxmmt'
+                      data-oid='k-vn_zl'
                     >
-                      <div className='insight-header' data-oid='exgsh8b'>
-                        <h4 data-oid='ifg1m8.'>{insight.title}</h4>
-                        <div className='insight-meta' data-oid='ccs__h4'>
+                      <div className='insight-header' data-oid='lizq2.g'>
+                        <h4 data-oid='3tf5iue'>{insight.title}</h4>
+                        <div className='insight-meta' data-oid='c:hu8p7'>
                           <span
                             className={`significance-badge ${insight.significance}`}
-                            data-oid=':oagnwp'
+                            data-oid='fmt.c22'
                           >
                             {insight.significance.toUpperCase()}
                           </span>
-                          <span className='confidence-score' data-oid='55jj2gk'>
+                          <span className='confidence-score' data-oid='x_2jh.n'>
                             {(insight.confidence * 100).toFixed(1)}% confidence
                           </span>
                         </div>
                       </div>
 
-                      <p className='insight-description' data-oid='tx0ttry'>
+                      <p className='insight-description' data-oid='r1f3mfa'>
                         {insight.description}
                       </p>
 
                       {insight.supportingEvidence.length > 0 && (
-                        <div className='supporting-evidence' data-oid='o-3ire3'>
-                          <h5 data-oid='8yc7w-9'>Supporting Evidence:</h5>
-                          <ul data-oid='t:-l063'>
+                        <div className='supporting-evidence' data-oid='k2bvc9l'>
+                          <h5 data-oid='u0rv-50'>Supporting Evidence:</h5>
+                          <ul data-oid='41a.xau'>
                             {insight.supportingEvidence.map((evidence, i) => (
-                              <li key={i} data-oid='ypw2tgv'>
+                              <li key={i} data-oid='zthfbeq'>
                                 {evidence}
                               </li>
                             ))}
@@ -453,12 +453,12 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
                       )}
 
                       {insight.recommendations.length > 0 && (
-                        <div className='recommendations' data-oid='h0v8jmx'>
-                          <h5 data-oid='b51b_or'>Recommendations:</h5>
-                          <ul data-oid='uk:7pyb'>
+                        <div className='recommendations' data-oid='s5eot:4'>
+                          <h5 data-oid='wsiaa.w'>Recommendations:</h5>
+                          <ul data-oid='90sxol_'>
                             {insight.recommendations.map(
                               (recommendation, i) => (
-                                <li key={i} data-oid='i4i7_1g'>
+                                <li key={i} data-oid='dlj2h7s'>
                                   {recommendation}
                                 </li>
                               )
@@ -474,11 +474,11 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           )}
 
           {activeTab === 'tests' && (
-            <div className='statistical-tests-panel' data-oid='hjx8nlr'>
-              <div className='panel-header' data-oid='mr_8l4b'>
-                <h3 data-oid='8ey6ou-'>Statistical Testing Suite</h3>
+            <div className='statistical-tests-panel' data-oid='tgldzjw'>
+              <div className='panel-header' data-oid='9v3mau9'>
+                <h3 data-oid='-j8-68.'>Statistical Testing Suite</h3>
               </div>
-              <p data-oid='r5:phu4'>
+              <p data-oid='e2jmhg.'>
                 Advanced statistical tests (t-tests, chi-square, ANOVA) coming
                 soon!
               </p>
@@ -486,33 +486,33 @@ export const AnalyticsInterface: React.FC<AnalyticsInterfaceProps> = ({
           )}
 
           {activeTab === 'correlations' && (
-            <div className='correlations-panel' data-oid='4irfyk5'>
-              <div className='panel-header' data-oid='buq301m'>
-                <h3 data-oid=':ioktiz'>Correlation Analysis</h3>
+            <div className='correlations-panel' data-oid='yr-9reu'>
+              <div className='panel-header' data-oid='rtd:-os'>
+                <h3 data-oid='a-j.g3m'>Correlation Analysis</h3>
               </div>
-              <p data-oid='5t7yc3j'>
+              <p data-oid='whf7wj1'>
                 Pearson, Spearman, and Kendall correlation analysis coming soon!
               </p>
             </div>
           )}
 
           {activeTab === 'regression' && (
-            <div className='regression-panel' data-oid='qqxbge_'>
-              <div className='panel-header' data-oid='2-t0dai'>
-                <h3 data-oid='7epg3l_'>Regression Analysis</h3>
+            <div className='regression-panel' data-oid='42d51hg'>
+              <div className='panel-header' data-oid='p74rjly'>
+                <h3 data-oid='.hbm73:'>Regression Analysis</h3>
               </div>
-              <p data-oid='17wft1b'>
+              <p data-oid='8gtjafx'>
                 Multiple regression and polynomial regression tools coming soon!
               </p>
             </div>
           )}
 
           {activeTab === 'trends' && (
-            <div className='trend-analysis-panel' data-oid='5ney4qw'>
-              <div className='panel-header' data-oid='spwmn7_'>
-                <h3 data-oid='7fo_k7l'>Trend Analysis & Forecasting</h3>
+            <div className='trend-analysis-panel' data-oid='03j_64n'>
+              <div className='panel-header' data-oid='9u:6zcs'>
+                <h3 data-oid='x0-fcq4'>Trend Analysis & Forecasting</h3>
               </div>
-              <p data-oid='ue1_ih:'>
+              <p data-oid='p4k0ehl'>
                 Time series analysis and forecasting tools coming soon!
               </p>
             </div>
