@@ -155,16 +155,16 @@ const WebMetricsChart: React.FC = () => {
         <div className='relative' data-oid='td7aifr'>
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className='flex items-center space-x-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg border transition-colors'
+            className='flex items-center space-x-1.5 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg border transition-colors'
             data-oid='go-bnlw'
           >
             <span
-              className='text-sm font-medium text-gray-700'
+              className='text-xs font-medium text-gray-700'
               data-oid='zgdutlh'
             >
               {currentMetric.name}
             </span>
-            <ChevronDown className='w-4 h-4 text-gray-500' data-oid='8z.z0wp' />
+            <ChevronDown className='w-3 h-3 text-gray-500' data-oid='8z.z0wp' />
           </button>
 
           {showDropdown && (
@@ -240,30 +240,41 @@ const WebMetricsChart: React.FC = () => {
             ></div>
           </div>
         ) : (
-          <div className='h-64' data-oid='f:d7u2d'>
+          <div className='h-64 relative' data-oid='f:d7u2d'>
             <svg
-              width='100%'
-              height='100%'
-              className='overflow-visible'
+              viewBox='0 0 400 200'
+              className='w-full h-full'
               data-oid='3p5b_01'
             >
               {/* Grid lines */}
-              {[0, 25, 50, 75, 100].map(percent => (
-                <line
-                  key={percent}
-                  x1='0'
-                  y1={`${percent}%`}
-                  x2='100%'
-                  y2={`${percent}%`}
-                  stroke='#f3f4f6'
-                  strokeWidth='1'
-                  data-oid='520w5zz'
-                />
-              ))}
+              <defs data-oid='-je0-wm'>
+                <pattern
+                  id='webMetricsGrid'
+                  width='40'
+                  height='20'
+                  patternUnits='userSpaceOnUse'
+                  data-oid='yk-bc5i'
+                >
+                  <path
+                    d='M 40 0 L 0 0 0 20'
+                    fill='none'
+                    stroke='#f3f4f6'
+                    strokeWidth='1'
+                    data-oid='xspu0we'
+                  />
+                </pattern>
+              </defs>
+              <rect
+                width='100%'
+                height='100%'
+                fill='url(#webMetricsGrid)'
+                data-oid='z91jcx-'
+              />
 
               {/* Y-axis labels */}
-              {[0, 25, 50, 75, 100].map(percent => {
-                const value = minValue + (range * (100 - percent)) / 100;
+              {[0, 5, 10, 15, 20].map((step, index) => {
+                const percent = (index / 4) * 100;
+                const value = minValue + (range * (4 - index)) / 4;
                 const displayValue =
                   selectedMetric === 'traffic'
                     ? `${Math.round(value / 1000)}k`
@@ -273,13 +284,13 @@ const WebMetricsChart: React.FC = () => {
 
                 return (
                   <text
-                    key={percent}
-                    x='-8'
-                    y={`${percent}%`}
+                    key={step}
+                    x='15'
+                    y={185 - (step / 20) * 160}
+                    fontSize='10'
+                    fill='#6b7280'
                     textAnchor='end'
-                    dominantBaseline='middle'
-                    className='fill-gray-500 text-xs'
-                    data-oid='e4aszf7'
+                    data-oid='s131693'
                   >
                     {displayValue}
                   </text>
@@ -287,41 +298,79 @@ const WebMetricsChart: React.FC = () => {
               })}
 
               {/* Chart line */}
-              <polyline
-                fill='none'
-                stroke={currentMetric.color}
-                strokeWidth='3'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                points={data
+              <path
+                d={data
                   .map((point, index) => {
-                    const x = (index / (data.length - 1)) * 100;
-                    const y = 100 - ((point.value - minValue) / range) * 100;
-                    return `${x},${y}`;
+                    const x = 20 + (index / (data.length - 1)) * 360;
+                    const y = 180 - ((point.value - minValue) / range) * 160;
+                    return index === 0 ? `M ${x} ${y}` : `L ${x} ${y}`;
                   })
                   .join(' ')}
+                fill='none'
+                stroke={currentMetric.color}
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
                 data-oid='2wkp7-m'
               />
 
-              {/* Data points */}
+              {/* Data points with hover */}
               {data.map((point, index) => {
-                const x = (index / (data.length - 1)) * 100;
-                const y = 100 - ((point.value - minValue) / range) * 100;
+                const x = 20 + (index / (data.length - 1)) * 360;
+                const y = 180 - ((point.value - minValue) / range) * 160;
                 return (
                   <circle
                     key={index}
-                    cx={`${x}%`}
-                    cy={`${y}%`}
-                    r='4'
+                    cx={x}
+                    cy={y}
+                    r='3'
                     fill={currentMetric.color}
-                    className='hover:r-6 transition-all duration-200 cursor-pointer'
+                    className='hover:r-5 transition-all duration-200 cursor-pointer opacity-80 hover:opacity-100'
                     data-oid='e8cq-6d'
-                  >
-                    <title data-oid='wtfp67m'>{`${point.date}: ${point.value}${currentMetric.unit === 'visitors' ? '' : currentMetric.unit}`}</title>
-                  </circle>
+                    onMouseEnter={e => {
+                      const tooltip = document.getElementById('chart-tooltip');
+                      if (tooltip) {
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${e.clientX - tooltip.offsetWidth / 2}px`;
+                        tooltip.style.top = `${e.clientY - tooltip.offsetHeight - 10}px`;
+                        tooltip.innerHTML = `
+                          <div class="bg-gray-900 text-white px-3 py-2 rounded-lg shadow-lg text-sm">
+                            <div class="font-semibold">${new Date(point.date).toLocaleDateString()}</div>
+                            <div class="text-gray-300">${currentMetric.name}</div>
+                            <div class="font-bold text-lg">${point.value}${currentMetric.unit === 'visitors' ? '' : currentMetric.unit}</div>
+                            <div class="text-xs text-gray-400 mt-1">
+                              ${
+                                selectedMetric === 'traffic'
+                                  ? 'Unique visitors'
+                                  : selectedMetric === 'ctr'
+                                    ? 'Click-through rate'
+                                    : selectedMetric === 'bounce'
+                                      ? 'Bounce rate'
+                                      : 'Average session duration'
+                              }
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      const tooltip = document.getElementById('chart-tooltip');
+                      if (tooltip) {
+                        tooltip.style.display = 'none';
+                      }
+                    }}
+                  />
                 );
               })}
             </svg>
+
+            {/* Tooltip container */}
+            <div
+              id='chart-tooltip'
+              className='fixed z-50 pointer-events-none'
+              style={{ display: 'none' }}
+              data-oid='2j3cwa-'
+            />
           </div>
         )}
       </div>
