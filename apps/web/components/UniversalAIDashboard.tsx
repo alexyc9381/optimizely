@@ -869,7 +869,7 @@ const UniversalAIDashboard: React.FC = () => {
               </h4>
               <div className='space-y-6' data-oid='wlfyxy9'>
                 <div
-                  className='border-l-4 border-green-500 pl-6'
+                  className='border-l-4 border-blue-500 pl-6'
                   data-oid='2ro5349'
                 >
                   <h5
@@ -889,7 +889,7 @@ const UniversalAIDashboard: React.FC = () => {
                       Confidence
                     </span>
                     <span
-                      className='text-sm font-bold text-green-600'
+                      className='text-sm font-bold text-blue-600'
                       data-oid='r28n3ey'
                     >
                       96%
