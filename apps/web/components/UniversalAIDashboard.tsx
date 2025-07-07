@@ -203,35 +203,66 @@ const UniversalAIDashboard: React.FC = () => {
     subtitle: string;
     trend?: string;
     icon: string;
-  }> = ({ title, value, subtitle, trend }) => (
-    <div
-      className='bg-white rounded-lg p-6 border border-blue-100 hover:border-blue-300 transition-all duration-300 hover:shadow-xl shadow-sm'
-      data-oid='p:e473g'
-    >
-      <div className='mb-4' data-oid='8loawcj'>
-        <div
-          className='text-3xl font-bold text-blue-900 mb-2'
-          data-oid='6wdme3g'
-        >
-          {value || 0}
+  }> = ({ title, value, subtitle, trend }) => {
+    const isSystemHealth = title === 'System Health';
+    const isOnline = value === 'Active';
+
+    return (
+      <div
+        className='bg-white rounded-lg p-6 border border-blue-100 hover:border-blue-300 transition-all duration-300 hover:shadow-xl shadow-sm'
+        data-oid='p:e473g'
+      >
+        <div className='mb-4' data-oid='8loawcj'>
+          <div
+            className={`text-3xl font-bold mb-2 ${
+              isSystemHealth
+                ? isOnline
+                  ? 'text-green-600'
+                  : 'text-red-600'
+                : 'text-blue-900'
+            }`}
+            data-oid='6wdme3g'
+          >
+            {isSystemHealth && (
+              <span
+                className={`inline-flex items-center ${isOnline ? 'text-green-600' : 'text-red-600'}`}
+                data-oid='203931x'
+              >
+                <div
+                  className={`w-3 h-3 rounded-full mr-2 ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}
+                  data-oid='i8.1ga1'
+                />
+                {value}
+              </span>
+            )}
+            {!isSystemHealth && (value || 0)}
+          </div>
+          <div className='text-sm font-medium text-blue-600' data-oid='tsj7i54'>
+            {title}
+          </div>
+          <div className='text-xs text-blue-400 mt-1' data-oid='gep7hxz'>
+            {subtitle}
+          </div>
         </div>
-        <div className='text-sm font-medium text-blue-600' data-oid='tsj7i54'>
-          {title}
-        </div>
-        <div className='text-xs text-blue-400 mt-1' data-oid='gep7hxz'>
-          {subtitle}
-        </div>
+        {trend && (
+          <div
+            className={`text-xs font-semibold ${
+              isSystemHealth
+                ? isOnline
+                  ? 'text-green-600'
+                  : 'text-red-600'
+                : trend.includes('+')
+                  ? 'text-green-600'
+                  : 'text-blue-600'
+            }`}
+            data-oid='4anel3_'
+          >
+            {trend}
+          </div>
+        )}
       </div>
-      {trend && (
-        <div
-          className='text-xs font-semibold text-green-600'
-          data-oid='4anel3_'
-        >
-          {trend}
-        </div>
-      )}
-    </div>
-  );
+    );
+  };
 
   const HealthIndicator: React.FC<{ service: string; status: boolean }> = ({
     service,
@@ -463,19 +494,44 @@ const UniversalAIDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className='max-w-7xl mx-auto px-4 py-6' data-oid='6ia2n3:'>
-        {/* Key Metrics */}
-        <section className='mb-8' data-oid='fhwph:o'>
-          <h2
-            className='text-4xl font-bold mb-6 flex items-center text-blue-900'
-            data-oid='u.qbej4'
+        {/* Hero Metric */}
+        <section className='mb-12' data-oid='hero-metric'>
+          <div className='text-center mb-12' data-oid='xp54ojv'>
+            <h1
+              className='text-6xl font-bold text-blue-900 mb-3'
+              data-oid='hero-title'
+            >
+              {`${dashboardStats?.conversionRate || 0}%`}
+            </h1>
+            <h2
+              className='text-2xl font-semibold text-blue-700 mb-2'
+              data-oid='hero-label'
+            >
+              Conversion Rate
+            </h2>
+            <p className='text-lg text-blue-500 mb-4' data-oid='hero-subtitle'>
+              AI-optimized funnels
+            </p>
+            <div
+              className='text-green-600 font-semibold text-lg'
+              data-oid='hero-trend'
+            >
+              +2.1% improvement
+            </div>
+          </div>
+        </section>
+
+        {/* Essential Metrics Grid - Maximum 5 supporting metrics */}
+        <section className='mb-8' data-oid='essential-metrics'>
+          <h3
+            className='text-2xl font-bold mb-6 text-blue-800'
+            data-oid='essential-title'
           >
-            <span className='text-blue-700' data-oid='ga9-0id'>
-              Analytics Overview
-            </span>
-          </h2>
+            Key Performance Indicators
+          </h3>
           <div
             className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4'
-            data-oid='-.w:vvd'
+            data-oid='essential-grid'
           >
             <StatCard
               title='Total Visitors'
@@ -496,18 +552,20 @@ const UniversalAIDashboard: React.FC = () => {
             />
 
             <StatCard
-              title='Conversion Rate'
-              value={`${dashboardStats?.conversionRate || 0}%`}
-              subtitle='AI-optimized funnels'
-              trend='+2.1% improvement'
-              icon='CVR'
-              data-oid='xzh9666'
+              title='System Health'
+              value={apiConnected ? 'Active' : 'Offline'}
+              subtitle='Overall system status'
+              trend={
+                apiConnected ? 'All systems operational' : 'Check required'
+              }
+              icon='SYS'
+              data-oid='system-health'
             />
 
             <StatCard
               title='A/B Experiments'
               value={dashboardStats?.activeExperiments || '0'}
-              subtitle='Running across industries'
+              subtitle='Running experiments'
               trend='3 completed today'
               icon='AB'
               data-oid='icgh0xs'
@@ -792,7 +850,7 @@ const UniversalAIDashboard: React.FC = () => {
                     </div>
                     <div data-oid='mjvvjer'>
                       <div
-                        className='text-sm font-bold text-yellow-600'
+                        className='text-sm font-bold text-blue-600'
                         data-oid='6wz0ifw'
                       >
                         Opportunity
