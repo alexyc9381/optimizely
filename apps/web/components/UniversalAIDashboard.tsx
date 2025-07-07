@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ConversionRateTrendChart from './ConversionRateTrendChart';
 import WebMetricsChart from './WebMetricsChart';
+import ConditionalChart from './dashboard/ConditionalChart';
+import { EmptyStates } from './dashboard/EmptyState';
+import HeroMetric from './dashboard/HeroMetric';
+import MetricGrid from './dashboard/MetricGrid';
 
 interface DashboardStats {
   totalVisitors: number;
@@ -36,7 +40,7 @@ interface ModelMetric {
 }
 
 const UniversalAIDashboard: React.FC = () => {
-  // Initialize with fallback values to show content immediately
+  // Core state with fallback values for immediate content display
   const [dashboardStats] = useState<DashboardStats>({
     totalVisitors: 24789,
     totalSessions: 15432,
@@ -45,6 +49,7 @@ const UniversalAIDashboard: React.FC = () => {
     activeExperiments: 12,
     modelAccuracy: 94.2,
   });
+
   const [systemHealth] = useState<SystemHealth>({
     apiGateway: true,
     mlEngine: true,
@@ -52,6 +57,7 @@ const UniversalAIDashboard: React.FC = () => {
     analytics: true,
     recommendations: true,
   });
+
   const [experiments] = useState<Experiment[]>([
     {
       id: '1',
@@ -78,6 +84,7 @@ const UniversalAIDashboard: React.FC = () => {
       industry: 'FinTech',
     },
   ]);
+
   const [modelMetrics] = useState<ModelMetric[]>([
     { name: 'Lead Scoring', accuracy: 94.2, confidence: 97, status: 'Active' },
     {
@@ -93,13 +100,15 @@ const UniversalAIDashboard: React.FC = () => {
       status: 'Active',
     },
   ]);
-  const [loading, setLoading] = useState(false);
-  const [apiConnected, setApiConnected] = useState(false);
 
   // Progressive Disclosure States
   const [showDetailedAnalytics, setShowDetailedAnalytics] = useState(false);
   const [showEngagementMetrics, setShowEngagementMetrics] = useState(false);
   const [showSystemDetails, setShowSystemDetails] = useState(false);
+
+  // Loading and connectivity states
+  const [loading, setLoading] = useState(false);
+  const [apiConnected, setApiConnected] = useState(false);
 
   // Funnel mock data with realistic variations
   const [funnelData, setFunnelData] = useState({
@@ -129,58 +138,136 @@ const UniversalAIDashboard: React.FC = () => {
     },
   });
 
-  // Generate realistic funnel mock data
-  const generateFunnelMockData = () => {
-    const baseVisitors = 20000 + Math.floor(Math.random() * 10000);
-    const signupRate = 0.42 + Math.random() * 0.08; // 42-50%
-    const trialRate = 0.52 + Math.random() * 0.12; // 52-64% of signups
-    const paidRate = 0.28 + Math.random() * 0.12; // 28-40% of trials
+  // Generate essential metrics for MetricGrid component
+  const essentialMetrics = [
+    {
+      id: 'visitors',
+      title: 'Total Visitors',
+      value: dashboardStats.totalVisitors.toLocaleString(),
+      subtitle: 'Website visitors',
+      trend: '+12.3%',
+      icon: (
+        <svg
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          className='w-full h-full'
+          data-oid='kvgh6mk'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={1.5}
+            d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z'
+            data-oid='us4288c'
+          />
+        </svg>
+      ),
+    },
+    {
+      id: 'sessions',
+      title: 'Active Sessions',
+      value: dashboardStats.totalSessions.toLocaleString(),
+      subtitle: 'Current sessions',
+      trend: '+8.7%',
+      icon: (
+        <svg
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          className='w-full h-full'
+          data-oid='ua0bnbu'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={1.5}
+            d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+            data-oid='4oyk_j9'
+          />
+        </svg>
+      ),
+    },
+    {
+      id: 'system-health',
+      title: 'System Health',
+      value: 'Active',
+      subtitle: 'All systems operational',
+      type: 'system-health' as const,
+      isActive: systemHealth.analytics && systemHealth.apiGateway,
+      icon: (
+        <svg
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          className='w-full h-full'
+          data-oid=':oaxkhr'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={1.5}
+            d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+            data-oid='1:9z.o1'
+          />
+        </svg>
+      ),
+    },
+    {
+      id: 'experiments',
+      title: 'A/B Experiments',
+      value: dashboardStats.activeExperiments,
+      subtitle: 'Currently running',
+      trend: '+2',
+      icon: (
+        <svg
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          className='w-full h-full'
+          data-oid='1-6031_'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={1.5}
+            d='M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
+            data-oid='yi9thig'
+          />
+        </svg>
+      ),
+    },
+    {
+      id: 'model-accuracy',
+      title: 'Model Accuracy',
+      value: `${dashboardStats.modelAccuracy}%`,
+      subtitle: 'AI performance',
+      trend: '+0.8%',
+      icon: (
+        <svg
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+          className='w-full h-full'
+          data-oid='g-:sj0t'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={1.5}
+            d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+            data-oid='-8q_z7l'
+          />
+        </svg>
+      ),
+    },
+  ];
 
-    const visitors = baseVisitors;
-    const signups = Math.floor(visitors * signupRate);
-    const trials = Math.floor(signups * trialRate);
-    const paid = Math.floor(trials * paidRate);
-
-    return {
-      visitors: {
-        count: visitors,
-        percentage: 100,
-        trend: `+${(8 + Math.random() * 8).toFixed(1)}%`,
-        conversionFromPrevious: 100,
-      },
-      signups: {
-        count: signups,
-        percentage: Math.round((signups / visitors) * 100),
-        trend: `+${(5 + Math.random() * 6).toFixed(1)}%`,
-        conversionFromPrevious: Math.round((signups / visitors) * 100),
-      },
-      trials: {
-        count: trials,
-        percentage: Math.round((trials / visitors) * 100),
-        trend: `+${(2 + Math.random() * 6).toFixed(1)}%`,
-        conversionFromPrevious: Math.round((trials / signups) * 100),
-      },
-      paid: {
-        count: paid,
-        percentage: Math.round((paid / visitors) * 100),
-        trend: `+${(1 + Math.random() * 4).toFixed(1)}%`,
-        conversionFromPrevious: Math.round((paid / trials) * 100),
-      },
-    };
-  };
-
-  const refreshFunnelData = () => {
-    setFunnelData(generateFunnelMockData());
-  };
-
+  // Initialize data and handle API connections
   useEffect(() => {
-    // Start with fallback data immediately, attempt API connection in background
     const fetchDashboardData = async () => {
-      // Only attempt API connection if explicitly enabled
       const enableAPIConnection = false; // Set to true to enable API calls
-      if (!enableAPIConnection) {
-        return;
-      }
+      if (!enableAPIConnection) return;
 
       try {
         setLoading(true);
@@ -198,396 +285,43 @@ const UniversalAIDashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const StatCard: React.FC<{
-    title: string;
-    value: string | number;
-    subtitle: string;
-    trend?: string;
-    icon: string;
-  }> = ({ title, value, subtitle, trend }) => {
-    const isSystemHealth = title === 'System Health';
-    const isOnline = value === 'Active';
-
-    return (
-      <div
-        className='bg-white rounded-lg p-6 border border-blue-100 hover:border-blue-300 transition-all duration-300 hover:shadow-xl shadow-sm'
-        data-oid='p:e473g'
-      >
-        <div className='mb-4' data-oid='8loawcj'>
-          <div
-            className={`text-3xl font-bold mb-2 ${
-              isSystemHealth
-                ? isOnline
-                  ? 'text-green-600'
-                  : 'text-red-600'
-                : 'text-blue-900'
-            }`}
-            data-oid='6wdme3g'
-          >
-            {isSystemHealth && (
-              <span
-                className={`inline-flex items-center ${isOnline ? 'text-green-600' : 'text-red-600'}`}
-                data-oid='203931x'
-              >
-                <div
-                  className={`w-3 h-3 rounded-full mr-2 ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}
-                  data-oid='i8.1ga1'
-                />
-
-                {value}
-              </span>
-            )}
-            {!isSystemHealth && (value || 0)}
-          </div>
-          <div className='text-sm font-medium text-blue-600' data-oid='tsj7i54'>
-            {title}
-          </div>
-          <div className='text-xs text-blue-400 mt-1' data-oid='gep7hxz'>
-            {subtitle}
-          </div>
-        </div>
-        {trend && (
-          <div
-            className={`text-xs font-semibold ${
-              isSystemHealth
-                ? isOnline
-                  ? 'text-green-600'
-                  : 'text-red-600'
-                : trend.includes('+')
-                  ? 'text-green-600'
-                  : 'text-blue-600'
-            }`}
-            data-oid='4anel3_'
-          >
-            {trend}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const HealthIndicator: React.FC<{ service: string; status: boolean }> = ({
-    service,
-    status,
-  }) => (
-    <div className='flex items-center justify-between py-3' data-oid='u3spq63'>
-      <span className='text-blue-700 text-sm font-medium' data-oid='dg6hb6b'>
-        {service}
-      </span>
-      <div className='flex items-center' data-oid='fjlqu2e'>
-        <div
-          className={`w-3 h-3 rounded-full mr-3 ${
-            status ? 'bg-green-500 animate-pulse' : 'bg-red-400'
-          }`}
-          data-oid='w3kgbbn'
-        />
-
-        <span
-          className={`text-xs font-semibold px-2 py-1 rounded-full ${
-            status ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'
-          }`}
-          data-oid='z6v:48:'
-        >
-          {status ? 'Active' : 'Offline'}
-        </span>
-      </div>
-    </div>
-  );
-
-  const ExperimentCard: React.FC<{ experiment: Experiment }> = ({
-    experiment,
-  }) => (
-    <div
-      className='bg-blue-50 p-6 rounded-lg border border-blue-100 hover:border-blue-200 transition-all duration-200'
-      data-oid='01491fk'
-    >
-      <div
-        className='flex items-center justify-between mb-4'
-        data-oid=':x8q1l:'
-      >
-        <h4 className='text-blue-900 font-semibold text-sm' data-oid='mb19_g8'>
-          {experiment.name}
-        </h4>
-        <span
-          className={`text-xs px-3 py-1 rounded-full font-medium ${
-            experiment.status === 'Running'
-              ? 'bg-blue-100 text-blue-700 border border-blue-200'
-              : 'bg-blue-200 text-blue-800 border border-blue-300'
-          }`}
-          data-oid='lt.749x'
-        >
-          {experiment.status}
-        </span>
-      </div>
-      <div className='grid grid-cols-2 gap-4 text-xs' data-oid=':hg4g5s'>
-        <div data-oid='hmqo5xb'>
-          <span className='text-blue-600 font-medium' data-oid='j9wrddy'>
-            Conversion:{' '}
-          </span>
-          <span
-            className={`font-bold ${
-              experiment.conversionRate > 10
-                ? 'text-green-600'
-                : experiment.conversionRate > 5
-                  ? 'text-yellow-600'
-                  : 'text-red-600'
-            }`}
-            data-oid='p1:25-0'
-          >
-            {experiment.conversionRate}%
-          </span>
-        </div>
-        <div data-oid='s559gmj'>
-          <span className='text-blue-600 font-medium' data-oid='a_4kcjo'>
-            Confidence:{' '}
-          </span>
-          <span
-            className={`font-bold ${
-              experiment.confidence > 95
-                ? 'text-green-600'
-                : experiment.confidence > 80
-                  ? 'text-yellow-600'
-                  : 'text-red-600'
-            }`}
-            data-oid='pcdilch'
-          >
-            {experiment.confidence}%
-          </span>
-        </div>
-      </div>
-      <p
-        className='text-xs text-blue-700 font-medium mt-3 px-2 py-1 bg-blue-100 rounded-lg inline-block'
-        data-oid='zt4jje:'
-      >
-        {experiment.industry}
-      </p>
-    </div>
-  );
-
-  const ModelMetricCard: React.FC<{ metric: ModelMetric }> = ({ metric }) => (
-    <div
-      className='bg-blue-50 p-6 rounded-lg border border-blue-100 hover:border-blue-200 transition-all duration-200'
-      data-oid='t-czf5o'
-    >
-      <div
-        className='flex items-center justify-between mb-4'
-        data-oid='gwsh6wa'
-      >
-        <h4 className='text-blue-900 font-semibold text-sm' data-oid='4dlrbpt'>
-          {metric.name}
-        </h4>
-        <span
-          className={`text-xs px-3 py-1 rounded-full font-medium ${
-            metric.status === 'Active'
-              ? 'bg-blue-100 text-blue-700 border border-blue-200'
-              : 'bg-blue-200 text-blue-800 border border-blue-300'
-          }`}
-          data-oid='14zmfw1'
-        >
-          {metric.status}
-        </span>
-      </div>
-      <div className='grid grid-cols-2 gap-4 text-xs' data-oid='1u125bh'>
-        <div data-oid='9ka.ie7'>
-          <span className='text-blue-600 font-medium' data-oid='lju9z1b'>
-            Accuracy:{' '}
-          </span>
-          <span
-            className={`font-bold ${
-              metric.accuracy > 95
-                ? 'text-green-600'
-                : metric.accuracy > 85
-                  ? 'text-yellow-600'
-                  : 'text-red-600'
-            }`}
-            data-oid='5-8h9.-'
-          >
-            {metric.accuracy}%
-          </span>
-        </div>
-        <div data-oid='p37js_k'>
-          <span className='text-blue-600 font-medium' data-oid='oknukq_'>
-            Confidence:{' '}
-          </span>
-          <span
-            className={`font-bold ${
-              metric.confidence > 95
-                ? 'text-green-600'
-                : metric.confidence > 85
-                  ? 'text-yellow-600'
-                  : 'text-red-600'
-            }`}
-            data-oid='.cqfizw'
-          >
-            {metric.confidence}%
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-
+  // Show loading state
   if (loading) {
     return (
-      <div
-        className='min-h-screen bg-gradient-to-br from-blue-50 via-blue-25 to-blue-50 flex items-center justify-center'
-        data-oid='c5y1rsx'
-      >
-        <div className='text-center' data-oid='eqz:1_n'>
-          <div
-            className='animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-8'
-            data-oid='c_t_t_0'
-          ></div>
-          <p className='text-blue-700 font-medium text-lg' data-oid='zzx2mpr'>
-            Loading Optelo Platform...
-          </p>
-        </div>
+      <div className='p-4 space-y-8' data-oid='-7peesl'>
+        <EmptyStates.Loading data-oid='mp8v:g6' />
       </div>
     );
   }
 
   return (
-    <div className='min-h-screen bg-blue-25 text-blue-900' data-oid='ksev72_'>
-      <style jsx data-oid='b.ne2bn'>{`
-        /* Custom scrollbar styling for dashboard components */
-        .dashboard-scrollable {
-          scrollbar-width: thin;
-          scrollbar-color: #d1d5db #f3f4f6;
-        }
-        .dashboard-scrollable::-webkit-scrollbar {
-          width: 6px;
-          height: 6px;
-        }
-        .dashboard-scrollable::-webkit-scrollbar-track {
-          background: #f3f4f6;
-          border-radius: 10px;
-        }
-        .dashboard-scrollable::-webkit-scrollbar-thumb {
-          background: #d1d5db;
-          border-radius: 10px;
-          border: 1px solid #f3f4f6;
-        }
-        .dashboard-scrollable::-webkit-scrollbar-thumb:hover {
-          background: #9ca3af;
-        }
-        .dashboard-scrollable::-webkit-scrollbar-corner {
-          background: #f3f4f6;
-        }
-        /* Global scrollbar styling for the main page */
-        html {
-          scrollbar-width: thin;
-          scrollbar-color: #d1d5db #f9fafb;
-        }
-        html::-webkit-scrollbar {
-          width: 8px;
-        }
-        html::-webkit-scrollbar-track {
-          background: #f9fafb;
-          border-radius: 10px;
-        }
-        html::-webkit-scrollbar-thumb {
-          background: #d1d5db;
-          border-radius: 10px;
-          border: 2px solid #f9fafb;
-        }
-        html::-webkit-scrollbar-thumb:hover {
-          background: #9ca3af;
-        }
-      `}</style>
+    <div
+      className='min-h-screen bg-gray-50'
+      data-testid='universal-ai-dashboard'
+      data-oid='g7n.5w_'
+    >
+      <div className='container mx-auto px-4 py-6 max-w-7xl' data-oid='00qtaa_'>
+        {/* Hero Metric - Conversion Rate */}
+        <HeroMetric
+          title='Conversion Rate'
+          value={dashboardStats.conversionRate}
+          unit='%'
+          trend='+2.3%'
+          subtitle='Overall conversion performance across all channels'
+          data-oid='o-fml37'
+        />
 
-      {/* Main Content */}
-      <main className='max-w-7xl mx-auto px-4 py-6' data-oid='6ia2n3:'>
-        {/* Hero Metric */}
-        <section className='mb-12' data-oid='hero-metric'>
-          <div className='text-center mb-12' data-oid='xp54ojv'>
-            <h1
-              className='text-6xl font-bold text-blue-900 mb-3'
-              data-oid='hero-title'
-            >
-              {`${dashboardStats?.conversionRate || 0}%`}
-            </h1>
-            <h2
-              className='text-2xl font-semibold text-blue-700 mb-2'
-              data-oid='hero-label'
-            >
-              Conversion Rate
-            </h2>
-            <p className='text-lg text-blue-500 mb-4' data-oid='hero-subtitle'>
-              AI-optimized funnels
-            </p>
-            <div
-              className='text-green-600 font-semibold text-lg'
-              data-oid='hero-trend'
-            >
-              +2.1% improvement
-            </div>
-          </div>
-        </section>
-
-        {/* Essential Metrics Grid - Maximum 5 supporting metrics */}
-        <section className='mb-8' data-oid='essential-metrics'>
-          <h3
-            className='text-2xl font-bold mb-6 text-blue-800'
-            data-oid='essential-title'
-          >
-            Key Performance Indicators
-          </h3>
-          <div
-            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4'
-            data-oid='essential-grid'
-          >
-            <StatCard
-              title='Total Visitors'
-              value={dashboardStats?.totalVisitors?.toLocaleString() || '0'}
-              subtitle='Cross-platform tracking'
-              trend='+12.3% this week'
-              icon='VIS'
-              data-oid='_jhwbli'
-            />
-
-            <StatCard
-              title='Active Sessions'
-              value={dashboardStats?.totalSessions?.toLocaleString() || '0'}
-              subtitle='Real-time monitoring'
-              trend='+8.7% today'
-              icon='SES'
-              data-oid='9u.9gh9'
-            />
-
-            <StatCard
-              title='System Health'
-              value={apiConnected ? 'Active' : 'Offline'}
-              subtitle='Overall system status'
-              trend={
-                apiConnected ? 'All systems operational' : 'Check required'
-              }
-              icon='SYS'
-              data-oid='system-health'
-            />
-
-            <StatCard
-              title='A/B Experiments'
-              value={dashboardStats?.activeExperiments || '0'}
-              subtitle='Running experiments'
-              trend='3 completed today'
-              icon='AB'
-              data-oid='icgh0xs'
-            />
-
-            <StatCard
-              title='Model Accuracy'
-              value={`${dashboardStats?.modelAccuracy || 0}%`}
-              subtitle='ML performance'
-              trend='+1.8% improvement'
-              icon='ML'
-              data-oid='0byk9gw'
-            />
-          </div>
-        </section>
+        {/* Essential Metrics Grid */}
+        <MetricGrid
+          metrics={essentialMetrics}
+          maxItems={5}
+          data-oid='88q:-7q'
+        />
 
         {/* Progressive Disclosure Controls */}
-        <section className='mb-8' data-oid='disclosure-controls'>
-          <div className='text-center mb-4' data-oid='gbk.c.3'>
-            <p className='text-sm text-blue-600 font-medium' data-oid='e8-4p0f'>
+        <section className='mb-8' data-oid='..3q5ua'>
+          <div className='text-center mb-4' data-oid='b5wogmp'>
+            <p className='text-sm text-blue-600 font-medium' data-oid='fbe2nk_'>
               {(() => {
                 const visibleSections = [
                   showDetailedAnalytics,
@@ -600,10 +334,12 @@ const UniversalAIDashboard: React.FC = () => {
               })()}
             </p>
           </div>
+
           <div
             className='flex flex-wrap gap-4 justify-center'
-            data-oid='lcvlvvp'
+            data-oid='z9xxkfs'
           >
+            {/* Show All/Hide All Toggle */}
             <button
               onClick={() => {
                 const allVisible =
@@ -621,1212 +357,237 @@ const UniversalAIDashboard: React.FC = () => {
                   ? 'bg-red-600 text-white shadow-lg hover:bg-red-700'
                   : 'bg-green-600 text-white shadow-lg hover:bg-green-700'
               }`}
-              data-oid='toggle-all-button'
+              data-oid='_dt8dca'
             >
-              <span data-oid='9k.7d.a'>
+              <span data-oid='yfy2hae'>
                 {showDetailedAnalytics &&
                 showEngagementMetrics &&
                 showSystemDetails
-                  ? 'Hide All Details'
-                  : 'Show All Details'}
+                  ? 'Hide All'
+                  : 'Show All'}
               </span>
-              <svg
-                className='w-5 h-5'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                data-oid='w86yg4o'
-              >
-                {showDetailedAnalytics &&
-                showEngagementMetrics &&
-                showSystemDetails ? (
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M5 15l7-7 7 7'
-                    data-oid='ulizvce'
-                  />
-                ) : (
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M19 9l-7 7-7-7'
-                    data-oid='gp_yipv'
-                  />
-                )}
-              </svg>
-            </button>
-            <button
-              onClick={() => setShowDetailedAnalytics(!showDetailedAnalytics)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                showDetailedAnalytics
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-              }`}
-              data-oid='tcyqx5d'
-            >
-              <span data-oid='-danv1j'>Detailed Analytics</span>
-              <svg
-                className='w-4 h-4'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                data-oid='cpt.3:t'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d={showDetailedAnalytics ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}
-                  data-oid='iwz6a1t'
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => setShowEngagementMetrics(!showEngagementMetrics)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                showEngagementMetrics
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-              }`}
-              data-oid='lkkx_1k'
-            >
-              <span data-oid='x_ji2t5'>Engagement Metrics</span>
-              <svg
-                className='w-4 h-4'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                data-oid='u3:t3tk'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d={showEngagementMetrics ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}
-                  data-oid='rvjxzcj'
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => setShowSystemDetails(!showSystemDetails)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                showSystemDetails
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-              }`}
-              data-oid='z4gyid5'
-            >
-              <span data-oid='cljdjgb'>System Details</span>
-              <svg
-                className='w-4 h-4'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                data-oid='_99au2n'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d={showSystemDetails ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}
-                  data-oid='3tl5ujx'
-                />
-              </svg>
             </button>
           </div>
         </section>
 
-        {/* Enhanced Analytics Section */}
-        {showDetailedAnalytics && (
-          <section
-            className='mt-8 transition-all duration-500 ease-in-out'
-            data-oid='p2p8wld'
-          >
-            <h3
-              className='text-3xl font-bold mb-6 text-blue-800'
-              data-oid='6xa1vth'
-            >
-              Detailed Analytics
-            </h3>
-
-            {/* Conversion Rate Trend Chart - Now First */}
-            <div className='mb-8' data-oid='j3_1ot4'>
-              <ConversionRateTrendChart data-oid='lfas5h8' />
-            </div>
-
-            {/* Main Analytics Charts */}
+        {/* Detailed Analytics - Progressive Disclosure */}
+        <ConditionalChart
+          title='Detailed Analytics'
+          isVisible={showDetailedAnalytics}
+          onToggle={() => setShowDetailedAnalytics(!showDetailedAnalytics)}
+          description='Interactive conversion funnel and real-time metrics'
+          itemCount={4}
+          data-oid='lg2tttn'
+        >
+          <div className='space-y-8' data-oid='ieykhpn'>
+            {/* Conversion Funnel */}
             <div
-              className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'
-              data-oid='u_06m6u'
+              className='bg-white p-6 rounded-lg border border-gray-200'
+              data-oid='q5k0jn-'
             >
-              <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg h-[520px]'
-                data-oid='ohqq:_-'
+              <h3
+                className='text-lg font-semibold text-gray-900 mb-6'
+                data-oid='1bkdhmu'
               >
-                <div
-                  className='flex items-center justify-between mb-4'
-                  data-oid='qehu85l'
-                >
-                  <h4
-                    className='text-xl font-bold text-blue-900'
-                    data-oid='uso4lx_'
-                  >
-                    Conversion Funnel
-                  </h4>
-                  <button
-                    onClick={refreshFunnelData}
-                    className='p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200'
-                    title='Refresh funnel data'
-                    data-oid='98t4scx'
-                  >
-                    <svg
-                      className='w-5 h-5'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                      data-oid='f0jfdlt'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15'
-                        data-oid='6jxcaqc'
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                <div
-                  className='h-[440px] flex flex-col justify-center'
-                  data-oid='0se-r:v'
-                >
-                  {/* Interactive Funnel Visualization */}
-                  <div className='space-y-6' data-oid='w:eu5yy'>
-                    {/* Visitors - Top of funnel */}
-                    <div
-                      className='relative group cursor-pointer transition-all duration-500 hover:scale-105'
-                      data-oid='jyjrlmu'
-                    >
-                      <div
-                        className='bg-gradient-to-r from-blue-600 to-blue-700 h-20 rounded-lg shadow-xl flex items-center justify-between px-4 text-white transform transition-all duration-500'
-                        data-oid='48_xzma'
-                      >
-                        <div data-oid='c-787e9'>
-                          <div
-                            className='text-xl font-bold transition-all duration-500'
-                            data-oid='cru2ksq'
-                          >
-                            {funnelData.visitors.count.toLocaleString()}
-                          </div>
-                          <div
-                            className='text-sm opacity-90'
-                            data-oid='ec_jklg'
-                          >
-                            Visitors
-                          </div>
-                        </div>
-                        <div className='text-right' data-oid='8p7pukg'>
-                          <div
-                            className='text-sm opacity-90'
-                            data-oid='fdb5l6n'
-                          >
-                            {funnelData.visitors.percentage}%
-                          </div>
-                          <div
-                            className='text-xs opacity-75'
-                            data-oid='rmf7p1k'
-                          >
-                            {funnelData.visitors.trend} vs last week
-                          </div>
-                        </div>
-                      </div>
-                      {/* Tooltip */}
-                      <div
-                        className='absolute left-1/2 transform -translate-x-1/2 -top-16 bg-blue-900 text-white px-4 py-2 rounded-xl text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10'
-                        data-oid='_g.6ax.'
-                      >
-                        Total unique visitors across all channels
-                      </div>
-                    </div>
-
-                    {/* Sign-ups */}
-                    <div
-                      className='relative group cursor-pointer transition-all duration-500 hover:scale-105 ml-8'
-                      data-oid='rb:4kjh'
-                    >
-                      <div
-                        className='bg-gradient-to-r from-blue-500 to-blue-600 h-16 rounded-lg shadow-xl flex items-center justify-between px-4 text-white transform transition-all duration-500'
-                        style={{
-                          width: `${Math.max(funnelData.signups.percentage * 2, 60)}%`,
-                        }}
-                        data-oid='3u5b7nu'
-                      >
-                        <div data-oid='_t8xlql'>
-                          <div
-                            className='text-lg font-bold transition-all duration-500'
-                            data-oid='02r_i18'
-                          >
-                            {funnelData.signups.count.toLocaleString()}
-                          </div>
-                          <div
-                            className='text-sm opacity-90'
-                            data-oid='vvna5pu'
-                          >
-                            Sign-ups
-                          </div>
-                        </div>
-                        <div className='text-right' data-oid='bhwxe2j'>
-                          <div
-                            className='text-sm opacity-90'
-                            data-oid='9n-90s9'
-                          >
-                            {funnelData.signups.percentage}%
-                          </div>
-                          <div
-                            className='text-xs opacity-75'
-                            data-oid='4d9crya'
-                          >
-                            {funnelData.signups.conversionFromPrevious}%
-                            conversion
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className='absolute left-1/2 transform -translate-x-1/2 -top-16 bg-blue-900 text-white px-4 py-2 rounded-xl text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10'
-                        data-oid='b:_:o8x'
-                      >
-                        Users who completed registration
-                      </div>
-                    </div>
-
-                    {/* Trial Users */}
-                    <div
-                      className='relative group cursor-pointer transition-all duration-500 hover:scale-105 ml-16'
-                      data-oid='-_9dqf_'
-                    >
-                      <div
-                        className='bg-gradient-to-r from-blue-400 to-blue-500 h-14 rounded-lg shadow-xl flex items-center justify-between px-4 text-white transform transition-all duration-500'
-                        style={{
-                          width: `${Math.max(funnelData.trials.percentage * 2.5, 50)}%`,
-                        }}
-                        data-oid='u98_wnk'
-                      >
-                        <div data-oid='71jqdd:'>
-                          <div
-                            className='text-base font-bold transition-all duration-500'
-                            data-oid='o52a.f-'
-                          >
-                            {funnelData.trials.count.toLocaleString()}
-                          </div>
-                          <div
-                            className='text-xs opacity-90'
-                            data-oid='txv:zdo'
-                          >
-                            Trial Users
-                          </div>
-                        </div>
-                        <div className='text-right' data-oid='2rgjp4h'>
-                          <div
-                            className='text-xs opacity-90'
-                            data-oid='ziux-3z'
-                          >
-                            {funnelData.trials.percentage}%
-                          </div>
-                          <div
-                            className='text-xs opacity-75'
-                            data-oid='-3dvdko'
-                          >
-                            {funnelData.trials.conversionFromPrevious}% from
-                            signups
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className='absolute left-1/2 transform -translate-x-1/2 -top-16 bg-blue-900 text-white px-4 py-2 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10'
-                        data-oid='6sjyojm'
-                      >
-                        Active trial subscriptions
-                      </div>
-                    </div>
-
-                    {/* Paid Customers */}
-                    <div
-                      className='relative group cursor-pointer transition-all duration-500 hover:scale-105 ml-24'
-                      data-oid='us82r3k'
-                    >
-                      <div
-                        className='bg-gradient-to-r from-blue-300 to-blue-400 h-12 rounded-lg shadow-xl flex items-center justify-between px-4 text-white transform transition-all duration-500'
-                        style={{
-                          width: `${Math.max(funnelData.paid.percentage * 4, 40)}%`,
-                        }}
-                        data-oid='c82lbwg'
-                      >
-                        <div data-oid='s0w.m-g'>
-                          <div
-                            className='text-sm font-bold transition-all duration-500'
-                            data-oid='89l6bs.'
-                          >
-                            {funnelData.paid.count.toLocaleString()}
-                          </div>
-                          <div
-                            className='text-xs opacity-90'
-                            data-oid='i3.id3g'
-                          >
-                            Paid Customers
-                          </div>
-                        </div>
-                        <div className='text-right' data-oid='d8ute-4'>
-                          <div
-                            className='text-xs opacity-90'
-                            data-oid='7_fbwr_'
-                          >
-                            {funnelData.paid.percentage}%
-                          </div>
-                          <div
-                            className='text-xs opacity-75'
-                            data-oid='9vdlmrz'
-                          >
-                            {funnelData.paid.conversionFromPrevious}% from
-                            trials
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className='absolute left-1/2 transform -translate-x-1/2 -top-16 bg-blue-900 text-white px-4 py-2 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10'
-                        data-oid='56b1eqr'
-                      >
-                        Converting paid subscribers
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Funnel Insights - Dynamic */}
-                  <div
-                    className='mt-8 pt-6 border-t border-blue-200'
-                    data-oid='u12mcww'
-                  >
-                    <div
-                      className='grid grid-cols-3 gap-6 text-center'
-                      data-oid='6x1:0u8'
-                    >
-                      <div data-oid='dplkht-'>
-                        <div
-                          className='text-sm font-bold text-blue-600'
-                          data-oid='3_gkhi1'
-                        >
-                          Best Stage
-                        </div>
-                        <div
-                          className='text-xs text-blue-700 font-medium'
-                          data-oid='cfds019'
-                        >
-                          {funnelData.signups.conversionFromPrevious >
-                            funnelData.trials.conversionFromPrevious &&
-                          funnelData.signups.conversionFromPrevious >
-                            funnelData.paid.conversionFromPrevious
-                            ? 'Visitor → Signup'
-                            : funnelData.trials.conversionFromPrevious >
-                                funnelData.paid.conversionFromPrevious
-                              ? 'Signup → Trial'
-                              : 'Trial → Paid'}
-                        </div>
-                        <div
-                          className='text-xs text-blue-600 transition-all duration-500'
-                          data-oid='ea0:_p6'
-                        >
-                          {Math.max(
-                            funnelData.signups.conversionFromPrevious,
-                            funnelData.trials.conversionFromPrevious,
-                            funnelData.paid.conversionFromPrevious
-                          )}
-                          % conversion
-                        </div>
-                      </div>
-                      <div data-oid='mjvvjer'>
-                        <div
-                          className='text-sm font-bold text-blue-600'
-                          data-oid='6wz0ifw'
-                        >
-                          Opportunity
-                        </div>
-                        <div
-                          className='text-xs text-blue-700 font-medium'
-                          data-oid='1dc81ab'
-                        >
-                          {funnelData.paid.conversionFromPrevious <
-                            funnelData.trials.conversionFromPrevious &&
-                          funnelData.paid.conversionFromPrevious <
-                            funnelData.signups.conversionFromPrevious
-                            ? 'Trial → Paid'
-                            : funnelData.trials.conversionFromPrevious <
-                                funnelData.signups.conversionFromPrevious
-                              ? 'Signup → Trial'
-                              : 'Visitor → Signup'}
-                        </div>
-                        <div
-                          className='text-xs text-blue-600 transition-all duration-500'
-                          data-oid='n1aznv2'
-                        >
-                          {Math.min(
-                            funnelData.signups.conversionFromPrevious,
-                            funnelData.trials.conversionFromPrevious,
-                            funnelData.paid.conversionFromPrevious
-                          )}
-                          % conversion
-                        </div>
-                      </div>
-                      <div data-oid='fefyenz'>
-                        <div
-                          className='text-sm font-bold text-blue-700'
-                          data-oid='r9t9zgq'
-                        >
-                          Overall
-                        </div>
-                        <div
-                          className='text-xs text-blue-700 font-medium'
-                          data-oid='4250cgt'
-                        >
-                          End-to-end
-                        </div>
-                        <div
-                          className='text-xs text-blue-600 transition-all duration-500'
-                          data-oid='3he:c21'
-                        >
-                          {funnelData.paid.percentage}% conversion
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Switchable Web Metrics Chart - Replaces MRR Chart */}
-              <WebMetricsChart data-oid='o54n18a' />
-            </div>
-
-            {/* A/B Testing Performance */}
-            <div
-              className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'
-              data-oid='uh1ipsv'
-            >
+                Conversion Funnel
+              </h3>
               <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg'
-                data-oid='zdy1yzp'
+                className='grid grid-cols-1 md:grid-cols-4 gap-6'
+                data-oid='83n0sit'
               >
-                <h4
-                  className='text-xl font-bold text-blue-900 mb-4'
-                  data-oid='4:ik7e-'
-                >
-                  Active A/B Tests
-                </h4>
-                <div className='space-y-6' data-oid='wlfyxy9'>
-                  <div
-                    className='border-l-4 border-blue-500 pl-6'
-                    data-oid='2ro5349'
-                  >
-                    <h5
-                      className='font-semibold text-blue-900'
-                      data-oid='66ogx8r'
-                    >
-                      Pricing Page CTA
-                    </h5>
-                    <p className='text-sm text-blue-600' data-oid='ssnf_xu'>
-                      Testing button colors
-                    </p>
-                    <div
-                      className='flex items-center justify-between mt-3'
-                      data-oid='5h9lh5y'
-                    >
-                      <span
-                        className='text-xs text-blue-500'
-                        data-oid='97y5toz'
-                      >
-                        Confidence
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-600'
-                        data-oid='r28n3ey'
-                      >
-                        96%
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className='border-l-4 border-blue-500 pl-6'
-                    data-oid='nq9ji_u'
-                  >
-                    <h5
-                      className='font-semibold text-blue-900'
-                      data-oid='1b3v1:0'
-                    >
-                      Onboarding Flow
-                    </h5>
-                    <p className='text-sm text-blue-600' data-oid='_8jhfmj'>
-                      3-step vs 5-step
-                    </p>
-                    <div
-                      className='flex items-center justify-between mt-3'
-                      data-oid='r_hw5we'
-                    >
-                      <span
-                        className='text-xs text-blue-500'
-                        data-oid='na2s0ip'
-                      >
-                        Confidence
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-600'
-                        data-oid='cbdil:q'
-                      >
-                        78%
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className='border-l-4 border-blue-500 pl-6'
-                    data-oid='0zimwqr'
-                  >
-                    <h5
-                      className='font-semibold text-blue-900'
-                      data-oid='ew:urf4'
-                    >
-                      Email Subject Lines
-                    </h5>
-                    <p className='text-sm text-blue-600' data-oid='_7nlm59'>
-                      Personalization test
-                    </p>
-                    <div
-                      className='flex items-center justify-between mt-3'
-                      data-oid='ar3.u-k'
-                    >
-                      <span
-                        className='text-xs text-blue-500'
-                        data-oid='t_ek3nw'
-                      >
-                        Confidence
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-600'
-                        data-oid='.oc7ab4'
-                      >
-                        45%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {/* Funnel stages with progressive font sizing */}
+                {Object.entries(funnelData).map(([key, data], index) => {
+                  const fontSizes = [
+                    'text-xl',
+                    'text-lg',
+                    'text-base',
+                    'text-sm',
+                  ];
+                  const labelSizes = [
+                    'text-sm',
+                    'text-sm',
+                    'text-xs',
+                    'text-xs',
+                  ];
 
-              {/* User Engagement Metrics */}
-              <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg'
-                data-oid='hm8673p'
-              >
-                <h4
-                  className='text-xl font-bold text-blue-900 mb-4'
-                  data-oid='.7svvn9'
-                >
-                  Engagement
-                </h4>
-                <div className='space-y-6' data-oid='-gmj8yj'>
-                  <div data-oid='8qnwddd'>
-                    <div
-                      className='flex items-center justify-between mb-2'
-                      data-oid='83gc8vy'
-                    >
-                      <span
-                        className='text-sm text-blue-700 font-medium'
-                        data-oid='r3qcd0c'
-                      >
-                        Daily Active Users
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-900'
-                        data-oid='2vzl2uh'
-                      >
-                        8,943
-                      </span>
-                    </div>
-                    <div
-                      className='w-full bg-blue-100 rounded-full h-3'
-                      data-oid='y1o84a5'
-                    >
+                  return (
+                    <div key={key} className='text-center' data-oid='yj:xeyd'>
+                      <div className='mb-4' data-oid='rg6w5a2'>
+                        <div
+                          className={`${fontSizes[index]} font-bold text-gray-900`}
+                          data-oid='yfhg1l6'
+                        >
+                          {data.count.toLocaleString()}
+                        </div>
+                        <div
+                          className={`${labelSizes[index]} text-gray-600 capitalize`}
+                          data-oid='joja5s.'
+                        >
+                          {key}
+                        </div>
+                      </div>
                       <div
-                        className='bg-blue-600 h-3 rounded-full'
-                        style={{ width: '73%' }}
-                        data-oid='.jot-w9'
-                      ></div>
+                        className={`text-xs text-green-600 font-medium`}
+                        data-oid='8uqtp-l'
+                      >
+                        {data.trend}
+                      </div>
                     </div>
-                    <span
-                      className='text-xs text-green-600 font-semibold'
-                      data-oid='6.g13a0'
-                    >
-                      +8.2% vs last week
-                    </span>
-                  </div>
-                  <div data-oid='2:gn21d'>
-                    <div
-                      className='flex items-center justify-between mb-2'
-                      data-oid='ylpu26n'
-                    >
-                      <span
-                        className='text-sm text-blue-700 font-medium'
-                        data-oid='xbs596t'
-                      >
-                        Session Duration
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-900'
-                        data-oid='brq5t_j'
-                      >
-                        12m 34s
-                      </span>
-                    </div>
-                    <div
-                      className='w-full bg-blue-100 rounded-full h-3'
-                      data-oid='ntgae6l'
-                    >
-                      <div
-                        className='bg-blue-600 h-3 rounded-full'
-                        style={{ width: '68%' }}
-                        data-oid='---.-o4'
-                      ></div>
-                    </div>
-                    <span
-                      className='text-xs text-blue-600 font-semibold'
-                      data-oid='y8t:8zv'
-                    >
-                      +2.1% vs last week
-                    </span>
-                  </div>
-                  <div data-oid='.shfn6v'>
-                    <div
-                      className='flex items-center justify-between mb-2'
-                      data-oid='lq5glfx'
-                    >
-                      <span
-                        className='text-sm text-blue-700 font-medium'
-                        data-oid='w0x58k2'
-                      >
-                        Feature Adoption
-                      </span>
-                      <span
-                        className='text-sm font-bold text-blue-900'
-                        data-oid='a3ylt5-'
-                      >
-                        67%
-                      </span>
-                    </div>
-                    <div
-                      className='w-full bg-blue-100 rounded-full h-3'
-                      data-oid='gzk5-yx'
-                    >
-                      <div
-                        className='bg-blue-600 h-3 rounded-full'
-                        style={{ width: '67%' }}
-                        data-oid='zi0o4o4'
-                      ></div>
-                    </div>
-                    <span
-                      className='text-xs text-yellow-600 font-semibold'
-                      data-oid='syq.nzp'
-                    >
-                      -1.3% vs last week
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Customer Satisfaction */}
-              <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg'
-                data-oid='mzq..wz'
-              >
-                <h4
-                  className='text-xl font-bold text-blue-900 mb-4'
-                  data-oid='2dcb5b:'
-                >
-                  Customer Metrics
-                </h4>
-                <div className='space-y-6' data-oid='07by--v'>
-                  <div data-oid='f-t94nt'>
-                    <div
-                      className='inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-4'
-                      data-oid='::veojq'
-                    >
-                      <span
-                        className='text-3xl font-bold text-green-600'
-                        data-oid='d28ivta'
-                      >
-                        8.7
-                      </span>
-                    </div>
-                    <p
-                      className='text-sm text-blue-700 font-medium'
-                      data-oid='j89jvk5'
-                    >
-                      Customer Satisfaction Score
-                    </p>
-                    <span
-                      className='text-xs text-green-600 font-semibold'
-                      data-oid='-zvfum4'
-                    >
-                      Excellent
-                    </span>
-                  </div>
-                  <div
-                    className='grid grid-cols-2 gap-6 pt-6 border-t border-blue-200'
-                    data-oid='pfsoy92'
-                  >
-                    <div data-oid='c1s79mv'>
-                      <span
-                        className='text-xl font-bold text-blue-900'
-                        data-oid='ldkybr0'
-                      >
-                        2.1%
-                      </span>
-                      <p
-                        className='text-xs text-blue-600 font-medium'
-                        data-oid='nd77v24'
-                      >
-                        Churn Rate
-                      </p>
-                      <span
-                        className='text-xs text-green-600 font-semibold'
-                        data-oid='8e7m-hz'
-                      >
-                        ↓ 0.3%
-                      </span>
-                    </div>
-                    <div data-oid='9qrebh.'>
-                      <span
-                        className='text-xl font-bold text-blue-900'
-                        data-oid='xmykn59'
-                      >
-                        94%
-                      </span>
-                      <p
-                        className='text-xs text-blue-600 font-medium'
-                        data-oid='u8eoj16'
-                      >
-                        Retention
-                      </p>
-                      <span
-                        className='text-xs text-green-600 font-semibold'
-                        data-oid='.-0of1j'
-                      >
-                        ↑ 1.2%
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Real-time Activity Feed */}
+            {/* Charts */}
             <div
               className='grid grid-cols-1 lg:grid-cols-2 gap-6'
-              data-oid='p-pbvcg'
+              data-oid='2dh8zxy'
             >
+              <ConversionRateTrendChart data-oid='vuj.jrd' />
+              <WebMetricsChart data-oid='tfam3y4' />
+            </div>
+          </div>
+        </ConditionalChart>
+
+        {/* System Details - Progressive Disclosure */}
+        <ConditionalChart
+          title='System Details'
+          isVisible={showSystemDetails}
+          onToggle={() => setShowSystemDetails(!showSystemDetails)}
+          description='Detailed system health, experiments, and ML model performance'
+          itemCount={experiments.length + modelMetrics.length}
+          data-oid='49ddti4'
+        >
+          <div className='space-y-8' data-oid='gbfzau:'>
+            {/* System Health Details */}
+            <div
+              className='grid grid-cols-1 lg:grid-cols-2 gap-6'
+              data-oid='rvbo3fu'
+            >
+              {/* Experiments */}
               <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg'
-                data-oid='oc8ulle'
+                className='bg-white p-6 rounded-lg border border-gray-200'
+                data-oid='i4czvp5'
               >
-                <h4
-                  className='text-xl font-bold text-blue-900 mb-4'
-                  data-oid='yd9tltw'
+                <h3
+                  className='text-lg font-semibold text-gray-900 mb-4'
+                  data-oid='9d6ush:'
                 >
-                  Real-time Activity
-                </h4>
-                <div className='space-y-4' data-oid='_dp7z3m'>
-                  <div
-                    className='flex items-center space-x-4 p-4 bg-green-50 rounded-xl'
-                    data-oid='11slqi0'
-                  >
-                    <div
-                      className='w-3 h-3 bg-green-500 rounded-full'
-                      data-oid='czcqjyk'
-                    ></div>
-                    <div className='flex-1' data-oid='8hjbvrc'>
-                      <p
-                        className='text-sm text-blue-900 font-medium'
-                        data-oid='ei4_yn6'
+                  Active Experiments
+                </h3>
+                {experiments.length > 0 ? (
+                  <div className='space-y-4' data-oid='bv1xe0r'>
+                    {experiments.map(experiment => (
+                      <div
+                        key={experiment.id}
+                        className='p-4 bg-gray-50 rounded-lg'
+                        data-oid='pls5vex'
                       >
-                        New trial signup from enterprise lead
-                      </p>
-                      <span
-                        className='text-xs text-blue-600'
-                        data-oid='mkg_5-x'
-                      >
-                        2 minutes ago
-                      </span>
-                    </div>
+                        <div
+                          className='flex justify-between items-start mb-2'
+                          data-oid='mb_gnmh'
+                        >
+                          <h4
+                            className='font-medium text-gray-900'
+                            data-oid='kh7p-bp'
+                          >
+                            {experiment.name}
+                          </h4>
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${
+                              experiment.status === 'Running'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}
+                            data-oid='.bnsjqy'
+                          >
+                            {experiment.status}
+                          </span>
+                        </div>
+                        <div
+                          className='text-sm text-gray-600'
+                          data-oid='.4wsk32'
+                        >
+                          <div data-oid='-.u64um'>
+                            Conversion Rate: {experiment.conversionRate}%
+                          </div>
+                          <div data-oid='zzgwpfe'>
+                            Confidence: {experiment.confidence}%
+                          </div>
+                          <div data-oid='xgro1ts'>
+                            Industry: {experiment.industry}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div
-                    className='flex items-center space-x-4 p-4 bg-blue-50 rounded-xl'
-                    data-oid='5bwd7ku'
-                  >
-                    <div
-                      className='w-3 h-3 bg-blue-500 rounded-full'
-                      data-oid='6av:tt1'
-                    ></div>
-                    <div className='flex-1' data-oid='et:uxcg'>
-                      <p
-                        className='text-sm text-blue-900 font-medium'
-                        data-oid='e68ygue'
-                      >
-                        A/B test reached statistical significance
-                      </p>
-                      <span
-                        className='text-xs text-blue-600'
-                        data-oid='bm9v8.7'
-                      >
-                        8 minutes ago
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className='flex items-center space-x-4 p-4 bg-yellow-50 rounded-xl'
-                    data-oid='y.l_q-5'
-                  >
-                    <div
-                      className='w-3 h-3 bg-yellow-500 rounded-full'
-                      data-oid='-abh-.v'
-                    ></div>
-                    <div className='flex-1' data-oid='1bcte6d'>
-                      <p
-                        className='text-sm text-blue-900 font-medium'
-                        data-oid='un3:yv:'
-                      >
-                        User completed onboarding flow
-                      </p>
-                      <span
-                        className='text-xs text-blue-600'
-                        data-oid='h45igd:'
-                      >
-                        12 minutes ago
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className='flex items-center space-x-4 p-4 bg-green-50 rounded-xl'
-                    data-oid='1ea9z5j'
-                  >
-                    <div
-                      className='w-3 h-3 bg-green-500 rounded-full'
-                      data-oid='ngzhvv_'
-                    ></div>
-                    <div className='flex-1' data-oid='9c42bv1'>
-                      <p
-                        className='text-sm text-blue-900 font-medium'
-                        data-oid='t1w5kc_'
-                      >
-                        Payment received: $299/month plan
-                      </p>
-                      <span
-                        className='text-xs text-blue-600'
-                        data-oid='773g8.9'
-                      >
-                        18 minutes ago
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                ) : (
+                  <EmptyStates.NoExperiments data-oid='yyl171j' />
+                )}
               </div>
 
-              {/* Key Performance Indicators */}
+              {/* ML Models */}
               <div
-                className='bg-white rounded-lg p-6 border border-blue-100 shadow-lg'
-                data-oid='-10.ker'
+                className='bg-white p-6 rounded-lg border border-gray-200'
+                data-oid='r8nvtqa'
               >
-                <h4
-                  className='text-xl font-bold text-blue-900 mb-4'
-                  data-oid='a7mmpnv'
+                <h3
+                  className='text-lg font-semibold text-gray-900 mb-4'
+                  data-oid='f-4wkeu'
                 >
-                  Performance Summary
-                </h4>
-                <div className='grid grid-cols-2 gap-6' data-oid='bn-crf:'>
-                  <div
-                    className='text-center p-6 bg-blue-50 rounded-xl'
-                    data-oid='kff71yi'
-                  >
-                    <span
-                      className='text-3xl font-bold text-blue-600'
-                      data-oid='.aed_qa'
-                    >
-                      15.3%
-                    </span>
-                    <p
-                      className='text-sm text-blue-700 font-medium'
-                      data-oid='n48v_ip'
-                    >
-                      Conversion Rate
-                    </p>
-                    <span
-                      className='text-xs text-green-600 font-semibold'
-                      data-oid='k3ljz:m'
-                    >
-                      ↑ 2.1%
-                    </span>
+                  ML Model Performance
+                </h3>
+                {modelMetrics.length > 0 ? (
+                  <div className='space-y-4' data-oid='c4pxwvk'>
+                    {modelMetrics.map((metric, index) => (
+                      <div
+                        key={index}
+                        className='p-4 bg-gray-50 rounded-lg'
+                        data-oid='zgp8u63'
+                      >
+                        <div
+                          className='flex justify-between items-start mb-2'
+                          data-oid='tvhkfs:'
+                        >
+                          <h4
+                            className='font-medium text-gray-900'
+                            data-oid='5_7_v8t'
+                          >
+                            {metric.name}
+                          </h4>
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${
+                              metric.status === 'Active'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-blue-100 text-blue-800'
+                            }`}
+                            data-oid='27roxn9'
+                          >
+                            {metric.status}
+                          </span>
+                        </div>
+                        <div
+                          className='text-sm text-gray-600'
+                          data-oid='z1x5qol'
+                        >
+                          <div data-oid='j8-_n15'>
+                            Accuracy: {metric.accuracy}%
+                          </div>
+                          <div data-oid='._-dbah'>
+                            Confidence: {metric.confidence}%
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div
-                    className='text-center p-6 bg-blue-50 rounded-xl'
-                    data-oid='wy0r7hn'
-                  >
-                    <span
-                      className='text-3xl font-bold text-blue-600'
-                      data-oid='05zd0rw'
-                    >
-                      $127
-                    </span>
-                    <p
-                      className='text-sm text-blue-700 font-medium'
-                      data-oid='o61hvpq'
-                    >
-                      Avg. Deal Size
-                    </p>
-                    <span
-                      className='text-xs text-blue-600 font-semibold'
-                      data-oid='t8am8l5'
-                    >
-                      ↑ $12
-                    </span>
-                  </div>
-                  <div
-                    className='text-center p-6 bg-blue-50 rounded-xl'
-                    data-oid='bdw-1vq'
-                  >
-                    <span
-                      className='text-3xl font-bold text-blue-600'
-                      data-oid='32w-zem'
-                    >
-                      18 days
-                    </span>
-                    <p
-                      className='text-sm text-blue-700 font-medium'
-                      data-oid='w9nnr1s'
-                    >
-                      Sales Cycle
-                    </p>
-                    <span
-                      className='text-xs text-red-600 font-semibold'
-                      data-oid='-b8mw23'
-                    >
-                      ↑ 2 days
-                    </span>
-                  </div>
-                  <div
-                    className='text-center p-6 bg-blue-50 rounded-xl'
-                    data-oid='a2t89tg'
-                  >
-                    <span
-                      className='text-3xl font-bold text-blue-600'
-                      data-oid='ev8o7z4'
-                    >
-                      94.2%
-                    </span>
-                    <p
-                      className='text-sm text-blue-700 font-medium'
-                      data-oid='ln-nzhy'
-                    >
-                      Model Accuracy
-                    </p>
-                    <span
-                      className='text-xs text-green-600 font-semibold'
-                      data-oid='g3z7cqt'
-                    >
-                      ↑ 1.8%
-                    </span>
-                  </div>
-                </div>
+                ) : (
+                  <EmptyStates.NoData data-oid='w4:9.:o' />
+                )}
               </div>
             </div>
-          </section>
-        )}
-
-        <div
-          className='grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8'
-          data-oid='x-yr26f'
-        >
-          {/* System Health */}
-          {showSystemDetails && (
-            <section className='lg:col-span-1' data-oid='m2-cioc'>
-              <h3
-                className='text-2xl font-bold mb-4 text-blue-900'
-                data-oid='2oo6_oa'
-              >
-                System Health
-              </h3>
-              <div
-                className='bg-white rounded-lg shadow-xl border border-blue-100 p-6 h-96 flex flex-col'
-                data-oid='ih:5xqs'
-              >
-                <div
-                  className='flex-1 overflow-y-auto dashboard-scrollable'
-                  data-oid='9b1ld7e'
-                >
-                  <div className='space-y-4' data-oid='fxeeix4'>
-                    <HealthIndicator
-                      service='API Gateway'
-                      status={apiConnected}
-                      data-oid='44fx28o'
-                    />
-
-                    <HealthIndicator
-                      service='ML Engine'
-                      status={systemHealth.mlEngine || apiConnected}
-                      data-oid='tkg74r.'
-                    />
-
-                    <HealthIndicator
-                      service='A/B Testing'
-                      status={systemHealth.abTesting || apiConnected}
-                      data-oid='yf7p8ln'
-                    />
-
-                    <HealthIndicator
-                      service='Analytics'
-                      status={systemHealth.analytics || apiConnected}
-                      data-oid='euynstq'
-                    />
-
-                    <HealthIndicator
-                      service='Recommendations'
-                      status={systemHealth.recommendations || apiConnected}
-                      data-oid='0_uvx37'
-                    />
-                  </div>
-                  <div
-                    className='mt-8 pt-6 border-t border-blue-200'
-                    data-oid='iihsxxe'
-                  >
-                    <p
-                      className='text-blue-600 text-xs mb-3 font-medium'
-                      data-oid='z48kaeh'
-                    >
-                      System Status
-                    </p>
-                    <div
-                      className='flex items-center justify-between'
-                      data-oid='fd5hvyp'
-                    >
-                      <span
-                        className='text-blue-900 font-semibold'
-                        data-oid='lse2fhq'
-                      >
-                        Overall Health
-                      </span>
-                      <span
-                        className='text-green-600 font-bold'
-                        data-oid='ff.j-xo'
-                      >
-                        98.5%
-                      </span>
-                    </div>
-                    <div
-                      className='w-full bg-blue-100 rounded-full h-3 mt-3'
-                      data-oid='o9-pggx'
-                    >
-                      <div
-                        className='bg-green-500 h-3 rounded-full transition-all duration-500'
-                        style={{ width: '98.5%' }}
-                        data-oid='ox.lwia'
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Active A/B Experiments */}
-          {showSystemDetails && (
-            <section className='lg:col-span-1' data-oid='-na8vz1'>
-              <h3
-                className='text-2xl font-bold mb-4 text-blue-900'
-                data-oid='t3lor4y'
-              >
-                Active Experiments
-              </h3>
-              <div
-                className='bg-white rounded-lg shadow-xl border border-blue-100 p-6 h-96 flex flex-col'
-                data-oid='6r0f1fl'
-              >
-                <div
-                  className='flex-1 overflow-y-auto dashboard-scrollable'
-                  data-oid='hbjzhlo'
-                >
-                  <div className='space-y-6' data-oid='_cfoz-o'>
-                    {experiments.map(experiment => (
-                      <ExperimentCard
-                        key={experiment.id}
-                        experiment={experiment}
-                        data-oid='8a-1spc'
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div
-                  className='mt-8 pt-6 border-t border-blue-200'
-                  data-oid='w6vsd4e'
-                >
-                  <button
-                    className='w-full bg-blue-600 text-white py-3 px-6 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all duration-300'
-                    data-oid='53wr4eu'
-                  >
-                    View All Experiments
-                  </button>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* ML Model Performance */}
-          {showSystemDetails && (
-            <section className='lg:col-span-1' data-oid='hwy90t6'>
-              <h3
-                className='text-2xl font-bold mb-4 text-blue-900'
-                data-oid='xpa4qq9'
-              >
-                ML Models
-              </h3>
-              <div
-                className='bg-white rounded-lg shadow-xl border border-blue-100 p-6 h-96 flex flex-col'
-                data-oid='0ai68ux'
-              >
-                <div
-                  className='flex-1 overflow-y-auto dashboard-scrollable'
-                  data-oid='hg:j2nv'
-                >
-                  <div className='space-y-6' data-oid='__o-8wz'>
-                    {modelMetrics.map((metric, index) => (
-                      <ModelMetricCard
-                        key={index}
-                        metric={metric}
-                        data-oid='eowr_ol'
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div
-                  className='mt-8 pt-6 border-t border-blue-200'
-                  data-oid='lgmx51:'
-                >
-                  <button
-                    className='w-full bg-blue-600 text-white py-3 px-6 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all duration-300'
-                    data-oid='_rbskzt'
-                  >
-                    Model Refinement Page
-                  </button>
-                </div>
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
+          </div>
+        </ConditionalChart>
+      </div>
     </div>
   );
 };
