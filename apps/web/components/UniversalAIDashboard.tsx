@@ -109,10 +109,10 @@ const UniversalAIDashboard: React.FC = () => {
 
   // Loading and connectivity states
   const [loading, setLoading] = useState(false);
-  const [apiConnected, setApiConnected] = useState(false);
+  const [, setApiConnected] = useState(false);
 
   // Funnel mock data with realistic variations
-  const [funnelData, setFunnelData] = useState({
+  const [funnelData] = useState({
     visitors: {
       count: 24789,
       percentage: 100,

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { ANIMATION_CLASSES, animations } from '../../lib/animations';
 import { cn } from '../../lib/utils';
