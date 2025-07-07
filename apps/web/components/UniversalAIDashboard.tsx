@@ -1319,11 +1319,11 @@ const UniversalAIDashboard: React.FC = () => {
                   </span>
                 </div>
                 <div
-                  className='text-center p-6 bg-yellow-50 rounded-xl'
+                  className='text-center p-6 bg-blue-50 rounded-xl'
                   data-oid='bdw-1vq'
                 >
                   <span
-                    className='text-3xl font-bold text-yellow-600'
+                    className='text-3xl font-bold text-blue-600'
                     data-oid='32w-zem'
                   >
                     18 days
