@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LAYOUT_CLASSES, RESPONSIVE_SPACING, spacing } from '../lib/spacing';
 import ConversionRateTrendChart from './ConversionRateTrendChart';
 import WebMetricsChart from './WebMetricsChart';
 import ConditionalChart from './dashboard/ConditionalChart';
@@ -300,26 +301,36 @@ const UniversalAIDashboard: React.FC = () => {
       data-testid='universal-ai-dashboard'
       data-oid='g7n.5w_'
     >
-      <div className='container mx-auto px-4 py-6 max-w-7xl' data-oid='00qtaa_'>
+      <div className={LAYOUT_CLASSES.DASHBOARD_CONTAINER} data-oid='00qtaa_'>
         {/* Hero Metric - Conversion Rate */}
-        <HeroMetric
-          title='Conversion Rate'
-          value={dashboardStats.conversionRate}
-          unit='%'
-          trend='+2.3%'
-          subtitle='Overall conversion performance across all channels'
-          data-oid='o-fml37'
-        />
+        <div className={LAYOUT_CLASSES.HERO_CONTAINER} data-oid='kow3:vd'>
+          <HeroMetric
+            title='Conversion Rate'
+            value={dashboardStats.conversionRate}
+            unit='%'
+            trend='+2.3%'
+            subtitle='Overall conversion performance across all channels'
+            data-oid='o-fml37'
+          />
+        </div>
 
         {/* Essential Metrics Grid */}
-        <MetricGrid
-          metrics={essentialMetrics}
-          maxItems={5}
-          data-oid='88q:-7q'
-        />
+        <section
+          className={spacing.getSectionSpacing('high')}
+          data-oid='g_z8q5n'
+        >
+          <MetricGrid
+            metrics={essentialMetrics}
+            maxItems={5}
+            data-oid='88q:-7q'
+          />
+        </section>
 
         {/* Progressive Disclosure Controls */}
-        <section className='mb-8' data-oid='..3q5ua'>
+        <section
+          className={spacing.getSectionSpacing('medium')}
+          data-oid='..3q5ua'
+        >
           <div className='text-center mb-4' data-oid='b5wogmp'>
             <p className='text-sm text-blue-600 font-medium' data-oid='fbe2nk_'>
               {(() => {
@@ -379,7 +390,10 @@ const UniversalAIDashboard: React.FC = () => {
           itemCount={4}
           data-oid='lg2tttn'
         >
-          <div className='space-y-8' data-oid='ieykhpn'>
+          <div
+            className={RESPONSIVE_SPACING.CARD_GROUP_RESPONSIVE}
+            data-oid='ieykhpn'
+          >
             {/* Conversion Funnel */}
             <div
               className='bg-white p-6 rounded-lg border border-gray-200'
@@ -392,7 +406,7 @@ const UniversalAIDashboard: React.FC = () => {
                 Conversion Funnel
               </h3>
               <div
-                className='grid grid-cols-1 md:grid-cols-4 gap-6'
+                className={`grid grid-cols-1 md:grid-cols-4 ${spacing.getGridSpacing('metrics')}`}
                 data-oid='83n0sit'
               >
                 {/* Funnel stages with progressive font sizing */}
@@ -403,6 +417,7 @@ const UniversalAIDashboard: React.FC = () => {
                     'text-base',
                     'text-sm',
                   ];
+
                   const labelSizes = [
                     'text-sm',
                     'text-sm',
