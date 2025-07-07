@@ -1,4 +1,5 @@
 import React from 'react';
+import { ANIMATION_CLASSES, animations } from '../../lib/animations';
 import { cn } from '../../lib/utils';
 
 export interface CardProps {
@@ -9,10 +10,15 @@ export interface CardProps {
   hover?: boolean;
   onClick?: () => void;
   'data-testid'?: string;
+  style?: React.CSSProperties;
+  // New animation props
+  hoverAnimation?: 'card' | 'button' | 'metric' | 'interactive' | 'none';
+  focusVariant?: 'subtle' | 'standard' | 'prominent';
+  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'scale' | 'none';
 }
 
 /**
- * Modern SaaS Card Component with Glassmorphism Effects
+ * Modern SaaS Card Component with Glassmorphism Effects and Micro-Animations
  *
  * Features:
  * - Glassmorphism effects with backdrop-blur
@@ -20,97 +26,114 @@ export interface CardProps {
  * - Subtle shadows and elevation
  * - Multiple variants for different use cases
  * - Micro-animations for interactions
+ * - Accessibility support with focus management
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({
-    children,
-    className,
-    variant = 'basic',
-    size = 'md',
-    hover = false,
-    onClick,
-    'data-testid': dataTestId,
-    ...props
-  }, ref) => {
+  (
+    {
+      children,
+      className,
+      variant = 'basic',
+      size = 'md',
+      hover = false,
+      onClick,
+      style,
+      hoverAnimation = 'card',
+      focusVariant = 'standard',
+      enterAnimation = 'fade',
+      'data-testid': testId,
+      ...props
+    },
+    ref
+  ) => {
+    const isInteractive = Boolean(onClick) || hover;
 
-    const isInteractive = onClick || variant === 'interactive';
-
-    // Base card styles with glassmorphism foundation
+    // Base styles for all cards
     const baseStyles = cn(
-      // Base structure and layout
-      'relative overflow-hidden',
-      'rounded-xl', // 12px rounded corners for modern look
+      // Foundation
+      'relative rounded-lg border transition-all duration-300 ease-out',
 
-      // Glassmorphism foundation
-      'bg-white/80 backdrop-blur-sm',
-      'border border-white/20',
+      // Accessibility
+      'focus:outline-none',
 
-      // Subtle elevation system
-      'shadow-sm',
+      // Enter animation (if not disabled)
+      enterAnimation !== 'none' &&
+        animations.getEntranceAnimation(enterAnimation),
 
-      // Smooth transitions for all interactions
-      'transition-all duration-300 ease-out',
-
-      // Size-based padding (breathing room)
-      {
-        'p-4': size === 'sm',     // 16px padding
-        'p-6': size === 'md',     // 24px padding
-        'p-8': size === 'lg',     // 32px padding
-      },
-
-      className
+      // Interactive states
+      isInteractive && [
+        'cursor-pointer',
+        hoverAnimation !== 'none' &&
+          animations.getHoverAnimation(hoverAnimation),
+        animations.getFocusAnimation(focusVariant),
+        ANIMATION_CLASSES.ACTIVE.CARD_PRESS,
+      ]
     );
 
     // Variant-specific styles
-    const variantStyles = cn({
-      // Basic card - minimal elevation
-      'shadow-sm border-gray-200/50': variant === 'basic',
+    const variantStyles = {
+      basic: cn(
+        'bg-white border-gray-200 shadow-sm',
+        isInteractive && 'hover:border-gray-300'
+      ),
+      elevated: cn(
+        'bg-white border-gray-200 shadow-md',
+        isInteractive && 'hover:shadow-lg hover:border-gray-300'
+      ),
+      interactive: cn(
+        'bg-white border-blue-200 shadow-sm ring-1 ring-blue-100',
+        isInteractive && [
+          'hover:border-blue-300 hover:ring-blue-200',
+          'hover:shadow-md hover:shadow-blue-500/10',
+        ]
+      ),
+      glass: cn(
+        'bg-white/60 border-white/20 backdrop-blur-sm shadow-lg',
+        'before:absolute before:inset-0 before:rounded-lg',
+        'before:bg-gradient-to-br before:from-white/10 before:to-white/5',
+        'before:pointer-events-none',
+        isInteractive && [
+          'hover:bg-white/70 hover:border-white/30',
+          'hover:backdrop-blur-md hover:shadow-xl',
+        ]
+      ),
+    };
 
-      // Elevated card - enhanced shadow and glassmorphism
-      'shadow-lg shadow-gray-200/20 bg-white/90 backdrop-blur-md border-white/30':
-        variant === 'elevated',
-
-      // Interactive card - hover effects and cursor
-      'cursor-pointer hover:shadow-xl hover:shadow-gray-200/25 hover:-translate-y-1 hover:bg-white/95 active:scale-[0.98]':
-        variant === 'interactive' || isInteractive,
-
-      // Glass card - maximum glassmorphism effect
-      'bg-white/60 backdrop-blur-lg border-white/40 shadow-xl shadow-gray-200/30':
-        variant === 'glass',
-    });
-
-    // Hover enhancement styles (when hover prop is true)
-    const hoverStyles = cn({
-      'hover:shadow-lg hover:shadow-gray-200/20 hover:-translate-y-0.5 hover:bg-white/90':
-        hover && !isInteractive,
-    });
-
-    // Combine all styles
-    const cardClasses = cn(baseStyles, variantStyles, hoverStyles);
+    // Size-specific padding
+    const sizeStyles = {
+      sm: 'p-4',
+      md: 'p-6',
+      lg: 'p-8',
+    };
 
     return (
       <div
         ref={ref}
-        className={cardClasses}
+        className={cn(
+          baseStyles,
+          variantStyles[variant],
+          sizeStyles[size],
+          className
+        )}
         onClick={onClick}
-        role={isInteractive ? 'button' : undefined}
+        data-testid={testId}
+        style={style}
         tabIndex={isInteractive ? 0 : undefined}
-        onKeyDown={isInteractive ? (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            onClick?.();
-          }
-        } : undefined}
-        data-testid={dataTestId || 'card'}
+        role={onClick ? 'button' : undefined}
+        onKeyDown={
+          onClick
+            ? e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onClick();
+                }
+              }
+            : undefined
+        }
         {...props}
+        data-oid='tz6mo59'
       >
-        {/* Subtle inner glow for glassmorphism effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none rounded-xl" />
-
-        {/* Content container */}
-        <div className="relative z-10">
-          {children}
-        </div>
+        {children}
       </div>
     );
   }
@@ -118,63 +141,140 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card';
 
-// Additional card-related components for composition
+/**
+ * Card Header Component with Typography and Spacing
+ */
 export const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    enterAnimation?:
+      | 'fade'
+      | 'up'
+      | 'down'
+      | 'left'
+      | 'right'
+      | 'scale'
+      | 'none';
+  }
+>(({ className, enterAnimation = 'up', ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-2 pb-4 mb-4 border-b border-gray-100/50', className)}
+    className={cn(
+      'flex flex-col space-y-1.5 pb-6',
+      enterAnimation !== 'none' &&
+        animations.getEntranceAnimation(enterAnimation),
+      className
+    )}
     {...props}
+    data-oid='rlrq4wx'
   />
 ));
 CardHeader.displayName = 'CardHeader';
 
+/**
+ * Card Title Component with Proper Typography
+ */
 export const CardTitle = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLHeadingElement> & {
+    hoverEffect?: boolean;
+  }
+>(({ className, hoverEffect = false, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('text-lg font-semibold leading-none tracking-tight text-gray-900', className)}
+    className={cn(
+      'text-lg font-semibold leading-none tracking-tight text-gray-900',
+      hoverEffect && ANIMATION_CLASSES.HOVER.OPACITY_LIFT,
+      className
+    )}
     {...props}
+    data-oid='m0ww.t5'
   />
 ));
 CardTitle.displayName = 'CardTitle';
 
+/**
+ * Card Description Component
+ */
 export const CardDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    fadeIn?: boolean;
+  }
+>(({ className, fadeIn = false, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-gray-600 leading-relaxed', className)}
+    className={cn(
+      'text-sm text-gray-600 leading-relaxed',
+      fadeIn && ANIMATION_CLASSES.ENTRANCE.FADE_IN,
+      className
+    )}
     {...props}
+    data-oid='4uw6055'
   />
 ));
 CardDescription.displayName = 'CardDescription';
 
+/**
+ * Card Content Component with Proper Spacing
+ */
 export const CardContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    enterAnimation?:
+      | 'fade'
+      | 'up'
+      | 'down'
+      | 'left'
+      | 'right'
+      | 'scale'
+      | 'none';
+    staggerDelay?: number;
+  }
+>(({ className, enterAnimation = 'fade', staggerDelay = 0, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex-1', className)}
+    className={cn(
+      'pt-0',
+      enterAnimation !== 'none' &&
+        animations.getEntranceAnimation(enterAnimation),
+      className
+    )}
+    style={{
+      animationDelay: staggerDelay ? `${staggerDelay}ms` : undefined,
+    }}
     {...props}
+    data-oid='v:_af8-'
   />
 ));
 CardContent.displayName = 'CardContent';
 
+/**
+ * Card Footer Component with Action Areas
+ */
 export const CardFooter = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    enterAnimation?:
+      | 'fade'
+      | 'up'
+      | 'down'
+      | 'left'
+      | 'right'
+      | 'scale'
+      | 'none';
+  }
+>(({ className, enterAnimation = 'up', ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center pt-4 mt-4 border-t border-gray-100/50', className)}
+    className={cn(
+      'flex items-center pt-6',
+      enterAnimation !== 'none' &&
+        animations.getEntranceAnimation(enterAnimation),
+      className
+    )}
     {...props}
+    data-oid='cc6ain-'
   />
 ));
 CardFooter.displayName = 'CardFooter';
