@@ -551,7 +551,10 @@ const UniversalAIDashboard: React.FC = () => {
                 className='flex items-center justify-between mb-4'
                 data-oid='qehu85l'
               >
-                <h4 className='text-xl font-bold text-black' data-oid='uso4lx_'>
+                <h4
+                  className='text-xl font-bold text-blue-900'
+                  data-oid='uso4lx_'
+                >
                   Conversion Funnel
                 </h4>
                 <button
