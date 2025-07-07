@@ -1296,11 +1296,11 @@ const UniversalAIDashboard: React.FC = () => {
                   </span>
                 </div>
                 <div
-                  className='text-center p-6 bg-green-50 rounded-xl'
+                  className='text-center p-6 bg-blue-50 rounded-xl'
                   data-oid='wy0r7hn'
                 >
                   <span
-                    className='text-3xl font-bold text-green-600'
+                    className='text-3xl font-bold text-blue-600'
                     data-oid='05zd0rw'
                   >
                     $127
@@ -1312,7 +1312,7 @@ const UniversalAIDashboard: React.FC = () => {
                     Avg. Deal Size
                   </p>
                   <span
-                    className='text-xs text-green-600 font-semibold'
+                    className='text-xs text-blue-600 font-semibold'
                     data-oid='t8am8l5'
                   >
                     ↑ $12
