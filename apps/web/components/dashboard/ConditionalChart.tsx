@@ -1,4 +1,6 @@
 import React from 'react';
+import { ANIMATION_CLASSES } from '../../lib/animations';
+import Card from '../ui/Card';
 
 interface ConditionalChartProps {
   title: string;
@@ -7,6 +9,7 @@ interface ConditionalChartProps {
   children: React.ReactNode;
   description?: string;
   itemCount?: number;
+  variant?: 'basic' | 'elevated' | 'interactive' | 'glass';
 }
 
 const ConditionalChart: React.FC<ConditionalChartProps> = ({
@@ -16,87 +19,98 @@ const ConditionalChart: React.FC<ConditionalChartProps> = ({
   children,
   description,
   itemCount,
+  variant = 'basic',
 }) => {
   return (
-    <div className='mb-8' data-testid='conditional-chart'>
+    <Card
+      variant={variant}
+      size='lg'
+      className='mb-8'
+      enterAnimation='fade'
+      data-testid='conditional-chart'
+      data-oid='uten5qw'
+    >
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        className={`flex items-center justify-between w-full px-6 py-4 rounded-lg font-medium transition-all duration-300 ${
+        className={`flex items-center justify-between w-full p-6 rounded-lg font-medium transition-all duration-300 ${
           isVisible
             ? 'bg-blue-600 text-white shadow-lg hover:bg-blue-700'
             : 'bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-        }`}
-        data-testid='chart-toggle'
+        } ${
+          ANIMATION_CLASSES.HOVER.BUTTON_HOVER
+        } ${ANIMATION_CLASSES.ACTIVE.BUTTON_PRESS} ${ANIMATION_CLASSES.FOCUS.RING_BLUE}`}
+        data-testid='toggle-button'
+        data-oid='rmlnjf5'
       >
-        <div className='flex items-center space-x-3'>
-          <span className='font-medium'>{title}</span>
-          {itemCount !== undefined && (
-            <span
-              className={`px-2 py-1 text-xs rounded-full ${
+        <div className='flex items-center space-x-3' data-oid='ufv3l_4'>
+          <div className='text-left' data-oid='a-hoenc'>
+            <div className='font-semibold text-lg' data-oid=':hqkh5i'>
+              {title}
+            </div>
+            {description && (
+              <div
+                className={`text-sm mt-1 ${isVisible ? 'text-blue-100' : 'text-gray-600'}`}
+                data-oid='r50jh-x'
+              >
+                {description}
+              </div>
+            )}
+          </div>
+          {itemCount && (
+            <div
+              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                 isVisible
-                  ? 'bg-blue-500 text-blue-100'
-                  : 'bg-blue-100 text-blue-700'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-blue-100 text-blue-800'
               }`}
+              data-oid='zg3sh1u'
             >
               {itemCount} items
-            </span>
+            </div>
           )}
         </div>
 
-        <div className='flex items-center space-x-2'>
-          {description && !isVisible && (
-            <span
-              className={`text-xs ${
-                isVisible ? 'text-blue-100' : 'text-gray-500'
-              }`}
-            >
-              {description}
-            </span>
-          )}
-
-          {/* Chevron Icon */}
+        <div className='flex items-center space-x-2' data-oid='9a6h2ur'>
+          <div
+            className={`text-sm ${isVisible ? 'text-blue-100' : 'text-blue-500'}`}
+            data-oid='qo82sro'
+          >
+            {isVisible ? 'Hide' : 'Show'}
+          </div>
           <svg
-            className={`w-5 h-5 transition-transform duration-300 ${
-              isVisible ? 'transform rotate-180' : ''
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              isVisible ? 'rotate-180' : 'rotate-0'
             }`}
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
-            data-testid='chevron-icon'
+            data-oid='g.xq27d'
           >
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth={2}
               d='M19 9l-7 7-7-7'
+              data-oid='t63.w4b'
             />
           </svg>
         </div>
       </button>
 
-      {/* Collapsible Content */}
-      {isVisible && (
-        <div
-          className='mt-4 transition-all duration-500 ease-in-out animate-fadeIn'
-          data-testid='chart-content'
-        >
-          <div className='bg-white rounded-lg border border-gray-200 overflow-hidden'>
-            {/* Optional Description */}
-            {description && (
-              <div className='px-6 py-4 bg-gray-50 border-b border-gray-200'>
-                <p className='text-sm text-gray-600'>{description}</p>
-              </div>
-            )}
-
-            {/* Chart Content */}
-            <div className='p-6'>
-              {children}
-            </div>
-          </div>
+      {/* Expandable Content */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          isVisible ? 'max-h-screen opacity-100 pt-6' : 'max-h-0 opacity-0'
+        }`}
+        data-testid='expandable-content'
+        data-oid='pao5p9y'
+      >
+        <div className='px-6 pb-6' data-oid='.8.i4m3'>
+          {children}
         </div>
-      )}
-    </div>
+      </div>
+    </Card>
   );
 };
 

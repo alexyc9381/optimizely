@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from '../ui/Card';
 
 interface HeroMetricProps {
   title: string;
@@ -6,6 +7,8 @@ interface HeroMetricProps {
   unit?: string;
   trend?: string;
   subtitle?: string;
+  variant?: 'basic' | 'elevated' | 'interactive' | 'glass';
+  showCard?: boolean;
 }
 
 const HeroMetric: React.FC<HeroMetricProps> = ({
@@ -14,60 +17,92 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
   unit = '%',
   trend,
   subtitle,
+  variant = 'glass',
+  showCard = true,
 }) => {
   const isPositiveTrend = trend && trend.startsWith('+');
 
-  return (
-    <div className='text-center py-8 mb-8' data-testid='hero-metric'>
+  const content = (
+    <div className='text-center' data-testid='hero-metric' data-oid='q8ouux_'>
       {/* Title */}
-      <h1 className='text-lg font-medium text-gray-600 mb-4'>{title}</h1>
+      <h1 className='text-lg font-medium text-gray-600 mb-4' data-oid='f7_syez'>
+        {title}
+      </h1>
 
       {/* Main Value */}
-      <div className='mb-4'>
-        <span className='text-6xl font-bold text-gray-900' data-testid='hero-value'>
+      <div className='mb-4' data-oid='1ijyg_r'>
+        <span
+          className='text-6xl font-bold text-gray-900'
+          data-testid='hero-value'
+          data-oid=':rvk3vs'
+        >
           {value.toFixed(1)}
         </span>
-        <span className='text-3xl font-medium text-gray-600 ml-2'>{unit}</span>
+        <span
+          className='text-3xl font-medium text-gray-600 ml-2'
+          data-oid='aduaxlf'
+        >
+          {unit}
+        </span>
       </div>
 
       {/* Trend Indicator */}
       {trend && (
-        <div className='flex items-center justify-center mb-2'>
-          <span
-            className={`flex items-center text-sm font-medium ${
-              isPositiveTrend ? 'text-green-600' : 'text-red-600'
-            }`}
-            data-testid='hero-trend'
+        <div
+          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-4 ${
+            isPositiveTrend
+              ? 'bg-green-100 text-green-800 border border-green-200'
+              : 'bg-red-100 text-red-800 border border-red-200'
+          }`}
+          data-oid='mm5_9sa'
+        >
+          <svg
+            className={`w-4 h-4 mr-1 ${isPositiveTrend ? 'rotate-0' : 'rotate-180'}`}
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            data-oid='e.prhi8'
           >
-            {isPositiveTrend ? (
-              <svg className='w-4 h-4 mr-1' fill='currentColor' viewBox='0 0 20 20'>
-                <path
-                  fillRule='evenodd'
-                  d='M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z'
-                  clipRule='evenodd'
-                />
-              </svg>
-            ) : (
-              <svg className='w-4 h-4 mr-1' fill='currentColor' viewBox='0 0 20 20'>
-                <path
-                  fillRule='evenodd'
-                  d='M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z'
-                  clipRule='evenodd'
-                />
-              </svg>
-            )}
-            {trend}
-          </span>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M7 17l9.2-9.2M17 8v9h-9'
+              data-oid='kkhp_3g'
+            />
+          </svg>
+          {trend}
         </div>
       )}
 
       {/* Subtitle */}
       {subtitle && (
-        <p className='text-sm text-gray-500' data-testid='hero-subtitle'>
+        <p
+          className='text-gray-500 max-w-md mx-auto leading-relaxed'
+          data-oid='qifcr-d'
+        >
           {subtitle}
         </p>
       )}
     </div>
+  );
+
+  if (!showCard) {
+    return content;
+  }
+
+  return (
+    <Card
+      variant={variant}
+      size='lg'
+      hoverAnimation='interactive'
+      focusVariant='subtle'
+      enterAnimation='scale'
+      className='max-w-2xl mx-auto'
+      data-oid='0my:613'
+    >
+      {content}
+    </Card>
   );
 };
 
