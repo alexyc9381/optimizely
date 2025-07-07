@@ -1060,7 +1060,7 @@ const UniversalAIDashboard: React.FC = () => {
                     data-oid='gzk5-yx'
                   >
                     <div
-                      className='bg-yellow-600 h-3 rounded-full'
+                      className='bg-blue-600 h-3 rounded-full'
                       style={{ width: '67%' }}
                       data-oid='zi0o4o4'
                     ></div>
