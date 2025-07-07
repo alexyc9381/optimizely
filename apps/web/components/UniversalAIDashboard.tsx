@@ -759,7 +759,7 @@ const UniversalAIDashboard: React.FC = () => {
                   >
                     <div data-oid='dplkht-'>
                       <div
-                        className='text-sm font-bold text-green-600'
+                        className='text-sm font-bold text-blue-600'
                         data-oid='3_gkhi1'
                       >
                         Best Stage
