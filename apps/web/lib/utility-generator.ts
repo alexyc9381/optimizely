@@ -3,15 +3,15 @@
  * Generates comprehensive utility classes for typography, colors, and theme tokens
  */
 
-import { TYPOGRAPHY_HIERARCHY } from './typography';
 import { COLOR_PALETTE } from './colors';
-import { 
-  SPACING_TOKENS, 
-  RADIUS_TOKENS, 
-  SHADOW_TOKENS, 
-  ANIMATION_TOKENS,
-  Z_INDEX_TOKENS 
+import {
+    ANIMATION_TOKENS,
+    RADIUS_TOKENS,
+    SHADOW_TOKENS,
+    SPACING_TOKENS,
+    Z_INDEX_TOKENS
 } from './theme-tokens';
+import { TYPOGRAPHY_HIERARCHY } from './typography';
 
 /**
  * Typography Utility Classes
@@ -120,7 +120,7 @@ export const typographyUtilities = {
    */
   getTailwindConfig: () => {
     const fontSize: Record<string, [string, any]> = {};
-    
+
     Object.entries(TYPOGRAPHY_HIERARCHY).forEach(([level, config]) => {
       fontSize[level] = [
         config.fontSize,

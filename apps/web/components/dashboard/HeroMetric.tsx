@@ -1,5 +1,6 @@
 import React from 'react';
 import { SCREEN_READER_DESCRIPTIONS } from '../../lib/accessibility';
+import { useUtilities } from '../../lib/useUtilities';
 import Card from '../ui/Card';
 
 interface HeroMetricProps {
@@ -21,6 +22,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
   variant = 'glass',
   showCard = true,
 }) => {
+  const { colors, components } = useUtilities();
   const isPositiveTrend = trend && trend.startsWith('+');
   const formattedValue = `${value.toFixed(1)}${unit}`;
 
@@ -35,7 +37,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
     <div className='text-center' data-testid='hero-metric' data-oid='q8ouux_'>
       {/* Title */}
       <h1
-        className='text-heading-md font-medium text-gray-600 mb-4'
+        className={`text-heading-md font-medium ${colors.getClass('text', 'secondary', '600')} mb-4`}
         id={`hero-metric-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
         data-oid='f7_syez'
       >
@@ -45,7 +47,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
       {/* Main Value */}
       <div className='mb-4' data-oid='1ijyg_r'>
         <span
-          className='text-display-xl font-bold text-gray-900'
+          className={`text-display-xl font-bold ${colors.getClass('text', 'secondary', '900')}`}
           data-testid='hero-value'
           aria-label={`${title} value: ${formattedValue}`}
           role='text'
@@ -54,7 +56,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
           {value.toFixed(1)}
         </span>
         <span
-          className='text-heading-lg font-medium text-gray-600 ml-2'
+          className={`text-heading-lg font-medium ${colors.getClass('text', 'secondary', '600')} ml-2`}
           aria-hidden='true'
           data-oid='aduaxlf'
         >
@@ -65,11 +67,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
       {/* Trend Indicator */}
       {trend && (
         <div
-          className={`inline-flex items-center px-3 py-1 rounded-full text-label-md font-medium mb-4 ${
-            isPositiveTrend
-              ? 'bg-green-100 text-green-800 border border-green-200'
-              : 'bg-red-100 text-red-800 border border-red-200'
-          }`}
+          className={`${components.badge(isPositiveTrend ? 'success' : 'error')} inline-flex items-center px-3 py-1 rounded-full text-label-md font-medium mb-4`}
           role='status'
           aria-label={`Trend: ${trend} ${isPositiveTrend ? 'increase' : 'decrease'} from previous period`}
           data-oid='mm5_9sa'
@@ -101,7 +99,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
       {/* Subtitle */}
       {subtitle && (
         <p
-          className='text-body-lg text-gray-500 max-w-md mx-auto leading-relaxed'
+          className={`text-body-lg ${colors.getClass('text', 'secondary', '500')} max-w-md mx-auto leading-relaxed`}
           id={`hero-metric-subtitle-${title.replace(/\s+/g, '-').toLowerCase()}`}
           data-oid='qifcr-d'
         >
