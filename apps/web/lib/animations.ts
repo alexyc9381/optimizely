@@ -1,295 +1,357 @@
 /**
- * Modern SaaS Micro-Animation System
- * Provides smooth transitions, hover effects, and micro-animations for enhanced user experience
+ * Advanced Animation System for Micro-interactions
+ * Sophisticated animations with proper timing functions
  */
 
-export const ANIMATION_DURATIONS = {
-  // Standard timing for micro-animations
-  FAST: '150ms',       // Quick feedback (buttons, toggles)
-  STANDARD: '200ms',   // Standard transitions (hover states)
-  COMFORTABLE: '300ms', // Card animations, modals
-  SLOW: '500ms',       // Page transitions, major state changes
-  EXTRA_SLOW: '700ms', // Complex animations, data loading
-} as const;
+/**
+ * Animation Timing Functions (Cubic Bezier)
+ */
+export const TIMING_FUNCTIONS = {
+  // Standard easing curves
+  linear: 'cubic-bezier(0, 0, 1, 1)',
+  easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+  easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+  easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
 
-export const ANIMATION_EASINGS = {
-  // Modern easing functions for smooth, natural motion
-  EASE: 'ease',
-  EASE_IN: 'ease-in',
-  EASE_OUT: 'ease-out',
-  EASE_IN_OUT: 'ease-in-out',
+  // Custom easing for specific interactions
+  subtle: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+  smooth: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  bouncy: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+  elastic: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
 
-  // Custom cubic-bezier curves for premium feel
-  SMOOTH: 'cubic-bezier(0.4, 0, 0.2, 1)',      // Material Design standard
-  BOUNCE: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)', // Subtle bounce
-  SPRING: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Spring effect
-  ELEGANT: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',   // Elegant transition
+  // Micro-interaction specific
+  button: 'cubic-bezier(0, 0, 0.2, 1)',
+  card: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  modal: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  dropdown: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+  tooltip: 'cubic-bezier(0, 0, 0.2, 1)',
 } as const;
 
 /**
- * Pre-built Animation Classes for Common Patterns
+ * Animation Durations (in milliseconds)
+ */
+export const DURATIONS = {
+  instant: 0,
+  fast: 150,
+  normal: 250,
+  slow: 400,
+  slower: 600,
+
+  // Interaction-specific durations
+  hover: 150,
+  focus: 100,
+  press: 75,
+  release: 200,
+  tooltip: 200,
+  modal: 300,
+  page: 500,
+} as const;
+
+/**
+ * Animation Keyframes
+ */
+export const KEYFRAMES = {
+  // Entrance animations
+  fadeIn: {
+    from: { opacity: 0 },
+    to: { opacity: 1 }
+  },
+
+  slideUp: {
+    from: { transform: 'translateY(10px)', opacity: 0 },
+    to: { transform: 'translateY(0)', opacity: 1 }
+  },
+
+  slideDown: {
+    from: { transform: 'translateY(-10px)', opacity: 0 },
+    to: { transform: 'translateY(0)', opacity: 1 }
+  },
+
+  slideLeft: {
+    from: { transform: 'translateX(10px)', opacity: 0 },
+    to: { transform: 'translateX(0)', opacity: 1 }
+  },
+
+  slideRight: {
+    from: { transform: 'translateX(-10px)', opacity: 0 },
+    to: { transform: 'translateX(0)', opacity: 1 }
+  },
+
+  scaleIn: {
+    from: { transform: 'scale(0.95)', opacity: 0 },
+    to: { transform: 'scale(1)', opacity: 1 }
+  },
+
+  // Micro-interactions
+  buttonPress: {
+    from: { transform: 'scale(1)' },
+    to: { transform: 'scale(0.98)' }
+  },
+
+  cardHover: {
+    from: { transform: 'translateY(0) scale(1)' },
+    to: { transform: 'translateY(-2px) scale(1.01)' }
+  },
+
+  pulse: {
+    '0%, 100%': { opacity: 1 },
+    '50%': { opacity: 0.7 }
+  },
+
+  bounce: {
+    '0%, 20%, 53%, 80%, 100%': { transform: 'translateY(0)' },
+    '40%, 43%': { transform: 'translateY(-8px)' },
+    '70%': { transform: 'translateY(-4px)' },
+    '90%': { transform: 'translateY(-2px)' }
+  },
+
+  spin: {
+    from: { transform: 'rotate(0deg)' },
+    to: { transform: 'rotate(360deg)' }
+  },
+
+  // Loading animations
+  shimmer: {
+    '0%': { transform: 'translateX(-100%)' },
+    '100%': { transform: 'translateX(100%)' }
+  },
+
+  breathe: {
+    '0%, 100%': { transform: 'scale(1)', opacity: 0.8 },
+    '50%': { transform: 'scale(1.05)', opacity: 1 }
+  }
+} as const;
+
+/**
+ * CSS Animation Classes
  */
 export const ANIMATION_CLASSES = {
-  // Hover Effects for Cards and Interactive Elements
-  HOVER: {
-    // Subtle lift effect (2-4px translation)
-    LIFT_SUBTLE: 'hover:-translate-y-1 transition-transform duration-200 ease-out',
-    LIFT_MEDIUM: 'hover:-translate-y-2 transition-transform duration-300 ease-out',
-    LIFT_STRONG: 'hover:-translate-y-3 transition-transform duration-200 ease-out',
-
-    // Shadow enhancement on hover
-    SHADOW_GROW: 'hover:shadow-lg transition-shadow duration-300 ease-out',
-    SHADOW_GLOW: 'hover:shadow-xl hover:shadow-blue-500/10 transition-shadow duration-300 ease-out',
-
-    // Scale effects (very subtle for modern feel)
-    SCALE_SUBTLE: 'hover:scale-[1.02] transition-transform duration-200 ease-out',
-    SCALE_MEDIUM: 'hover:scale-105 transition-transform duration-300 ease-out',
-
-    // Opacity effects
-    OPACITY_LIFT: 'hover:opacity-90 transition-opacity duration-200 ease-out',
-    OPACITY_GLOW: 'hover:opacity-100 opacity-95 transition-opacity duration-300 ease-out',
-
-    // Combined effects for different interaction types
-    CARD_HOVER: 'hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ease-out',
-    BUTTON_HOVER: 'hover:scale-[1.02] hover:shadow-md transition-all duration-200 ease-out',
-    METRIC_HOVER: 'hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 ease-out',
+  // Entrance animations
+  'animate-fade-in': {
+    animation: `fadeIn ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} forwards`
   },
 
-  // Active/Press States
-  ACTIVE: {
-    // Subtle press effect
-    PRESS_SUBTLE: 'active:scale-[0.98] active:translate-y-0 transition-transform duration-100 ease-in',
-    PRESS_MEDIUM: 'active:scale-[0.95] transition-transform duration-100 ease-in',
-
-    // Shadow reduction on press
-    SHADOW_REDUCE: 'active:shadow-sm transition-shadow duration-100 ease-in',
-
-    // Combined press effects
-    BUTTON_PRESS: 'active:scale-[0.98] active:shadow-sm transition-all duration-100 ease-in',
-    CARD_PRESS: 'active:scale-[0.99] active:translate-y-0 transition-all duration-150 ease-in',
+  'animate-slide-up': {
+    animation: `slideUp ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} forwards`
   },
 
-  // Focus States for Accessibility
-  FOCUS: {
-    // Accessible focus rings
-    RING_BLUE: 'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200',
-    RING_SUBTLE: 'focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-1 transition-all duration-200',
-    RING_GLOW: 'focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:shadow-lg transition-all duration-200',
-
-    // Outline alternatives
-    OUTLINE_BLUE: 'focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200',
-    OUTLINE_SUBTLE: 'focus:outline-none focus:ring-1 focus:ring-blue-400 transition-all duration-200',
+  'animate-slide-down': {
+    animation: `slideDown ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} forwards`
   },
 
-  // Loading and State Transitions
-  LOADING: {
-    // Pulse animation for loading states
-    PULSE: 'animate-pulse',
-    PULSE_SLOW: 'animate-pulse [animation-duration:2s]',
-
-    // Spin animation for spinners
-    SPIN: 'animate-spin',
-    SPIN_SLOW: 'animate-spin [animation-duration:2s]',
-
-    // Bounce for activity indicators
-    BOUNCE: 'animate-bounce',
-    BOUNCE_SLOW: 'animate-bounce [animation-duration:1.5s]',
-
-    // Custom shimmer effect
-    SHIMMER: 'bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%] animate-[shimmer_1.5s_ease-in-out_infinite]',
+  'animate-scale-in': {
+    animation: `scaleIn ${DURATIONS.fast}ms ${TIMING_FUNCTIONS.easeOut} forwards`
   },
 
-  // Entrance Animations
-  ENTRANCE: {
-    // Fade in effects
-    FADE_IN: 'animate-in fade-in duration-300 ease-out',
-    FADE_IN_UP: 'animate-in fade-in slide-in-from-bottom-4 duration-300 ease-out',
-    FADE_IN_DOWN: 'animate-in fade-in slide-in-from-top-4 duration-300 ease-out',
-    FADE_IN_LEFT: 'animate-in fade-in slide-in-from-left-4 duration-300 ease-out',
-    FADE_IN_RIGHT: 'animate-in fade-in slide-in-from-right-4 duration-300 ease-out',
-
-    // Scale in effects
-    SCALE_IN: 'animate-in zoom-in-50 duration-200 ease-out',
-    SCALE_IN_SMOOTH: 'animate-in zoom-in-95 fade-in duration-300 ease-out',
+  // Interaction animations
+  'animate-button-press': {
+    animation: `buttonPress ${DURATIONS.press}ms ${TIMING_FUNCTIONS.button} forwards`
   },
 
-  // Exit Animations
-  EXIT: {
-    // Fade out effects
-    FADE_OUT: 'animate-out fade-out duration-200 ease-in',
-    FADE_OUT_UP: 'animate-out fade-out slide-out-to-top-4 duration-200 ease-in',
-    FADE_OUT_DOWN: 'animate-out fade-out slide-out-to-bottom-4 duration-200 ease-in',
-
-    // Scale out effects
-    SCALE_OUT: 'animate-out zoom-out-50 duration-150 ease-in',
-    SCALE_OUT_SMOOTH: 'animate-out zoom-out-95 fade-out duration-200 ease-in',
+  'animate-card-hover': {
+    animation: `cardHover ${DURATIONS.hover}ms ${TIMING_FUNCTIONS.card} forwards`
   },
+
+  // Loading animations
+  'animate-pulse-subtle': {
+    animation: `pulse ${DURATIONS.slower}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+  },
+
+  'animate-spin-smooth': {
+    animation: `spin ${DURATIONS.slower}ms ${TIMING_FUNCTIONS.linear} infinite`
+  },
+
+  'animate-shimmer': {
+    animation: `shimmer ${DURATIONS.slower}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+  },
+
+  'animate-breathe': {
+    animation: `breathe ${DURATIONS.slower * 2}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+  }
 } as const;
 
 /**
- * Transition Classes for Smooth Property Changes
+ * Stagger Animation Utilities
  */
-export const TRANSITION_CLASSES = {
-  // Basic transitions
-  ALL: 'transition-all duration-300 ease-out',
-  ALL_FAST: 'transition-all duration-200 ease-out',
-  ALL_SLOW: 'transition-all duration-500 ease-out',
+export const createStaggerDelay = (index: number, baseDelay: number = 100): string => {
+  return `${index * baseDelay}ms`;
+};
 
-  // Specific property transitions
-  TRANSFORM: 'transition-transform duration-300 ease-out',
-  OPACITY: 'transition-opacity duration-300 ease-out',
-  SHADOW: 'transition-shadow duration-300 ease-out',
-  COLORS: 'transition-colors duration-300 ease-out',
-
-  // Combined property transitions
-  TRANSFORM_SHADOW: 'transition-[transform,box-shadow] duration-300 ease-out',
-  TRANSFORM_OPACITY: 'transition-[transform,opacity] duration-300 ease-out',
-  COLORS_SHADOW: 'transition-[colors,box-shadow] duration-300 ease-out',
-} as const;
-
-/**
- * Keyframe Animations for Custom Effects
- */
-export const KEYFRAME_ANIMATIONS = {
-  // Custom shimmer animation for loading states
-  shimmer: {
-    '0%': { backgroundPosition: '-200% 0' },
-    '100%': { backgroundPosition: '200% 0' },
-  },
-
-  // Subtle bounce for success states
-  subtleBounce: {
-    '0%, 100%': { transform: 'translateY(0)' },
-    '50%': { transform: 'translateY(-2px)' },
-  },
-
-  // Gentle pulse for important elements
-  gentlePulse: {
-    '0%, 100%': { opacity: '1' },
-    '50%': { opacity: '0.8' },
-  },
-
-  // Floating animation for hero elements
-  float: {
-    '0%, 100%': { transform: 'translateY(0)' },
-    '50%': { transform: 'translateY(-4px)' },
-  },
-} as const;
-
-/**
- * Animation Utility Functions
- */
-export const animations = {
-  /**
-   * Get hover animation class based on element type
-   */
-  getHoverAnimation: (elementType: 'card' | 'button' | 'metric' | 'interactive' = 'card') => {
-    switch (elementType) {
-      case 'card':
-        return ANIMATION_CLASSES.HOVER.CARD_HOVER;
-      case 'button':
-        return ANIMATION_CLASSES.HOVER.BUTTON_HOVER;
-      case 'metric':
-        return ANIMATION_CLASSES.HOVER.METRIC_HOVER;
-      case 'interactive':
-        return ANIMATION_CLASSES.HOVER.LIFT_MEDIUM;
-      default:
-        return ANIMATION_CLASSES.HOVER.CARD_HOVER;
-    }
-  },
-
-  /**
-   * Get focus animation class for accessibility
-   */
-  getFocusAnimation: (variant: 'subtle' | 'standard' | 'prominent' = 'standard') => {
-    switch (variant) {
-      case 'subtle':
-        return ANIMATION_CLASSES.FOCUS.RING_SUBTLE;
-      case 'standard':
-        return ANIMATION_CLASSES.FOCUS.RING_BLUE;
-      case 'prominent':
-        return ANIMATION_CLASSES.FOCUS.RING_GLOW;
-      default:
-        return ANIMATION_CLASSES.FOCUS.RING_BLUE;
-    }
-  },
-
-  /**
-   * Get transition class based on properties to animate
-   */
-  getTransition: (properties: 'all' | 'transform' | 'opacity' | 'shadow' | 'colors' | 'transform-shadow' = 'all') => {
-    switch (properties) {
-      case 'all':
-        return TRANSITION_CLASSES.ALL;
-      case 'transform':
-        return TRANSITION_CLASSES.TRANSFORM;
-      case 'opacity':
-        return TRANSITION_CLASSES.OPACITY;
-      case 'shadow':
-        return TRANSITION_CLASSES.SHADOW;
-      case 'colors':
-        return TRANSITION_CLASSES.COLORS;
-      case 'transform-shadow':
-        return TRANSITION_CLASSES.TRANSFORM_SHADOW;
-      default:
-        return TRANSITION_CLASSES.ALL;
-    }
-  },
-
-  /**
-   * Get entrance animation class
-   */
-  getEntranceAnimation: (direction: 'fade' | 'up' | 'down' | 'left' | 'right' | 'scale' = 'fade') => {
-    switch (direction) {
-      case 'fade':
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN;
-      case 'up':
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN_UP;
-      case 'down':
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN_DOWN;
-      case 'left':
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN_LEFT;
-      case 'right':
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN_RIGHT;
-      case 'scale':
-        return ANIMATION_CLASSES.ENTRANCE.SCALE_IN_SMOOTH;
-      default:
-        return ANIMATION_CLASSES.ENTRANCE.FADE_IN;
-    }
-  },
-
-  /**
-   * Combine multiple animation classes safely
-   */
-  combine: (...animationClasses: string[]) => {
-    return animationClasses.filter(Boolean).join(' ');
-  },
+export const createStaggerAnimation = (
+  animationName: string,
+  duration: number,
+  easing: string,
+  staggerDelay: number
+): string => {
+  return `${animationName} ${duration}ms ${easing} ${staggerDelay}ms forwards`;
 };
 
 /**
- * Design System Guidelines for Animations
+ * Interaction Animation Helpers
  */
-export const ANIMATION_GUIDELINES = {
-  PRINCIPLES: [
-    'Animations should enhance usability, not distract from it',
-    'Use subtle animations (2-4px translations, 200-300ms durations)',
-    'Provide immediate feedback for user interactions',
-    'Respect prefers-reduced-motion accessibility setting',
-    'Maintain consistent timing across similar elements',
-    'Use easing functions for natural, smooth motion',
-  ],
+export const animationHelpers = {
+  /**
+   * Get hover animation style
+   */
+  getHoverAnimation: (type: 'subtle' | 'lift' | 'scale' = 'subtle') => {
+    const animations = {
+      subtle: {
+        transition: `all ${DURATIONS.hover}ms ${TIMING_FUNCTIONS.button}`,
+        ':hover': {
+          transform: 'translateY(-1px)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+        }
+      },
+      lift: {
+        transition: `all ${DURATIONS.hover}ms ${TIMING_FUNCTIONS.card}`,
+        ':hover': {
+          transform: 'translateY(-4px) scale(1.01)',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)'
+        }
+      },
+      scale: {
+        transition: `transform ${DURATIONS.hover}ms ${TIMING_FUNCTIONS.elastic}`,
+        ':hover': {
+          transform: 'scale(1.05)'
+        }
+      }
+    };
 
-  TIMING: {
-    MICRO_INTERACTIONS: '150-200ms',
-    HOVER_STATES: '200-300ms',
-    STATE_CHANGES: '300-500ms',
-    PAGE_TRANSITIONS: '500-700ms',
+    return animations[type];
   },
 
-  EASING_USAGE: {
-    HOVER_IN: 'ease-out (quick start, slow end)',
-    HOVER_OUT: 'ease-in (slow start, quick end)',
-    GENERAL: 'ease-in-out (balanced)',
-    ENTRANCES: 'cubic-bezier(0.4, 0, 0.2, 1) (smooth)',
+  /**
+   * Get focus animation style
+   */
+  getFocusAnimation: () => ({
+    transition: `all ${DURATIONS.focus}ms ${TIMING_FUNCTIONS.button}`,
+    ':focus': {
+      transform: 'scale(1.02)',
+      outline: 'none',
+      boxShadow: '0 0 0 3px rgba(91, 108, 255, 0.3)'
+    }
+  }),
+
+  /**
+   * Get press animation style
+   */
+  getPressAnimation: () => ({
+    transition: `transform ${DURATIONS.press}ms ${TIMING_FUNCTIONS.button}`,
+    ':active': {
+      transform: 'scale(0.98)'
+    }
+  }),
+
+  /**
+   * Get loading animation style
+   */
+  getLoadingAnimation: (type: 'pulse' | 'shimmer' | 'breathe' = 'pulse') => {
+    const animations = {
+      pulse: {
+        animation: `pulse ${DURATIONS.slower}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+      },
+      shimmer: {
+        position: 'relative' as const,
+        overflow: 'hidden' as const,
+        '::before': {
+          content: '""',
+          position: 'absolute' as const,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+          animation: `shimmer ${DURATIONS.slower}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+        }
+      },
+      breathe: {
+        animation: `breathe ${DURATIONS.slower * 2}ms ${TIMING_FUNCTIONS.easeInOut} infinite`
+      }
+    };
+
+    return animations[type];
   },
-} as const;
+
+  /**
+   * Get entrance animation with stagger
+   */
+  getEntranceAnimation: (
+    type: 'fade' | 'slide-up' | 'slide-down' | 'scale' = 'fade',
+    delay: number = 0
+  ) => {
+    const animations = {
+      fade: `fadeIn ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} ${delay}ms forwards`,
+      'slide-up': `slideUp ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} ${delay}ms forwards`,
+      'slide-down': `slideDown ${DURATIONS.normal}ms ${TIMING_FUNCTIONS.easeOut} ${delay}ms forwards`,
+      scale: `scaleIn ${DURATIONS.fast}ms ${TIMING_FUNCTIONS.easeOut} ${delay}ms forwards`
+    };
+
+    return {
+      opacity: type === 'fade' ? 0 : undefined,
+      transform: type.includes('slide') || type === 'scale' ? 'translateY(10px)' : undefined,
+      animation: animations[type]
+    };
+  }
+};
+
+/**
+ * Reduced Motion Support
+ */
+export const getReducedMotionCSS = () => `
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+`;
+
+/**
+ * CSS Generator for animations
+ */
+export const generateAnimationCSS = (): string => {
+  let css = '';
+
+  // Add keyframes
+  Object.entries(KEYFRAMES).forEach(([name, frames]) => {
+    css += `@keyframes ${name} {\n`;
+    Object.entries(frames).forEach(([key, value]) => {
+      if (typeof value === 'object') {
+        css += `  ${key} {\n`;
+        Object.entries(value).forEach(([prop, val]) => {
+          css += `    ${prop}: ${val};\n`;
+        });
+        css += `  }\n`;
+      }
+    });
+    css += `}\n\n`;
+  });
+
+  // Add utility classes
+  Object.entries(ANIMATION_CLASSES).forEach(([className, styles]) => {
+    css += `.${className} {\n`;
+    Object.entries(styles).forEach(([prop, value]) => {
+      css += `  ${prop}: ${value};\n`;
+    });
+    css += `}\n\n`;
+  });
+
+  // Add reduced motion support
+  css += getReducedMotionCSS();
+
+  return css;
+};
+
+export default {
+  TIMING_FUNCTIONS,
+  DURATIONS,
+  KEYFRAMES,
+  ANIMATION_CLASSES,
+  createStaggerDelay,
+  createStaggerAnimation,
+  animationHelpers,
+  generateAnimationCSS,
+  getReducedMotionCSS
+};
