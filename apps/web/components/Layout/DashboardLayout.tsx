@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
-import { initializeA11y } from '../../lib/accessibility';
-import {
-    initializeAccessibilityPerformance,
-    preloadCriticalResources,
-} from '../../lib/performance';
+import { PerformanceMonitor } from '../../lib/performance';
 import Sidebar from './Sidebar';
 
 interface DashboardLayoutProps {
@@ -16,31 +12,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   title: _title,
 }) => {
   useEffect(() => {
-    // Initialize accessibility features
-    initializeA11y();
-    initializeAccessibilityPerformance();
-
-    // Preload critical resources for better performance
-    preloadCriticalResources();
-
-    // Add skip link functionality
-    // eslint-disable-next-line no-undef
-    const handleSkipLink = (event: KeyboardEvent) => {
-      if (event.key === 'Tab' && !event.shiftKey) {
-        // eslint-disable-next-line no-undef
-        const skipLink = document.querySelector(
-          '[href="#main-content"]'
-        ) as HTMLElement;
-        if (skipLink && document.activeElement === document.body) {
-          skipLink.focus();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleSkipLink);
+    // Initialize performance monitoring
+    const monitor = PerformanceMonitor.getInstance();
 
     return () => {
-      document.removeEventListener('keydown', handleSkipLink);
+      monitor.cleanup();
     };
   }, []);
 
@@ -49,11 +25,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* Skip to main content link for accessibility */}
       <a
         href='#main-content'
-        className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50 transition-all duration-200'
-        tabIndex={0}
+        className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded'
       >
         Skip to main content
       </a>
+      
+      {/* Live region for screen reader announcements */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
 
       <div className='flex h-screen'>
         {/* Sidebar Navigation */}
@@ -74,13 +56,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </main>
       </div>
 
-      {/* Screen reader announcements area - created by accessibility utils */}
-      <div
-        id='screen-reader-announcements'
-        aria-live='polite'
-        aria-atomic='true'
-        className='sr-only'
-      />
+
     </div>
   );
 };

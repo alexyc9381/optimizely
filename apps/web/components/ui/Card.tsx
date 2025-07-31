@@ -2,7 +2,7 @@
 import React from 'react';
 import {
   ARIA_LABELS,
-  keyboardNavigation,
+  useKeyboardNavigation,
   SCREEN_READER_DESCRIPTIONS
 } from '../../lib/accessibility';
 // Animation classes are now CSS-based in animations.css
@@ -109,11 +109,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     };
 
     // Handle keyboard navigation with accessibility utilities
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (onClick || isExpandable) {
-        keyboardNavigation.handleCardKeyDown(e.nativeEvent, onClick);
-      }
-    };
+    const { handleKeyDown } = useKeyboardNavigation({
+      onEnter: onClick,
+      onSpace: onClick,
+    });
 
     // Base styles for all cards with reduced motion support
     const baseStyles = cn(
