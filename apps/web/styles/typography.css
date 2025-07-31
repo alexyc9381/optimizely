@@ -1,0 +1,315 @@
+/**
+ * Typography System for Optelo Dashboard
+ * Generated from typography.ts design tokens
+ */
+
+:root {
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  --font-size-7xl: 4.5rem;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  --line-height-xs: 1rem;
+  --line-height-sm: 1.25rem;
+  --line-height-base: 1.5rem;
+  --line-height-lg: 1.75rem;
+  --line-height-xl: 1.75rem;
+  --line-height-2xl: 2rem;
+  --line-height-3xl: 2.25rem;
+  --line-height-4xl: 2.5rem;
+  --line-height-5xl: 1;
+  --line-height-6xl: 1;
+  --line-height-7xl: 1;
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+}
+
+/* Typography Hierarchy Classes */
+
+/* Display Text (Hero sections, landing pages) */
+.text-display-2xl {
+  font-size: var(--font-size-7xl);
+  line-height: var(--line-height-7xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tighter);
+}
+
+.text-display-xl {
+  font-size: var(--font-size-6xl);
+  line-height: var(--line-height-6xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tighter);
+}
+
+.text-display-lg {
+  font-size: var(--font-size-5xl);
+  line-height: var(--line-height-5xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* Headings (Content hierarchy) */
+.text-heading-xl {
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-4xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.text-heading-lg {
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-3xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.text-heading-md {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-2xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-heading-sm {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-heading-xs {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* Body Text (Content, descriptions) */
+.text-body-xl {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-lg {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-md {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-sm {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-xs {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-xs);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Labels (Form fields, UI elements) */
+.text-label-lg {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-label-md {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-label-sm {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .text-display-responsive {
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-height-4xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+  
+  .text-heading-responsive {
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-2xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+  
+  .text-body-responsive {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .text-display-responsive {
+    font-size: var(--font-size-5xl);
+    line-height: var(--line-height-5xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+  
+  .text-heading-responsive {
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-height-3xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+  
+  .text-body-responsive {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+}
+
+@media (min-width: 1025px) {
+  .text-display-responsive {
+    font-size: var(--font-size-6xl);
+    line-height: var(--line-height-6xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tighter);
+  }
+  
+  .text-heading-responsive {
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-height-4xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+  
+  .text-body-responsive {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+}
+
+/* Font Family Setup */
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-variation-settings: normal;
+}
+
+/* Base typography application */
+body {
+  @apply font-inter text-body-md;
+}
+
+h1 {
+  @apply text-heading-xl;
+}
+
+h2 {
+  @apply text-heading-lg;
+}
+
+h3 {
+  @apply text-heading-md;
+}
+
+h4 {
+  @apply text-heading-sm;
+}
+
+h5 {
+  @apply text-heading-xs;
+}
+
+h6 {
+  @apply text-heading-xs;
+}
+
+p {
+  @apply text-body-md;
+}
+
+small {
+  @apply text-body-xs;
+}
+
+/* Utility classes for common text variations */
+.text-muted {
+  opacity: 0.7;
+}
+
+.text-emphasis {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-code {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 0.875em;
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(59, 130, 246, 0.25);
+  color: inherit;
+}
+
+/* Focus visible for better accessibility */
+:focus-visible {
+  outline: 2px solid rgb(59, 130, 246);
+  outline-offset: 2px;
+}

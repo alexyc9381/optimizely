@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Typography System */
+@import './typography.css';
+
 /* CSS Variables for consistent theming */
 :root {
   --primary-50: #f0f4ff;
