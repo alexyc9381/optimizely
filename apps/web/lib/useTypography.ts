@@ -3,7 +3,7 @@
  * Provides React hook for accessing typography system programmatically
  */
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { RESPONSIVE_TYPOGRAPHY, TYPOGRAPHY_HIERARCHY } from './typography';
 
 /**
