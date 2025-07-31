@@ -4,7 +4,6 @@
  */
 
 import { COLOR_PALETTE } from './colors';
-import { TYPOGRAPHY_HIERARCHY } from './typography';
 
 /**
  * Design Token Categories
@@ -59,7 +58,7 @@ export const RADIUS_TOKENS = {
   xl: '16px',
   '2xl': '24px',
   full: '9999px',
-  
+
   // Semantic radius tokens
   button: '8px',
   card: '12px',
@@ -80,7 +79,7 @@ export const SHADOW_TOKENS = {
   xl: '0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04)',
   '2xl': '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
   inner: 'inset 0 2px 4px 0 rgba(15, 23, 42, 0.06)',
-  
+
   // Semantic shadow tokens
   card: '0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06)',
   modal: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
@@ -102,7 +101,7 @@ export const ANIMATION_TOKENS = {
     slow: '400ms',
     slower: '600ms',
   },
-  
+
   // Easing tokens
   easing: {
     linear: 'linear',
@@ -111,7 +110,7 @@ export const ANIMATION_TOKENS = {
     easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
     bounce: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
   },
-  
+
   // Semantic animation tokens
   hover: 'cubic-bezier(0, 0, 0.2, 1) 150ms',
   focus: 'cubic-bezier(0, 0, 0.2, 1) 150ms',
@@ -173,7 +172,7 @@ export const COMPONENT_TOKENS = {
       spacing: SPACING_TOKENS[4],
     },
   },
-  
+
   card: {
     default: {
       background: COLOR_PALETTE.background.card,
@@ -192,7 +191,7 @@ export const COMPONENT_TOKENS = {
       spacing: SPACING_TOKENS[6],
     },
   },
-  
+
   input: {
     default: {
       background: COLOR_PALETTE.background.primary,
@@ -208,7 +207,7 @@ export const COMPONENT_TOKENS = {
       spacing: SPACING_TOKENS[3],
     },
   },
-  
+
   modal: {
     default: {
       background: COLOR_PALETTE.background.card,
@@ -243,39 +242,39 @@ export const themeTokenUtils = {
    */
   generateCSSProperties: (): Record<string, string> => {
     const properties: Record<string, string> = {};
-    
+
     // Spacing tokens
     Object.entries(SPACING_TOKENS).forEach(([key, value]) => {
       properties[`--spacing-${key}`] = value;
     });
-    
+
     // Radius tokens
     Object.entries(RADIUS_TOKENS).forEach(([key, value]) => {
       properties[`--radius-${key}`] = value;
     });
-    
+
     // Shadow tokens
     Object.entries(SHADOW_TOKENS).forEach(([key, value]) => {
       properties[`--shadow-${key}`] = value;
     });
-    
+
     // Animation tokens
     Object.entries(ANIMATION_TOKENS.duration).forEach(([key, value]) => {
       properties[`--duration-${key}`] = value;
     });
-    
+
     Object.entries(ANIMATION_TOKENS.easing).forEach(([key, value]) => {
       properties[`--easing-${key}`] = value;
     });
-    
+
     // Z-index tokens
     Object.entries(Z_INDEX_TOKENS).forEach(([key, value]) => {
       properties[`--z-${key}`] = value.toString();
     });
-    
+
     return properties;
   },
-  
+
   /**
    * Get component token set
    */
@@ -289,7 +288,7 @@ export const themeTokenUtils = {
     }
     return {};
   },
-  
+
   /**
    * Generate Tailwind configuration for tokens
    */
@@ -304,13 +303,13 @@ export const themeTokenUtils = {
       screens: BREAKPOINT_TOKENS,
     };
   },
-  
+
   /**
    * Get responsive value based on breakpoint
    */
   getResponsiveValue: <T>(values: Partial<Record<keyof typeof BREAKPOINT_TOKENS, T>>): string => {
     const breakpointEntries = Object.entries(values) as [keyof typeof BREAKPOINT_TOKENS, T][];
-    
+
     return breakpointEntries
       .map(([breakpoint, value]) => {
         const minWidth = BREAKPOINT_TOKENS[breakpoint];
