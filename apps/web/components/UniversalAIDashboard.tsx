@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LAYOUT_CLASSES, RESPONSIVE_SPACING, spacing } from '../lib/spacing';
+import { useUtilities } from '../lib/useUtilities';
 import ConversionRateTrendChart from './ConversionRateTrendChart';
 import WebMetricsChart from './WebMetricsChart';
 import ConditionalChart from './dashboard/ConditionalChart';
@@ -41,6 +42,8 @@ interface ModelMetric {
 }
 
 const UniversalAIDashboard: React.FC = () => {
+  const { colors, typography, spacing: spacingUtils, components } = useUtilities();
+  
   // Core state with fallback values for immediate content display
   const [dashboardStats] = useState<DashboardStats>({
     totalVisitors: 24789,
@@ -299,7 +302,7 @@ const UniversalAIDashboard: React.FC = () => {
 
   return (
     <div
-      className='min-h-screen bg-gray-50'
+      className={`min-h-screen ${colors.getClass('bg', 'secondary', '50')}`}
       data-testid='universal-ai-dashboard'
       data-oid='g7n.5w_'
     >
@@ -334,7 +337,7 @@ const UniversalAIDashboard: React.FC = () => {
           data-oid='..3q5ua'
         >
           <div className='text-center mb-4' data-oid='b5wogmp'>
-            <p className='text-sm text-blue-600 font-medium' data-oid='fbe2nk_'>
+            <p className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'primary', '600')} font-medium`} data-oid='fbe2nk_'>
               {(() => {
                 const visibleSections = [
                   showDetailedAnalytics,
@@ -363,12 +366,12 @@ const UniversalAIDashboard: React.FC = () => {
                 setShowEngagementMetrics(!allVisible);
                 setShowSystemDetails(!allVisible);
               }}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+              className={`${components.button('primary', 'md')} flex items-center space-x-2 transition-all duration-normal ${
                 showDetailedAnalytics &&
                 showEngagementMetrics &&
                 showSystemDetails
-                  ? 'bg-red-600 text-white shadow-lg hover:bg-red-700'
-                  : 'bg-green-600 text-white shadow-lg hover:bg-green-700'
+                  ? `${colors.getClass('bg', 'error', '600')} ${colors.getClass('text', 'secondary', '50')} shadow-lg hover:${colors.getClass('bg', 'error', '700')}`
+                  : `${colors.getClass('bg', 'success', '600')} ${colors.getClass('text', 'secondary', '50')} shadow-lg hover:${colors.getClass('bg', 'success', '700')}`
               }`}
               data-oid='_dt8dca'
             >
@@ -483,11 +486,11 @@ const UniversalAIDashboard: React.FC = () => {
             >
               {/* Experiments */}
               <div
-                className='bg-white p-6 rounded-lg border border-gray-200'
+                className={`${components.card('default', 'md')} ${colors.getClass('bg', 'secondary', '50')} ${colors.getClass('border', 'secondary', '200')}`}
                 data-oid='i4czvp5'
               >
                 <h3
-                  className='text-lg font-semibold text-gray-900 mb-4'
+                  className={`${typography.getClass('heading-lg')} ${colors.getClass('text', 'secondary', '900')} mb-4`}
                   data-oid='9d6ush:'
                 >
                   Active Experiments
@@ -497,7 +500,7 @@ const UniversalAIDashboard: React.FC = () => {
                     {experiments.map(experiment => (
                       <div
                         key={experiment.id}
-                        className='p-4 bg-gray-50 rounded-lg'
+                        className={`${components.card('default', 'sm')} ${colors.getClass('bg', 'secondary', '100')}`}
                         data-oid='pls5vex'
                       >
                         <div
@@ -505,24 +508,20 @@ const UniversalAIDashboard: React.FC = () => {
                           data-oid='mb_gnmh'
                         >
                           <h4
-                            className='font-medium text-gray-900'
+                            className={`${typography.getClass('heading-sm')} ${colors.getClass('text', 'secondary', '900')}`}
                             data-oid='kh7p-bp'
                           >
                             {experiment.name}
                           </h4>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              experiment.status === 'Running'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}
+                            className={`${components.badge(experiment.status === 'Running' ? 'success' : 'warning')} ${typography.getClass('label-xs')}`}
                             data-oid='.bnsjqy'
                           >
                             {experiment.status}
                           </span>
                         </div>
                         <div
-                          className='text-sm text-gray-600'
+                          className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'secondary', '600')}`}
                           data-oid='.4wsk32'
                         >
                           <div data-oid='-.u64um'>
@@ -545,11 +544,11 @@ const UniversalAIDashboard: React.FC = () => {
 
               {/* ML Models */}
               <div
-                className='bg-white p-6 rounded-lg border border-gray-200'
+                className={`${components.card('default', 'md')} ${colors.getClass('bg', 'secondary', '50')} ${colors.getClass('border', 'secondary', '200')}`}
                 data-oid='r8nvtqa'
               >
                 <h3
-                  className='text-lg font-semibold text-gray-900 mb-4'
+                  className={`${typography.getClass('heading-lg')} ${colors.getClass('text', 'secondary', '900')} mb-4`}
                   data-oid='f-4wkeu'
                 >
                   ML Model Performance
@@ -559,7 +558,7 @@ const UniversalAIDashboard: React.FC = () => {
                     {modelMetrics.map((metric, index) => (
                       <div
                         key={index}
-                        className='p-4 bg-gray-50 rounded-lg'
+                        className={`${components.card('default', 'sm')} ${colors.getClass('bg', 'secondary', '100')}`}
                         data-oid='zgp8u63'
                       >
                         <div
@@ -567,24 +566,20 @@ const UniversalAIDashboard: React.FC = () => {
                           data-oid='tvhkfs:'
                         >
                           <h4
-                            className='font-medium text-gray-900'
+                            className={`${typography.getClass('heading-sm')} ${colors.getClass('text', 'secondary', '900')}`}
                             data-oid='5_7_v8t'
                           >
                             {metric.name}
                           </h4>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              metric.status === 'Active'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}
+                            className={`${components.badge(metric.status === 'Active' ? 'success' : 'primary')} ${typography.getClass('label-xs')}`}
                             data-oid='27roxn9'
                           >
                             {metric.status}
                           </span>
                         </div>
                         <div
-                          className='text-sm text-gray-600'
+                          className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'secondary', '600')}`}
                           data-oid='z1x5qol'
                         >
                           <div data-oid='j8-_n15'>

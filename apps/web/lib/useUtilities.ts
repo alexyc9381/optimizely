@@ -9,16 +9,16 @@ import { utilityGenerator } from './utility-generator';
 /**
  * Utility class categories
  */
-export type UtilityCategory = 
-  | 'typography' 
-  | 'colors' 
-  | 'spacing' 
+export type UtilityCategory =
+  | 'typography'
+  | 'colors'
+  | 'spacing'
   | 'components';
 
 /**
  * Typography utility types
  */
-export type TypographyLevel = 
+export type TypographyLevel =
   | 'display-2xl' | 'display-xl' | 'display-lg' | 'display-md' | 'display-sm'
   | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm'
   | 'body-xl' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs'
@@ -27,7 +27,7 @@ export type TypographyLevel =
 /**
  * Color categories and scales
  */
-export type ColorCategory = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+export type ColorCategory = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'error' | 'info';
 export type ColorScale = '50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | '950';
 export type ColorType = 'text' | 'bg' | 'border';
 
@@ -44,7 +44,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type CardVariant = 'default' | 'elevated' | 'glass';
 export type CardSize = 'sm' | 'md' | 'lg';
-export type BadgeVariant = 'primary' | 'success' | 'warning' | 'error';
+export type BadgeVariant = 'primary' | 'success' | 'warning' | 'error' | 'info';
 
 /**
  * Responsive breakpoints
@@ -60,12 +60,12 @@ export interface UtilityHelpers {
      * Get typography class name
      */
     getClass: (level: TypographyLevel) => string;
-    
+
     /**
      * Get responsive typography classes
      */
     getResponsive: (config: Partial<Record<Breakpoint, TypographyLevel>>) => string;
-    
+
     /**
      * Build typography class with custom properties
      */
@@ -76,67 +76,67 @@ export interface UtilityHelpers {
       leading?: 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose';
     }) => string;
   };
-  
+
   colors: {
     /**
      * Get color class name
      */
     getClass: (type: ColorType, category: ColorCategory, scale: ColorScale) => string;
-    
+
     /**
      * Get semantic color classes
      */
     getSemantic: (type: ColorType, semantic: 'success' | 'warning' | 'error' | 'info') => string;
-    
+
     /**
      * Get gradient classes
      */
     getGradient: (type: 'bg' | 'text', variant: ColorCategory) => string;
-    
+
     /**
      * Build color class with opacity
      */
     buildWithOpacity: (type: ColorType, category: ColorCategory, scale: ColorScale, opacity: number) => string;
   };
-  
+
   spacing: {
     /**
      * Get spacing class name
      */
     getClass: (type: SpacingType, token: SpacingToken) => string;
-    
+
     /**
      * Get responsive spacing classes
      */
     getResponsive: (type: SpacingType, config: Partial<Record<Breakpoint, SpacingToken>>) => string;
-    
+
     /**
      * Build spacing classes for all sides
      */
     buildAll: (padding?: SpacingToken, margin?: SpacingToken, gap?: SpacingToken) => string;
   };
-  
+
   components: {
     /**
      * Get button classes
      */
     button: (variant: ButtonVariant, size: ButtonSize) => string;
-    
+
     /**
      * Get card classes
      */
     card: (variant: CardVariant, size: CardSize) => string;
-    
+
     /**
      * Get input classes
      */
     input: (size?: 'sm' | 'lg', error?: boolean) => string;
-    
+
     /**
      * Get badge classes
      */
     badge: (variant: BadgeVariant) => string;
-    
+
     /**
      * Get modal classes
      */
@@ -152,15 +152,15 @@ export const useUtilities = (): UtilityHelpers => {
     return {
       typography: {
         getClass: (level: TypographyLevel): string => `text-${level}`,
-        
+
         getResponsive: (config: Partial<Record<Breakpoint, TypographyLevel>>): string => {
           return Object.entries(config)
-            .map(([breakpoint, level]) => 
+            .map(([breakpoint, level]) =>
               breakpoint === 'sm' ? `text-${level}` : `${breakpoint}:text-${level}`
             )
             .join(' ');
         },
-        
+
         build: (options): string => {
           const classes = [`text-${options.level}`];
           if (options.weight) classes.push(`font-${options.weight}`);
@@ -169,11 +169,11 @@ export const useUtilities = (): UtilityHelpers => {
           return classes.join(' ');
         }
       },
-      
+
       colors: {
-        getClass: (type: ColorType, category: ColorCategory, scale: ColorScale): string => 
+        getClass: (type: ColorType, category: ColorCategory, scale: ColorScale): string =>
           `${type}-${category}-${scale}`,
-        
+
         getSemantic: (type: ColorType, semantic): string => {
           const scaleMap = {
             success: '600',
@@ -183,25 +183,25 @@ export const useUtilities = (): UtilityHelpers => {
           };
           return `${type}-${semantic}-${scaleMap[semantic]}`;
         },
-        
-        getGradient: (type: 'bg' | 'text', variant: ColorCategory): string => 
+
+        getGradient: (type: 'bg' | 'text', variant: ColorCategory): string =>
           `${type}-gradient-${variant}`,
-        
-        buildWithOpacity: (type: ColorType, category: ColorCategory, scale: ColorScale, opacity: number): string => 
+
+        buildWithOpacity: (type: ColorType, category: ColorCategory, scale: ColorScale, opacity: number): string =>
           `${type}-${category}-${scale}/${opacity}`
       },
-      
+
       spacing: {
         getClass: (type: SpacingType, token: SpacingToken): string => `${type}-${token}`,
-        
+
         getResponsive: (type: SpacingType, config: Partial<Record<Breakpoint, SpacingToken>>): string => {
           return Object.entries(config)
-            .map(([breakpoint, token]) => 
+            .map(([breakpoint, token]) =>
               breakpoint === 'sm' ? `${type}-${token}` : `${breakpoint}:${type}-${token}`
             )
             .join(' ');
         },
-        
+
         buildAll: (padding?: SpacingToken, margin?: SpacingToken, gap?: SpacingToken): string => {
           const classes: string[] = [];
           if (padding) classes.push(`p-${padding}`);
@@ -210,25 +210,25 @@ export const useUtilities = (): UtilityHelpers => {
           return classes.join(' ');
         }
       },
-      
+
       components: {
-        button: (variant: ButtonVariant, size: ButtonSize): string => 
+        button: (variant: ButtonVariant, size: ButtonSize): string =>
           `btn btn-${variant} btn-${size}`,
-        
+
         card: (variant: CardVariant, size: CardSize): string => {
           const base = variant === 'default' ? 'card' : `card card-${variant}`;
           return `${base} card-${size}`;
         },
-        
+
         input: (size?: 'sm' | 'lg', error?: boolean): string => {
           const classes = ['input'];
           if (size) classes.push(`input-${size}`);
           if (error) classes.push('input-error');
           return classes.join(' ');
         },
-        
+
         badge: (variant: BadgeVariant): string => `badge badge-${variant}`,
-        
+
         modal: () => ({
           overlay: 'modal-overlay',
           content: 'modal-content'
@@ -281,13 +281,13 @@ export const UTILITY_CONSTANTS = {
     'body-xl', 'body-lg', 'body-md', 'body-sm', 'body-xs',
     'label-lg', 'label-md', 'label-sm', 'label-xs'
   ] as TypographyLevel[],
-  
-  COLOR_CATEGORIES: ['primary', 'secondary', 'success', 'warning', 'error', 'info'] as ColorCategory[],
-  
+
+  COLOR_CATEGORIES: ['primary', 'secondary', 'neutral', 'success', 'warning', 'error', 'info'] as ColorCategory[],
+
   COLOR_SCALES: ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'] as ColorScale[],
-  
+
   SPACING_TOKENS: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '10', '12', '16', '20', '24', '32', '40', '48', '56', '64', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] as SpacingToken[],
-  
+
   BREAKPOINTS: ['sm', 'md', 'lg', 'xl', '2xl'] as Breakpoint[]
 };
 
