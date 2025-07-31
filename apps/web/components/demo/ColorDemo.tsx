@@ -4,9 +4,9 @@
  */
 
 import React from 'react';
-import Card from '../ui/Card';
-import { useColors } from '../../lib/useColors';
 import { COLOR_PALETTE } from '../../lib/colors';
+import { useColors } from '../../lib/useColors';
+import Card from '../ui/Card';
 
 const ColorDemo: React.FC = () => {
   const { colors, theme } = useColors();
@@ -41,10 +41,10 @@ const ColorDemo: React.FC = () => {
           Color System
         </h1>
         <p className='text-body-lg text-secondary max-w-2xl mx-auto'>
-          Enterprise-grade color palette with WCAG 2.1 AA compliance, semantic meanings, 
+          Enterprise-grade color palette with WCAG 2.1 AA compliance, semantic meanings,
           and comprehensive dark mode support. Built for accessibility and consistency.
         </p>
-        
+
         {/* Theme Toggle */}
         <div className='flex items-center justify-center gap-4 mt-6'>
           <span className='text-label-md text-secondary'>Theme:</span>
@@ -94,7 +94,7 @@ const ColorDemo: React.FC = () => {
               <h2 className='text-heading-lg text-primary mb-2'>{category.name} Colors</h2>
               <p className='text-body-sm text-secondary'>{category.description}</p>
             </div>
-            
+
             <div className='grid grid-cols-2 md:grid-cols-5 lg:grid-cols-11 gap-4'>
               {Object.entries(category.colors).map(([shade, color]) => (
                 <div key={shade} className='space-y-2'>
@@ -110,7 +110,7 @@ const ColorDemo: React.FC = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Usage Examples for Primary Colors */}
             {category.name === 'Primary' && (
               <div className='grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-subtle'>
@@ -153,7 +153,7 @@ const ColorDemo: React.FC = () => {
               Color meanings for status, feedback, and user interface elements
             </p>
           </div>
-          
+
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {semanticColors.map((semantic) => (
               <div key={semantic.name} className='space-y-3'>
@@ -165,7 +165,7 @@ const ColorDemo: React.FC = () => {
                   <h3 className='text-heading-xs text-primary'>{semantic.name}</h3>
                 </div>
                 <p className='text-body-sm text-secondary'>{semantic.usage}</p>
-                
+
                 {/* Example Usage */}
                 <div className='space-y-2'>
                   <div
@@ -204,18 +204,18 @@ const ColorDemo: React.FC = () => {
               Color variations for different interaction states (hover, active, disabled)
             </p>
           </div>
-          
+
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
             {interactiveStates.map((interactive) => (
               <div key={interactive.name} className='space-y-4'>
                 <h3 className='text-heading-sm text-primary'>{interactive.name}</h3>
-                
+
                 <div className='grid grid-cols-2 gap-4'>
                   {Object.entries(interactive.states).map(([state, color]) => (
                     <div key={state} className='space-y-2'>
                       <div
                         className='w-full h-12 rounded-lg border border-default flex items-center justify-center text-label-sm font-medium transition-transform hover:scale-105 cursor-pointer'
-                        style={{ 
+                        style={{
                           backgroundColor: color,
                           color: state === 'disabled' ? '#9ca3af' : (
                             interactive.name === 'Primary Button' ? '#ffffff' : '#374151'
@@ -245,7 +245,7 @@ const ColorDemo: React.FC = () => {
               Color combinations that meet WCAG 2.1 AA standards for contrast and readability
             </p>
           </div>
-          
+
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {/* Text on Backgrounds */}
             <div className='space-y-3'>
@@ -258,7 +258,7 @@ const ColorDemo: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className='space-y-3'>
               <h3 className='text-heading-xs text-primary'>Text on Dark Backgrounds</h3>
               <div className='space-y-2'>
@@ -269,7 +269,7 @@ const ColorDemo: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className='space-y-3'>
               <h3 className='text-heading-xs text-primary'>Status Indicators</h3>
               <div className='space-y-2'>
@@ -284,7 +284,7 @@ const ColorDemo: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className='bg-neutral-50 p-4 rounded-lg border border-default'>
             <h4 className='text-heading-xs text-primary mb-2'>WCAG 2.1 AA Compliance</h4>
             <ul className='text-body-sm text-secondary space-y-1 list-disc list-inside'>

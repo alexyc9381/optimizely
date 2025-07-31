@@ -1,0 +1,353 @@
+/**
+ * Theme Tokens CSS Variables
+ * Generated from theme-tokens.ts design tokens
+ */
+
+:root {
+  /* Spacing Tokens */
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+  --spacing-40: 160px;
+  --spacing-48: 192px;
+  --spacing-56: 224px;
+  --spacing-64: 256px;
+
+  /* Semantic Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* Border Radius Tokens */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Semantic Radius */
+  --radius-button: 8px;
+  --radius-card: 12px;
+  --radius-input: 8px;
+  --radius-modal: 16px;
+  --radius-avatar: 9999px;
+
+  /* Shadow Tokens */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(15, 23, 42, 0.06);
+
+  /* Semantic Shadows */
+  --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
+  --shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  --shadow-dropdown: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  --shadow-button: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-focus: 0 0 0 3px rgba(91, 108, 255, 0.3);
+
+  /* Animation Duration Tokens */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /* Animation Easing Tokens */
+  --easing-linear: linear;
+  --easing-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --easing-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --easing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Semantic Animations */
+  --animation-hover: cubic-bezier(0, 0, 0.2, 1) 150ms;
+  --animation-focus: cubic-bezier(0, 0, 0.2, 1) 150ms;
+  --animation-modal: cubic-bezier(0.4, 0, 0.2, 1) 250ms;
+  --animation-drawer: cubic-bezier(0.4, 0, 0.2, 1) 300ms;
+
+  /* Z-Index Tokens */
+  --z-base: 0;
+  --z-below: -1;
+  --z-normal: 1;
+  --z-tooltip: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 1000;
+  --z-popover: 1100;
+  --z-toast: 1200;
+  --z-overlay: 1300;
+  --z-max: 9999;
+}
+
+/* Component Token Classes */
+
+/* Button Component Tokens */
+.btn-primary {
+  background-color: var(--color-primary-500);
+  color: var(--color-neutral-50);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  padding: var(--spacing-3) var(--spacing-4);
+  box-shadow: var(--shadow-button);
+  transition: all var(--animation-hover);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-600);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-700);
+  transform: translateY(0);
+}
+
+.btn-primary:focus {
+  box-shadow: var(--shadow-focus);
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-neutral-300);
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-button);
+  padding: var(--spacing-3) var(--spacing-4);
+  box-shadow: var(--shadow-button);
+  transition: all var(--animation-hover);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-neutral-200);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary:active {
+  background-color: var(--color-neutral-300);
+}
+
+.btn-secondary:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Card Component Tokens */
+.card-default {
+  background-color: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-card);
+  transition: all var(--animation-hover);
+}
+
+.card-default:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-elevated {
+  background-color: var(--color-background-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--animation-hover);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+}
+
+/* Input Component Tokens */
+.input-default {
+  background-color: var(--color-background-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-input);
+  padding: var(--spacing-3);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--animation-focus);
+}
+
+.input-default:hover {
+  border-color: var(--color-border-strong);
+}
+
+.input-default:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.input-default::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.input-error {
+  border-color: var(--color-border-error);
+}
+
+.input-error:focus {
+  border-color: var(--color-border-error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+/* Modal Component Tokens */
+.modal-overlay {
+  background-color: var(--color-background-overlay);
+  z-index: var(--z-overlay);
+}
+
+.modal-content {
+  background-color: var(--color-background-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-modal);
+  padding: var(--spacing-8);
+  box-shadow: var(--shadow-modal);
+  z-index: var(--z-modal);
+}
+
+/* Utility Classes for Theme Tokens */
+
+/* Spacing Utilities */
+.p-token-xs { padding: var(--spacing-xs); }
+.p-token-sm { padding: var(--spacing-sm); }
+.p-token-md { padding: var(--spacing-md); }
+.p-token-lg { padding: var(--spacing-lg); }
+.p-token-xl { padding: var(--spacing-xl); }
+.p-token-2xl { padding: var(--spacing-2xl); }
+.p-token-3xl { padding: var(--spacing-3xl); }
+
+.m-token-xs { margin: var(--spacing-xs); }
+.m-token-sm { margin: var(--spacing-sm); }
+.m-token-md { margin: var(--spacing-md); }
+.m-token-lg { margin: var(--spacing-lg); }
+.m-token-xl { margin: var(--spacing-xl); }
+.m-token-2xl { margin: var(--spacing-2xl); }
+.m-token-3xl { margin: var(--spacing-3xl); }
+
+.gap-token-xs { gap: var(--spacing-xs); }
+.gap-token-sm { gap: var(--spacing-sm); }
+.gap-token-md { gap: var(--spacing-md); }
+.gap-token-lg { gap: var(--spacing-lg); }
+.gap-token-xl { gap: var(--spacing-xl); }
+.gap-token-2xl { gap: var(--spacing-2xl); }
+.gap-token-3xl { gap: var(--spacing-3xl); }
+
+/* Radius Utilities */
+.rounded-token-none { border-radius: var(--radius-none); }
+.rounded-token-sm { border-radius: var(--radius-sm); }
+.rounded-token-md { border-radius: var(--radius-md); }
+.rounded-token-lg { border-radius: var(--radius-lg); }
+.rounded-token-xl { border-radius: var(--radius-xl); }
+.rounded-token-2xl { border-radius: var(--radius-2xl); }
+.rounded-token-full { border-radius: var(--radius-full); }
+
+.rounded-token-button { border-radius: var(--radius-button); }
+.rounded-token-card { border-radius: var(--radius-card); }
+.rounded-token-input { border-radius: var(--radius-input); }
+.rounded-token-modal { border-radius: var(--radius-modal); }
+
+/* Shadow Utilities */
+.shadow-token-none { box-shadow: var(--shadow-none); }
+.shadow-token-sm { box-shadow: var(--shadow-sm); }
+.shadow-token-md { box-shadow: var(--shadow-md); }
+.shadow-token-lg { box-shadow: var(--shadow-lg); }
+.shadow-token-xl { box-shadow: var(--shadow-xl); }
+.shadow-token-2xl { box-shadow: var(--shadow-2xl); }
+.shadow-token-inner { box-shadow: var(--shadow-inner); }
+
+.shadow-token-card { box-shadow: var(--shadow-card); }
+.shadow-token-modal { box-shadow: var(--shadow-modal); }
+.shadow-token-dropdown { box-shadow: var(--shadow-dropdown); }
+.shadow-token-button { box-shadow: var(--shadow-button); }
+.shadow-token-focus { box-shadow: var(--shadow-focus); }
+
+/* Animation Utilities */
+.transition-token-fast { transition-duration: var(--duration-fast); }
+.transition-token-normal { transition-duration: var(--duration-normal); }
+.transition-token-slow { transition-duration: var(--duration-slow); }
+
+.ease-token-linear { transition-timing-function: var(--easing-linear); }
+.ease-token-in { transition-timing-function: var(--easing-ease-in); }
+.ease-token-out { transition-timing-function: var(--easing-ease-out); }
+.ease-token-in-out { transition-timing-function: var(--easing-ease-in-out); }
+.ease-token-bounce { transition-timing-function: var(--easing-bounce); }
+
+/* Z-Index Utilities */
+.z-token-base { z-index: var(--z-base); }
+.z-token-below { z-index: var(--z-below); }
+.z-token-normal { z-index: var(--z-normal); }
+.z-token-tooltip { z-index: var(--z-tooltip); }
+.z-token-dropdown { z-index: var(--z-dropdown); }
+.z-token-sticky { z-index: var(--z-sticky); }
+.z-token-fixed { z-index: var(--z-fixed); }
+.z-token-modal { z-index: var(--z-modal); }
+.z-token-popover { z-index: var(--z-popover); }
+.z-token-toast { z-index: var(--z-toast); }
+.z-token-overlay { z-index: var(--z-overlay); }
+.z-token-max { z-index: var(--z-max); }
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] {
+  /* Adjust shadows for dark theme */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Semantic shadows for dark theme */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  --shadow-dropdown: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .transition-token-fast,
+  .transition-token-normal,
+  .transition-token-slow {
+    transition-duration: 0ms !important;
+  }
+  
+  .card-default:hover,
+  .card-elevated:hover,
+  .btn-primary:hover {
+    transform: none !important;
+  }
+}
