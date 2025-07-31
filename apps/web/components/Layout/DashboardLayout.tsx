@@ -4,6 +4,7 @@ import {
   initializeAccessibilityPerformance,
   preloadCriticalResources,
 } from '../../lib/performance';
+import Sidebar from './Sidebar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -55,7 +56,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </a>
 
       <div className='flex h-screen'>
-        {/* Sidebar will be rendered here by parent components */}
+        {/* Sidebar Navigation */}
+        <Sidebar />
 
         {/* Main Content Area */}
         <main

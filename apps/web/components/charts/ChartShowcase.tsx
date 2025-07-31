@@ -4,13 +4,13 @@
  */
 
 import React, { useState } from 'react';
-import { LineChart } from './LineChart';
-import { BarChart } from './BarChart';
-import { FunnelChart } from './FunnelChart';
 import { ChartDataPoint } from '../../lib/charts/chartEngine';
-import Card from '../ui/Card';
 import { useColors } from '../../lib/useColors';
 import { useTypography } from '../../lib/useTypography';
+import Card from '../ui/Card';
+import { BarChart } from './BarChart';
+import { FunnelChart } from './FunnelChart';
+import { LineChart } from './LineChart';
 
 export const ChartShowcase: React.FC = () => {
   const { colors } = useColors();
@@ -83,7 +83,7 @@ export const ChartShowcase: React.FC = () => {
 
       {/* Chart Display */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Main Chart */}
         <div className="lg:col-span-2">
           <Card variant="elevated" className="p-6">
@@ -161,7 +161,7 @@ export const ChartShowcase: React.FC = () => {
 
         {/* Chart Information Panel */}
         <div className="space-y-4">
-          
+
           {/* Chart Features */}
           <Card variant="basic" className="p-4">
             <h4 className={`${typography.getClassName('heading-sm')} text-primary-800 mb-3`}>
