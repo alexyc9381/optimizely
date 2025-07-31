@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { initializeA11y } from '../../lib/accessibility';
 import {
-  initializeAccessibilityPerformance,
-  preloadCriticalResources,
+    initializeAccessibilityPerformance,
+    preloadCriticalResources,
 } from '../../lib/performance';
 import Sidebar from './Sidebar';
 
