@@ -258,10 +258,10 @@ export const validateUtilityClass = (className: string): boolean => {
 /**
  * Higher-order component for applying utility classes
  */
-export const withUtilities = <P extends object>(
+export function withUtilities<P extends object>(
   Component: React.ComponentType<P>,
   classNames: string
-) => {
+) {
   return (props: P) => {
     return (
       <div className={classNames}>
@@ -269,7 +269,7 @@ export const withUtilities = <P extends object>(
       </div>
     );
   };
-};
+}
 
 /**
  * Utility class constants
