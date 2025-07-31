@@ -13,6 +13,9 @@
 /* Import Theme Tokens */
 @import './theme-tokens.css';
 
+/* Import Utility Classes */
+@import './utilities.css';
+
 /* CSS Variables for consistent theming */
 :root {
   --primary-50: #f0f4ff;
