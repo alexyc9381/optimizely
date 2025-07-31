@@ -1,0 +1,397 @@
+/**
+ * Advanced Animation System CSS
+ * Generated from animations.ts design system
+ */
+
+/* Keyframe Definitions */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes buttonPress {
+  from { transform: scale(1); }
+  to { transform: scale(0.98); }
+}
+
+@keyframes cardHover {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-2px) scale(1.01); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+  40%, 43% { transform: translateY(-8px); }
+  70% { transform: translateY(-4px); }
+  90% { transform: translateY(-2px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Animation Utility Classes */
+
+.animate-fade-in {
+  animation: fadeIn 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-left {
+  animation: slideLeft 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 150ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-button-press {
+  animation: buttonPress 75ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.animate-card-hover {
+  animation: cardHover 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulse 600ms cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-spin-smooth {
+  animation: spin 600ms linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 600ms cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-breathe {
+  animation: breathe 1200ms cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Stagger Animation Classes */
+
+.animate-stagger-1 {
+  animation-delay: 100ms;
+}
+
+.animate-stagger-2 {
+  animation-delay: 200ms;
+}
+
+.animate-stagger-3 {
+  animation-delay: 300ms;
+}
+
+.animate-stagger-4 {
+  animation-delay: 400ms;
+}
+
+.animate-stagger-5 {
+  animation-delay: 500ms;
+}
+
+/* Hover Animation Classes */
+
+.hover-lift {
+  transition: all 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hover-lift-strong {
+  transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-lift-strong:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.hover-scale {
+  transition: transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-scale-subtle {
+  transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
+/* Focus Animation Classes */
+
+.focus-ring {
+  transition: all 100ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.focus-ring:focus {
+  transform: scale(1.02);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.3);
+}
+
+.focus-ring-subtle {
+  transition: box-shadow 100ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.focus-ring-subtle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(91, 108, 255, 0.2);
+}
+
+/* Press Animation Classes */
+
+.press-scale {
+  transition: transform 75ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.press-scale:active {
+  transform: scale(0.98);
+}
+
+/* Loading Animation Classes */
+
+.loading-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1500ms ease-in-out infinite;
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Entrance Animation Delays */
+
+.entrance-delay-1 {
+  animation-delay: 50ms;
+}
+
+.entrance-delay-2 {
+  animation-delay: 100ms;
+}
+
+.entrance-delay-3 {
+  animation-delay: 150ms;
+}
+
+.entrance-delay-4 {
+  animation-delay: 200ms;
+}
+
+.entrance-delay-5 {
+  animation-delay: 250ms;
+}
+
+/* Group Animations */
+
+.animate-group > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-group > *:nth-child(1) { animation-delay: 0ms; }
+.animate-group > *:nth-child(2) { animation-delay: 50ms; }
+.animate-group > *:nth-child(3) { animation-delay: 100ms; }
+.animate-group > *:nth-child(4) { animation-delay: 150ms; }
+.animate-group > *:nth-child(5) { animation-delay: 200ms; }
+.animate-group > *:nth-child(6) { animation-delay: 250ms; }
+
+/* Micro-interaction Combinations */
+
+.interactive-card {
+  transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.interactive-card:active {
+  transform: translateY(-1px) scale(1.005);
+}
+
+.interactive-button {
+  transition: all 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.interactive-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.interactive-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.interactive-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.3);
+}
+
+/* Accessibility and Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-pulse-subtle,
+  .animate-spin-smooth,
+  .animate-shimmer,
+  .animate-breathe,
+  .animate-bounce {
+    animation: none !important;
+  }
+
+  .hover-lift:hover,
+  .hover-lift-strong:hover,
+  .hover-scale:hover,
+  .hover-scale-subtle:hover {
+    transform: none !important;
+  }
+}
+
+/* Dark Mode Adaptations */
+
+@media (prefers-color-scheme: dark) {
+  .loading-shimmer::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+
+  .hover-lift:hover,
+  .hover-lift-strong:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .interactive-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .interactive-button:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+}

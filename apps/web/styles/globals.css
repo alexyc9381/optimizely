@@ -16,6 +16,9 @@
 /* Import Utility Classes */
 @import './utilities.css';
 
+/* Import Animation System */
+@import './animations.css';
+
 /* CSS Variables for consistent theming */
 :root {
   --primary-50: #f0f4ff;

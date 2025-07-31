@@ -43,7 +43,7 @@ interface ModelMetric {
 
 const UniversalAIDashboard: React.FC = () => {
   const { colors, typography, spacing: spacingUtils, components } = useUtilities();
-  
+
   // Core state with fallback values for immediate content display
   const [dashboardStats] = useState<DashboardStats>({
     totalVisitors: 24789,
