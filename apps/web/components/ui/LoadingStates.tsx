@@ -211,10 +211,10 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   const strokeDashoffset = (circumference - (percentage / 100) * circumference).toFixed(3);
 
   const variantColors = {
-    default: colors.getClass('stroke', 'primary', '500'),
-    success: colors.getClass('stroke', 'success', '500'),
-    warning: colors.getClass('stroke', 'warning', '500'),
-    error: colors.getClass('stroke', 'error', '500')
+    default: 'stroke-primary-500',
+    success: 'stroke-success-500',
+    warning: 'stroke-warning-500',
+    error: 'stroke-error-500'
   };
 
   return (
@@ -323,7 +323,7 @@ export const PageLoading: React.FC<{ message?: string }> = ({
   return (
     <div className="fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-modal">
       <div className="text-center">
-        <CircularProgress value={75} size={48} variant="primary" showValue={false} />
+        <CircularProgress value={75} size={48} variant="default" showValue={false} />
         <p className={`${typography.getClass('body-md')} ${colors.getClass('text', 'secondary', '600')} mt-4`}>
           {message}
         </p>

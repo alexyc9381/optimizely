@@ -185,7 +185,7 @@ const InteractiveDemo: React.FC = () => {
                   value={progress}
                   label="Upload Progress"
                   showValue={true}
-                  variant="primary"
+                  variant="default"
                 />
                 <LoadingStates.ProgressBar
                   value={85}
@@ -198,7 +198,7 @@ const InteractiveDemo: React.FC = () => {
                 <div className="flex items-center space-x-6">
                   <LoadingStates.CircularProgress
                     value={progress}
-                    variant="primary"
+                    variant="default"
                     size={64}
                   />
                   <LoadingStates.CircularProgress

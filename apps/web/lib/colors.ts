@@ -323,7 +323,7 @@ export const colorUtils = {
       ...Object.values(SECONDARY_COLORS).slice(6),
     ];
 
-    if (darkColors.includes(backgroundColor)) {
+    if (darkColors.includes(backgroundColor as any)) {
       return TEXT_COLORS.inverse;
     }
     return TEXT_COLORS.primary;

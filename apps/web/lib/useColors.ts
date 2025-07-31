@@ -3,7 +3,7 @@
  * Provides React hook for accessing color system and theme management
  */
 
-import { useMemo, useCallback, useEffect, useState } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { COLOR_PALETTE, SEMANTIC_COLORS, colorUtils } from './colors';
 
 /**
@@ -236,34 +236,7 @@ export const useColors = () => {
   return { colors, theme };
 };
 
-/**
- * Higher-order component for applying color-aware styles
- */
-export const withColors = <P extends Record<string, unknown>>(
-  Component: React.ComponentType<P>,
-  colorConfig: {
-    light: Record<string, string>;
-    dark: Record<string, string>;
-  }
-) => {
-  return React.forwardRef<unknown, P>((props, ref) => {
-    const { colors } = useColors();
-
-    const themeStyles = colors.getThemeStyles({
-      light: colorConfig.light,
-      dark: colorConfig.dark,
-    });
-
-    return React.createElement(Component, {
-      ...props,
-      ref,
-      style: {
-        ...(props as { style?: Record<string, string> }).style,
-        ...themeStyles,
-      },
-    });
-  });
-};
+// HOC removed due to TypeScript complexity - use useColors hook directly instead
 
 /**
  * Context for theme management (optional, for complex apps)
