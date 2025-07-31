@@ -3,7 +3,7 @@
  * Provides React hook for accessing color system and theme management
  */
 
-import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { COLOR_PALETTE, SEMANTIC_COLORS, colorUtils } from './colors';
 
 /**

@@ -3,8 +3,7 @@
  * Provides programmatic access to design system utility classes
  */
 
-import React, { useMemo } from 'react';
-import { utilityGenerator } from './utility-generator';
+import { useMemo } from 'react';
 
 /**
  * Utility class categories
