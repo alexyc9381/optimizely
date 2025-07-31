@@ -59,16 +59,7 @@ const ColorDemo: React.FC = () => {
             >
               Light
             </button>
-            <button
-              onClick={() => theme.set('dark')}
-              className={`px-3 py-1 rounded-md text-label-sm transition-colors ${
-                theme.current === 'dark'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-neutral-100 text-secondary hover:bg-neutral-200'
-              }`}
-            >
-              Dark
-            </button>
+
             <button
               onClick={() => theme.set('system')}
               className={`px-3 py-1 rounded-md text-label-sm transition-colors ${

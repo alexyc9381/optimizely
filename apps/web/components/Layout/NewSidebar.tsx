@@ -70,7 +70,7 @@ export function NewSidebar() {
           'h-5 w-5 flex-shrink-0',
           router.pathname === item.href
             ? 'text-neutral-200'
-            : 'text-neutral-700 dark:text-neutral-200'
+            : 'text-neutral-700'
         )}
         data-oid='7ohc7wl'
       />
@@ -126,12 +126,12 @@ export const Logo = () => {
       data-oid='-_fwekm'
     >
       <div
-        className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
+        className='h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
         data-oid='y0hgett'
       />
 
       <span
-        className='font-medium text-black dark:text-white whitespace-pre'
+        className='font-medium text-black whitespace-pre'
         data-oid='ue-h8:0'
       >
         Optelo
@@ -148,7 +148,7 @@ export const LogoIcon = () => {
       data-oid='o7aq:80'
     >
       <div
-        className='h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
+        className='h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0'
         data-oid='uyzag53'
       />
     </Link>

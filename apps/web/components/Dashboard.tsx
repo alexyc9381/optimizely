@@ -278,7 +278,7 @@ const settingsData = {
     securityAlerts: false,
   },
   display: {
-    theme: 'dark',
+            theme: 'light',
     density: 'compact',
   },
   integrations: [

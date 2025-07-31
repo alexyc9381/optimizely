@@ -100,7 +100,7 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          'h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0',
+          'h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 w-[300px] flex-shrink-0',
           className
         )}
         animate={{
@@ -127,14 +127,14 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          'h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full'
+          'h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 w-full'
         )}
         {...props}
         data-oid='259pvws'
       >
         <div className='flex justify-end z-20 w-full' data-oid='5qodlzs'>
           <IconMenu2
-            className='text-neutral-800 dark:text-neutral-200'
+            className='text-neutral-800'
             onClick={() => setOpen(!open)}
             data-oid='u41dd0t'
           />
@@ -150,13 +150,13 @@ export const MobileSidebar = ({
                 ease: 'easeInOut',
               }}
               className={cn(
-                'fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between',
+                'fixed h-full w-full inset-0 bg-white p-10 z-[100] flex flex-col justify-between',
                 className
               )}
               data-oid='soqs52f'
             >
               <div
-                className='absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200'
+                className='absolute right-10 top-10 z-50 text-neutral-800'
                 onClick={() => setOpen(!open)}
                 data-oid='qena6_c'
               >
@@ -198,7 +198,7 @@ export const SidebarLink = ({
           display: animate ? (open ? 'inline-block' : 'none') : 'inline-block',
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className='text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0'
+        className='text-neutral-700 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0'
         data-oid='l4p7skd'
       >
         {link.label}
