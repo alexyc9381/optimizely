@@ -62,6 +62,7 @@ export function NewSidebar() {
           data-oid='5w4btd2'
         />
       ),
+
       badge: '12',
       children: [
         { name: 'Active Tests', href: '/ab-testing/active', icon: null },
@@ -79,6 +80,7 @@ export function NewSidebar() {
           data-oid='me35bpp'
         />
       ),
+
       children: [
         { name: 'Performance', href: '/analytics/performance', icon: null },
         { name: 'Revenue Attribution', href: '/analytics/revenue', icon: null },
@@ -95,6 +97,7 @@ export function NewSidebar() {
           data-oid='yl1g.md'
         />
       ),
+
       badge: '94%',
       children: [
         { name: 'Model Performance', href: '/models/performance', icon: null },
@@ -112,6 +115,7 @@ export function NewSidebar() {
           data-oid='_dtb61i'
         />
       ),
+
       children: [
         { name: 'SaaS', href: '/industries/saas', icon: null },
         {
@@ -133,6 +137,7 @@ export function NewSidebar() {
           data-oid='ntwz7.1'
         />
       ),
+
       children: [
         {
           name: 'Website Integration',
@@ -153,6 +158,7 @@ export function NewSidebar() {
           data-oid='uucd0k:'
         />
       ),
+
       children: [
         { name: 'Account', href: '/settings/account', icon: null },
         { name: 'Team', href: '/settings/team', icon: null },
@@ -167,15 +173,6 @@ export function NewSidebar() {
     if (href !== '/' && router.pathname.startsWith(href)) return true;
     return false;
   };
-
-  // Create flat links for SidebarLink components (no children)
-  const flatLinks = navigation
-    .filter(item => !item.children)
-    .map(item => ({
-      label: item.name,
-      href: item.href,
-      icon: item.icon,
-    }));
 
   // Handle nested navigation separately
   const NavItemWithChildren: React.FC<{ item: NavItem }> = ({ item }) => {

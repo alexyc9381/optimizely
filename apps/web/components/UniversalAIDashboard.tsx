@@ -109,10 +109,12 @@ const UniversalAIDashboard: React.FC = () => {
 
   // Loading and connectivity states
   const [loading, setLoading] = useState(false);
-  const [, setApiConnected] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_apiConnected, setApiConnected] = useState(false);
 
   // Funnel mock data with realistic variations
-  const [funnelData] = useState({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [funnelData, _setFunnelData] = useState({
     visitors: {
       count: 24789,
       percentage: 100,
@@ -194,7 +196,7 @@ const UniversalAIDashboard: React.FC = () => {
       title: 'System Health',
       value: 'Active',
       subtitle: 'All systems operational',
-      type: 'system-health' as const,
+      type: 'success' as const,
       isActive: systemHealth.analytics && systemHealth.apiGateway,
       icon: (
         <svg

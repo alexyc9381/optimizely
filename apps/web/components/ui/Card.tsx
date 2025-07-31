@@ -1,5 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import {
+  animationA11y,
+  ARIA_LABELS,
+  keyboardNavigation,
+  SCREEN_READER_DESCRIPTIONS,
+} from '../../lib/accessibility';
 import { ANIMATION_CLASSES, animations } from '../../lib/animations';
 import { cn } from '../../lib/utils';
 
@@ -15,7 +21,17 @@ export interface CardProps {
   // New animation props
   hoverAnimation?: 'card' | 'button' | 'metric' | 'interactive' | 'none';
   focusVariant?: 'subtle' | 'standard' | 'prominent';
-  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'scale' | 'none';
+  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'none';
+  // Accessibility props
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+  role?: string;
+  isMetric?: boolean;
+  metricTitle?: string;
+  metricValue?: string;
+  metricTrend?: string;
+  isExpandable?: boolean;
+  isExpanded?: boolean;
 }
 
 /**
@@ -27,7 +43,9 @@ export interface CardProps {
  * - Subtle shadows and elevation
  * - Multiple variants for different use cases
  * - Micro-animations for interactions
- * - Accessibility support with focus management
+ * - Comprehensive accessibility support with ARIA labels and keyboard navigation
+ * - Screen reader optimizations
+ * - Performance optimizations with reduced motion support
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
@@ -42,14 +60,63 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       hoverAnimation = 'card',
       focusVariant = 'standard',
       enterAnimation = 'fade',
+      ariaLabel,
+      ariaDescribedBy,
+      role,
+      isMetric = false,
+      metricTitle,
+      metricValue,
+      metricTrend,
+      isExpandable = false,
+      isExpanded = false,
       'data-testid': testId,
       ...props
     },
     ref
   ) => {
-    const isInteractive = Boolean(onClick) || hover;
+    const isInteractive = Boolean(onClick) || hover || isExpandable;
 
-    // Base styles for all cards
+    // Generate appropriate ARIA label based on card type
+    const getAriaLabel = (): string => {
+      if (ariaLabel) return ariaLabel;
+
+      if (isMetric && metricTitle && metricValue) {
+        return SCREEN_READER_DESCRIPTIONS.METRIC_WITH_TREND(
+          metricTitle,
+          metricValue,
+          metricTrend || '',
+          metricTrend?.startsWith('+') || false
+        );
+      }
+
+      if (isExpandable) {
+        return SCREEN_READER_DESCRIPTIONS.EXPANDABLE_SECTION(
+          metricTitle || 'Section',
+          isExpanded
+        );
+      }
+
+      return isInteractive
+        ? ARIA_LABELS.CARD.INTERACTIVE
+        : ARIA_LABELS.CARD.METRIC;
+    };
+
+    // Get appropriate role
+    const getRole = (): string | undefined => {
+      if (role) return role;
+      if (onClick || isExpandable) return 'button';
+      if (isMetric) return 'region';
+      return undefined;
+    };
+
+    // Handle keyboard navigation with accessibility utilities
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (onClick || isExpandable) {
+        keyboardNavigation.handleCardKeyDown(e.nativeEvent, onClick);
+      }
+    };
+
+    // Base styles for all cards with reduced motion support
     const baseStyles = cn(
       // Foundation
       'relative rounded-lg border transition-all duration-300 ease-out',
@@ -57,17 +124,21 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       // Accessibility
       'focus:outline-none',
 
-      // Enter animation (if not disabled)
+      // Enter animation (respecting user's motion preferences)
       enterAnimation !== 'none' &&
-        animations.getEntranceAnimation(enterAnimation),
+        animationA11y.getAnimationClass(
+          animations.getEntranceAnimation(enterAnimation)
+        ),
 
       // Interactive states
       isInteractive && [
         'cursor-pointer',
         hoverAnimation !== 'none' &&
-          animations.getHoverAnimation(hoverAnimation),
+          animationA11y.getAnimationClass(
+            animations.getHoverAnimation(hoverAnimation)
+          ),
         animations.getFocusAnimation(focusVariant),
-        ANIMATION_CLASSES.ACTIVE.CARD_PRESS,
+        animationA11y.getAnimationClass(ANIMATION_CLASSES.ACTIVE.CARD_PRESS),
       ]
     );
 
@@ -120,17 +191,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         data-testid={testId}
         style={style}
         tabIndex={isInteractive ? 0 : undefined}
-        role={onClick ? 'button' : undefined}
-        onKeyDown={
-          onClick
-            ? e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onClick();
-                }
-              }
-            : undefined
-        }
+        role={getRole()}
+        aria-label={getAriaLabel()}
+        aria-describedby={ariaDescribedBy}
+        aria-expanded={isExpandable ? isExpanded : undefined}
+        onKeyDown={handleKeyDown}
         {...props}
         data-oid='tz6mo59'
       >
