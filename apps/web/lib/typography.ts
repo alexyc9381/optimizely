@@ -280,13 +280,13 @@ ${Object.entries(TYPOGRAPHY_HIERARCHY)
     line-height: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].mobile.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].mobile.fontWeight};
   }
-  
+
   .text-heading-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].mobile.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].mobile.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].mobile.fontWeight};
   }
-  
+
   .text-body-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].mobile.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].mobile.lineHeight};
@@ -300,13 +300,13 @@ ${Object.entries(TYPOGRAPHY_HIERARCHY)
     line-height: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].tablet.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].tablet.fontWeight};
   }
-  
+
   .text-heading-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].tablet.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].tablet.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].tablet.fontWeight};
   }
-  
+
   .text-body-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].tablet.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].tablet.lineHeight};
@@ -320,13 +320,13 @@ ${Object.entries(TYPOGRAPHY_HIERARCHY)
     line-height: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].desktop.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['display-responsive'].desktop.fontWeight};
   }
-  
+
   .text-heading-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].desktop.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].desktop.lineHeight};
     font-weight: ${RESPONSIVE_TYPOGRAPHY['heading-responsive'].desktop.fontWeight};
   }
-  
+
   .text-body-responsive {
     font-size: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].desktop.fontSize};
     line-height: ${RESPONSIVE_TYPOGRAPHY['body-responsive'].desktop.lineHeight};

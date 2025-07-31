@@ -61,20 +61,20 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
 
   const getStatusColor = () => {
     if (isActive !== undefined) {
-      return isActive ? 'text-green-600' : 'text-red-600';
+      return isActive ? 'text-success-600' : 'text-error-600';
     }
 
     switch (type) {
       case 'success':
-        return 'text-green-600';
+        return 'text-success-600';
       case 'warning':
-        return 'text-yellow-600';
+        return 'text-warning-600';
       case 'error':
-        return 'text-red-600';
+        return 'text-error-600';
       case 'info':
-        return 'text-blue-600';
+        return 'text-info-600';
       default:
-        return 'text-gray-900';
+        return 'text-primary';
     }
   };
 
@@ -82,7 +82,7 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
     if (isActive !== undefined) {
       return (
         <div
-          className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}
+          className={`w-2 h-2 rounded-full ${isActive ? 'bg-success-500' : 'bg-error-500'}`}
           role='status'
           aria-label={
             isActive ? ARIA_LABELS.STATUS.ACTIVE : ARIA_LABELS.STATUS.INACTIVE
@@ -172,7 +172,7 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
           <div
             id={trendId}
             className={`text-xs font-medium flex items-center justify-center gap-1 ${
-              isPositiveTrend ? 'text-green-600' : 'text-red-600'
+              isPositiveTrend ? 'text-success-600' : 'text-error-600'
             }`}
             role='status'
             aria-label={`Trend: ${trend} ${isPositiveTrend ? 'increase' : 'decrease'} from previous period`}

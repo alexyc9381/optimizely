@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { TYPOGRAPHY_HIERARCHY, RESPONSIVE_TYPOGRAPHY } from './typography';
+import { RESPONSIVE_TYPOGRAPHY, TYPOGRAPHY_HIERARCHY } from './typography';
 
 /**
  * Typography hook for React components

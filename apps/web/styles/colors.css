@@ -1,0 +1,362 @@
+/**
+ * Enterprise Color System for Optelo Dashboard
+ * Generated from colors.ts design tokens
+ */
+
+:root {
+  /* Primary Blue Color Scale */
+  --color-primary-50: #f0f4ff;
+  --color-primary-100: #e5edff;
+  --color-primary-200: #d0dcff;
+  --color-primary-300: #aab9ff;
+  --color-primary-400: #7d8cff;
+  --color-primary-500: #5b6cff;
+  --color-primary-600: #4c52ff;
+  --color-primary-700: #3d3eeb;
+  --color-primary-800: #3133bc;
+  --color-primary-900: #2e3295;
+  --color-primary-950: #1c1c59;
+
+  /* Secondary Purple Color Scale */
+  --color-secondary-50: #f7f5ff;
+  --color-secondary-100: #f0ebff;
+  --color-secondary-200: #e3daff;
+  --color-secondary-300: #d0baff;
+  --color-secondary-400: #b68fff;
+  --color-secondary-500: #9d5fff;
+  --color-secondary-600: #8a3fff;
+  --color-secondary-700: #7b2bf5;
+  --color-secondary-800: #6824d1;
+  --color-secondary-900: #561faa;
+  --color-secondary-950: #351274;
+
+  /* Neutral Gray Color Scale */
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --color-neutral-950: #020617;
+
+  /* Success Green Color Scale */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  --color-success-950: #052e16;
+
+  /* Warning Amber Color Scale */
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-300: #fcd34d;
+  --color-warning-400: #fbbf24;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-800: #92400e;
+  --color-warning-900: #78350f;
+  --color-warning-950: #451a03;
+
+  /* Error Red Color Scale */
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-300: #fca5a5;
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+  --color-error-800: #991b1b;
+  --color-error-900: #7f1d1d;
+  --color-error-950: #450a0a;
+
+  /* Info Blue Color Scale */
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+  --color-info-800: #1e40af;
+  --color-info-900: #1e3a8a;
+  --color-info-950: #172554;
+
+  /* Background Colors */
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f8fafc;
+  --color-background-tertiary: #f1f5f9;
+  --color-background-card: #ffffff;
+  --color-background-hover: #f8fafc;
+  --color-background-pressed: #f1f5f9;
+  --color-background-overlay: rgba(15, 23, 42, 0.75);
+  --color-background-glass: rgba(248, 250, 252, 0.8);
+
+  /* Text Colors */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-tertiary: var(--color-neutral-500);
+  --color-text-inverse: var(--color-neutral-50);
+  --color-text-placeholder: var(--color-neutral-400);
+  --color-text-disabled: var(--color-neutral-300);
+  --color-text-link: var(--color-primary-600);
+  --color-text-link-hover: var(--color-primary-700);
+
+  /* Border Colors */
+  --color-border-default: var(--color-neutral-200);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-primary-500);
+  --color-border-error: var(--color-error-500);
+  --color-border-success: var(--color-success-500);
+  --color-border-warning: var(--color-warning-500);
+  --color-border-info: var(--color-info-500);
+
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-default: 0 1px 3px 0 rgba(15, 23, 42, 0.1), 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(15, 23, 42, 0.06);
+  --shadow-none: 0 0 #0000;
+
+  /* Semantic Color Mappings */
+  --color-brand-primary: var(--color-primary-500);
+  --color-brand-secondary: var(--color-secondary-600);
+  --color-brand-tertiary: var(--color-primary-100);
+
+  --color-status-success: var(--color-success-500);
+  --color-status-warning: var(--color-warning-500);
+  --color-status-error: var(--color-error-500);
+  --color-status-info: var(--color-info-500);
+
+  --color-interactive-primary: var(--color-primary-500);
+  --color-interactive-primary-hover: var(--color-primary-600);
+  --color-interactive-primary-active: var(--color-primary-700);
+  --color-interactive-secondary: var(--color-neutral-100);
+  --color-interactive-secondary-hover: var(--color-neutral-200);
+  --color-interactive-secondary-active: var(--color-neutral-300);
+}
+
+/* Dark Theme Color Overrides */
+[data-theme="dark"] {
+  /* Dark Background Colors */
+  --color-background-primary: #0f172a;
+  --color-background-secondary: #1e293b;
+  --color-background-tertiary: #334155;
+  --color-background-card: #1e293b;
+  --color-background-hover: #334155;
+  --color-background-pressed: #475569;
+  --color-background-overlay: rgba(15, 23, 42, 0.90);
+  --color-background-glass: rgba(30, 41, 59, 0.8);
+
+  /* Dark Text Colors */
+  --color-text-primary: var(--color-neutral-50);
+  --color-text-secondary: var(--color-neutral-300);
+  --color-text-tertiary: var(--color-neutral-400);
+  --color-text-inverse: var(--color-neutral-900);
+  --color-text-placeholder: var(--color-neutral-500);
+  --color-text-disabled: var(--color-neutral-600);
+  --color-text-link: var(--color-primary-400);
+  --color-text-link-hover: var(--color-primary-300);
+
+  /* Dark Border Colors */
+  --color-border-default: var(--color-neutral-700);
+  --color-border-subtle: var(--color-neutral-800);
+  --color-border-strong: var(--color-neutral-600);
+}
+
+/* System Preference Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Dark Background Colors */
+    --color-background-primary: #0f172a;
+    --color-background-secondary: #1e293b;
+    --color-background-tertiary: #334155;
+    --color-background-card: #1e293b;
+    --color-background-hover: #334155;
+    --color-background-pressed: #475569;
+    --color-background-overlay: rgba(15, 23, 42, 0.90);
+    --color-background-glass: rgba(30, 41, 59, 0.8);
+
+    /* Dark Text Colors */
+    --color-text-primary: var(--color-neutral-50);
+    --color-text-secondary: var(--color-neutral-300);
+    --color-text-tertiary: var(--color-neutral-400);
+    --color-text-inverse: var(--color-neutral-900);
+    --color-text-placeholder: var(--color-neutral-500);
+    --color-text-disabled: var(--color-neutral-600);
+    --color-text-link: var(--color-primary-400);
+    --color-text-link-hover: var(--color-primary-300);
+
+    /* Dark Border Colors */
+    --color-border-default: var(--color-neutral-700);
+    --color-border-subtle: var(--color-neutral-800);
+    --color-border-strong: var(--color-neutral-600);
+  }
+}
+
+/* Color Utility Classes */
+
+/* Text Colors */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-inverse { color: var(--color-text-inverse); }
+.text-placeholder { color: var(--color-text-placeholder); }
+.text-disabled { color: var(--color-text-disabled); }
+.text-link { color: var(--color-text-link); }
+.text-link:hover { color: var(--color-text-link-hover); }
+
+/* Status Text Colors */
+.text-success { color: var(--color-success-600); }
+.text-warning { color: var(--color-warning-600); }
+.text-error { color: var(--color-error-600); }
+.text-info { color: var(--color-info-600); }
+
+/* Background Colors */
+.bg-primary { background-color: var(--color-background-primary); }
+.bg-secondary { background-color: var(--color-background-secondary); }
+.bg-tertiary { background-color: var(--color-background-tertiary); }
+.bg-card { background-color: var(--color-background-card); }
+.bg-hover { background-color: var(--color-background-hover); }
+.bg-pressed { background-color: var(--color-background-pressed); }
+.bg-overlay { background-color: var(--color-background-overlay); }
+.bg-glass { background-color: var(--color-background-glass); }
+
+/* Status Background Colors */
+.bg-success-light { background-color: var(--color-success-50); }
+.bg-success { background-color: var(--color-success-500); }
+.bg-success-dark { background-color: var(--color-success-700); }
+
+.bg-warning-light { background-color: var(--color-warning-50); }
+.bg-warning { background-color: var(--color-warning-500); }
+.bg-warning-dark { background-color: var(--color-warning-700); }
+
+.bg-error-light { background-color: var(--color-error-50); }
+.bg-error { background-color: var(--color-error-500); }
+.bg-error-dark { background-color: var(--color-error-700); }
+
+.bg-info-light { background-color: var(--color-info-50); }
+.bg-info { background-color: var(--color-info-500); }
+.bg-info-dark { background-color: var(--color-info-700); }
+
+/* Border Colors */
+.border-default { border-color: var(--color-border-default); }
+.border-subtle { border-color: var(--color-border-subtle); }
+.border-strong { border-color: var(--color-border-strong); }
+.border-focus { border-color: var(--color-border-focus); }
+.border-success { border-color: var(--color-border-success); }
+.border-warning { border-color: var(--color-border-warning); }
+.border-error { border-color: var(--color-border-error); }
+.border-info { border-color: var(--color-border-info); }
+
+/* Shadow Utilities */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow-default); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+.shadow-inner { box-shadow: var(--shadow-inner); }
+.shadow-none { box-shadow: var(--shadow-none); }
+
+/* Interactive Color Classes */
+.text-interactive-primary { color: var(--color-interactive-primary); }
+.text-interactive-primary:hover { color: var(--color-interactive-primary-hover); }
+.text-interactive-primary:active { color: var(--color-interactive-primary-active); }
+
+.bg-interactive-primary { background-color: var(--color-interactive-primary); }
+.bg-interactive-primary:hover { background-color: var(--color-interactive-primary-hover); }
+.bg-interactive-primary:active { background-color: var(--color-interactive-primary-active); }
+
+.bg-interactive-secondary { background-color: var(--color-interactive-secondary); }
+.bg-interactive-secondary:hover { background-color: var(--color-interactive-secondary-hover); }
+.bg-interactive-secondary:active { background-color: var(--color-interactive-secondary-active); }
+
+/* Focus Ring Utilities */
+.focus-ring {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.focus-ring-error {
+  outline: 2px solid var(--color-border-error);
+  outline-offset: 2px;
+}
+
+.focus-ring-success {
+  outline: 2px solid var(--color-border-success);
+  outline-offset: 2px;
+}
+
+/* Brand Gradient Classes */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-600) 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-secondary-700) 100%);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Color Scale Utilities (for dynamic applications) */
+.text-primary-50 { color: var(--color-primary-50); }
+.text-primary-100 { color: var(--color-primary-100); }
+.text-primary-200 { color: var(--color-primary-200); }
+.text-primary-300 { color: var(--color-primary-300); }
+.text-primary-400 { color: var(--color-primary-400); }
+.text-primary-500 { color: var(--color-primary-500); }
+.text-primary-600 { color: var(--color-primary-600); }
+.text-primary-700 { color: var(--color-primary-700); }
+.text-primary-800 { color: var(--color-primary-800); }
+.text-primary-900 { color: var(--color-primary-900); }
+.text-primary-950 { color: var(--color-primary-950); }
+
+.bg-primary-50 { background-color: var(--color-primary-50); }
+.bg-primary-100 { background-color: var(--color-primary-100); }
+.bg-primary-200 { background-color: var(--color-primary-200); }
+.bg-primary-300 { background-color: var(--color-primary-300); }
+.bg-primary-400 { background-color: var(--color-primary-400); }
+.bg-primary-500 { background-color: var(--color-primary-500); }
+.bg-primary-600 { background-color: var(--color-primary-600); }
+.bg-primary-700 { background-color: var(--color-primary-700); }
+.bg-primary-800 { background-color: var(--color-primary-800); }
+.bg-primary-900 { background-color: var(--color-primary-900); }
+.bg-primary-950 { background-color: var(--color-primary-950); }
+
+/* Accessibility Enhancements */
+.high-contrast {
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+  --color-background-primary: #ffffff;
+  --color-border-default: #000000;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .transition-colors {
+    transition: none !important;
+  }
+}
