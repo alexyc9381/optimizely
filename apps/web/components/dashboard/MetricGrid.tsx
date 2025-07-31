@@ -10,7 +10,7 @@ interface MetricData {
   subtitle?: string;
   trend?: string;
   icon?: React.ReactNode;
-  type?: 'default' | 'system-health' | 'currency';
+  type?: 'default' | 'success' | 'warning' | 'error' | 'info';
   isActive?: boolean;
 }
 

@@ -1,16 +1,21 @@
 import React from 'react';
+import {
+  ARIA_LABELS,
+  SCREEN_READER_DESCRIPTIONS,
+} from '../../lib/accessibility';
+import { cn } from '../../lib/utils';
 import Card from '../ui/Card';
 
 interface SimpleMetricProps {
   title: string;
-  value: string | number;
+  value: number | string;
   subtitle?: string;
   trend?: string;
   icon?: React.ReactNode;
-  type?: 'default' | 'system-health' | 'currency';
+  type?: 'default' | 'success' | 'warning' | 'error' | 'info';
   isActive?: boolean;
   variant?: 'basic' | 'elevated' | 'interactive' | 'glass';
-  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'scale' | 'none';
+  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'none';
   staggerDelay?: number;
 }
 
@@ -24,41 +29,81 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
   isActive,
   variant = 'elevated',
   enterAnimation = 'up',
-  staggerDelay = 0,
+  staggerDelay,
 }) => {
-  const isPositiveTrend = trend && trend.startsWith('+');
+  const isPositiveTrend = Boolean(trend && trend.startsWith('+'));
+  const formattedValue =
+    typeof value === 'number' ? value.toLocaleString() : value;
 
-  // Format value based on type
-  const formatValue = (value: string | number) => {
-    if (type === 'currency' && typeof value === 'number') {
-      return `$${(value / 1000).toFixed(0)}k`;
+  // Generate comprehensive screen reader description
+  const getScreenReaderDescription = (): string => {
+    if (trend) {
+      return SCREEN_READER_DESCRIPTIONS.METRIC_WITH_TREND(
+        title,
+        formattedValue.toString(),
+        trend,
+        isPositiveTrend
+      );
     }
-    if (type === 'system-health') {
-      return isActive ? 'Active' : 'Offline';
+
+    if (type !== 'default' && typeof isActive === 'boolean') {
+      return SCREEN_READER_DESCRIPTIONS.SYSTEM_HEALTH(title, isActive);
     }
-    return value;
+
+    return `${title}: ${formattedValue}${subtitle ? '. ' + subtitle : ''}`;
   };
 
-  // Get status color for system health
+  // Format value with accessibility considerations
+  const formatValue = (val: number | string): string => {
+    if (typeof val === 'string') return val;
+    return val.toLocaleString();
+  };
+
   const getStatusColor = () => {
-    if (type === 'system-health') {
+    if (isActive !== undefined) {
       return isActive ? 'text-green-600' : 'text-red-600';
     }
-    return 'text-gray-900';
+
+    switch (type) {
+      case 'success':
+        return 'text-green-600';
+      case 'warning':
+        return 'text-yellow-600';
+      case 'error':
+        return 'text-red-600';
+      case 'info':
+        return 'text-blue-600';
+      default:
+        return 'text-gray-900';
+    }
   };
 
-  // Get status indicator for system health
   const getStatusIndicator = () => {
-    if (type === 'system-health') {
+    if (isActive !== undefined) {
       return (
         <div
           className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}
+          role='status'
+          aria-label={
+            isActive ? ARIA_LABELS.STATUS.ACTIVE : ARIA_LABELS.STATUS.INACTIVE
+          }
+          title={isActive ? 'System Active' : 'System Inactive'}
           data-oid='rp-4jkv'
         />
       );
     }
     return null;
   };
+
+  // Generate unique IDs for ARIA relationships
+  const titleId = `metric-title-${title.replace(/\s+/g, '-').toLowerCase()}`;
+  const valueId = `metric-value-${title.replace(/\s+/g, '-').toLowerCase()}`;
+  const subtitleId = subtitle
+    ? `metric-subtitle-${title.replace(/\s+/g, '-').toLowerCase()}`
+    : undefined;
+  const trendId = trend
+    ? `metric-trend-${title.replace(/\s+/g, '-').toLowerCase()}`
+    : undefined;
 
   return (
     <Card
@@ -67,6 +112,13 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
       hoverAnimation='metric'
       enterAnimation={enterAnimation}
       style={{ animationDelay: staggerDelay ? `${staggerDelay}ms` : undefined }}
+      isMetric={true}
+      metricTitle={title}
+      metricValue={formattedValue.toString()}
+      metricTrend={trend}
+      ariaLabel={getScreenReaderDescription()}
+      role='region'
+      ariaDescribedBy={cn(subtitleId, trendId).trim() || undefined}
       data-testid='simple-metric'
       data-oid='o-fudmc'
     >
@@ -75,6 +127,8 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
         {icon && (
           <div
             className='w-8 h-8 mx-auto mb-3 text-blue-600'
+            aria-hidden='true'
+            role='img'
             data-oid='770b1c-'
           >
             {icon}
@@ -83,6 +137,7 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
 
         {/* Title */}
         <h3
+          id={titleId}
           className='text-sm font-medium text-gray-600 mb-2 flex items-center justify-center gap-2'
           data-oid='oaa1ae1'
         >
@@ -92,7 +147,10 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
 
         {/* Value */}
         <div
+          id={valueId}
           className={`text-2xl font-bold mb-1 ${getStatusColor()}`}
+          role='text'
+          aria-labelledby={titleId}
           data-oid='q2ctt7v'
         >
           {formatValue(value)}
@@ -100,7 +158,11 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
 
         {/* Subtitle */}
         {subtitle && (
-          <p className='text-xs text-gray-500 mb-2' data-oid='7dhnhkr'>
+          <p
+            id={subtitleId}
+            className='text-xs text-gray-500 mb-2'
+            data-oid='7dhnhkr'
+          >
             {subtitle}
           </p>
         )}
@@ -108,9 +170,12 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
         {/* Trend */}
         {trend && (
           <div
+            id={trendId}
             className={`text-xs font-medium flex items-center justify-center gap-1 ${
               isPositiveTrend ? 'text-green-600' : 'text-red-600'
             }`}
+            role='status'
+            aria-label={`Trend: ${trend} ${isPositiveTrend ? 'increase' : 'decrease'} from previous period`}
             data-oid='93yrqt6'
           >
             <svg
@@ -118,8 +183,13 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
+              aria-hidden='true'
+              role='img'
               data-oid='9ky-r7m'
             >
+              <title>
+                {isPositiveTrend ? 'Upward trend' : 'Downward trend'}
+              </title>
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
@@ -128,7 +198,7 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
                 data-oid='la3_8_8'
               />
             </svg>
-            {trend}
+            <span aria-hidden='true'>{trend}</span>
           </div>
         )}
       </div>
