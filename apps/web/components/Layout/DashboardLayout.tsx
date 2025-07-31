@@ -70,7 +70,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             scrollbarColor: '#6B7280 #E5E7EB',
           }}
         >
-          <div className='flex-1 overflow-y-auto p-6'>{children}</div>
+          <div className='flex-1 overflow-y-auto p-6 pt-16 md:pt-6'>{children}</div>
         </main>
       </div>
 

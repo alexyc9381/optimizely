@@ -302,7 +302,7 @@ const UniversalAIDashboard: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen ${colors.getClass('bg', 'secondary', '50')}`}
+              className="min-h-screen bg-gray-50"
       data-testid='universal-ai-dashboard'
       data-oid='g7n.5w_'
     >
@@ -337,7 +337,7 @@ const UniversalAIDashboard: React.FC = () => {
           data-oid='..3q5ua'
         >
           <div className='text-center mb-4' data-oid='b5wogmp'>
-            <p className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'primary', '600')} font-medium`} data-oid='fbe2nk_'>
+            <p className="text-sm text-blue-600 font-medium" data-oid='fbe2nk_'>
               {(() => {
                 const visibleSections = [
                   showDetailedAnalytics,
@@ -370,8 +370,8 @@ const UniversalAIDashboard: React.FC = () => {
                 showDetailedAnalytics &&
                 showEngagementMetrics &&
                 showSystemDetails
-                  ? `${colors.getClass('bg', 'error', '600')} ${colors.getClass('text', 'secondary', '50')} shadow-lg hover:${colors.getClass('bg', 'error', '700')}`
-                  : `${colors.getClass('bg', 'success', '600')} ${colors.getClass('text', 'secondary', '50')} shadow-lg hover:${colors.getClass('bg', 'success', '700')}`
+                                  ? "bg-red-600 text-white shadow-lg hover:bg-red-700"
+                : "bg-green-600 text-white shadow-lg hover:bg-green-700"
               }`}
               data-oid='_dt8dca'
             >
@@ -405,7 +405,7 @@ const UniversalAIDashboard: React.FC = () => {
               data-oid='q5k0jn-'
             >
               <h3
-                className='text-lg font-semibold text-gray-900 mb-6'
+                className='text-heading-responsive font-semibold text-gray-900 mb-6'
                 data-oid='1bkdhmu'
               >
                 Conversion Funnel
@@ -486,11 +486,11 @@ const UniversalAIDashboard: React.FC = () => {
             >
               {/* Experiments */}
               <div
-                className={`${components.card('default', 'md')} ${colors.getClass('bg', 'secondary', '50')} ${colors.getClass('border', 'secondary', '200')}`}
+                className={`${components.card('default', 'md')} bg-gray-50 border-gray-200`}
                 data-oid='i4czvp5'
               >
                 <h3
-                  className={`${typography.getClass('heading-lg')} ${colors.getClass('text', 'secondary', '900')} mb-4`}
+                  className="text-xl font-semibold text-gray-900 mb-4"
                   data-oid='9d6ush:'
                 >
                   Active Experiments
@@ -500,7 +500,7 @@ const UniversalAIDashboard: React.FC = () => {
                     {experiments.map(experiment => (
                       <div
                         key={experiment.id}
-                        className={`${components.card('default', 'sm')} ${colors.getClass('bg', 'secondary', '100')}`}
+                        className={`${components.card('default', 'sm')} bg-white`}
                         data-oid='pls5vex'
                       >
                         <div
@@ -508,20 +508,20 @@ const UniversalAIDashboard: React.FC = () => {
                           data-oid='mb_gnmh'
                         >
                           <h4
-                            className={`${typography.getClass('heading-sm')} ${colors.getClass('text', 'secondary', '900')}`}
+                            className="text-lg font-medium text-gray-900"
                             data-oid='kh7p-bp'
                           >
                             {experiment.name}
                           </h4>
                           <span
-                            className={`${components.badge(experiment.status === 'Running' ? 'success' : 'warning')} ${typography.getClass('label-xs')}`}
+                            className={`${components.badge(experiment.status === 'Running' ? 'success' : 'warning')} text-xs`}
                             data-oid='.bnsjqy'
                           >
                             {experiment.status}
                           </span>
                         </div>
                         <div
-                          className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'secondary', '600')}`}
+                          className="text-sm text-gray-600"
                           data-oid='.4wsk32'
                         >
                           <div data-oid='-.u64um'>
@@ -544,11 +544,11 @@ const UniversalAIDashboard: React.FC = () => {
 
               {/* ML Models */}
               <div
-                className={`${components.card('default', 'md')} ${colors.getClass('bg', 'secondary', '50')} ${colors.getClass('border', 'secondary', '200')}`}
+                className={`${components.card('default', 'md')} bg-gray-50 border-gray-200`}
                 data-oid='r8nvtqa'
               >
                 <h3
-                  className={`${typography.getClass('heading-lg')} ${colors.getClass('text', 'secondary', '900')} mb-4`}
+                  className="text-xl font-semibold text-gray-900 mb-4"
                   data-oid='f-4wkeu'
                 >
                   ML Model Performance
@@ -558,7 +558,7 @@ const UniversalAIDashboard: React.FC = () => {
                     {modelMetrics.map((metric, index) => (
                       <div
                         key={index}
-                        className={`${components.card('default', 'sm')} ${colors.getClass('bg', 'secondary', '100')}`}
+                        className={`${components.card('default', 'sm')} bg-white`}
                         data-oid='zgp8u63'
                       >
                         <div
@@ -566,20 +566,20 @@ const UniversalAIDashboard: React.FC = () => {
                           data-oid='tvhkfs:'
                         >
                           <h4
-                            className={`${typography.getClass('heading-sm')} ${colors.getClass('text', 'secondary', '900')}`}
+                            className="text-lg font-medium text-gray-900"
                             data-oid='5_7_v8t'
                           >
                             {metric.name}
                           </h4>
                           <span
-                            className={`${components.badge(metric.status === 'Active' ? 'success' : 'primary')} ${typography.getClass('label-xs')}`}
+                            className={`${components.badge(metric.status === 'Active' ? 'success' : 'primary')} text-xs`}
                             data-oid='27roxn9'
                           >
                             {metric.status}
                           </span>
                         </div>
                         <div
-                          className={`${typography.getClass('body-sm')} ${colors.getClass('text', 'secondary', '600')}`}
+                          className="text-sm text-gray-600"
                           data-oid='z1x5qol'
                         >
                           <div data-oid='j8-_n15'>
