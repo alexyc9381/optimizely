@@ -1,132 +1,240 @@
 /**
- * Performance Optimization Utilities for Card Components
- * Implements accessibility performance features
+ * Performance Monitoring and Optimization Utilities
+ * Provides tools for monitoring and optimizing application performance
  */
 
-/**
- * Initialize accessibility announcer and performance optimizations
- */
-export const initializeAccessibilityPerformance = (): void => {
-  // Initialize screen reader announcer from accessibility utils
-  if (typeof document !== 'undefined') {
-    const announcer = document.getElementById('screen-reader-announcer');
-    if (!announcer) {
-      const newAnnouncer = document.createElement('div');
-      newAnnouncer.id = 'screen-reader-announcer';
-      newAnnouncer.setAttribute('aria-live', 'polite');
-      newAnnouncer.setAttribute('aria-atomic', 'true');
-      newAnnouncer.className =
-        'sr-only absolute -left-10000 w-1 h-1 overflow-hidden';
-      document.body.appendChild(newAnnouncer);
-    }
+import React from 'react';
+
+// Performance metrics interface
+export interface PerformanceMetrics {
+  renderTime: number;
+  componentCount: number;
+  memoryUsage?: number;
+  bundleSize?: number;
+  timestamp: number;
+}
+
+// Performance observer for monitoring
+export class PerformanceMonitor {
+  private static instance: PerformanceMonitor;
+  private metrics: PerformanceMetrics[] = [];
+  private observers: PerformanceObserver[] = [];
+
+  private constructor() {
+    this.initializeObservers();
   }
-};
 
-/**
- * Performance monitoring for card rendering
- */
-export const measureCardPerformance = (
-  cardId: string,
-  startTime: number
-): void => {
-  if (typeof performance !== 'undefined') {
-    // eslint-disable-next-line no-undef
-    const duration = performance.now() - startTime;
-
-    // Log slow renders for monitoring
-    if (duration > 100) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Slow card render detected: ${cardId} took ${duration.toFixed(2)}ms`
-      );
+  public static getInstance(): PerformanceMonitor {
+    if (!PerformanceMonitor.instance) {
+      PerformanceMonitor.instance = new PerformanceMonitor();
     }
+    return PerformanceMonitor.instance;
   }
-};
 
-/**
- * Preload critical resources for better performance
- */
-export const preloadCriticalResources = async (): Promise<void> => {
-  if (typeof document === 'undefined') return;
+  private initializeObservers(): void {
+    if (typeof window === 'undefined') return;
 
-  // Preload critical fonts
-  if ('fonts' in document) {
     try {
-      await Promise.all([
-        document.fonts.load('400 16px Inter'),
-        document.fonts.load('600 16px Inter'),
-        document.fonts.load('700 16px Inter'),
-      ]);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Font preloading failed:', error);
-    }
-  }
-};
-
-/**
- * Check for accessibility issues in card components
- */
-// eslint-disable-next-line no-undef
-export const auditCardAccessibility = (
-  container: HTMLElement
-): Array<{
-  type: 'warning' | 'error';
-  message: string;
-  // eslint-disable-next-line no-undef
-  element: HTMLElement;
-}> => {
-  // eslint-disable-next-line no-undef
-  const issues: Array<{
-    type: 'warning' | 'error';
-    message: string;
-    element: HTMLElement;
-  }> = [];
-
-  // Check for buttons without accessible names
-  const buttons = container.querySelectorAll(
-    'button:not([aria-label]):not([aria-labelledby])'
-  );
-  buttons.forEach(button => {
-    // eslint-disable-next-line no-undef
-    const btnElement = button as HTMLElement;
-    if (!btnElement.textContent?.trim()) {
-      issues.push({
-        type: 'error',
-        message: 'Button without accessible name',
-        element: btnElement,
+      // Monitor paint timing
+      const paintObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        entries.forEach((entry) => {
+          console.log(`Performance: ${entry.name} - ${entry.startTime}ms`);
+        });
       });
-    }
-  });
+      paintObserver.observe({ entryTypes: ['paint'] });
+      this.observers.push(paintObserver);
 
-  return issues;
-};
+      // Monitor navigation timing
+      const navigationObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        entries.forEach((entry) => {
+          if (entry.entryType === 'navigation') {
+            const navEntry = entry as PerformanceNavigationTiming;
+            console.log(`Performance: Page load time - ${navEntry.loadEventEnd - navEntry.fetchStart}ms`);
+          }
+        });
+      });
+      navigationObserver.observe({ entryTypes: ['navigation'] });
+      this.observers.push(navigationObserver);
 
-/**
- * Announce changes to screen readers
- */
-export const announceToScreenReader = (
-  message: string,
-  priority: 'polite' | 'assertive' = 'polite'
-): void => {
-  if (typeof document !== 'undefined') {
-    const announcer = document.getElementById('screen-reader-announcer');
-    if (announcer) {
-      announcer.setAttribute('aria-live', priority);
-      announcer.textContent = message;
-
-      // Clear after announcement to avoid repetition
-      setTimeout(() => {
-        announcer.textContent = '';
-      }, 1000);
+      // Monitor long tasks
+      const longTaskObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        entries.forEach((entry) => {
+          console.warn(`Performance: Long task detected - ${entry.duration}ms`);
+        });
+      });
+      longTaskObserver.observe({ entryTypes: ['longtask'] });
+      this.observers.push(longTaskObserver);
+    } catch (error) {
+      console.warn('Performance monitoring not supported:', error);
     }
   }
-};
 
-export default {
-  initializeAccessibilityPerformance,
-  measureCardPerformance,
-  preloadCriticalResources,
-  auditCardAccessibility,
-  announceToScreenReader,
-};
+  public recordMetric(metric: PerformanceMetrics): void {
+    this.metrics.push({
+      ...metric,
+      timestamp: Date.now(),
+    });
+
+    // Keep only last 100 metrics to prevent memory leaks
+    if (this.metrics.length > 100) {
+      this.metrics = this.metrics.slice(-100);
+    }
+  }
+
+  public getMetrics(): PerformanceMetrics[] {
+    return [...this.metrics];
+  }
+
+  public getAverageRenderTime(): number {
+    if (this.metrics.length === 0) return 0;
+    const sum = this.metrics.reduce((acc, metric) => acc + metric.renderTime, 0);
+    return sum / this.metrics.length;
+  }
+
+  public cleanup(): void {
+    this.observers.forEach(observer => observer.disconnect());
+    this.observers = [];
+    this.metrics = [];
+  }
+}
+
+// React hook for performance monitoring
+export function usePerformanceMonitor() {
+  const monitor = PerformanceMonitor.getInstance();
+
+  const recordRender = (componentName: string, renderTime: number) => {
+    monitor.recordMetric({
+      renderTime,
+      componentCount: 1,
+      timestamp: Date.now(),
+    });
+  };
+
+  const getMetrics = () => monitor.getMetrics();
+  const getAverageRenderTime = () => monitor.getAverageRenderTime();
+
+  return {
+    recordRender,
+    getMetrics,
+    getAverageRenderTime,
+  };
+}
+
+// HOC for automatic performance monitoring
+export function withPerformanceMonitoring<T extends object>(
+  WrappedComponent: React.ComponentType<T>,
+  componentName: string
+) {
+  return function PerformanceMonitoredComponent(props: T) {
+    const { recordRender } = usePerformanceMonitor();
+    const startTime = performance.now();
+
+    React.useEffect(() => {
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+      recordRender(componentName, renderTime);
+    });
+
+    return React.createElement(WrappedComponent, props);
+  };
+}
+
+// Utility for measuring function performance
+export function measurePerformance<T extends (...args: any[]) => any>(
+  fn: T,
+  name: string
+): T {
+  return ((...args: Parameters<T>): ReturnType<T> => {
+    const start = performance.now();
+    const result = fn(...args);
+    const end = performance.now();
+    
+    console.log(`Performance: ${name} took ${end - start}ms`);
+    
+    return result;
+  }) as T;
+}
+
+// Virtual scrolling utility for large datasets
+export interface VirtualScrollOptions {
+  itemHeight: number;
+  containerHeight: number;
+  overscan?: number;
+}
+
+export function calculateVirtualScrollItems(
+  totalItems: number,
+  scrollTop: number,
+  options: VirtualScrollOptions
+) {
+  const { itemHeight, containerHeight, overscan = 5 } = options;
+  
+  const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+  const endIndex = Math.min(
+    totalItems - 1,
+    startIndex + Math.ceil(containerHeight / itemHeight) + overscan * 2
+  );
+  
+  return {
+    startIndex,
+    endIndex,
+    visibleItems: endIndex - startIndex + 1,
+    offsetY: startIndex * itemHeight,
+  };
+}
+
+// Debounce utility for performance optimization
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: NodeJS.Timeout;
+  
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+}
+
+// Throttle utility for performance optimization
+export function throttle<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let lastCall = 0;
+  
+  return (...args: Parameters<T>) => {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      func(...args);
+    }
+  };
+}
+
+// Memory usage monitoring
+export function getMemoryUsage(): number | undefined {
+  if (typeof window !== 'undefined' && 'memory' in performance) {
+    const memory = (performance as any).memory;
+    return memory.usedJSHeapSize / 1024 / 1024; // Convert to MB
+  }
+  return undefined;
+}
+
+// Bundle analyzer utility
+export function logBundleInfo(): void {
+  if (typeof window !== 'undefined') {
+    const scripts = Array.from(document.getElementsByTagName('script'));
+    const stylesheets = Array.from(document.getElementsByTagName('link'))
+      .filter(link => link.rel === 'stylesheet');
+    
+    console.group('Bundle Analysis');
+    console.log(`Scripts loaded: ${scripts.length}`);
+    console.log(`Stylesheets loaded: ${stylesheets.length}`);
+    console.log('Memory usage:', getMemoryUsage(), 'MB');
+    console.groupEnd();
+  }
+}

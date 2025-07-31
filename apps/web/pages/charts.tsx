@@ -5,8 +5,19 @@
 
 import React from 'react';
 import Head from 'next/head';
-import { ChartShowcase } from '../components/charts/ChartShowcase';
+import dynamic from 'next/dynamic';
 import DashboardLayout from '../components/Layout/DashboardLayout';
+
+// Lazy load the chart showcase for better performance
+const ChartShowcase = dynamic(() => import('../components/charts/ChartShowcase').then(mod => ({ default: mod.ChartShowcase })), {
+  loading: () => (
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <span className="ml-3 text-gray-600">Loading charts...</span>
+    </div>
+  ),
+  ssr: false,
+});
 
 const ChartsPage: React.FC = () => {
   return (
