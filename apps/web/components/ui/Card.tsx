@@ -6,7 +6,7 @@ import {
   keyboardNavigation,
   SCREEN_READER_DESCRIPTIONS,
 } from '../../lib/accessibility';
-import { ANIMATION_CLASSES, animations } from '../../lib/animations';
+// Animation classes are now CSS-based in animations.css
 import { cn } from '../../lib/utils';
 
 export interface CardProps {
@@ -21,7 +21,7 @@ export interface CardProps {
   // New animation props
   hoverAnimation?: 'card' | 'button' | 'metric' | 'interactive' | 'none';
   focusVariant?: 'subtle' | 'standard' | 'prominent';
-  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'none';
+  enterAnimation?: 'fade' | 'up' | 'down' | 'left' | 'right' | 'scale' | 'none';
   // Accessibility props
   ariaLabel?: string;
   ariaDescribedBy?: string;
@@ -125,20 +125,14 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       'focus:outline-none',
 
       // Enter animation (respecting user's motion preferences)
-      enterAnimation !== 'none' &&
-        animationA11y.getAnimationClass(
-          animations.getEntranceAnimation(enterAnimation)
-        ),
+      enterAnimation !== 'none' && 'animate-fade-in',
 
       // Interactive states
       isInteractive && [
         'cursor-pointer',
-        hoverAnimation !== 'none' &&
-          animationA11y.getAnimationClass(
-            animations.getHoverAnimation(hoverAnimation)
-          ),
-        animations.getFocusAnimation(focusVariant),
-        animationA11y.getAnimationClass(ANIMATION_CLASSES.ACTIVE.CARD_PRESS),
+        hoverAnimation !== 'none' && 'hover-lift',
+        'focus-ring',
+        'press-scale',
       ]
     );
 
@@ -227,8 +221,7 @@ export const CardHeader = React.forwardRef<
     ref={ref}
     className={cn(
       'flex flex-col space-y-1.5 pb-6',
-      enterAnimation !== 'none' &&
-        animations.getEntranceAnimation(enterAnimation),
+      'animate-fade-in',
       className
     )}
     {...props}
@@ -250,7 +243,7 @@ export const CardTitle = React.forwardRef<
     ref={ref}
     className={cn(
       'text-lg font-semibold leading-none tracking-tight text-gray-900',
-      hoverEffect && ANIMATION_CLASSES.HOVER.OPACITY_LIFT,
+      hoverEffect && 'hover-lift',
       className
     )}
     {...props}
@@ -272,7 +265,7 @@ export const CardDescription = React.forwardRef<
     ref={ref}
     className={cn(
       'text-sm text-gray-600 leading-relaxed',
-      fadeIn && ANIMATION_CLASSES.ENTRANCE.FADE_IN,
+      fadeIn && 'animate-fade-in',
       className
     )}
     {...props}
@@ -303,7 +296,7 @@ export const CardContent = React.forwardRef<
     className={cn(
       'pt-0',
       enterAnimation !== 'none' &&
-        animations.getEntranceAnimation(enterAnimation),
+        'animate-fade-in',
       className
     )}
     style={{
@@ -336,7 +329,7 @@ export const CardFooter = React.forwardRef<
     className={cn(
       'flex items-center pt-6',
       enterAnimation !== 'none' &&
-        animations.getEntranceAnimation(enterAnimation),
+        'animate-fade-in',
       className
     )}
     {...props}

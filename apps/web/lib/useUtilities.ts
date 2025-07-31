@@ -255,21 +255,7 @@ export const validateUtilityClass = (className: string): boolean => {
   return validPrefixes.some(prefix => className.startsWith(prefix));
 };
 
-/**
- * Higher-order component for applying utility classes
- */
-export function withUtilities<P extends object>(
-  Component: React.ComponentType<P>,
-  classNames: string
-) {
-  return (props: P) => {
-    return (
-      <div className={classNames}>
-        <Component {...props} />
-      </div>
-    );
-  };
-}
+// HOC removed due to TypeScript complexity - use useUtilities hook directly instead
 
 /**
  * Utility class constants

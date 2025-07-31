@@ -104,24 +104,7 @@ export const useTypography = () => {
   return typography;
 };
 
-/**
- * Higher-order component for applying typography styles
- */
-export const withTypography = <P extends Record<string, unknown>>(
-  Component: React.ComponentType<P>,
-  typographyLevel: keyof typeof TYPOGRAPHY_HIERARCHY
-) => {
-  return React.forwardRef<unknown, P>((props, ref) => {
-    const { getClassName } = useTypography();
-
-    return React.createElement(Component, {
-      ...props,
-      ref,
-      className:
-        `${getClassName(typographyLevel)} ${(props as { className?: string }).className || ''}`.trim(),
-    });
-  });
-};
+// HOC removed due to TypeScript complexity - use useTypography hook directly instead
 
 /**
  * Typography context for theme switching

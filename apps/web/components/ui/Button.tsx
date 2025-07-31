@@ -172,7 +172,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'primary', '500'),
+          'ring-primary-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -206,7 +206,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'secondary', '500'),
+          'ring-secondary-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -234,7 +234,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'secondary', '500'),
+          'ring-secondary-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -259,7 +259,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'secondary', '500'),
+          'ring-secondary-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -288,7 +288,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'primary', '500'),
+          'ring-primary-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -320,7 +320,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         focus: [
           'ring-2',
           'ring-offset-2',
-          colors.getClass('ring', 'error', '500'),
+          'ring-error-500',
           'ring-opacity-50'
         ],
         disabled: [
@@ -358,7 +358,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return classes.join(' ');
     };
 
-    // Event handlers
+    // Event handlers for buttons
     const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!isDisabled) {
         setIsHovered(true);
@@ -381,6 +381,31 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       setIsFocused(false);
       setIsPressed(false);
       onBlur?.(e);
+    };
+
+    // Event handlers for anchor elements
+    const handleAnchorMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!isDisabled) {
+        setIsHovered(true);
+      }
+      onMouseEnter?.(e as any);
+    };
+
+    const handleAnchorMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      setIsHovered(false);
+      setIsPressed(false);
+      onMouseLeave?.(e as any);
+    };
+
+    const handleAnchorFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
+      setIsFocused(true);
+      onFocus?.(e as any);
+    };
+
+    const handleAnchorBlur = (e: React.FocusEvent<HTMLAnchorElement>) => {
+      setIsFocused(false);
+      setIsPressed(false);
+      onBlur?.(e as any);
     };
 
     const handleMouseDown = () => {
@@ -447,10 +472,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           target={target}
           rel={rel}
           className={`${getButtonClasses()} ${className}`}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onMouseEnter={handleAnchorMouseEnter}
+          onMouseLeave={handleAnchorMouseLeave}
+          onFocus={handleAnchorFocus}
+          onBlur={handleAnchorBlur}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           aria-disabled={isDisabled}

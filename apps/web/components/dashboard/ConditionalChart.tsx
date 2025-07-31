@@ -1,5 +1,4 @@
 import React from 'react';
-import { ANIMATION_CLASSES } from '../../lib/animations';
 import Card from '../ui/Card';
 
 interface ConditionalChartProps {
@@ -33,13 +32,11 @@ const ConditionalChart: React.FC<ConditionalChartProps> = ({
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        className={`flex items-center justify-between w-full p-6 rounded-lg font-medium transition-all duration-300 ${
+        className={`flex items-center justify-between w-full p-6 rounded-lg font-medium transition-all duration-300 interactive-button focus-ring ${
           isVisible
             ? 'bg-blue-600 text-white shadow-lg hover:bg-blue-700'
             : 'bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50'
-        } ${
-          ANIMATION_CLASSES.HOVER.BUTTON_HOVER
-        } ${ANIMATION_CLASSES.ACTIVE.BUTTON_PRESS} ${ANIMATION_CLASSES.FOCUS.RING_BLUE}`}
+        }`}
         data-testid='toggle-button'
         data-oid='rmlnjf5'
       >
