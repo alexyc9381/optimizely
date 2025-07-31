@@ -125,7 +125,7 @@ module.exports = {
         loose: '2',
       },
       colors: {
-        // Primary purpleish-blue palette
+        // Primary Blue Color Scale (50-950)
         primary: {
           50: '#f0f4ff',
           100: '#e5edff',
@@ -139,7 +139,7 @@ module.exports = {
           900: '#2e3295',
           950: '#1c1c59',
         },
-        // Secondary purple tones
+        // Secondary Purple Color Scale
         secondary: {
           50: '#f7f5ff',
           100: '#f0ebff',
@@ -153,41 +153,141 @@ module.exports = {
           900: '#561faa',
           950: '#351274',
         },
-        // Accent indigo
-        accent: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+        // Neutral Gray Color Scale
+        neutral: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
-        // Dark background variations
+        // Success Green Color Scale
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
+        // Warning Amber Color Scale
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+          950: '#451a03',
+        },
+        // Error Red Color Scale
+        error: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
+          950: '#450a0a',
+        },
+        // Info Blue Color Scale
+        info: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+        },
+        // Background Colors
         background: {
-          primary: '#0a0b1e',
-          secondary: '#12132b',
-          tertiary: '#1a1d3a',
-          card: '#1e2147',
-          hover: '#262a54',
+          primary: '#ffffff',
+          secondary: '#f8fafc',
+          tertiary: '#f1f5f9',
+          card: '#ffffff',
+          hover: '#f8fafc',
+          pressed: '#f1f5f9',
+          overlay: 'rgba(15, 23, 42, 0.75)',
+          glass: 'rgba(248, 250, 252, 0.8)',
         },
-        // Text colors
+        // Dark Mode Background Colors
+        'dark-background': {
+          primary: '#0f172a',
+          secondary: '#1e293b',
+          tertiary: '#334155',
+          card: '#1e293b',
+          hover: '#334155',
+          pressed: '#475569',
+          overlay: 'rgba(15, 23, 42, 0.90)',
+          glass: 'rgba(30, 41, 59, 0.8)',
+        },
+        // Text Colors
         text: {
-          primary: '#e2e8f0',
-          secondary: '#94a3b8',
-          muted: '#64748b',
-          accent: '#a5b4fc',
+          primary: '#0f172a',
+          secondary: '#475569',
+          tertiary: '#64748b',
+          inverse: '#f8fafc',
+          placeholder: '#94a3b8',
+          disabled: '#cbd5e1',
+          link: '#4c52ff',
+          'link-hover': '#3d3eeb',
         },
-        // Status colors in purple tones
-        status: {
-          success: '#8b5cf6',
-          warning: '#a855f7',
-          error: '#c026d3',
-          info: '#6366f1',
+        // Dark Mode Text Colors
+        'dark-text': {
+          primary: '#f8fafc',
+          secondary: '#cbd5e1',
+          tertiary: '#94a3b8',
+          inverse: '#0f172a',
+          placeholder: '#64748b',
+          disabled: '#475569',
+          link: '#7d8cff',
+          'link-hover': '#aab9ff',
+        },
+        // Border Colors
+        border: {
+          default: '#e2e8f0',
+          subtle: '#f1f5f9',
+          strong: '#cbd5e1',
+          focus: '#5b6cff',
+          error: '#ef4444',
+          success: '#22c55e',
+          warning: '#f59e0b',
+          info: '#3b82f6',
+        },
+        // Dark Mode Border Colors
+        'dark-border': {
+          default: '#334155',
+          subtle: '#1e293b',
+          strong: '#475569',
+          focus: '#5b6cff',
+          error: '#ef4444',
+          success: '#22c55e',
+          warning: '#f59e0b',
+          info: '#3b82f6',
         },
       },
       backgroundImage: {

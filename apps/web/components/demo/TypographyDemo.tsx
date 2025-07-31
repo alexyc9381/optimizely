@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import Card from '../ui/Card';
 import { useTypography } from '../../lib/useTypography';
+import Card from '../ui/Card';
 
 const TypographyDemo: React.FC = () => {
   const { hierarchy, getClassName } = useTypography();
