@@ -145,7 +145,7 @@ const UniversalAIDashboard: React.FC = () => {
     const fetchDashboardData = async () => {
       const enableAPIConnection = false; // Set to true to enable API calls
       if (!enableAPIConnection) {
-        setLastUpdated(new Date());
+        if (mounted) setLastUpdated(new Date());
         return;
       }
 
@@ -157,22 +157,26 @@ const UniversalAIDashboard: React.FC = () => {
         setApiConnected(false);
       } finally {
         setLoading(false);
-        setLastUpdated(new Date());
+        if (mounted) setLastUpdated(new Date());
       }
     };
 
-    fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    if (mounted) {
+      fetchDashboardData();
+      const interval = setInterval(fetchDashboardData, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [mounted]);
 
   // Update timestamp display every minute
   useEffect(() => {
-    const timestampInterval = setInterval(() => {
-      setLastUpdated(new Date());
-    }, 60000);
-    return () => clearInterval(timestampInterval);
-  }, []);
+    if (mounted) {
+      const timestampInterval = setInterval(() => {
+        setLastUpdated(new Date());
+      }, 60000);
+      return () => clearInterval(timestampInterval);
+    }
+  }, [mounted]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
