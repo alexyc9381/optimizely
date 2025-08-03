@@ -439,7 +439,10 @@ const UniversalAIDashboard: React.FC = () => {
               <h3 className='text-sm font-semibold text-gray-600 mb-2'>
                 Total Visitors
               </h3>
-              <div className='text-2xl font-bold text-gray-900 leading-tight mb-1'>
+              <div
+                className='text-2xl font-bold text-gray-900 leading-tight mb-1'
+                suppressHydrationWarning
+              >
                 {dashboardStats.totalVisitors.toLocaleString()}
               </div>
               <div className='text-xs text-green-600 mb-3'>+12.3%</div>
@@ -451,7 +454,10 @@ const UniversalAIDashboard: React.FC = () => {
               <h3 className='text-sm font-semibold text-gray-600 mb-2'>
                 Active Sessions
               </h3>
-              <div className='text-2xl font-bold text-gray-900 leading-tight mb-1'>
+              <div
+                className='text-2xl font-bold text-gray-900 leading-tight mb-1'
+                suppressHydrationWarning
+              >
                 {dashboardStats.totalSessions.toLocaleString()}
               </div>
               <div className='text-xs text-green-600 mb-3'>+8.7%</div>
