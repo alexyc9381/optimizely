@@ -429,11 +429,7 @@ const UniversalAIDashboard: React.FC = () => {
                 Overall conversion performance across all channels
               </div>
               <div className='h-20 mt-3'>
-                {mounted ? (
-                  <ConversionRateTrendChart data-oid='vuj.jrd' />
-                ) : (
-                  <div className='h-full bg-gray-100 rounded animate-pulse' />
-                )}
+                <div className='h-full bg-gray-100 rounded animate-pulse' />
               </div>
             </div>
 
