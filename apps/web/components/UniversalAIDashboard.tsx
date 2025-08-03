@@ -432,9 +432,6 @@ const UniversalAIDashboard: React.FC = () => {
               <div className='text-xs text-gray-500 mb-3'>
                 Overall conversion performance across all channels
               </div>
-              <div className='h-20'>
-                <div className='h-full bg-gray-100 rounded animate-pulse' />
-              </div>
             </div>
 
             {/* Total Visitors Card */}
