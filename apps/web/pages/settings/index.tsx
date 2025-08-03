@@ -1,12 +1,4 @@
-import {
-  Eye,
-  EyeClosed as EyeOff,
-  Key,
-  Mail,
-  Save,
-  Shield,
-  Users,
-} from 'lucide-react';
+import { Eye, EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
