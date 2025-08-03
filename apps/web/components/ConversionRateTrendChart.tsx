@@ -23,12 +23,13 @@ interface ConversionRateTrendChartProps {
 const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
   className = '',
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [timeframe, setTimeframe] = useState('7d');
   const [selectedTest, setSelectedTest] = useState('pricing_page_test');
   const [showTimeDropdown, setShowTimeDropdown] = useState(false);
   const [showTestDropdown, setShowTestDropdown] = useState(false);
   const [data, setData] = useState<ConversionDataPoint[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Available timeframes
   const timeframes = [
@@ -111,19 +112,15 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
     return data;
   };
 
-  // Initialize data on client-side only to prevent hydration mismatch
+  // Initialize mounted state on client-side only
   useEffect(() => {
-    const selectedTimeframe = timeframes.find(t => t.id === timeframe);
-    const days = selectedTimeframe?.days || 7;
-    const newData = generateMockData(days, selectedTest);
-    setData(newData);
-    setLoading(false);
+    setMounted(true);
   }, []);
 
-  // Load data when timeframe or test changes (after initial mount)
+  // Load data when timeframe or test changes
   useEffect(() => {
-    if (data.length === 0) return; // Skip if initial load hasn't happened
-
+    if (!mounted) return;
+    
     setLoading(true);
     const selectedTimeframe = timeframes.find(t => t.id === timeframe);
     const days = selectedTimeframe?.days || 7;
@@ -134,7 +131,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       setData(newData);
       setLoading(false);
     }, 300);
-  }, [timeframe, selectedTest]);
+  }, [mounted, timeframe, selectedTest]);
 
   const maxValue = 20;
 
@@ -248,7 +245,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
               className='flex items-center gap-1.5 px-2 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
               data-oid='etb4khc'
             >
-              <CalendarDays className='w-3 h-3' data-oid='._28642' />
+                              <CalendarDays className='w-3 h-3' data-oid='._28642' />
               {currentTimeframe?.label}
               <ChevronDown className='w-3 h-3' data-oid=':ncd2a3' />
             </button>
@@ -461,10 +458,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 data-oid='v25yykb'
               />
 
-              <span
-                className='text-xs sm:text-sm text-gray-600'
-                data-oid='y138i1g'
-              >
+              <span className='text-xs sm:text-sm text-gray-600' data-oid='y138i1g'>
                 {variant.name}
               </span>
               <span
@@ -474,10 +468,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 {latestValue.toFixed(1)}%
               </span>
               {variant.isControl && (
-                <span
-                  className='text-xs text-gray-500 ml-0.5 sm:ml-1'
-                  data-oid='l0w.25z'
-                >
+                <span className='text-xs text-gray-500 ml-0.5 sm:ml-1' data-oid='l0w.25z'>
                   (baseline)
                 </span>
               )}

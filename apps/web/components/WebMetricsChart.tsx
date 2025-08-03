@@ -1,9 +1,9 @@
 import {
-  ChevronDown,
-  ChevronLeft,
-  Clock,
-  MousePointer,
-  TrendingUp,
+    ChevronDown,
+    ChevronLeft,
+    Clock,
+    MousePointer,
+    TrendingUp,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
@@ -24,6 +24,7 @@ interface MetricConfig {
 }
 
 const WebMetricsChart: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('traffic');
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState<MetricDataPoint[]>([]);
@@ -118,23 +119,21 @@ const WebMetricsChart: React.FC = () => {
     return data;
   };
 
-  // Initialize data on client-side only to prevent hydration mismatch
+  // Initialize mounted state on client-side only
   useEffect(() => {
-    setData(generateMockData(selectedMetric));
-    setLoading(false);
+    setMounted(true);
   }, []);
 
-  // Load data when metric changes (after initial mount)
   useEffect(() => {
-    if (data.length === 0) return; // Skip if initial load hasn't happened
-
+    if (!mounted) return;
+    
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
       setData(generateMockData(selectedMetric));
       setLoading(false);
     }, 500);
-  }, [selectedMetric]);
+  }, [mounted, selectedMetric]);
 
   const currentMetric = metrics[selectedMetric];
   const maxValue = Math.max(...data.map(d => d.value));
