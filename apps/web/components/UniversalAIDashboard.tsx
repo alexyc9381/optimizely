@@ -506,10 +506,9 @@ const UniversalAIDashboard: React.FC = () => {
           >
             {/* Charts */}
             <div
-              className='grid grid-cols-1 lg:grid-cols-2 gap-6'
+              className='grid grid-cols-1 lg:grid-cols-1 gap-6'
               data-oid='2dh8zxy'
             >
-              <ConversionRateTrendChart data-oid='vuj.jrd' />
               <WebMetricsChart data-oid='tfam3y4' />
             </div>
           </div>
