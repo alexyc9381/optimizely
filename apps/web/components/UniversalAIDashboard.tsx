@@ -79,6 +79,11 @@ const UniversalAIDashboard: React.FC = () => {
     modelAccuracy: 94.2,
   });
 
+  // Initialize timestamp on client-side only to prevent hydration mismatch
+  useEffect(() => {
+    setLastUpdated(new Date());
+  }, []);
+
   const [experiments] = useState<Experiment[]>([
     {
       id: '1',
