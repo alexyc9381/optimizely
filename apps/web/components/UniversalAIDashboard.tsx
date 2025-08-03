@@ -69,6 +69,9 @@ const UniversalAIDashboard: React.FC = () => {
     { id: 'custom', name: 'Custom range' },
   ];
 
+  // Client-side mounting state to prevent hydration issues
+  const [mounted, setMounted] = useState(false);
+
   // Core state with fallback values for immediate content display
   const [dashboardStats] = useState<DashboardStats>({
     totalVisitors: 24789,
@@ -78,11 +81,6 @@ const UniversalAIDashboard: React.FC = () => {
     activeExperiments: 12,
     modelAccuracy: 94.2,
   });
-
-  // Initialize timestamp on client-side only to prevent hydration mismatch
-  useEffect(() => {
-    setLastUpdated(new Date());
-  }, []);
 
   const [experiments] = useState<Experiment[]>([
     {
@@ -134,8 +132,9 @@ const UniversalAIDashboard: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_apiConnected, setApiConnected] = useState(false);
 
-  // Initialize timestamp on client-side only to prevent hydration mismatch
+  // Initialize mounted state and timestamp on client-side only to prevent hydration mismatch
   useEffect(() => {
+    setMounted(true);
     setLastUpdated(new Date());
   }, []);
 
@@ -430,7 +429,11 @@ const UniversalAIDashboard: React.FC = () => {
                 Overall conversion performance across all channels
               </div>
               <div className='h-20 mt-3'>
-                <ConversionRateTrendChart data-oid='vuj.jrd' />
+                {mounted ? (
+                  <ConversionRateTrendChart data-oid='vuj.jrd' />
+                ) : (
+                  <div className='h-full bg-gray-100 rounded animate-pulse' />
+                )}
               </div>
             </div>
 
@@ -439,10 +442,7 @@ const UniversalAIDashboard: React.FC = () => {
               <h3 className='text-sm font-semibold text-gray-600 mb-2'>
                 Total Visitors
               </h3>
-              <div
-                className='text-2xl font-bold text-gray-900 leading-tight mb-1'
-                suppressHydrationWarning
-              >
+              <div className='text-2xl font-bold text-gray-900 leading-tight mb-1'>
                 {dashboardStats.totalVisitors.toLocaleString()}
               </div>
               <div className='text-xs text-green-600 mb-3'>+12.3%</div>
@@ -454,10 +454,7 @@ const UniversalAIDashboard: React.FC = () => {
               <h3 className='text-sm font-semibold text-gray-600 mb-2'>
                 Active Sessions
               </h3>
-              <div
-                className='text-2xl font-bold text-gray-900 leading-tight mb-1'
-                suppressHydrationWarning
-              >
+              <div className='text-2xl font-bold text-gray-900 leading-tight mb-1'>
                 {dashboardStats.totalSessions.toLocaleString()}
               </div>
               <div className='text-xs text-green-600 mb-3'>+8.7%</div>
@@ -512,10 +509,19 @@ const UniversalAIDashboard: React.FC = () => {
           >
             {/* Charts */}
             <div
-              className='grid grid-cols-1 lg:grid-cols-1 gap-6'
+              className='grid grid-cols-1 lg:grid-cols-2 gap-6'
               data-oid='2dh8zxy'
             >
-              <WebMetricsChart data-oid='tfam3y4' />
+              {mounted ? (
+                <ConversionRateTrendChart data-oid='vuj.jrd' />
+              ) : (
+                <div className='h-64 bg-gray-100 rounded animate-pulse' />
+              )}
+              {mounted ? (
+                <WebMetricsChart data-oid='tfam3y4' />
+              ) : (
+                <div className='h-64 bg-gray-100 rounded animate-pulse' />
+              )}
             </div>
           </div>
         </section>
