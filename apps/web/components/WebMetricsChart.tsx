@@ -1,6 +1,6 @@
 import {
-  ArrowLeft,
   ChevronDown,
+  ChevronLeft,
   Clock,
   MousePointer,
   TrendingUp,
@@ -53,7 +53,7 @@ const WebMetricsChart: React.FC = () => {
     bounce: {
       id: 'bounce',
       name: 'Bounce Rate',
-      icon: <ArrowLeft className='w-4 h-4' data-oid='sn1dml5' />,
+      icon: <ChevronLeft className='w-4 h-4' data-oid='sn1dml5' />,
       color: '#F59E0B',
       unit: '%',
       current: '32.1%',
@@ -64,7 +64,7 @@ const WebMetricsChart: React.FC = () => {
       id: 'session',
       name: 'Session Duration',
       icon: <Clock className='w-4 h-4' data-oid='gdxx2zi' />,
-      color: '#8B5CF6',
+      color: '#3B82F6',
       unit: 'min',
       current: '12m 34s',
       trend: '+1.2m',
@@ -118,7 +118,16 @@ const WebMetricsChart: React.FC = () => {
     return data;
   };
 
+  // Initialize data on client-side only to prevent hydration mismatch
   useEffect(() => {
+    setData(generateMockData(selectedMetric));
+    setLoading(false);
+  }, []);
+
+  // Load data when metric changes (after initial mount)
+  useEffect(() => {
+    if (data.length === 0) return; // Skip if initial load hasn't happened
+
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
@@ -134,7 +143,7 @@ const WebMetricsChart: React.FC = () => {
 
   return (
     <div
-      className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm w-[491px]'
+      className='bg-white rounded-xl p-6 border border-gray-200 shadow-sm w-full'
       data-oid='-8:79wi'
     >
       {/* Header with Metric Selector */}

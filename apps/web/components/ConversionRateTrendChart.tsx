@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown } from 'lucide-react';
+import { CalendarDays, ChevronDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 interface ConversionDataPoint {
@@ -28,7 +28,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
   const [showTimeDropdown, setShowTimeDropdown] = useState(false);
   const [showTestDropdown, setShowTestDropdown] = useState(false);
   const [data, setData] = useState<ConversionDataPoint[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Available timeframes
   const timeframes = [
@@ -42,7 +42,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
   // Available test groups
   const testGroups = [
     { id: 'pricing_page_test', name: 'Pricing Page CTA', color: '#3B82F6' },
-    { id: 'onboarding_flow', name: 'Onboarding Flow', color: '#8B5CF6' },
+    { id: 'onboarding_flow', name: 'Onboarding Flow', color: '#3B82F6' },
     { id: 'email_campaign', name: 'Email Subject Lines', color: '#F59E0B' },
     { id: 'landing_page', name: 'Landing Page Design', color: '#10B981' },
   ];
@@ -65,7 +65,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       case 'email_campaign':
         return [
           ...baseVariants.slice(0, 2),
-          { id: 'variant_b', name: 'Personalized', color: '#8B5CF6' },
+          { id: 'variant_b', name: 'Personalized', color: '#3B82F6' },
         ];
 
       default:
@@ -111,8 +111,19 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
     return data;
   };
 
-  // Load data when timeframe or test changes
+  // Initialize data on client-side only to prevent hydration mismatch
   useEffect(() => {
+    const selectedTimeframe = timeframes.find(t => t.id === timeframe);
+    const days = selectedTimeframe?.days || 7;
+    const newData = generateMockData(days, selectedTest);
+    setData(newData);
+    setLoading(false);
+  }, []);
+
+  // Load data when timeframe or test changes (after initial mount)
+  useEffect(() => {
+    if (data.length === 0) return; // Skip if initial load hasn't happened
+
     setLoading(true);
     const selectedTimeframe = timeframes.find(t => t.id === timeframe);
     const days = selectedTimeframe?.days || 7;
@@ -237,7 +248,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
               className='flex items-center gap-1.5 px-2 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
               data-oid='etb4khc'
             >
-              <Calendar className='w-3 h-3' data-oid='._28642' />
+              <CalendarDays className='w-3 h-3' data-oid='._28642' />
               {currentTimeframe?.label}
               <ChevronDown className='w-3 h-3' data-oid=':ncd2a3' />
             </button>
@@ -413,7 +424,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
 
       {/* Legend */}
       <div
-        className='flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-200'
+        className='flex flex-wrap items-center justify-center gap-2 sm:gap-4 lg:gap-6 mt-4 pt-4 border-t border-gray-200'
         data-oid='9yd_4di'
       >
         {variants.map(variant => {
@@ -441,7 +452,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
           return (
             <div
               key={variant.id}
-              className='flex items-center gap-2'
+              className='flex items-center gap-1 sm:gap-2'
               data-oid='ajfo395'
             >
               <div
@@ -450,17 +461,23 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
                 data-oid='v25yykb'
               />
 
-              <span className='text-sm text-gray-600' data-oid='y138i1g'>
+              <span
+                className='text-xs sm:text-sm text-gray-600'
+                data-oid='y138i1g'
+              >
                 {variant.name}
               </span>
               <span
-                className='text-sm font-semibold text-gray-900'
+                className='text-xs sm:text-sm font-semibold text-gray-900'
                 data-oid='3x-ziv3'
               >
                 {latestValue.toFixed(1)}%
               </span>
               {variant.isControl && (
-                <span className='text-xs text-gray-500 ml-1' data-oid='l0w.25z'>
+                <span
+                  className='text-xs text-gray-500 ml-0.5 sm:ml-1'
+                  data-oid='l0w.25z'
+                >
                   (baseline)
                 </span>
               )}
