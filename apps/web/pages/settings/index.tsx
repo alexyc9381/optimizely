@@ -1,4 +1,13 @@
-import { Eye, EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
+import {
+  Eye,
+  EyeClosed as EyeOff,
+  Key,
+  Mail,
+  Save,
+  Shield,
+  Users,
+} from 'lucide-react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
 import { apiClient } from '../../src/services/apiClient';
@@ -51,6 +60,7 @@ interface BillingInfo {
 }
 
 const SettingsPage: React.FC = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<
     'account' | 'team' | 'billing' | 'security' | 'integrations'
   >('account');
@@ -151,6 +161,19 @@ const SettingsPage: React.FC = () => {
 
     fetchSettings();
   }, []);
+
+  // Handle URL parameters for tab navigation
+  useEffect(() => {
+    const { tab } = router.query;
+    if (
+      typeof tab === 'string' &&
+      ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)
+    ) {
+      setActiveTab(
+        tab as 'account' | 'team' | 'billing' | 'security' | 'integrations'
+      );
+    }
+  }, [router.query]);
 
   const handleSaveSettings = async (updates: Partial<UserSettings>) => {
     try {
@@ -281,7 +304,12 @@ const SettingsPage: React.FC = () => {
             ].map(tab => (
               <button
                 key={tab.key}
-                onClick={() => setActiveTab(tab.key as any)}
+                onClick={() => {
+                  setActiveTab(tab.key as any);
+                  router.push(`/settings?tab=${tab.key}`, undefined, {
+                    shallow: true,
+                  });
+                }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
                   activeTab === tab.key
                     ? 'border-blue-500 text-blue-600'
@@ -808,17 +836,14 @@ const SettingsPage: React.FC = () => {
                   </p>
                 </div>
                 <div
-                  className='text-center p-4 bg-purple-50 rounded-lg'
+                  className='text-center p-4 bg-blue-50 rounded-lg'
                   data-oid='z38ehou'
                 >
-                  <p
-                    className='text-sm text-purple-600 mb-1'
-                    data-oid='k47zyu_'
-                  >
+                  <p className='text-sm text-blue-600 mb-1' data-oid='k47zyu_'>
                     Next Billing
                   </p>
                   <p
-                    className='text-xl font-bold text-purple-900'
+                    className='text-xl font-bold text-blue-900'
                     data-oid='1_m.cvy'
                   >
                     {new Date(billingInfo.nextBilling).toLocaleDateString()}
