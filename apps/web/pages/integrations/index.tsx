@@ -67,13 +67,6 @@ const IntegrationsPage: React.FC = () => {
       category: 'CRM',
     },
     {
-      name: 'Docker',
-      logo: '🐳',
-      description: 'Containerized deployment and development environment',
-      status: 'Setup Required',
-      category: 'DevOps',
-    },
-    {
       name: 'HubSpot',
       logo: '🧡',
       description: 'Marketing automation and CRM integration',
