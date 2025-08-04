@@ -134,6 +134,10 @@ export const chartUtils = {
     const rangeSpan = rangeMax - rangeMin;
 
     return (value: number) => {
+      // Handle edge cases that could produce NaN
+      if (!isFinite(value) || !isFinite(domainSpan) || domainSpan === 0 || !isFinite(rangeSpan)) {
+        return rangeMin;
+      }
       return rangeMin + ((value - domainMin) / domainSpan) * rangeSpan;
     };
   },

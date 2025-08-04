@@ -108,6 +108,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       ref={containerRef}
       className={`relative ${className}`}
       style={{ width: chartConfig.responsive ? '100%' : dimensions.width }}
+      data-testid="responsive-container"
     >
       <svg
         ref={svgRef}
@@ -115,6 +116,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         height={dimensions.height}
         className="overflow-visible"
         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+        data-testid="line-chart-svg"
       >
         {/* Definitions for gradients and animations */}
         <defs>
