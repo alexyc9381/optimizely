@@ -3,5 +3,6 @@
   "outputDirectory": "apps/web/out",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet . || echo 'rebuild'"
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet . || echo 'rebuild'",
+  "version": 2
 }
