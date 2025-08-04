@@ -31,6 +31,16 @@ export default function AnalyticsMain() {
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
   const [selectedMetric, setSelectedMetric] = useState('revenue');
 
+  // Mock data fallback
+  const mockAnalyticsData: AnalyticsData = {
+    totalVisitors: 24789,
+    conversionRate: 8.6,
+    revenue: 125890,
+    testsRunning: 12,
+    avgTestDuration: 14,
+    significantResults: 8
+  };
+
   useEffect(() => {
     const fetchAnalytics = async () => {
       // For demo purposes, use mock data immediately for better UX
@@ -42,16 +52,6 @@ export default function AnalyticsMain() {
 
     fetchAnalytics();
   }, [selectedTimeRange, selectedMetric]);
-
-  // Mock data fallback
-  const mockAnalyticsData: AnalyticsData = {
-    totalVisitors: 24789,
-    conversionRate: 8.6,
-    revenue: 125890,
-    testsRunning: 12,
-    avgTestDuration: 14,
-    significantResults: 8
-  };
 
   // Demo chart data with enterprise colors
   const revenueChartData: ChartDataPoint[] = [
