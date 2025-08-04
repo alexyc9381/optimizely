@@ -3,21 +3,22 @@
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   // SPA mode - no SSR, no prerendering
   output: 'export',
   trailingSlash: true,
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
-  // Disable all static optimization
+  // Ensure SWC is used for compilation
+  swcMinify: true,
   experimental: {
     esmExternals: false, // Disable to avoid import issues
-  }
+  },
 };
 
 module.exports = nextConfig;
