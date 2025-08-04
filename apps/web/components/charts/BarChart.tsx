@@ -53,9 +53,23 @@ export const BarChart: React.FC<BarChartProps> = ({
   const innerHeight = dimensions.height - margin.top - margin.bottom;
 
   // Prepare data
-  const validData = data.filter(d => typeof d.value === 'number' && !isNaN(d.value));
+  const validData = data.filter(d => typeof d.value === 'number' && !isNaN(d.value) && isFinite(d.value));
+  
+  // Handle empty data case
+  if (validData.length === 0) {
+    return (
+      <div className={`relative ${className} flex items-center justify-center h-64`}>
+        <p className="text-gray-500 text-sm">No data available</p>
+      </div>
+    );
+  }
+  
   const maxValue = Math.max(...validData.map(d => d.value));
   const minValue = Math.min(0, Math.min(...validData.map(d => d.value)));
+  
+  // Ensure we have valid max/min values
+  const safeMaxValue = isFinite(maxValue) ? maxValue : 100;
+  const safeMinValue = isFinite(minValue) ? minValue : 0;
   const colors_palette = chartUtils.getColorPalette(validData.length, 'mixed');
 
   // Scales
@@ -70,7 +84,7 @@ export const BarChart: React.FC<BarChartProps> = ({
 
   const valueScale = chartUtils.getScale(
     validData,
-    [minValue, maxValue],
+    [safeMinValue, safeMaxValue],
     isVertical ? [innerHeight, 0] : [0, innerWidth]
   );
 
@@ -83,19 +97,25 @@ export const BarChart: React.FC<BarChartProps> = ({
     const value = valueScale(d.value);
     const zeroPosition = valueScale(0);
 
+    // Ensure all calculated values are finite
+    const safePosition = isFinite(position) ? position : 0;
+    const safeValue = isFinite(value) ? value : 0;
+    const safeZeroPosition = isFinite(zeroPosition) ? zeroPosition : 0;
+    const safeBarWidth = isFinite(barWidth) ? Math.max(barWidth, 1) : 1;
+
     return {
       data: d,
       color: d.color || colors_palette[i % colors_palette.length],
       ...(isVertical ? {
-        x: position,
-        y: Math.min(value, zeroPosition),
-        width: barWidth,
-        height: Math.abs(value - zeroPosition)
+        x: safePosition,
+        y: Math.min(safeValue, safeZeroPosition),
+        width: safeBarWidth,
+        height: Math.max(Math.abs(safeValue - safeZeroPosition), 1)
       } : {
-        x: Math.min(value, zeroPosition),
-        y: position,
-        width: Math.abs(value - zeroPosition),
-        height: barWidth
+        x: Math.min(safeValue, safeZeroPosition),
+        y: safePosition,
+        width: Math.max(Math.abs(safeValue - safeZeroPosition), 1),
+        height: safeBarWidth
       })
     };
   });
@@ -124,6 +144,7 @@ export const BarChart: React.FC<BarChartProps> = ({
       ref={containerRef}
       className={`relative ${className}`}
       style={{ width: chartConfig.responsive ? '100%' : dimensions.width }}
+      data-testid="responsive-container"
     >
       <svg
         ref={svgRef}
@@ -131,6 +152,7 @@ export const BarChart: React.FC<BarChartProps> = ({
         height={dimensions.height}
         className="overflow-visible"
         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+        data-testid="bar-chart-svg"
       >
         {/* Definitions for animations */}
         <defs>

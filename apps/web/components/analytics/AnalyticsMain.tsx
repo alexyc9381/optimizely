@@ -6,11 +6,8 @@
 import {
     Activity,
     BarChart3,
-    DollarSign,
     Download,
-    Target,
-    TrendingUp,
-    Users
+    TrendingUp
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ChartDataPoint } from '../../lib/charts/chartEngine';
@@ -19,7 +16,7 @@ import {
     formatNumber,
     formatPercentage,
 } from '../../lib/utils';
-import { AnalyticsData, apiClient } from '../../src/services/apiClient';
+import { AnalyticsData } from '../../src/services/apiClient';
 import { BarChart } from '../charts/BarChart';
 import { LineChart } from '../charts/LineChart';
 
@@ -30,16 +27,6 @@ export default function AnalyticsMain() {
   const [error, setError] = useState<string | null>(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
   const [selectedMetric, setSelectedMetric] = useState('revenue');
-
-  // Mock data fallback
-  const mockAnalyticsData: AnalyticsData = {
-    totalVisitors: 24789,
-    conversionRate: 8.6,
-    revenue: 125890,
-    testsRunning: 12,
-    avgTestDuration: 14,
-    significantResults: 8
-  };
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -53,31 +40,41 @@ export default function AnalyticsMain() {
     fetchAnalytics();
   }, [selectedTimeRange, selectedMetric]);
 
-  // Demo chart data with enterprise colors
+  // Mock data fallback
+  const mockAnalyticsData: AnalyticsData = {
+    totalVisitors: 24789,
+    conversionRate: 8.6,
+    revenue: 125890,
+    testsRunning: 12,
+    avgTestDuration: 14,
+    significantResults: 8
+  };
+
+  // Demo chart data with proper colors
   const revenueChartData: ChartDataPoint[] = [
-    { label: 'Jan', value: 85000, color: '#2563EB' },
-    { label: 'Feb', value: 92000, color: '#2563EB' },
-    { label: 'Mar', value: 78000, color: '#2563EB' },
-    { label: 'Apr', value: 105000, color: '#2563EB' },
-    { label: 'May', value: 118000, color: '#2563EB' },
-    { label: 'Jun', value: 125890, color: '#2563EB' },
+    { label: 'Jan', value: 85000, color: '#3B82F6' },
+    { label: 'Feb', value: 92000, color: '#3B82F6' },
+    { label: 'Mar', value: 78000, color: '#3B82F6' },
+    { label: 'Apr', value: 105000, color: '#3B82F6' },
+    { label: 'May', value: 118000, color: '#3B82F6' },
+    { label: 'Jun', value: 125890, color: '#3B82F6' },
   ];
 
   const userActivityData: ChartDataPoint[] = [
-    { label: 'Mon', value: 3200, color: '#059669' },
-    { label: 'Tue', value: 4100, color: '#059669' },
-    { label: 'Wed', value: 3800, color: '#059669' },
-    { label: 'Thu', value: 4500, color: '#059669' },
-    { label: 'Fri', value: 5200, color: '#059669' },
-    { label: 'Sat', value: 2800, color: '#059669' },
-    { label: 'Sun', value: 2100, color: '#059669' },
+    { label: 'Mon', value: 3200, color: '#3B82F6' },
+    { label: 'Tue', value: 4100, color: '#3B82F6' },
+    { label: 'Wed', value: 3800, color: '#3B82F6' },
+    { label: 'Thu', value: 4500, color: '#3B82F6' },
+    { label: 'Fri', value: 5200, color: '#3B82F6' },
+    { label: 'Sat', value: 2800, color: '#3B82F6' },
+    { label: 'Sun', value: 2100, color: '#3B82F6' },
   ];
 
   const conversionFunnelData: ChartDataPoint[] = [
-    { label: 'Visitors', value: 10000, color: '#8B5CF6' },
-    { label: 'Signups', value: 3500, color: '#A78BFA' },
-    { label: 'Trials', value: 1200, color: '#C4B5FD' },
-    { label: 'Conversions', value: 850, color: '#DDD6FE' },
+    { label: 'Visitors', value: 10000, color: '#1E40AF' },
+    { label: 'Signups', value: 3500, color: '#3B82F6' },
+    { label: 'Trials', value: 1200, color: '#60A5FA' },
+    { label: 'Conversions', value: 850, color: '#93C5FD' },
   ];
 
   if (loading) {
@@ -92,7 +89,7 @@ export default function AnalyticsMain() {
   // Note: We don't return early on error anymore since we have demo data fallback
 
   return (
-    <div className="space-y-6 bg-gray-50 min-h-screen -m-6 p-6">
+    <div className="space-y-6">
       {/* Error Warning Banner */}
       {error && (
         <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
@@ -151,14 +148,14 @@ export default function AnalyticsMain() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide" style={{color: '#374151'}}>Total Revenue</p>
-              <p className="text-3xl font-bold" style={{color: '#111827'}}>
+              <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {data ? formatCurrency(data.revenue) : '$0'}
               </p>
             </div>
 
           </div>
-          <div className="mt-4 flex items-center text-xs">
+          <div className="mt-4 flex items-center text-sm">
             <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
             <span className="text-green-600 font-medium">+12.5%</span>
             <span className="text-gray-500 ml-1">from last period</span>
@@ -168,14 +165,14 @@ export default function AnalyticsMain() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide" style={{color: '#374151'}}>Active Users</p>
-              <p className="text-3xl font-bold" style={{color: '#111827'}}>
+              <p className="text-sm font-medium text-gray-600">Active Users</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {data ? formatNumber(data.totalVisitors) : '0'}
               </p>
             </div>
 
           </div>
-          <div className="mt-4 flex items-center text-xs">
+          <div className="mt-4 flex items-center text-sm">
             <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
             <span className="text-green-600 font-medium">+8.2%</span>
             <span className="text-gray-500 ml-1">from last period</span>
@@ -185,14 +182,14 @@ export default function AnalyticsMain() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide" style={{color: '#374151'}}>Conversion Rate</p>
-              <p className="text-3xl font-bold" style={{color: '#111827'}}>
+              <p className="text-sm font-medium text-gray-600">Conversion Rate</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {data ? formatPercentage(data.conversionRate) : '0%'}
               </p>
             </div>
 
           </div>
-          <div className="mt-4 flex items-center text-xs">
+          <div className="mt-4 flex items-center text-sm">
             <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
             <span className="text-green-600 font-medium">+3.1%</span>
             <span className="text-gray-500 ml-1">from last period</span>
@@ -202,14 +199,14 @@ export default function AnalyticsMain() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide" style={{color: '#374151'}}>Total Sessions</p>
-              <p className="text-3xl font-bold" style={{color: '#111827'}}>
+              <p className="text-sm font-medium text-gray-600">Total Sessions</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {data ? formatNumber(data.testsRunning) : '0'}
               </p>
             </div>
 
           </div>
-          <div className="mt-4 flex items-center text-xs">
+          <div className="mt-4 flex items-center text-sm">
             <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
             <span className="text-green-600 font-medium">+15.3%</span>
             <span className="text-gray-500 ml-1">from last period</span>
@@ -233,7 +230,7 @@ export default function AnalyticsMain() {
                 showTooltip: true,
                 responsive: true,
                 curve: 'smooth',
-                gradient: false,
+                gradient: true,
                 strokeWidth: 3,
                 theme: 'light'
               }}
