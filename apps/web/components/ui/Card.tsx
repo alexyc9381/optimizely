@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import {
-  ARIA_LABELS,
-  SCREEN_READER_DESCRIPTIONS,
-  useKeyboardNavigation
+    ARIA_LABELS,
+    SCREEN_READER_DESCRIPTIONS,
+    useKeyboardNavigation
 } from '../../lib/accessibility';
 // Animation classes are now CSS-based in animations.css
 import { cn } from '../../lib/utils';
