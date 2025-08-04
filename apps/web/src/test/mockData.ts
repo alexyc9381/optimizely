@@ -21,6 +21,12 @@ export interface MockChartData {
   fill?: string;
 }
 
+// Deterministic pseudo-random function for consistent SSR/client rendering
+const getDeterministicRandom = (seed: number): number => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
 // Generate mock analytics data
 export const generateMockAnalyticsData = (days = 30): MockAnalyticsData[] => {
   const data: MockAnalyticsData[] = [];
@@ -30,12 +36,15 @@ export const generateMockAnalyticsData = (days = 30): MockAnalyticsData[] => {
     const date = new Date(baseDate);
     date.setDate(date.getDate() - i);
 
+    // Create deterministic seed based on day index
+    const seed = i + date.getDate() + date.getMonth();
+
     data.push({
       timestamp: date.toISOString().split('T')[0],
-      visitors: Math.floor(Math.random() * 1000) + 500,
-      leads: Math.floor(Math.random() * 100) + 20,
-      revenue: Math.floor(Math.random() * 10000) + 2000,
-      conversionRate: +(Math.random() * 5 + 2).toFixed(2),
+      visitors: Math.floor(getDeterministicRandom(seed) * 1000) + 500,
+      leads: Math.floor(getDeterministicRandom(seed + 1) * 100) + 20,
+      revenue: Math.floor(getDeterministicRandom(seed + 2) * 10000) + 2000,
+      conversionRate: +(getDeterministicRandom(seed + 3) * 5 + 2).toFixed(2),
     });
   }
 
@@ -75,16 +84,16 @@ export const generateMockBarChartData = (items = 6): MockChartData[] => {
   const categories = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6'];
   return categories.slice(0, items).map((label, index) => ({
     label,
-    value: Math.floor(Math.random() * 100) + 20,
+    value: Math.floor(getDeterministicRandom(index + 100) * 100) + 20,
     fill: `hsl(${index * 60}, 70%, 60%)`,
   }));
 };
 
 export const generateMockLineChartData = (points = 12): MockChartData[] => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return months.slice(0, points).map((label) => ({
+  return months.slice(0, points).map((label, index) => ({
     label,
-    value: Math.floor(Math.random() * 500) + 100,
+    value: Math.floor(getDeterministicRandom(index + 200) * 500) + 100,
   }));
 };
 

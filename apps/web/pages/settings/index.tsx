@@ -135,7 +135,7 @@ const SettingsPage: React.FC = () => {
         setLoading(true);
         const data = await apiClient.getSettings();
         setSettings(data);
-      } catch (err) {
+      } catch {
         setError('Unable to connect to backend. Showing demo data.');
         setSettings(mockSettings);
         setTeamMembers(mockTeamMembers);
@@ -167,7 +167,7 @@ const SettingsPage: React.FC = () => {
       await apiClient.updateSettings(updatedSettings);
       setSettings(updatedSettings);
       alert('Settings saved successfully!');
-    } catch (err) {
+    } catch {
       alert('Failed to save settings. Please try again.');
     } finally {
       setSaving(false);
