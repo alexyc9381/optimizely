@@ -54,7 +54,7 @@ export const BarChart: React.FC<BarChartProps> = ({
 
   // Prepare data
   const validData = data.filter(d => typeof d.value === 'number' && !isNaN(d.value) && isFinite(d.value));
-  
+
   // Handle empty data case
   if (validData.length === 0) {
     return (
@@ -63,10 +63,10 @@ export const BarChart: React.FC<BarChartProps> = ({
       </div>
     );
   }
-  
+
   const maxValue = Math.max(...validData.map(d => d.value));
   const minValue = Math.min(0, Math.min(...validData.map(d => d.value)));
-  
+
   // Ensure we have valid max/min values
   const safeMaxValue = isFinite(maxValue) ? maxValue : 100;
   const safeMinValue = isFinite(minValue) ? minValue : 0;
