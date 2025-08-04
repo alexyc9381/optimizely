@@ -19,11 +19,11 @@ COPY apps/web/ ./apps/web/
 COPY tsconfig.json ./
 COPY turbo.json ./
 
-# Copy environment files for build-time configuration
-COPY .env.production ./apps/web/.env.production
+# Railway provides environment variables directly, no .env file needed
 
 # Build the application
-RUN npm run build --workspace=web
+WORKDIR /app/apps/web
+RUN npm run build
 
 # Production stage
 FROM node:20-alpine AS production
