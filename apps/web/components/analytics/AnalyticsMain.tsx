@@ -285,11 +285,11 @@ export default function AnalyticsMain() {
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
               <span className="font-medium text-gray-700">Signup → Trial Rate</span>
-              <span className="font-bold text-green-600">34.3%</span>
+              <span className="font-bold text-blue-600">34.3%</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
               <span className="font-medium text-gray-700">Trial → Conversion Rate</span>
-              <span className="font-bold text-purple-600">70.8%</span>
+              <span className="font-bold text-blue-600">70.8%</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
               <span className="font-medium text-blue-700">Overall Conversion Rate</span>
