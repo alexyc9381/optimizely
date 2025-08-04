@@ -1,63 +1,39 @@
 # Build stage
 FROM node:20-alpine AS builder
 
-# Set working directory
 WORKDIR /app
-
-# Install dependencies needed for building
-RUN apk add --no-cache libc6-compat
-
-# Copy web package files only
-COPY package*.json ./
-
-# Install dependencies for web app only
-RUN npm ci && npm cache clean --force
-
-# Copy web source code only
-COPY . ./
-
-# Build the web application (no turbo, direct Next.js build)
-RUN npm run build
-
-# Production stage
-FROM node:20-alpine AS production
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
-
-# Set working directory
-WORKDIR /app
-
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
 
 # Copy package files
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/next.config.js ./
+COPY package*.json ./
 
-# Copy built application
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# Install dependencies
+RUN npm ci && npm cache clean --force
 
-# Switch to non-root user
-USER nextjs
+# Copy source code
+COPY . ./
 
-# Expose port
-EXPOSE 3000
+# Build static export
+RUN npm run build
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000 || exit 1
+# Production stage - Simple nginx server
+FROM nginx:alpine
 
-# Use dumb-init to handle signals properly
-ENTRYPOINT ["dumb-init", "--"]
+# Copy built static files
+COPY --from=builder /app/out/ /usr/share/nginx/html/
 
-# Start the application
-CMD ["node", "server.js"]
+# Create nginx config for SPA
+RUN echo 'server { \
+    listen 80; \
+    server_name localhost; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+    location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg)$ { \
+        expires 1y; \
+        add_header Cache-Control "public, immutable"; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
+
+EXPOSE 80

@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npx turbo run build --filter=web",
+  "outputDirectory": "apps/web/out",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet . || echo 'rebuild'"
+}
