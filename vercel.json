@@ -1,14 +1,6 @@
 {
-  "buildCommand": "npx turbo run build --filter=web",
-  "outputDirectory": "apps/web/out",
-  "installCommand": "npm install --no-cache",
-  "framework": "nextjs",
-  "ignoreCommand": "echo 'force-rebuild-2025-08-04'",
   "version": 2,
-  "build": {
-    "env": {
-      "NEXT_TELEMETRY_DISABLED": "1",
-      "NODE_ENV": "production"
-    }
-  }
+  "buildCommand": "npx turbo run build --filter=web",
+  "installCommand": "npm install",
+  "framework": "nextjs"
 }

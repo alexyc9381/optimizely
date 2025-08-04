@@ -9,8 +9,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // SPA mode - no SSR, no prerendering
-  output: 'export',
+  // Standard Next.js deployment for Vercel
   trailingSlash: true,
   images: {
     unoptimized: true,
