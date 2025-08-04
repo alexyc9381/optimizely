@@ -26,7 +26,7 @@ export const SCREEN_READER_DESCRIPTIONS = {
   IMAGE: 'Image',
   VIDEO: 'Video player',
   AUDIO: 'Audio player',
-  HERO_METRIC: (title: string, value: string, subtitle?: string) => 
+  HERO_METRIC: (title: string, value: string, subtitle?: string) =>
     `${title}: ${value}${subtitle ? `. ${subtitle}` : ''}`,
   METRIC_WITH_TREND: (title: string, value: string, trend: string, isPositive?: boolean | string) =>
     `${title}: ${value}. Trend: ${trend}${typeof isPositive === 'boolean' ? (isPositive ? ' (positive trend)' : ' (negative trend)') : (isPositive ? `. ${isPositive}` : '')}`,
@@ -181,7 +181,7 @@ export function useFocusManagement() {
     };
 
     container.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       container.removeEventListener('keydown', handleKeyDown);
     };
@@ -354,7 +354,7 @@ export function AccessibleButton({
   ...props
 }: AccessibleButtonProps) {
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
-  
+
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
@@ -441,13 +441,13 @@ export function AccessibleField({
           </span>
         )}
       </label>
-      
+
       {description && (
         <p id={descriptionId} className="text-sm text-gray-600">
           {description}
         </p>
       )}
-      
+
       <div>
         {React.cloneElement(children as React.ReactElement, {
           id,
@@ -456,7 +456,7 @@ export function AccessibleField({
           'aria-required': required,
         })}
       </div>
-      
+
       {error && (
         <p id={errorId} className="text-sm text-red-600" role="alert">
           {error}

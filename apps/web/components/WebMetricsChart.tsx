@@ -126,13 +126,10 @@ const WebMetricsChart: React.FC = () => {
 
   useEffect(() => {
     if (!mounted) return;
-    
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setData(generateMockData(selectedMetric));
-      setLoading(false);
-    }, 500);
+
+    // Generate demo data immediately for better UX
+    setData(generateMockData(selectedMetric));
+    setLoading(false);
   }, [mounted, selectedMetric]);
 
   const currentMetric = metrics[selectedMetric];

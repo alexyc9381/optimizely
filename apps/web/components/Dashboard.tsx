@@ -1,37 +1,37 @@
 import {
-  BarChart3,
-  Bell,
-  Brain,
-  ChevronDown,
-  ChevronLeft,
-  Clock,
-  Code,
-  CreditCard,
-  DollarSign,
-  Home,
-  LucideProps,
-  Menu,
-  Search,
-  Settings,
-  Shield,
-  Target,
-  TrendingUp,
-  User,
-  Users,
-  Zap,
+    BarChart3,
+    Bell,
+    Brain,
+    ChevronDown,
+    ChevronLeft,
+    Clock,
+    Code,
+    CreditCard,
+    DollarSign,
+    Home,
+    LucideProps,
+    Menu,
+    Search,
+    Settings,
+    Shield,
+    Target,
+    TrendingUp,
+    User,
+    Users,
+    Zap,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
+    Area,
+    AreaChart,
+    CartesianGrid,
+    Cell,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from 'recharts';
 
 // --- TYPE DEFINITIONS ---
@@ -153,7 +153,7 @@ const analyticsData = {
 
   geographicPerformance: [
     { region: 'North America', visitors: 18400, color: '#6366F1' },
-    { region: 'Europe', visitors: 12300, color: '#8B5CF6' },
+    { region: 'Europe', visitors: 12300, color: '#3B82F6' },
     { region: 'Asia Pacific', visitors: 9800, color: '#06B6D4' },
     { region: 'Other', visitors: 5100, color: '#10B981' },
   ],
@@ -529,14 +529,14 @@ const MainChart = () => (
             >
               <stop
                 offset='5%'
-                stopColor='#8B5CF6'
+                stopColor='#3B82F6'
                 stopOpacity={0.3}
                 data-oid='-92hqwt'
               />
 
               <stop
                 offset='95%'
-                stopColor='#8B5CF6'
+                stopColor='#3B82F6'
                 stopOpacity={0}
                 data-oid='t-vs2kq'
               />
@@ -597,7 +597,7 @@ const MainChart = () => (
           <Area
             type='monotone'
             dataKey='predicted'
-            stroke='#8B5CF6'
+            stroke='#3B82F6'
             strokeWidth={2}
             fillOpacity={1}
             fill='url(#colorPredicted)'

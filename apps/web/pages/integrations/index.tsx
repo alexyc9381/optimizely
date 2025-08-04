@@ -1,12 +1,12 @@
 import {
-  AlertCircle,
-  CheckCircle,
-  Download,
-  ExternalLink,
-  Loader,
-  RefreshCw,
-  Settings,
-  Trash2,
+    AlertCircle,
+    CheckCircle,
+    Download,
+    ExternalLink,
+    Loader,
+    RefreshCw,
+    Settings,
+    Trash2,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
@@ -656,7 +656,7 @@ export default function App() {
                 GET /api/analytics
               </span>
               <span
-                className='text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded'
+                                  className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'
                 data-oid='bvs8ode'
               >
                 Analytics

@@ -1,13 +1,13 @@
 import {
-  Activity,
-  AlertTriangle,
-  Bell,
-  Brain,
-  CheckCircle,
-  Cpu,
-  Database,
-  Globe,
-  Zap,
+    Activity,
+    AlertTriangle,
+    Bell,
+    Brain,
+    CheckCircle,
+    Cpu,
+    Database,
+    Globe,
+    Zap,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { apiClient } from '../src/services/apiClient';
@@ -139,7 +139,7 @@ const EnhancedDashboard = () => {
         value: realTimeData.modelStats?.totalModels || '8',
         change: 2.1,
         icon: <Cpu className='w-5 h-5' data-oid='0tx1_ry' />,
-        color: 'text-purple-400',
+        color: 'text-blue-400',
         status: 'up',
       },
       {

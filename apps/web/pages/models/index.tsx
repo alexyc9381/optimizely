@@ -1,14 +1,14 @@
 import {
-  Activity,
-  Brain,
-  CheckCircle,
-  Edit2,
-  Eye,
-  Pause,
-  Play,
-  Settings,
-  Trash2,
-  TrendingUp,
+    Activity,
+    Brain,
+    CheckCircle,
+    Edit2,
+    Eye,
+    Pause,
+    Play,
+    Settings,
+    Trash2,
+    TrendingUp,
 } from 'lucide-react';
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
@@ -143,7 +143,7 @@ const ModelsPage: React.FC = () => {
       case 'Optimization':
         return 'bg-blue-100 text-blue-800';
       case 'Prediction':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-blue-100 text-blue-800';
       case 'Classification':
         return 'bg-green-100 text-green-800';
       case 'Risk Analysis':

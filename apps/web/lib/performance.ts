@@ -151,9 +151,9 @@ export function measurePerformance<T extends (...args: any[]) => any>(
     const start = performance.now();
     const result = fn(...args);
     const end = performance.now();
-    
+
     console.log(`Performance: ${name} took ${end - start}ms`);
-    
+
     return result;
   }) as T;
 }
@@ -171,13 +171,13 @@ export function calculateVirtualScrollItems(
   options: VirtualScrollOptions
 ) {
   const { itemHeight, containerHeight, overscan = 5 } = options;
-  
+
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
   const endIndex = Math.min(
     totalItems - 1,
     startIndex + Math.ceil(containerHeight / itemHeight) + overscan * 2
   );
-  
+
   return {
     startIndex,
     endIndex,
@@ -192,7 +192,7 @@ export function debounce<T extends (...args: any[]) => void>(
   delay: number
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);
@@ -205,7 +205,7 @@ export function throttle<T extends (...args: any[]) => void>(
   delay: number
 ): (...args: Parameters<T>) => void {
   let lastCall = 0;
-  
+
   return (...args: Parameters<T>) => {
     const now = Date.now();
     if (now - lastCall >= delay) {
@@ -230,7 +230,7 @@ export function logBundleInfo(): void {
     const scripts = Array.from(document.getElementsByTagName('script'));
     const stylesheets = Array.from(document.getElementsByTagName('link'))
       .filter(link => link.rel === 'stylesheet');
-    
+
     console.group('Bundle Analysis');
     console.log(`Scripts loaded: ${scripts.length}`);
     console.log(`Stylesheets loaded: ${stylesheets.length}`);

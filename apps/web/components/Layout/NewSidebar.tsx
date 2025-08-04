@@ -1,11 +1,11 @@
 import {
-  BarChart3,
-  Beaker,
-  Building2,
-  Cog,
-  Home,
-  Plug,
-  Zap,
+    BarChart3,
+    Cog,
+    Cpu,
+    GitBranch,
+    LayoutDashboard,
+    Lightbulb,
+    Plug
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,12 +23,12 @@ const navItems: NavItem[] = [
   {
     label: 'Dashboard',
     href: '/',
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     label: 'A/B Testing',
     href: '/ab-testing',
-    icon: Beaker,
+    icon: GitBranch,
   },
   {
     label: 'Analytics',
@@ -38,12 +38,12 @@ const navItems: NavItem[] = [
   {
     label: 'AI Models',
     href: '/models',
-    icon: Zap,
+    icon: Cpu,
   },
   {
     label: 'Industries',
     href: '/industries',
-    icon: Building2,
+    icon: Lightbulb,
   },
   {
     label: 'Integrations',

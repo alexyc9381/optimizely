@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  ARIA_LABELS,
-  SCREEN_READER_DESCRIPTIONS,
+    ARIA_LABELS,
+    SCREEN_READER_DESCRIPTIONS,
 } from '../../lib/accessibility';
 import { cn } from '../../lib/utils';
 import Card from '../ui/Card';
@@ -74,7 +74,7 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
       case 'info':
         return 'text-info-600';
       default:
-        return 'text-primary';
+        return 'text-gray-900';
     }
   };
 
@@ -123,18 +123,6 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
       data-oid='o-fudmc'
     >
       <div className='text-center' data-oid='321yc:2'>
-        {/* Icon */}
-        {icon && (
-          <div
-            className='w-8 h-8 mx-auto mb-3 text-blue-600'
-            aria-hidden='true'
-            role='img'
-            data-oid='770b1c-'
-          >
-            {icon}
-          </div>
-        )}
-
         {/* Title */}
         <h3
           id={titleId}
@@ -178,26 +166,6 @@ const SimpleMetric: React.FC<SimpleMetricProps> = ({
             aria-label={`Trend: ${trend} ${isPositiveTrend ? 'increase' : 'decrease'} from previous period`}
             data-oid='93yrqt6'
           >
-            <svg
-              className={`w-3 h-3 ${isPositiveTrend ? 'rotate-0' : 'rotate-180'}`}
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              aria-hidden='true'
-              role='img'
-              data-oid='9ky-r7m'
-            >
-              <title>
-                {isPositiveTrend ? 'Upward trend' : 'Downward trend'}
-              </title>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M7 17l9.2-9.2M17 8v9h-9'
-                data-oid='la3_8_8'
-              />
-            </svg>
             <span aria-hidden='true'>{trend}</span>
           </div>
         )}
