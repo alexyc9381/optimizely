@@ -1,5 +1,4 @@
 import { Eye, EyeOffIcon as EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
 import { apiClient } from '../../src/services/apiClient';
@@ -52,7 +51,6 @@ interface BillingInfo {
 }
 
 const SettingsPage: React.FC = () => {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<
     'account' | 'team' | 'billing' | 'security' | 'integrations'
   >('account');
@@ -156,11 +154,14 @@ const SettingsPage: React.FC = () => {
 
   // Handle URL parameters for tab navigation
   useEffect(() => {
-    const { tab } = router.query;
-    if (typeof tab === 'string' && ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)) {
-      setActiveTab(tab as 'account' | 'team' | 'billing' | 'security' | 'integrations');
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      if (tab && ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)) {
+        setActiveTab(tab as 'account' | 'team' | 'billing' | 'security' | 'integrations');
+      }
     }
-  }, [router.query]);
+  }, []);
 
   const handleSaveSettings = async (updates: Partial<UserSettings>) => {
     try {
@@ -293,7 +294,10 @@ const SettingsPage: React.FC = () => {
                 key={tab.key}
                 onClick={() => {
                   setActiveTab(tab.key as any);
-                  router.push(`/settings?tab=${tab.key}`, undefined, { shallow: true });
+                  // Update URL without router for SSR compatibility
+                  if (typeof window !== 'undefined') {
+                    window.history.pushState({}, '', `/settings?tab=${tab.key}`);
+                  }
                 }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
                   activeTab === tab.key

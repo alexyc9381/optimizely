@@ -7,22 +7,16 @@ WORKDIR /app
 # Install dependencies needed for building
 RUN apk add --no-cache libc6-compat
 
-# Copy package files
+# Copy web package files only
 COPY package*.json ./
-COPY apps/web/package*.json ./apps/web/
 
-# Install dependencies
+# Install dependencies for web app only
 RUN npm ci && npm cache clean --force
 
-# Copy source code
-COPY apps/web/ ./apps/web/
-COPY tsconfig.json ./
-COPY turbo.json ./
+# Copy web source code only
+COPY . ./
 
-# Railway provides environment variables directly, no .env file needed
-
-# Build the application
-WORKDIR /app/apps/web
+# Build the web application (no turbo, direct Next.js build)
 RUN npm run build
 
 # Production stage
@@ -44,13 +38,13 @@ WORKDIR /app
 RUN apk add --no-cache dumb-init
 
 # Copy package files
-COPY --from=builder /app/apps/web/package*.json ./
-COPY --from=builder /app/apps/web/next.config.js ./
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/next.config.js ./
 
 # Copy built application
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Switch to non-root user
 USER nextjs
