@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /** @type {import('next').NextConfig} */
+// Force Vercel to use latest config - 2025-08-04
 const nextConfig = {
   reactStrictMode: true,
   eslint: {

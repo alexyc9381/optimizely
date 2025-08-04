@@ -1,0 +1,6 @@
+# Ignore cache files
+.next/
+.turbo/
+node_modules/
+*.log
+.DS_Store
