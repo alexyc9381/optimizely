@@ -1,3 +1,4 @@
+import { BarChart3, Cpu, GitBranch, LayoutDashboard, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -22,50 +23,20 @@ const Sidebar: React.FC = () => {
       name: 'Dashboard',
       href: '/',
       icon: (
-        <svg
+        <LayoutDashboard
           className='w-5 h-5'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
           data-oid='1g8h4bs'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z'
-            data-oid='358scql'
-          />
-
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z'
-            data-oid='j8bz6ql'
-          />
-        </svg>
+        />
       ),
     },
     {
       name: 'A/B Testing',
       href: '/ab-testing',
       icon: (
-        <svg
+        <GitBranch
           className='w-5 h-5'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
           data-oid='-fpm62w'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z'
-            data-oid='g3of4fl'
-          />
-        </svg>
+        />
       ),
 
       badge: '12',
@@ -80,21 +51,10 @@ const Sidebar: React.FC = () => {
       name: 'Analytics',
       href: '/analytics',
       icon: (
-        <svg
+        <BarChart3
           className='w-5 h-5'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
           data-oid='bylhezm'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2V7a2 2 0 012-2h2a2 2 0 002 2v2a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 00-2 2v6a2 2 0 01-2 2H9z'
-            data-oid='0oi9n23'
-          />
-        </svg>
+        />
       ),
 
       children: [
@@ -108,21 +68,10 @@ const Sidebar: React.FC = () => {
       name: 'AI Models',
       href: '/models',
       icon: (
-        <svg
+        <Cpu
           className='w-5 h-5'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
           data-oid='6guqypx'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
-            data-oid='26zy:t1'
-          />
-        </svg>
+        />
       ),
 
       badge: '94%',
@@ -137,21 +86,10 @@ const Sidebar: React.FC = () => {
       name: 'Industry Insights',
       href: '/industries',
       icon: (
-        <svg
+        <Lightbulb
           className='w-5 h-5'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
           data-oid='4ubn3ya'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6'
-            data-oid='howfoz3'
-          />
-        </svg>
+        />
       ),
 
       children: [
@@ -228,10 +166,10 @@ const Sidebar: React.FC = () => {
       ),
 
       children: [
-        { name: 'Account', href: '/settings/account', icon: null },
-        { name: 'Team', href: '/settings/team', icon: null },
-        { name: 'Billing', href: '/settings/billing', icon: null },
-        { name: 'Security', href: '/settings/security', icon: null },
+        { name: 'Account', href: '/settings?tab=account', icon: null },
+        { name: 'Team', href: '/settings?tab=team', icon: null },
+        { name: 'Billing', href: '/settings?tab=billing', icon: null },
+        { name: 'Security', href: '/settings?tab=security', icon: null },
       ],
     },
   ];
@@ -462,7 +400,7 @@ const Sidebar: React.FC = () => {
                 className='text-lg font-bold text-gray-900'
                 data-oid='5vxsc7j'
               >
-                Universal AI
+                Optelo
               </h1>
               <p className='text-xs text-gray-500' data-oid='d86b5gp'>
                 Analytics Platform

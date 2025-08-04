@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { initToolbar } from '@stagewise/toolbar';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { useEffect, useRef } from 'react';
 import '../styles/globals.css';
@@ -42,5 +43,9 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, []);
 
-  return <Component {...pageProps} data-oid='.ib-vfs' />;
+  return (
+    <SessionProvider session={pageProps.session}>
+      <Component {...pageProps} data-oid='.ib-vfs' />
+    </SessionProvider>
+  );
 }

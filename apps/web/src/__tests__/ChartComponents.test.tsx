@@ -12,9 +12,9 @@ import {
 import { renderWithProviders } from '../test/setup';
 
 // Import chart components
-import BarChart from '../../components/charts/BarChart';
-import FunnelChart from '../../components/charts/FunnelChart';
-import LineChart from '../../components/charts/LineChart';
+import { BarChart } from '../../components/charts/BarChart';
+import { FunnelChart } from '../../components/charts/FunnelChart';
+import { LineChart } from '../../components/charts/LineChart';
 
 describe('Chart Components', () => {
   describe('BarChart', () => {

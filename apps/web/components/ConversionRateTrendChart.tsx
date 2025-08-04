@@ -120,17 +120,14 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
   // Load data when timeframe or test changes
   useEffect(() => {
     if (!mounted) return;
-    
-    setLoading(true);
+
     const selectedTimeframe = timeframes.find(t => t.id === timeframe);
     const days = selectedTimeframe?.days || 7;
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const newData = generateMockData(days, selectedTest);
-      setData(newData);
-      setLoading(false);
-    }, 300);
+    // Generate demo data immediately for better UX
+    const newData = generateMockData(days, selectedTest);
+    setData(newData);
+    setLoading(false);
   }, [mounted, timeframe, selectedTest]);
 
   const maxValue = 20;

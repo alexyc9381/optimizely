@@ -58,7 +58,7 @@ const BreathingRoomDemo: React.FC = () => {
               </div>
 
               <div className='text-center'>
-                <div className='text-3xl font-bold text-purple-600 mb-2'>
+                <div className='text-3xl font-bold text-blue-600 mb-2'>
                   {SPACING_GUIDELINES.DESKTOP_COMFORTABLE_SPACING}
                 </div>
                 <div className='text-sm text-gray-600'>
@@ -129,7 +129,7 @@ const BreathingRoomDemo: React.FC = () => {
               <Card variant='elevated' size='md'>
                 <h4 className='font-medium text-gray-900'>Metric Card 3</h4>
                 <p className='text-sm text-gray-600'>Optimal desktop spacing</p>
-                <div className='text-2xl font-bold text-purple-600 mt-2'>1,847</div>
+                <div className='text-2xl font-bold text-blue-600 mt-2'>1,847</div>
               </Card>
             </div>
           </div>
@@ -184,7 +184,7 @@ const BreathingRoomDemo: React.FC = () => {
               </Card>
               <Card variant='basic' size='md'>
                 <div className='text-center'>
-                  <div className='text-2xl font-bold text-purple-600'>$18.4k</div>
+                  <div className='text-2xl font-bold text-blue-600'>$18.4k</div>
                   <div className='text-sm text-gray-600'>Revenue</div>
                 </div>
               </Card>

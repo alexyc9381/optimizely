@@ -62,5 +62,8 @@
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "turbo": "^2.5.4"
+  },
+  "dependencies": {
+    "lucide-react": "^0.536.0"
   }
 }

@@ -211,6 +211,15 @@ class ApiClient {
   async health(): Promise<{ status: string }> {
     return this.request<{ status: string }>('/health');
   }
+
+  // Convenience methods for testing compatibility
+  async fetchAnalytics(timeRange: string = '30d'): Promise<AnalyticsData> {
+    return this.getAnalytics(timeRange);
+  }
+
+  async fetchMetrics(): Promise<any> {
+    return this.getDashboardMetrics();
+  }
 }
 
 export const apiClient = new ApiClient();

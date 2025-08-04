@@ -3,9 +3,9 @@
  * Demonstrates the elegant data visualization system
  */
 
-import React from 'react';
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import React from 'react';
 import DashboardLayout from '../components/Layout/DashboardLayout';
 
 // Lazy load the chart showcase for better performance
@@ -28,7 +28,7 @@ const ChartsPage: React.FC = () => {
       </Head>
 
       <DashboardLayout title="Charts - Optelo Dashboard">
-        <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 -m-6">
+        <div className="bg-gradient-to-br from-blue-50 via-white to-blue-100 py-12 -m-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ChartShowcase />
           </div>

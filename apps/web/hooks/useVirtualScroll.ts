@@ -3,7 +3,7 @@
  * Optimizes rendering performance for large lists
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export interface VirtualScrollOptions {
   itemHeight: number;
@@ -42,7 +42,7 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
       totalItems - 1,
       startIndex + Math.ceil(containerHeight / itemHeight) + overscan * 2
     );
-    
+
     const visibleItems = endIndex - startIndex + 1;
     const offsetY = startIndex * itemHeight;
     const totalHeight = totalItems * itemHeight;

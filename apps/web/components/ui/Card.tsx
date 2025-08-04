@@ -2,8 +2,8 @@
 import React from 'react';
 import {
   ARIA_LABELS,
-  useKeyboardNavigation,
-  SCREEN_READER_DESCRIPTIONS
+  SCREEN_READER_DESCRIPTIONS,
+  useKeyboardNavigation
 } from '../../lib/accessibility';
 // Animation classes are now CSS-based in animations.css
 import { cn } from '../../lib/utils';

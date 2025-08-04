@@ -2,15 +2,15 @@
 
 import { motion } from 'framer-motion';
 import {
-  BarChart3,
-  Brain,
-  Building2,
-  ChevronRight,
-  LayoutDashboard,
-  Puzzle,
-  Settings,
-  TestTube,
-  User,
+    BarChart3,
+    Brain,
+    Building2,
+    ChevronRight,
+    LayoutDashboard,
+    Puzzle,
+    Settings,
+    TestTube,
+    User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -160,10 +160,10 @@ export function NewSidebar() {
       ),
 
       children: [
-        { name: 'Account', href: '/settings/account', icon: null },
-        { name: 'Team', href: '/settings/team', icon: null },
-        { name: 'Billing', href: '/settings/billing', icon: null },
-        { name: 'Security', href: '/settings/security', icon: null },
+        { name: 'Account', href: '/settings?tab=account', icon: null },
+        { name: 'Team', href: '/settings?tab=team', icon: null },
+        { name: 'Billing', href: '/settings?tab=billing', icon: null },
+        { name: 'Security', href: '/settings?tab=security', icon: null },
       ],
     },
   ];

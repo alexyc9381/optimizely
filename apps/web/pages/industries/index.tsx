@@ -1,12 +1,12 @@
 import {
-  Award,
-  BarChart3,
-  Clock,
-  Download,
-  FileText,
-  Lightbulb,
-  Target,
-  TrendingUp,
+    Award,
+    BarChart3,
+    Clock,
+    Download,
+    FileText,
+    Lightbulb,
+    Target,
+    TrendingUp,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
@@ -190,7 +190,7 @@ const IndustriesPage: React.FC = () => {
     },
     'college-consulting': {
       name: 'College Consulting',
-      color: 'purple',
+      color: 'blue',
       metrics: {
         conversionRate: 5.2,
         avgTestDuration: 12,
@@ -264,7 +264,6 @@ const IndustriesPage: React.FC = () => {
       blue: 'bg-blue-100 text-blue-800 border-blue-200',
       green: 'bg-green-100 text-green-800 border-green-200',
       orange: 'bg-orange-100 text-orange-800 border-orange-200',
-      purple: 'bg-purple-100 text-purple-800 border-purple-200',
       gray: 'bg-gray-100 text-gray-800 border-gray-200',
     };
     return colors[color as keyof typeof colors] || colors.blue;
@@ -499,15 +498,15 @@ const IndustriesPage: React.FC = () => {
                 >
                   {currentIndustry?.metrics.topPerformingElement}
                 </p>
-                <p className='text-xs text-purple-600 mt-1' data-oid='kfys8iq'>
+                <p className='text-xs text-blue-600 mt-1' data-oid='kfys8iq'>
                   highest impact
                 </p>
               </div>
               <div
-                className='w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center'
+                className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'
                 data-oid='f7jyd.o'
               >
-                <Award className='w-4 h-4 text-purple-600' data-oid='sqgrqqv' />
+                <Award className='w-4 h-4 text-blue-600' data-oid='sqgrqqv' />
               </div>
             </div>
           </div>
@@ -646,7 +645,7 @@ const IndustriesPage: React.FC = () => {
 
         {/* Industry-Specific Recommendations */}
         <div
-          className='bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6'
+                        className='bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200 p-6'
           data-oid='pdi4rky'
         >
           <h3

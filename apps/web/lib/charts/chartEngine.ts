@@ -64,7 +64,7 @@ export const chartUtils = {
       ],
       secondary: [
         '#7c3aed', '#6d28d9', '#5b21b6', '#4c1d95', '#3730a3',
-        '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe'
+        '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe'
       ],
       mixed: [
         '#5b6cff', '#7c3aed', '#059669', '#dc2626', '#ea580c',

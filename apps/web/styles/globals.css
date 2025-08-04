@@ -75,32 +75,29 @@ textarea:focus-visible {
   border-radius: 4px;
 }
 
-/* Custom scrollbar */
+/* Hide scrollbar completely */
 ::-webkit-scrollbar {
-  width: 8px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background-secondary);
+/* For Firefox */
+html {
+  scrollbar-width: none;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #5b6cff, #8a3fff);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #4c52ff, #7b2bf5);
+/* For Internet Explorer and Edge */
+body {
+  -ms-overflow-style: none;
 }
 
 /* Selection styles */
 ::selection {
-  background: rgba(91, 108, 255, 0.3);
+  background: rgba(59, 130, 246, 0.3);
   color: var(--text-primary);
 }
 
 ::-moz-selection {
-  background: rgba(91, 108, 255, 0.3);
+  background: rgba(59, 130, 246, 0.3);
   color: var(--text-primary);
 }
 
@@ -243,7 +240,7 @@ textarea:focus-visible {
 
 /* Status indicators */
 .status-online {
-  color: #8b5cf6;
+  color: #3b82f6;
   position: relative;
 }
 
@@ -255,7 +252,7 @@ textarea:focus-visible {
   transform: translateY(-50%);
   width: 6px;
   height: 6px;
-  background: #8b5cf6;
+  background: #3b82f6;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }

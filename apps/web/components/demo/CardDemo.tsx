@@ -205,7 +205,7 @@ const CardDemo: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className='h-32 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center'>
+                <div className='h-32 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center'>
                   <span className='text-gray-600'>Chart Placeholder</span>
                 </div>
               </CardContent>

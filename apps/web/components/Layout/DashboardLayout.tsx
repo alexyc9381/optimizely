@@ -29,7 +29,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       >
         Skip to main content
       </a>
-      
+
       {/* Live region for screen reader announcements */}
       <div
         aria-live="polite"

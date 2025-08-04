@@ -1,3 +1,4 @@
+import React from 'react';
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Dashboard from '../../components/Dashboard';
@@ -6,9 +7,15 @@ import { mockAPIResponses } from '../test/mockData';
 import { renderWithProviders } from '../test/setup';
 
 // Mock API calls for dashboard data
-vi.mock('../../services/apiClient', () => ({
-  fetchAnalytics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success),
-  fetchMetrics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success.metrics),
+vi.mock('../../src/services/apiClient', () => ({
+  default: {
+    fetchAnalytics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success),
+    fetchMetrics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success.metrics),
+  },
+  apiClient: {
+    fetchAnalytics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success),
+    fetchMetrics: vi.fn().mockResolvedValue(mockAPIResponses.analytics.success.metrics),
+  }
 }));
 
 describe('Dashboard', () => {
@@ -59,8 +66,8 @@ describe('Dashboard', () => {
 
   it('handles loading state properly', async () => {
     // Mock delayed API response
-    const { default: apiClient } = await import('../services/apiClient');
-    vi.mocked(apiClient.fetchAnalytics).mockImplementation(
+    const apiClientModule = await import('../../src/services/apiClient');
+    const mockedFetchAnalytics = vi.fn().mockImplementation(
       () => new Promise(resolve => setTimeout(() => resolve({
         totalVisitors: 24789,
         conversionRate: 8.6,
@@ -70,6 +77,7 @@ describe('Dashboard', () => {
         significantResults: 8
       }), 100))
     );
+    apiClientModule.apiClient.fetchAnalytics = mockedFetchAnalytics;
 
     renderWithProviders(<Dashboard data-oid='loading-test' />);
 
@@ -83,8 +91,9 @@ describe('Dashboard', () => {
 
   it('handles error state appropriately', async () => {
     // Mock API error
-    const { default: apiClient } = await import('../services/apiClient');
-    vi.mocked(apiClient.fetchAnalytics).mockRejectedValue(new Error('API Error'));
+    const apiClientModule = await import('../../src/services/apiClient');
+    const mockedFetchAnalytics = vi.fn().mockRejectedValue(new Error('API Error'));
+    apiClientModule.apiClient.fetchAnalytics = mockedFetchAnalytics;
 
     renderWithProviders(<Dashboard data-oid='error-test' />);
 

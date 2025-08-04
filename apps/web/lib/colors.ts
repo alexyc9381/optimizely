@@ -23,21 +23,21 @@ export const PRIMARY_COLORS = {
 } as const;
 
 /**
- * Secondary Purple Color Scale
+ * Secondary Blue Color Scale
  * Supporting brand colors for accents and highlights
  */
 export const SECONDARY_COLORS = {
-  50: '#f7f5ff',
-  100: '#f0ebff',
-  200: '#e3daff',
-  300: '#d0baff',
-  400: '#b68fff',
-  500: '#9d5fff',
-  600: '#8a3fff', // Secondary brand color
-  700: '#7b2bf5',
-  800: '#6824d1',
-  900: '#561faa',
-  950: '#351274',
+  50: '#eff6ff',
+  100: '#dbeafe',
+  200: '#bfdbfe',
+  300: '#93c5fd',
+  400: '#60a5fa',
+  500: '#3b82f6',
+  600: '#2563eb', // Secondary brand color
+  700: '#1d4ed8',
+  800: '#1e40af',
+  900: '#1e3a8a',
+  950: '#172554',
 } as const;
 
 /**

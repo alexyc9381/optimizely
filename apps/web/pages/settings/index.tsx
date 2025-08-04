@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
+import { Eye, EyeOffIcon as EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
@@ -157,13 +157,8 @@ const SettingsPage: React.FC = () => {
   // Handle URL parameters for tab navigation
   useEffect(() => {
     const { tab } = router.query;
-    if (
-      typeof tab === 'string' &&
-      ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)
-    ) {
-      setActiveTab(
-        tab as 'account' | 'team' | 'billing' | 'security' | 'integrations'
-      );
+    if (typeof tab === 'string' && ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)) {
+      setActiveTab(tab as 'account' | 'team' | 'billing' | 'security' | 'integrations');
     }
   }, [router.query]);
 
@@ -298,9 +293,7 @@ const SettingsPage: React.FC = () => {
                 key={tab.key}
                 onClick={() => {
                   setActiveTab(tab.key as any);
-                  router.push(`/settings?tab=${tab.key}`, undefined, {
-                    shallow: true,
-                  });
+                  router.push(`/settings?tab=${tab.key}`, undefined, { shallow: true });
                 }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
                   activeTab === tab.key
@@ -831,7 +824,10 @@ const SettingsPage: React.FC = () => {
                   className='text-center p-4 bg-blue-50 rounded-lg'
                   data-oid='z38ehou'
                 >
-                  <p className='text-sm text-blue-600 mb-1' data-oid='k47zyu_'>
+                  <p
+                    className='text-sm text-blue-600 mb-1'
+                    data-oid='k47zyu_'
+                  >
                     Next Billing
                   </p>
                   <p
