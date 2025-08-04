@@ -106,7 +106,7 @@ const WebMetricsChart: React.FC = () => {
         date.getDay() === 0 || date.getDay() === 6 ? 0.7 : 1;
       const trendFactor =
         metricType === 'bounce' ? 1 - i * 0.002 : 1 + i * 0.002; // Bounce rate decreases, others increase
-      
+
       // Deterministic factor based on day index (no Math.random)
       const seed = i + date.getDate() + metricType.charCodeAt(0);
       const deterministicFactor = 0.8 + ((seed * 37) % 100) / 250; // 0.8 to 1.2
