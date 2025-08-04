@@ -19,7 +19,7 @@
     "test:web": "cd apps/web && npm run test",
     "test:coverage": "turbo run test:coverage",
     "typecheck": "turbo run typecheck",
-    "prepare": "husky",
+    "prepare": "if [ -d 'node_modules/husky' ]; then husky; fi",
     "safety-check": "node scripts/verify-critical-files.cjs",
     "emergency-recovery": "node scripts/emergency-recovery.cjs",
     "update-context": "node scripts/update-context.cjs",
