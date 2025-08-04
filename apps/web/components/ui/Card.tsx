@@ -167,7 +167,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const sizeStyles = {
       sm: 'p-4',
       md: 'p-6',
-      lg: 'p-8',
+      lg: 'p-6',
     };
 
     return (
