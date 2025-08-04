@@ -119,8 +119,8 @@ export const LAYOUT_CLASSES = {
   // Section container with breathing room
   SECTION_CONTAINER: 'mb-8 md:mb-10 lg:mb-12',
 
-  // Hero section with balanced spacing
-  HERO_CONTAINER: 'text-center py-8 mb-8 md:py-10 md:mb-10',
+  // Hero section with standard spacing
+  HERO_CONTAINER: 'text-center py-6 mb-6 md:py-8 md:mb-8',
 } as const;
 
 /**
