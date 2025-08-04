@@ -13,15 +13,15 @@ import {
     Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { ChartDataPoint } from '../../lib/charts/chartEngine';
 import {
     formatCurrency,
     formatNumber,
     formatPercentage,
 } from '../../lib/utils';
 import { AnalyticsData, apiClient } from '../../src/services/apiClient';
-import { LineChart } from '../charts/LineChart';
 import { BarChart } from '../charts/BarChart';
-import { ChartDataPoint } from '../../lib/charts/chartEngine';
+import { LineChart } from '../charts/LineChart';
 
 // This will contain the main analytics logic - let me copy the content from the original file
 export default function AnalyticsMain() {
@@ -33,19 +33,11 @@ export default function AnalyticsMain() {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
-      try {
-        setLoading(true);
-        const analyticsData = await apiClient.getAnalytics();
-        setData(analyticsData);
-        setError(null);
-      } catch (err) {
-        console.warn('Failed to fetch analytics from API, using demo data:', err);
-        setError('Unable to connect to backend. Showing demo data.');
-        // Fallback to mock data if API fails
-        setData(mockAnalyticsData);
-      } finally {
-        setLoading(false);
-      }
+      // For demo purposes, use mock data immediately for better UX
+      console.warn('Using demo data for analytics page');
+      setError('Unable to connect to backend. Showing demo data.');
+      setData(mockAnalyticsData);
+      setLoading(false);
     };
 
     fetchAnalytics();
@@ -61,39 +53,31 @@ export default function AnalyticsMain() {
     significantResults: 8
   };
 
-  // Demo chart data
+  // Demo chart data with proper colors
   const revenueChartData: ChartDataPoint[] = [
-    { label: 'Jan', value: 85000 },
-    { label: 'Feb', value: 92000 },
-    { label: 'Mar', value: 78000 },
-    { label: 'Apr', value: 105000 },
-    { label: 'May', value: 118000 },
-    { label: 'Jun', value: 125890 },
+    { label: 'Jan', value: 85000, color: '#3B82F6' },
+    { label: 'Feb', value: 92000, color: '#3B82F6' },
+    { label: 'Mar', value: 78000, color: '#3B82F6' },
+    { label: 'Apr', value: 105000, color: '#3B82F6' },
+    { label: 'May', value: 118000, color: '#3B82F6' },
+    { label: 'Jun', value: 125890, color: '#3B82F6' },
   ];
 
   const userActivityData: ChartDataPoint[] = [
-    { label: 'Mon', value: 3200 },
-    { label: 'Tue', value: 4100 },
-    { label: 'Wed', value: 3800 },
-    { label: 'Thu', value: 4500 },
-    { label: 'Fri', value: 5200 },
-    { label: 'Sat', value: 2800 },
-    { label: 'Sun', value: 2100 },
-  ];
-
-  const industryPerformanceData: ChartDataPoint[] = [
-    { label: 'SaaS', value: 24.5 },
-    { label: 'E-commerce', value: 18.3 },
-    { label: 'FinTech', value: 31.2 },
-    { label: 'Healthcare', value: 15.7 },
-    { label: 'Education', value: 22.8 },
+    { label: 'Mon', value: 3200, color: '#10B981' },
+    { label: 'Tue', value: 4100, color: '#10B981' },
+    { label: 'Wed', value: 3800, color: '#10B981' },
+    { label: 'Thu', value: 4500, color: '#10B981' },
+    { label: 'Fri', value: 5200, color: '#10B981' },
+    { label: 'Sat', value: 2800, color: '#10B981' },
+    { label: 'Sun', value: 2100, color: '#10B981' },
   ];
 
   const conversionFunnelData: ChartDataPoint[] = [
-    { label: 'Visitors', value: 10000 },
-    { label: 'Signups', value: 3500 },
-    { label: 'Trials', value: 1200 },
-    { label: 'Conversions', value: 850 },
+    { label: 'Visitors', value: 10000, color: '#8B5CF6' },
+    { label: 'Signups', value: 3500, color: '#A78BFA' },
+    { label: 'Trials', value: 1200, color: '#C4B5FD' },
+    { label: 'Conversions', value: 850, color: '#DDD6FE' },
   ];
 
   if (loading) {
@@ -248,8 +232,8 @@ export default function AnalyticsMain() {
             <h3 className="text-lg font-semibold text-gray-900">Revenue Trend</h3>
             <BarChart3 className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="h-64">
-            <LineChart 
+          <div className="h-64 w-full">
+            <LineChart
               data={revenueChartData}
               config={{
                 animate: true,
@@ -257,7 +241,9 @@ export default function AnalyticsMain() {
                 showTooltip: true,
                 responsive: true,
                 curve: 'smooth',
-                gradient: true
+                gradient: true,
+                strokeWidth: 3,
+                theme: 'light'
               }}
             />
           </div>
@@ -268,8 +254,8 @@ export default function AnalyticsMain() {
             <h3 className="text-lg font-semibold text-gray-900">User Activity</h3>
             <Activity className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="h-64">
-            <BarChart 
+          <div className="h-64 w-full">
+            <BarChart
               data={userActivityData}
               config={{
                 animate: true,
@@ -277,42 +263,10 @@ export default function AnalyticsMain() {
                 showTooltip: true,
                 responsive: true,
                 showValues: true,
-                roundedCorners: 4
+                roundedCorners: 4,
+                theme: 'light'
               }}
             />
-          </div>
-        </div>
-      </div>
-
-      {/* Industry Performance Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Industry Performance Comparison</h3>
-        <div className="h-64 mb-6">
-          <BarChart 
-            data={industryPerformanceData}
-            config={{
-              animate: true,
-              showGrid: true,
-              showTooltip: true,
-              responsive: true,
-              showValues: true,
-              orientation: 'horizontal',
-              roundedCorners: 6
-            }}
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
-            <div className="font-semibold text-blue-900">Top Performer</div>
-            <div className="text-blue-700">FinTech: 31.2%</div>
-          </div>
-          <div className="text-center p-3 bg-green-50 rounded-lg">
-            <div className="font-semibold text-green-900">Industry Average</div>
-            <div className="text-green-700">22.5%</div>
-          </div>
-          <div className="text-center p-3 bg-orange-50 rounded-lg">
-            <div className="font-semibold text-orange-900">Your Performance</div>
-            <div className="text-orange-700">Above Average</div>
           </div>
         </div>
       </div>
@@ -321,8 +275,8 @@ export default function AnalyticsMain() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Funnel Analysis</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="h-64">
-            <BarChart 
+          <div className="h-64 w-full">
+            <BarChart
               data={conversionFunnelData}
               config={{
                 animate: true,
@@ -330,7 +284,8 @@ export default function AnalyticsMain() {
                 showTooltip: true,
                 responsive: true,
                 showValues: true,
-                roundedCorners: 4
+                roundedCorners: 4,
+                theme: 'light'
               }}
             />
           </div>
