@@ -41,7 +41,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
       <div className={`${showChart ? 'text-center lg:text-left flex-shrink-0 lg:w-1/2' : ''}`}>
         {/* Title */}
         <h1
-          className={`text-2xl font-semibold text-gray-900 mb-4`}
+          className={`text-heading-lg font-semibold text-gray-900 mb-4`}
           id={`hero-metric-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
           data-oid='f7_syez'
         >
@@ -60,7 +60,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
             {value.toFixed(1)}
           </span>
           <span
-            className={`text-heading-lg font-medium text-gray-900 ml-2`}
+            className={`text-heading-sm font-medium text-gray-900 ml-2`}
             aria-hidden='true'
             data-oid='aduaxlf'
           >
