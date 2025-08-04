@@ -400,9 +400,12 @@ const ABTestingPage: React.FC = () => {
                 />
                 {/* Data points */}
                 {[20, 40, 60, 80].map((x, i) => {
+                  // Deterministic variation based on test ID and index (no Math.random)
+                  const seed = test.id.charCodeAt(0) + i;
+                  const variation = ((seed * 13) % 100) / 25 - 2; // -2 to 2
                   const y = test.conversionRate.variant > test.conversionRate.control
-                    ? 25 - (i * 5) + (Math.random() * 4 - 2)
-                    : 10 + (i * 3) + (Math.random() * 4 - 2);
+                    ? 25 - (i * 5) + variation
+                    : 10 + (i * 3) + variation;
                   return (
                     <circle
                       key={i}

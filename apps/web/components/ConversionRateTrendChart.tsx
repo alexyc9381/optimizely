@@ -74,7 +74,7 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
     }
   };
 
-  // Generate mock data based on timeframe and test
+  // Generate mock data based on timeframe and test (deterministic for SSR)
   const generateMockData = (
     days: number,
     testId: string
@@ -86,23 +86,24 @@ const ConversionRateTrendChart: React.FC<ConversionRateTrendChartProps> = ({
       const date = new Date(today);
       date.setDate(date.getDate() - i);
 
-      // Base conversion rates with realistic variations
+      // Base conversion rates with deterministic variations (no Math.random)
       const baseControl = testId === 'pricing_page_test' ? 8.2 : 6.5;
-      const baseVariantA = baseControl + (Math.random() * 3 - 1); // ±1% variation
-      const baseVariantB = baseControl + (Math.random() * 4 - 2); // ±2% variation
+      const seed = i + date.getDate(); // Deterministic seed
+      const variation1 = ((seed * 17) % 100) / 50 - 1; // -1 to 1
+      const variation2 = ((seed * 23) % 100) / 25 - 2; // -2 to 2
 
       const dataPoint: ConversionDataPoint = {
         date: date.toISOString().split('T')[0],
-        control: Math.max(0, baseControl + (Math.random() * 2 - 1)),
-        variant_a: Math.max(0, baseVariantA + (Math.random() * 2 - 1)),
-        variant_b: Math.max(0, baseVariantB + (Math.random() * 2 - 1)),
+        control: Math.max(0, baseControl + variation1 * 0.5),
+        variant_a: Math.max(0, baseControl + variation1),
+        variant_b: Math.max(0, baseControl + variation2),
       };
 
       // Add variant C for pricing page test
       if (testId === 'pricing_page_test') {
         dataPoint.variant_c = Math.max(
           0,
-          baseControl + 2.5 + (Math.random() * 2 - 1)
+          baseControl + 2.5 + variation1 * 0.8
         );
       }
 

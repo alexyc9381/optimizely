@@ -101,14 +101,17 @@ const WebMetricsChart: React.FC = () => {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
 
-      // Add some realistic patterns
+      // Add some realistic patterns with deterministic variation
       const weekendFactor =
         date.getDay() === 0 || date.getDay() === 6 ? 0.7 : 1;
       const trendFactor =
         metricType === 'bounce' ? 1 - i * 0.002 : 1 + i * 0.002; // Bounce rate decreases, others increase
-      const randomFactor = 0.8 + Math.random() * 0.4;
+      
+      // Deterministic factor based on day index (no Math.random)
+      const seed = i + date.getDate() + metricType.charCodeAt(0);
+      const deterministicFactor = 0.8 + ((seed * 37) % 100) / 250; // 0.8 to 1.2
 
-      const value = baseValue * weekendFactor * trendFactor * randomFactor;
+      const value = baseValue * weekendFactor * trendFactor * deterministicFactor;
 
       data.push({
         date: date.toISOString().split('T')[0],
