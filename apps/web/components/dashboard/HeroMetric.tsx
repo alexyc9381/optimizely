@@ -41,7 +41,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
       <div className={`${showChart ? 'text-center lg:text-left flex-shrink-0 lg:w-1/2' : ''}`}>
         {/* Title */}
         <h1
-          className={`text-heading-lg font-semibold text-gray-900 mb-4`}
+          className={`text-heading-md font-semibold text-gray-900 mb-4`}
           id={`hero-metric-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
           data-oid='f7_syez'
         >
@@ -51,7 +51,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
         {/* Main Value */}
         <div className='mb-4' data-oid='1ijyg_r'>
           <span
-            className={`text-display-xl font-bold ${colors.getClass('text', 'secondary', '900')}`}
+            className={`text-display-lg font-bold ${colors.getClass('text', 'secondary', '900')}`}
             data-testid='hero-value'
             aria-label={`${title} value: ${formattedValue}`}
             role='text'
@@ -60,7 +60,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
             {value.toFixed(1)}
           </span>
           <span
-            className={`text-heading-sm font-medium text-gray-900 ml-2`}
+            className={`text-body-lg font-medium text-gray-900 ml-2`}
             aria-hidden='true'
             data-oid='aduaxlf'
           >
@@ -83,7 +83,7 @@ const HeroMetric: React.FC<HeroMetricProps> = ({
         {/* Subtitle */}
         {subtitle && (
           <p
-            className={`text-body-lg text-gray-900 ${showChart ? 'max-w-none lg:max-w-sm' : 'max-w-md mx-auto'} leading-relaxed ${showChart ? 'mb-6 lg:mb-0' : 'mb-6'}`}
+            className={`text-body-md text-gray-900 ${showChart ? 'max-w-none lg:max-w-sm' : 'max-w-md mx-auto'} leading-relaxed ${showChart ? 'mb-6 lg:mb-0' : 'mb-6'}`}
             id={`hero-metric-subtitle-${title.replace(/\s+/g, '-').toLowerCase()}`}
             data-oid='qifcr-d'
           >
