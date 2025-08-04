@@ -1,7 +1,6 @@
 import { BarChart3, Cpu, GitBranch, LayoutDashboard, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface NavItem {
   name: string;
@@ -13,10 +12,19 @@ interface NavItem {
 }
 
 const Sidebar: React.FC = () => {
-  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [router, setRouter] = useState<any>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    // Only use router on client side
+    import('next/router').then(({ useRouter }) => {
+      setRouter({ pathname: window.location.pathname });
+    });
+  }, []);
 
   const navigation: NavItem[] = [
     {
@@ -175,6 +183,7 @@ const Sidebar: React.FC = () => {
   ];
 
   const isActiveLink = (href: string) => {
+    if (!mounted || !router) return false; // Prevent SSR issues
     if (href === '/' && router.pathname === '/') return true;
     if (href !== '/' && router.pathname.startsWith(href)) return true;
     return false;

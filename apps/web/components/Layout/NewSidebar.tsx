@@ -8,8 +8,7 @@ import {
     Plug
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from '../../lib/utils';
 import { Sidebar, SidebarBody, SidebarLink } from '../ui/sidebar';
 
@@ -58,8 +57,12 @@ const navItems: NavItem[] = [
 ];
 
 export function NewSidebar() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const links = navItems.map(item => ({
     label: item.label,
@@ -68,9 +71,7 @@ export function NewSidebar() {
       <item.icon
         className={cn(
           'h-5 w-5 flex-shrink-0',
-          router.pathname === item.href
-            ? 'text-neutral-200'
-            : 'text-neutral-700'
+          'text-neutral-700' // Static styling for SSR compatibility
         )}
         data-oid='7ohc7wl'
       />
