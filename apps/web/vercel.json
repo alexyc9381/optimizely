@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "buildCommand": "npx turbo run build --filter=web",
-  "outputDirectory": "apps/web/out", 
-  "installCommand": "npm install",
-  "framework": "nextjs"
+  "version": 2
 }
