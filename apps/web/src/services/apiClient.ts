@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // API Client for Optimizely Universal AI A/B Testing Platform
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ApiResponse<T> {
