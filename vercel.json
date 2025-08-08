@@ -1,15 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "buildCommand": "cd apps/web && npm run build",
-  "outputDirectory": "apps/web/.next",
-  "installCommand": "npm install",
-  "framework": "nextjs",
   "functions": {
-    "apps/web/pages/api/**/*.js": {
+    "pages/api/**/*.js": {
       "runtime": "@vercel/node"
     },
-    "apps/web/pages/api/**/*.ts": {
+    "pages/api/**/*.ts": {
       "runtime": "@vercel/node"
     }
   },
