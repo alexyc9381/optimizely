@@ -58,11 +58,47 @@ const ABTestingPage: React.FC = () => {
     fetchTests();
   }, []);
 
-  const handleTestCreated = (testId: string) => {
+  const handleTestCreated = (testId: string, testData?: any) => {
     console.log('Test created:', testId);
-    // Refresh the tests list
-    // In a real app, you'd refetch the data or optimistically update
-    alert(`A/B Test ${testId} has been created successfully!`);
+    
+    // Create a new test object to add to the local state
+    const newTest: ABTest = {
+      id: testId,
+      name: testData?.name || 'New A/B Test',
+      status: 'Draft',
+      industry: testData?.industry || 'General',
+      startDate: new Date().toISOString(),
+      visitors: 0,
+      conversionRate: {
+        control: 0,
+        variant: 0,
+      },
+      confidence: 0,
+      uplift: 0,
+    };
+    
+    // Add the new test to the local state
+    setTests(prevTests => [newTest, ...prevTests]);
+    
+    // Show a success notification
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+    notification.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span>A/B Test ${testId} created successfully!</span>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 5 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(notification), 300);
+    }, 5000);
   };
 
   // Mock data fallback

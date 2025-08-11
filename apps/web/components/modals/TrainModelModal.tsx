@@ -1,7 +1,7 @@
 import { Brain, Settings, TrendingUp, X } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import { ModelTrainingConfig, apiClient } from '../../src/services/apiClient';
+import React, { useEffect, useState } from 'react';
 import { useUserProfile } from '../../lib/contexts/UserProfileContext';
+import { ModelTrainingConfig, apiClient } from '../../src/services/apiClient';
 
 interface TrainModelModalProps {
   isOpen: boolean;
@@ -39,7 +39,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
     // Fallback to comprehensive list
     return [
       'SaaS',
-      'E-commerce', 
+      'E-commerce',
       'Healthcare',
       'FinTech',
       'Manufacturing',
@@ -59,7 +59,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
     return [
       'Optimization',
       'Prediction',
-      'Classification', 
+      'Classification',
       'Risk Analysis',
       'Quality Control',
       'Recommendation',
@@ -88,7 +88,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
   // Pre-populate form with user's primary industry if available
   useEffect(() => {
     if (userProfile && !formData.industry) {
-      const primaryIndustry = userProfile.onboarding?.selectedIndustries?.[0] || 
+      const primaryIndustry = userProfile.onboarding?.selectedIndustries?.[0] ||
                              userProfile.business.businessType;
       if (primaryIndustry) {
         setFormData(prev => ({

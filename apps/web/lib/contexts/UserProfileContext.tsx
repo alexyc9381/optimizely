@@ -110,10 +110,10 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
     try {
       setLoading(true);
       setError(null);
-      
+
       // Try to get settings from API
       const settings = await apiClient.getSettings();
-      
+
       // Enhance with onboarding data
       const enhancedProfile: UserProfile = {
         ...settings,
@@ -131,7 +131,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
     } catch (err) {
       console.warn('API unavailable, using mock profile data:', err);
       setError('Using demo data - API unavailable');
-      
+
       // Fallback to mock data
       const mockProfile: UserProfile = {
         profile: {
@@ -158,7 +158,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
         },
         onboarding: generateMockOnboardingData('saas')
       };
-      
+
       setUserProfile(mockProfile);
     } finally {
       setLoading(false);
@@ -168,7 +168,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const updateProfile = async (updates: Partial<UserProfile>) => {
     try {
       if (!userProfile) return;
-      
+
       const updatedProfile = { ...userProfile, ...updates };
       await apiClient.updateSettings(updatedProfile);
       setUserProfile(updatedProfile);
