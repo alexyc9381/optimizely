@@ -6,8 +6,8 @@ import {
     Plus,
     Settings,
     Target,
-    Type,
     Trash2,
+    Type,
     Users,
     Wand2,
     X,
@@ -77,6 +77,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isGeneratingVariants, setIsGeneratingVariants] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedElementType, setSelectedElementType] = useState<string>('button');
 
   // Element types for targeted testing
   const elementTypes = [
@@ -93,7 +94,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   // Get original content based on element type and scan results
   const getOriginalContent = (elementType: string) => {
     if (!scanResult?.elements) return `Current ${elementType}`;
-    
+
     switch (elementType) {
       case 'button':
         const ctaButton = scanResult.elements.buttons?.find(b => b.type === 'cta');
@@ -393,21 +394,24 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
         },
       };
 
-      // Generate 2-3 additional variants based on platform/website context
-      const mockAdditionalVariants = [
-        {
-          id: `variant_${Date.now()}_1`,
-          name: 'Alternative Approach',
-          description: `Alternative implementation approach for ${formData.name.toLowerCase()}`,
-          changes: `Different strategy: Focus on mobile-first optimization with simplified UX flow`,
-        },
-        {
-          id: `variant_${Date.now()}_2`,
-          name: 'Aggressive Test',
-          description: `Bold approach testing radical changes to ${formData.name.toLowerCase()}`,
-          changes: `Aggressive changes: Complete redesign with enhanced visual hierarchy and contrasting elements`,
-        },
-      ];
+      // Generate 2-3 additional variants based on selected element type and platform/website context
+      const mockAdditionalVariants = [];
+      for (let i = 0; i < 2; i++) {
+        const nextLetter = String.fromCharCode(67 + i); // C, D, etc.
+        const originalContent = getOriginalContent(selectedElementType);
+        const variants = generateElementVariants(selectedElementType, originalContent);
+        const selectedVariant = variants[Math.floor(Math.random() * variants.length)];
+        
+        mockAdditionalVariants.push({
+          id: `variant_${Date.now()}_${i}`,
+          name: `Variant ${nextLetter}`,
+          description: `${elementTypes.find(et => et.value === selectedElementType)?.label} test variant ${nextLetter}`,
+          changes: `Change ${selectedElementType} from "${originalContent}" to "${selectedVariant}"`,
+          elementType: selectedElementType,
+          originalContent,
+          modifiedContent: selectedVariant,
+        });
+      }
 
       // Auto-fill the variants but allow manual editing
       setFormData(prev => ({
@@ -444,18 +448,18 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     }
   };
 
-  const addVariant = (elementType: string = 'button') => {
+  const addVariant = () => {
     const nextLetter = String.fromCharCode(65 + additionalVariants.length + 1); // B, C, D, etc.
-    const originalContent = getOriginalContent(elementType);
-    const variants = generateElementVariants(elementType, originalContent);
+    const originalContent = getOriginalContent(selectedElementType);
+    const variants = generateElementVariants(selectedElementType, originalContent);
     const selectedVariant = variants[Math.floor(Math.random() * variants.length)];
-    
+
     const newVariant = {
       id: `variant_${Date.now()}`,
       name: `Variant ${nextLetter}`,
-      description: `${elementTypes.find(et => et.value === elementType)?.label} test variant`,
-      changes: `Change ${elementType} from "${originalContent}" to "${selectedVariant}"`,
-      elementType,
+      description: `${elementTypes.find(et => et.value === selectedElementType)?.label} test variant`,
+      changes: `Change ${selectedElementType} from "${originalContent}" to "${selectedVariant}"`,
+      elementType: selectedElementType,
       originalContent,
       modifiedContent: selectedVariant,
     };
@@ -557,6 +561,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       setAdditionalVariants([]);
       setCurrentStep(1);
       setShowConfirmation(false);
+      setSelectedElementType('button');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create test');
     } finally {
@@ -666,6 +671,35 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                     placeholder='e.g., Homepage CTA Button Test'
                     required
                   />
+                </div>
+
+                <div className='md:col-span-2'>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Element Type to Test
+                  </label>
+                  <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+                    {elementTypes.map(type => {
+                      const Icon = type.icon;
+                      return (
+                        <button
+                          key={type.value}
+                          type='button'
+                          onClick={() => setSelectedElementType(type.value)}
+                          className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center space-y-2 ${
+                            selectedElementType === type.value
+                              ? 'border-blue-500 bg-blue-50 text-blue-700'
+                              : 'border-gray-300 hover:border-gray-400 text-gray-600 hover:text-gray-700'
+                          }`}
+                        >
+                          <Icon className='w-5 h-5' />
+                          <span className='text-xs font-medium text-center'>{type.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className='text-xs text-gray-500 mt-2'>
+                    All variants in this test will modify the same element type ({elementTypes.find(et => et.value === selectedElementType)?.label})
+                  </p>
                 </div>
 
                 <div>
@@ -847,6 +881,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                  <h3 className='text-lg font-medium text-gray-900 flex items-center'>
                    <BarChart3 className='w-4 h-4 mr-2' />
                    Test Variants
+                   <span className='ml-2 text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full'>
+                     {elementTypes.find(et => et.value === selectedElementType)?.label}
+                   </span>
                  </h3>
                  <button
                    type='button'
@@ -990,7 +1027,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 {additionalVariants.map((variant, index) => {
                   const elementType = elementTypes.find(et => et.value === variant.elementType);
                   const ElementIcon = elementType?.icon || Target;
-                  
+
                   return (
                     <div key={variant.id} className='bg-green-50 p-4 rounded-lg border border-green-200'>
                       <div className='flex items-center justify-between mb-3'>
@@ -1084,33 +1121,20 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 {/* Add Variant Button */}
                 <div className='flex justify-center'>
                   <div className='flex items-center space-x-3'>
-                    <div className='relative'>
-                      <select
-                        onChange={(e) => {
-                          if (e.target.value && additionalVariants.length < 8) {
-                            addVariant(e.target.value);
-                            e.target.value = ''; // Reset selection
-                          }
-                        }}
-                        disabled={additionalVariants.length >= 8}
-                        className='px-4 py-3 bg-white border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer min-w-[200px]'
-                      >
-                        <option value=''>+ Add Test Variant</option>
-                        {elementTypes.map(type => (
-                          <option key={type.value} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))}
-                      </select>
-                      <div className='absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none'>
-                        <Plus className='w-4 h-4 text-gray-400' />
-                      </div>
-                    </div>
+                    <button
+                      type='button'
+                      onClick={addVariant}
+                      disabled={additionalVariants.length >= 8}
+                      className='px-6 py-3 bg-white border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed'
+                    >
+                      <Plus className='w-5 h-5' />
+                      <span>Add {elementTypes.find(et => et.value === selectedElementType)?.label} Variant</span>
+                    </button>
                     <span className='text-xs bg-gray-100 px-3 py-2 rounded-lg'>
                       {additionalVariants.length + 2}/10 variants
                     </span>
                   </div>
-                  
+
                   {additionalVariants.length >= 8 && (
                     <p className='text-xs text-orange-600 mt-2'>
                       Maximum of 10 total variants reached
