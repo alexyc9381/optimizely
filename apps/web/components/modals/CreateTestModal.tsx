@@ -2,8 +2,10 @@ import {
     BarChart3,
     Brain,
     Globe,
+    Plus,
     Settings,
     Target,
+    Trash2,
     Users,
     Wand2,
     X,
@@ -53,6 +55,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     minimumDetectableEffect: 5,
     significanceLevel: 95,
   });
+  const [additionalVariants, setAdditionalVariants] = useState<Array<{
+    id: string;
+    name: string;
+    description: string;
+    changes: string;
+  }>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
@@ -314,11 +322,29 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
         },
       };
 
+      // Generate 2-3 additional variants based on platform/website context
+      const mockAdditionalVariants = [
+        {
+          id: `variant_${Date.now()}_1`,
+          name: 'Alternative Approach',
+          description: `Alternative implementation approach for ${formData.name.toLowerCase()}`,
+          changes: `Different strategy: Focus on mobile-first optimization with simplified UX flow`,
+        },
+        {
+          id: `variant_${Date.now()}_2`,
+          name: 'Aggressive Test',
+          description: `Bold approach testing radical changes to ${formData.name.toLowerCase()}`,
+          changes: `Aggressive changes: Complete redesign with enhanced visual hierarchy and contrasting elements`,
+        },
+      ];
+
       // Auto-fill the variants but allow manual editing
       setFormData(prev => ({
         ...prev,
         variants: mockGeneratedVariants,
       }));
+      
+      setAdditionalVariants(mockAdditionalVariants);
 
       // Show success notification
       const notification = document.createElement('div');
@@ -328,7 +354,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
           </svg>
-          <span>AI variants generated! You can edit them manually.</span>
+          <span>AI variants generated! ${mockAdditionalVariants.length + 2} variants created. Edit as needed.</span>
         </div>
       `;
 
@@ -345,6 +371,29 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     } finally {
       setIsGeneratingVariants(false);
     }
+  };
+
+  const addVariant = () => {
+    const nextLetter = String.fromCharCode(65 + additionalVariants.length + 1); // B, C, D, etc.
+    const newVariant = {
+      id: `variant_${Date.now()}`,
+      name: `Variant ${nextLetter}`,
+      description: `Enhanced version ${nextLetter} based on hypothesis`,
+      changes: formData.hypothesis ? `Alternative approach to test: ${formData.hypothesis.substring(0, 80)}${formData.hypothesis.length > 80 ? '...' : ''}` : '',
+    };
+    setAdditionalVariants(prev => [...prev, newVariant]);
+  };
+
+  const removeVariant = (id: string) => {
+    setAdditionalVariants(prev => prev.filter(v => v.id !== id));
+  };
+
+  const updateAdditionalVariant = (id: string, field: string, value: string) => {
+    setAdditionalVariants(prev =>
+      prev.map(variant =>
+        variant.id === id ? { ...variant, [field]: value } : variant
+      )
+    );
   };
 
   const handleInputChange = (field: string, value: string | number) => {
@@ -427,6 +476,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
         minimumDetectableEffect: 5,
         significanceLevel: 95,
       });
+      setAdditionalVariants([]);
       setCurrentStep(1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create test');
@@ -746,13 +796,14 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                  </div>
                )}
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='space-y-6'>
                 {/* Control */}
                 <div className='bg-gray-50 p-4 rounded-lg'>
-                  <h4 className='font-medium text-gray-900 mb-3'>
+                  <h4 className='font-medium text-gray-900 mb-3 flex items-center'>
+                    <Target className='w-4 h-4 mr-2 text-gray-600' />
                     Control (Original)
                   </h4>
-                  <div className='space-y-3'>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
                     <div>
                       <label className='block text-sm font-medium text-gray-700 mb-1'>
                         Name
@@ -790,45 +841,48 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   </div>
                 </div>
 
-                {/* Variant */}
+                {/* Primary Variant */}
                 <div className='bg-blue-50 p-4 rounded-lg'>
-                  <h4 className='font-medium text-gray-900 mb-3'>
-                    Variant A (Test)
+                  <h4 className='font-medium text-gray-900 mb-3 flex items-center'>
+                    <Zap className='w-4 h-4 mr-2 text-blue-600' />
+                    Variant A (Primary Test)
                   </h4>
                   <div className='space-y-3'>
-                    <div>
-                      <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Name
-                      </label>
-                      <input
-                        type='text'
-                        value={formData.variants.variant.name}
-                        onChange={e =>
-                          handleInputChange(
-                            'variants.variant.name',
-                            e.target.value
-                          )
-                        }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Description
-                      </label>
-                      <textarea
-                        value={formData.variants.variant.description}
-                        onChange={e =>
-                          handleInputChange(
-                            'variants.variant.description',
-                            e.target.value
-                          )
-                        }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                        rows={2}
-                        required
-                      />
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                      <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>
+                          Name
+                        </label>
+                        <input
+                          type='text'
+                          value={formData.variants.variant.name}
+                          onChange={e =>
+                            handleInputChange(
+                              'variants.variant.name',
+                              e.target.value
+                            )
+                          }
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>
+                          Description
+                        </label>
+                        <textarea
+                          value={formData.variants.variant.description}
+                          onChange={e =>
+                            handleInputChange(
+                              'variants.variant.description',
+                              e.target.value
+                            )
+                          }
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                          rows={2}
+                          required
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className='block text-sm font-medium text-gray-700 mb-1'>
@@ -849,6 +903,89 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                       />
                     </div>
                   </div>
+                </div>
+
+                {/* Additional Variants */}
+                {additionalVariants.map((variant, index) => (
+                  <div key={variant.id} className='bg-green-50 p-4 rounded-lg'>
+                    <div className='flex items-center justify-between mb-3'>
+                      <h4 className='font-medium text-gray-900 flex items-center'>
+                        <BarChart3 className='w-4 h-4 mr-2 text-green-600' />
+                        Variant {String.fromCharCode(66 + index)} (Additional Test)
+                      </h4>
+                      <button
+                        type='button'
+                        onClick={() => removeVariant(variant.id)}
+                        className='p-1 text-red-600 hover:text-red-700 hover:bg-red-100 rounded transition-colors'
+                        title='Remove variant'
+                      >
+                        <Trash2 className='w-4 h-4' />
+                      </button>
+                    </div>
+                    <div className='space-y-3'>
+                      <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                        <div>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>
+                            Name
+                          </label>
+                          <input
+                            type='text'
+                            value={variant.name}
+                            onChange={e =>
+                              updateAdditionalVariant(variant.id, 'name', e.target.value)
+                            }
+                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>
+                            Description
+                          </label>
+                          <textarea
+                            value={variant.description}
+                            onChange={e =>
+                              updateAdditionalVariant(variant.id, 'description', e.target.value)
+                            }
+                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                            rows={2}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-1'>
+                          Changes Made
+                        </label>
+                        <textarea
+                          value={variant.changes}
+                          onChange={e =>
+                            updateAdditionalVariant(variant.id, 'changes', e.target.value)
+                          }
+                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                          rows={2}
+                          placeholder='Describe the specific changes...'
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add Variant Button */}
+                <div className='flex justify-center'>
+                  <button
+                    type='button'
+                    onClick={addVariant}
+                    disabled={additionalVariants.length >= 8} // Max 10 total variants (control + primary + 8 additional)
+                    className='px-6 py-3 bg-white border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    <Plus className='w-5 h-5' />
+                    <span>Add Test Variant</span>
+                    <span className='text-xs bg-gray-100 px-2 py-1 rounded'>
+                      {additionalVariants.length + 2}/10
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
