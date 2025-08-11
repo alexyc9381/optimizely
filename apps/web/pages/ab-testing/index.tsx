@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
 import CreateTestModal from '../../components/modals/CreateTestModal';
+import AnalyticsModal from '../../components/modals/AnalyticsModal';
 import {
     formatNumber,
     formatPercentage,
@@ -25,6 +26,8 @@ const ABTestingPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
+  const [selectedTestForAnalytics, setSelectedTestForAnalytics] = useState<ABTest | null>(null);
 
   // Load tests from backend
   useEffect(() => {
@@ -158,9 +161,11 @@ const ABTestingPage: React.FC = () => {
   };
 
   const handleViewAnalytics = (testId: string) => {
-    // Navigate to analytics page or open analytics modal
-    console.log('Viewing analytics for test:', testId);
-    alert(`Analytics for test ${testId} - This would open detailed analytics view`);
+    const test = tests.find(t => t.id === testId);
+    if (test) {
+      setSelectedTestForAnalytics(test);
+      setShowAnalyticsModal(true);
+    }
   };
 
   const TestCard: React.FC<{ test: ABTest }> = ({ test }) => (
@@ -769,6 +774,16 @@ const ABTestingPage: React.FC = () => {
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onTestCreated={handleTestCreated}
+      />
+
+      {/* Analytics Modal */}
+      <AnalyticsModal
+        isOpen={showAnalyticsModal}
+        onClose={() => {
+          setShowAnalyticsModal(false);
+          setSelectedTestForAnalytics(null);
+        }}
+        test={selectedTestForAnalytics}
       />
     </DashboardLayout>
   );
