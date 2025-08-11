@@ -129,8 +129,40 @@ const ModelsPage: React.FC = () => {
 
   const handleTrainingStarted = (jobId: string) => {
     console.log('Training job started:', jobId);
-    // You could add a notification here or update the UI to show training status
-    alert(`Training job ${jobId} has been started successfully!`);
+    
+    // Add a new training model to the local state to show immediate feedback
+    const newTrainingModel: AIModel = {
+      id: jobId,
+      name: 'Training in Progress...', 
+      type: 'Training',
+      status: 'Training',
+      accuracy: 0,
+      industry: 'Various',
+      usage: 0,
+      version: '1.0.0'
+    };
+    
+    setModels(prevModels => [newTrainingModel, ...prevModels]);
+    
+    // Show a success notification
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+    notification.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span>Training job ${jobId} started successfully!</span>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 5 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(notification), 300);
+    }, 5000);
   };
 
   const getStatusColor = (status: string) => {
@@ -138,7 +170,7 @@ const ModelsPage: React.FC = () => {
       case 'Active':
         return 'bg-green-100 text-green-800';
       case 'Training':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-blue-100 text-blue-800 animate-pulse';
       case 'Paused':
         return 'bg-gray-100 text-gray-800';
       default:
