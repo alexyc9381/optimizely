@@ -120,6 +120,68 @@ export interface TrainingJob {
   accuracy?: number;
 }
 
+export interface WebsiteScanResult {
+  url: string;
+  title: string;
+  description: string;
+  industry: string;
+  elements: {
+    buttons: Array<{
+      text: string;
+      location: string;
+      type: 'cta' | 'navigation' | 'form';
+      prominence: number;
+    }>;
+    headlines: Array<{
+      text: string;
+      level: number;
+      location: string;
+    }>;
+    images: Array<{
+      alt: string;
+      src: string;
+      location: string;
+    }>;
+    forms: Array<{
+      type: string;
+      fields: string[];
+      location: string;
+    }>;
+  };
+  metrics: {
+    loadTime: number;
+    mobileOptimized: boolean;
+    conversionElements: number;
+    trustSignals: number;
+  };
+  recommendations: string[];
+}
+
+export interface TestSuggestion {
+  id: string;
+  name: string;
+  description: string;
+  hypothesis: string;
+  priority: 'high' | 'medium' | 'low';
+  estimatedImpact: number;
+  confidence: number;
+  category: 'cta' | 'layout' | 'copy' | 'form' | 'pricing' | 'social-proof';
+  variants: {
+    control: {
+      name: string;
+      description: string;
+    };
+    variant: {
+      name: string;
+      description: string;
+      changes: string;
+    };
+  };
+  recommendedMetric: string;
+  recommendedDuration: number;
+  trafficSplit: number;
+}
+
 class ApiClient {
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -204,6 +266,20 @@ class ApiClient {
     return this.request<TrainingJob>('/models/train', {
       method: 'POST',
       body: JSON.stringify(config),
+    });
+  }
+
+  async scanWebsite(url: string): Promise<WebsiteScanResult> {
+    return this.request<WebsiteScanResult>('/website/scan', {
+      method: 'POST',
+      body: JSON.stringify({ url }),
+    });
+  }
+
+  async getTestSuggestions(scanData?: WebsiteScanResult): Promise<TestSuggestion[]> {
+    return this.request<TestSuggestion[]>('/ab-testing/suggestions', {
+      method: 'POST',
+      body: JSON.stringify({ scanData }),
     });
   }
 

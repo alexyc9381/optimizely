@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { X, Target, BarChart3, Settings, Users } from 'lucide-react';
-import { CreateABTestConfig, apiClient } from '../../src/services/apiClient';
+import { BarChart3, Settings, Target, Users, X, Zap, Brain, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CreateABTestConfig, TestSuggestion, WebsiteScanResult, apiClient } from '../../src/services/apiClient';
 
 interface CreateTestModalProps {
   isOpen: boolean;
@@ -39,6 +39,11 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanResult, setScanResult] = useState<WebsiteScanResult | null>(null);
+  const [suggestions, setSuggestions] = useState<TestSuggestion[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<TestSuggestion | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const industries = [
     'SaaS',
@@ -63,6 +68,171 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     { value: 'signup_rate', label: 'Signup Rate' },
     { value: 'engagement_rate', label: 'Engagement Rate' },
   ];
+
+  // Auto-populate form when a suggestion is selected
+  useEffect(() => {
+    if (selectedSuggestion) {
+      setFormData(prev => ({
+        ...prev,
+        name: selectedSuggestion.name,
+        description: selectedSuggestion.description,
+        hypothesis: selectedSuggestion.hypothesis,
+        primaryMetric: selectedSuggestion.recommendedMetric,
+        variants: selectedSuggestion.variants,
+        trafficSplit: selectedSuggestion.trafficSplit,
+        duration: selectedSuggestion.recommendedDuration,
+      }));
+    }
+  }, [selectedSuggestion]);
+
+  // Auto-detect industry from scan result
+  useEffect(() => {
+    if (scanResult) {
+      setFormData(prev => ({
+        ...prev,
+        industry: scanResult.industry,
+      }));
+    }
+  }, [scanResult]);
+
+  const handleWebsiteScan = async () => {
+    if (!formData.targetUrl) {
+      setError('Please enter a target URL first');
+      return;
+    }
+
+    setIsScanning(true);
+    setError(null);
+
+    try {
+      // Mock scan for demo - replace with real API call
+      const mockScanResult: WebsiteScanResult = {
+        url: formData.targetUrl,
+        title: 'Demo Website',
+        description: 'A sample website for testing',
+        industry: formData.targetUrl.includes('shop') || formData.targetUrl.includes('store') ? 'E-commerce' : 'SaaS',
+        elements: {
+          buttons: [
+            { text: 'Sign Up', location: 'header', type: 'cta', prominence: 9 },
+            { text: 'Get Started', location: 'hero', type: 'cta', prominence: 10 },
+            { text: 'Learn More', location: 'features', type: 'cta', prominence: 6 },
+          ],
+          headlines: [
+            { text: 'Transform Your Business Today', level: 1, location: 'hero' },
+            { text: 'Powerful Features', level: 2, location: 'features' },
+          ],
+          images: [
+            { alt: 'Hero image', src: '/hero.jpg', location: 'hero' },
+          ],
+          forms: [
+            { type: 'signup', fields: ['email', 'password'], location: 'modal' },
+          ],
+        },
+        metrics: {
+          loadTime: 2.3,
+          mobileOptimized: true,
+          conversionElements: 3,
+          trustSignals: 2,
+        },
+        recommendations: [
+          'Consider testing CTA button colors',
+          'Improve headline clarity',
+          'Add social proof elements',
+        ],
+      };
+
+      // Generate intelligent test suggestions based on scan
+      const mockSuggestions: TestSuggestion[] = [
+        {
+          id: '1',
+          name: 'CTA Button Color Test',
+          description: 'Test different colors for the primary CTA button to improve conversion',
+          hypothesis: 'If we change the CTA button from blue to orange, then conversion rates will increase because orange creates more urgency and stands out better',
+          priority: 'high',
+          estimatedImpact: 15,
+          confidence: 85,
+          category: 'cta',
+          variants: {
+            control: {
+              name: 'Blue CTA Button',
+              description: 'Current blue "Get Started" button',
+            },
+            variant: {
+              name: 'Orange CTA Button',
+              description: 'High-contrast orange "Get Started" button',
+              changes: 'Change button color from #3B82F6 to #F97316, maintain white text',
+            },
+          },
+          recommendedMetric: 'conversion_rate',
+          recommendedDuration: 14,
+          trafficSplit: 50,
+        },
+        {
+          id: '2',
+          name: 'Headline Optimization',
+          description: 'Test a more benefit-focused headline to improve engagement',
+          hypothesis: 'If we change the headline to focus on specific benefits, then user engagement will increase because visitors will better understand the value proposition',
+          priority: 'medium',
+          estimatedImpact: 12,
+          confidence: 78,
+          category: 'copy',
+          variants: {
+            control: {
+              name: 'Current Headline',
+              description: 'Transform Your Business Today',
+            },
+            variant: {
+              name: 'Benefit-Focused Headline',
+              description: 'Increase Revenue by 40% in 30 Days',
+              changes: 'Replace generic headline with specific, measurable benefit',
+            },
+          },
+          recommendedMetric: 'engagement_rate',
+          recommendedDuration: 21,
+          trafficSplit: 50,
+        },
+        {
+          id: '3',
+          name: 'Social Proof Addition',
+          description: 'Add customer testimonials to build trust and credibility',
+          hypothesis: 'If we add customer testimonials near the CTA, then conversion rates will increase because social proof reduces perceived risk',
+          priority: 'medium',
+          estimatedImpact: 18,
+          confidence: 82,
+          category: 'social-proof',
+          variants: {
+            control: {
+              name: 'No Social Proof',
+              description: 'Current layout without testimonials',
+            },
+            variant: {
+              name: 'With Customer Testimonials',
+              description: 'Add 3 customer testimonials with photos below hero section',
+              changes: 'Insert testimonial carousel with customer photos, names, and company logos',
+            },
+          },
+          recommendedMetric: 'conversion_rate',
+          recommendedDuration: 28,
+          trafficSplit: 50,
+        },
+      ];
+
+      setScanResult(mockScanResult);
+      setSuggestions(mockSuggestions);
+      setShowSuggestions(true);
+
+      // Auto-select highest priority suggestion
+      if (mockSuggestions.length > 0) {
+        const highestPriority = mockSuggestions.find(s => s.priority === 'high') || mockSuggestions[0];
+        setSelectedSuggestion(highestPriority);
+      }
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to scan website');
+    } finally {
+      setIsScanning(false);
+    }
+  };
 
   const handleInputChange = (field: string, value: string | number) => {
     if (field.startsWith('variants.')) {
@@ -94,7 +264,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       const newTest = await apiClient.createABTest(formData);
       onTestCreated(newTest.id);
       onClose();
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -164,8 +334,8 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step <= currentStep 
-                    ? 'bg-blue-600 text-white' 
+                  step <= currentStep
+                    ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-600'
                 }`}>
                   {step}
@@ -203,7 +373,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 <Settings className="w-4 h-4 mr-2" />
                 Basic Information
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -240,14 +410,42 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Target URL
                   </label>
-                  <input
-                    type="url"
-                    value={formData.targetUrl}
-                    onChange={(e) => handleInputChange('targetUrl', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="https://example.com/page"
-                    required
-                  />
+                  <div className="flex space-x-2">
+                    <input
+                      type="url"
+                      value={formData.targetUrl}
+                      onChange={(e) => handleInputChange('targetUrl', e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="https://example.com/page"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={handleWebsiteScan}
+                      disabled={isScanning || !formData.targetUrl}
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
+                    >
+                      {isScanning ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>Scanning...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="w-4 h-4" />
+                          <span>AI Scan</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  {scanResult && (
+                    <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center text-sm text-green-700">
+                        <Globe className="w-4 h-4 mr-2" />
+                        <span>Website scanned successfully - Industry: {scanResult.industry}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="md:col-span-2">
@@ -278,6 +476,64 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   />
                 </div>
               </div>
+
+              {/* AI Test Suggestions */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="mt-8">
+                  <h4 className="text-lg font-medium text-gray-900 flex items-center mb-4">
+                    <Zap className="w-4 h-4 mr-2 text-yellow-500" />
+                    AI-Powered Test Suggestions
+                  </h4>
+                  <div className="space-y-3">
+                    {suggestions.map((suggestion) => (
+                      <div
+                        key={suggestion.id}
+                        className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                          selectedSuggestion?.id === suggestion.id
+                            ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-500 ring-opacity-20'
+                            : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                        }`}
+                        onClick={() => setSelectedSuggestion(suggestion)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-2">
+                              <h5 className="font-medium text-gray-900">{suggestion.name}</h5>
+                              <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                suggestion.priority === 'high' ? 'bg-red-100 text-red-800' :
+                                suggestion.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-green-100 text-green-800'
+                              }`}>
+                                {suggestion.priority} priority
+                              </span>
+                              <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                +{suggestion.estimatedImpact}% impact
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">{suggestion.description}</p>
+                            <p className="text-xs text-gray-500 italic">"{suggestion.hypothesis}"</p>
+                          </div>
+                          {selectedSuggestion?.id === suggestion.id && (
+                            <div className="ml-4">
+                              <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedSuggestion && (
+                    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-700 flex items-center">
+                        <Zap className="w-4 h-4 mr-2" />
+                        Selected suggestion will auto-fill the form when you proceed to the next step
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -288,7 +544,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 <BarChart3 className="w-4 h-4 mr-2" />
                 Test Variants
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Control */}
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -375,7 +631,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 <Users className="w-4 h-4 mr-2" />
                 Test Configuration
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -474,7 +730,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 </button>
               )}
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <button
                 type="button"
@@ -483,7 +739,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               >
                 Cancel
               </button>
-              
+
               {currentStep < 3 ? (
                 <button
                   type="button"
