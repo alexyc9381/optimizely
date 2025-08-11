@@ -1,5 +1,5 @@
+import { BarChart3, Calendar, Target, TrendingUp, Users, X } from 'lucide-react';
 import React from 'react';
-import { X, BarChart3, TrendingUp, Users, Target, Calendar } from 'lucide-react';
 import { ABTest } from '../../src/services/apiClient';
 
 interface AnalyticsModalProps {
@@ -64,37 +64,37 @@ const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose, test }
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Total Visitors</p>
-                    <p className="text-2xl font-bold text-gray-900">{analyticsData.totalVisitors.toLocaleString()}</p>
+                    <p className="text-lg text-gray-900">{analyticsData.totalVisitors.toLocaleString()}</p>
                   </div>
                   <Users className="w-8 h-8 text-blue-600" />
                 </div>
               </div>
-              
+
               <div className="bg-blue-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Confidence Level</p>
-                    <p className="text-2xl font-bold text-blue-900">{analyticsData.confidence}%</p>
+                    <p className="text-lg text-blue-900">{analyticsData.confidence}%</p>
                   </div>
                   <BarChart3 className="w-8 h-8 text-blue-600" />
                 </div>
               </div>
-              
+
               <div className="bg-green-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Uplift</p>
-                    <p className="text-2xl font-bold text-green-900">+{analyticsData.uplift}%</p>
+                    <p className="text-lg text-green-900">+{analyticsData.uplift}%</p>
                   </div>
                   <TrendingUp className="w-8 h-8 text-green-600" />
                 </div>
               </div>
-              
+
               <div className="bg-purple-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Test Duration</p>
-                    <p className="text-2xl font-bold text-purple-900">14 days</p>
+                    <p className="text-lg text-purple-900">14 days</p>
                   </div>
                   <Calendar className="w-8 h-8 text-purple-600" />
                 </div>
@@ -109,26 +109,26 @@ const AnalyticsModal: React.FC<AnalyticsModalProps> = ({ isOpen, onClose, test }
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h4 className="font-medium text-gray-900 mb-3">Control</h4>
                 <div className="flex items-end space-x-4">
-                  <div className="text-3xl font-bold text-gray-700">{analyticsData.conversionRates.control}%</div>
+                  <div className="text-xl text-gray-700">{analyticsData.conversionRates.control}%</div>
                   <div className="text-sm text-gray-500 mb-1">conversion rate</div>
                 </div>
                 <div className="mt-3 bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-gray-600 h-2 rounded-full" 
+                  <div
+                    className="bg-gray-600 h-2 rounded-full"
                     style={{ width: `${analyticsData.conversionRates.control * 10}%` }}
                   ></div>
                 </div>
               </div>
-              
+
               <div className="bg-blue-50 p-6 rounded-lg">
                 <h4 className="font-medium text-gray-900 mb-3">Variant</h4>
                 <div className="flex items-end space-x-4">
-                  <div className="text-3xl font-bold text-blue-700">{analyticsData.conversionRates.variant}%</div>
+                  <div className="text-xl text-blue-700">{analyticsData.conversionRates.variant}%</div>
                   <div className="text-sm text-gray-500 mb-1">conversion rate</div>
                 </div>
                 <div className="mt-3 bg-blue-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full" 
+                  <div
+                    className="bg-blue-600 h-2 rounded-full"
                     style={{ width: `${analyticsData.conversionRates.variant * 10}%` }}
                   ></div>
                 </div>
