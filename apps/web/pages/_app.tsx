@@ -15,22 +15,22 @@ export default function App({ Component, pageProps }: AppProps) {
       typeof window !== 'undefined'
     ) {
       console.log('🔧 Stagewise: Starting initialization...');
-      
+
       // Dynamic import to avoid SSR issues
       import('@stagewise/toolbar')
         .then((stagewiseModule) => {
           console.log('🔧 Stagewise: Module loaded', stagewiseModule);
-          
+
           const { initToolbar } = stagewiseModule;
-          
+
           // Check if stagewise anchor already exists in DOM
           const existingAnchor = document.querySelector(
             '[data-stagewise-anchor]'
           );
-          
+
           if (!existingAnchor) {
             console.log('🔧 Stagewise: No existing anchor, initializing toolbar...');
-            
+
             const stagewiseConfig = {
               plugins: [],
               position: 'bottom-right',
@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
               initToolbar(stagewiseConfig);
               console.log('✅ Stagewise: Toolbar initialized successfully!');
               stagewiseInitialized.current = true;
-              
+
               // Add a visual indicator
               setTimeout(() => {
                 const toolbar = document.querySelector('[data-stagewise-anchor]');
@@ -51,7 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   console.warn('⚠️ Stagewise: Toolbar not found in DOM after initialization');
                 }
               }, 1000);
-              
+
             } catch (initError) {
               console.error('❌ Stagewise: Initialization error:', initError);
             }
@@ -65,7 +65,7 @@ export default function App({ Component, pageProps }: AppProps) {
             'Stagewise toolbar initialization skipped:',
             error instanceof Error ? error.message : 'Unknown error'
           );
-          
+
           // Create a fallback visual indicator
           const fallbackIndicator = document.createElement('div');
           fallbackIndicator.id = 'stagewise-fallback';
@@ -84,7 +84,7 @@ export default function App({ Component, pageProps }: AppProps) {
           `;
           fallbackIndicator.innerHTML = '🔧 Stagewise (fallback mode)';
           document.body.appendChild(fallbackIndicator);
-          
+
           console.log('✅ Stagewise: Fallback indicator added');
         });
     } else {

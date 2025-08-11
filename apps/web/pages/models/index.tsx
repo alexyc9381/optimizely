@@ -13,6 +13,7 @@ import {
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
+import TrainModelModal from '../../components/modals/TrainModelModal';
 import { AIModel, apiClient } from '../../src/services/apiClient';
 
 const ModelsPage: React.FC = () => {
@@ -20,6 +21,7 @@ const ModelsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [showTrainModal, setShowTrainModal] = useState(false);
 
   // Mock data as fallback
   const mockModels: AIModel[] = [
@@ -123,6 +125,12 @@ const ModelsPage: React.FC = () => {
       console.error(`Failed to ${action} model:`, err);
       alert(`Failed to ${action} model. Please try again.`);
     }
+  };
+
+  const handleTrainingStarted = (jobId: string) => {
+    console.log('Training job started:', jobId);
+    // You could add a notification here or update the UI to show training status
+    alert(`Training job ${jobId} has been started successfully!`);
   };
 
   const getStatusColor = (status: string) => {
@@ -241,6 +249,7 @@ const ModelsPage: React.FC = () => {
               <span data-oid='e4mnosn'>Import Model</span>
             </button>
             <button
+              onClick={() => setShowTrainModal(true)}
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors'
               data-oid='8ktyx54'
             >
@@ -684,6 +693,13 @@ const ModelsPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Training Modal */}
+      <TrainModelModal
+        isOpen={showTrainModal}
+        onClose={() => setShowTrainModal(false)}
+        onTrainingStarted={handleTrainingStarted}
+      />
     </DashboardLayout>
   );
 };

@@ -72,6 +72,30 @@ export interface IndustryData {
   }>;
 }
 
+export interface ModelTrainingConfig {
+  name: string;
+  industry: string;
+  type: string;
+  dataSource: string;
+  hyperparameters: {
+    learningRate: number;
+    epochs: number;
+    batchSize: number;
+  };
+  validationSplit: number;
+  description?: string;
+}
+
+export interface TrainingJob {
+  id: string;
+  modelName: string;
+  status: 'Queued' | 'Training' | 'Completed' | 'Failed';
+  progress: number;
+  startTime: string;
+  estimatedCompletion?: string;
+  accuracy?: number;
+}
+
 class ApiClient {
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -149,6 +173,13 @@ class ApiClient {
   async deleteModel(id: string): Promise<void> {
     return this.request<void>(`/models/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  async trainModel(config: ModelTrainingConfig): Promise<TrainingJob> {
+    return this.request<TrainingJob>('/models/train', {
+      method: 'POST',
+      body: JSON.stringify(config),
     });
   }
 

@@ -225,7 +225,7 @@ export default function AnalyticsMain() {
             <LineChart
               data={revenueChartData}
               config={{
-                animate: true,
+                animate: false,
                 showGrid: true,
                 showTooltip: true,
                 responsive: true,
@@ -247,7 +247,7 @@ export default function AnalyticsMain() {
             <BarChart
               data={userActivityData}
               config={{
-                animate: true,
+                animate: false,
                 showGrid: true,
                 showTooltip: true,
                 responsive: true,
@@ -268,7 +268,7 @@ export default function AnalyticsMain() {
             <BarChart
               data={conversionFunnelData}
               config={{
-                animate: true,
+                animate: false,
                 showGrid: true,
                 showTooltip: true,
                 responsive: true,
