@@ -2,9 +2,11 @@ import {
     BarChart3,
     Brain,
     Globe,
+    MousePointer,
     Plus,
     Settings,
     Target,
+    Type,
     Trash2,
     Users,
     Wand2,
@@ -60,6 +62,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     name: string;
     description: string;
     changes: string;
+    elementType?: string;
+    originalContent?: string;
+    modifiedContent?: string;
   }>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +77,71 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isGeneratingVariants, setIsGeneratingVariants] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Element types for targeted testing
+  const elementTypes = [
+    { value: 'button', label: 'Button/CTA', icon: MousePointer },
+    { value: 'headline', label: 'Headline/Title', icon: Type },
+    { value: 'description', label: 'Description Text', icon: Type },
+    { value: 'image', label: 'Image/Visual', icon: Target },
+    { value: 'form', label: 'Form Element', icon: Settings },
+    { value: 'navigation', label: 'Navigation', icon: Target },
+    { value: 'pricing', label: 'Pricing Element', icon: Target },
+    { value: 'social-proof', label: 'Social Proof', icon: Users },
+  ];
+
+  // Get original content based on element type and scan results
+  const getOriginalContent = (elementType: string) => {
+    if (!scanResult?.elements) return `Current ${elementType}`;
+    
+    switch (elementType) {
+      case 'button':
+        const ctaButton = scanResult.elements.buttons?.find(b => b.type === 'cta');
+        return ctaButton?.text || 'Get Started';
+      case 'headline':
+        const mainHeadline = scanResult.elements.headlines?.find(h => h.level === 1);
+        return mainHeadline?.text || 'Welcome to Our Platform';
+      case 'description':
+        return 'Transform your business with our innovative solution';
+      case 'image':
+        const heroImage = scanResult.elements.images?.[0];
+        return heroImage?.alt || 'Hero image';
+      default:
+        return `Current ${elementType}`;
+    }
+  };
+
+  // Generate AI variants based on element type
+  const generateElementVariants = (elementType: string, originalContent: string) => {
+    const variantSuggestions = {
+      button: [
+        'Start Free Trial',
+        'Get Started Now',
+        'Join Today',
+        'Try It Free',
+        'Start Your Journey'
+      ],
+      headline: [
+        'Revolutionize Your Business Today',
+        'The Future of Business is Here',
+        'Transform Your Success Story',
+        'Unlock Your Potential Now',
+        'Experience the Difference'
+      ],
+      description: [
+        'Join thousands of satisfied customers who have transformed their business',
+        'Discover the power of innovation with our cutting-edge solution',
+        'Streamline your operations and boost productivity instantly',
+        'Take your business to the next level with proven results'
+      ]
+    };
+
+    return variantSuggestions[elementType as keyof typeof variantSuggestions] || [
+      `Enhanced ${elementType}`,
+      `Optimized ${elementType}`,
+      `Improved ${elementType}`
+    ];
+  };
 
   // Dynamic industries based on user profile
   const getIndustries = () => {
@@ -374,13 +444,20 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     }
   };
 
-  const addVariant = () => {
+  const addVariant = (elementType: string = 'button') => {
     const nextLetter = String.fromCharCode(65 + additionalVariants.length + 1); // B, C, D, etc.
+    const originalContent = getOriginalContent(elementType);
+    const variants = generateElementVariants(elementType, originalContent);
+    const selectedVariant = variants[Math.floor(Math.random() * variants.length)];
+    
     const newVariant = {
       id: `variant_${Date.now()}`,
       name: `Variant ${nextLetter}`,
-      description: `Enhanced version ${nextLetter} based on hypothesis`,
-      changes: formData.hypothesis ? `Alternative approach to test: ${formData.hypothesis.substring(0, 80)}${formData.hypothesis.length > 80 ? '...' : ''}` : '',
+      description: `${elementTypes.find(et => et.value === elementType)?.label} test variant`,
+      changes: `Change ${elementType} from "${originalContent}" to "${selectedVariant}"`,
+      elementType,
+      originalContent,
+      modifiedContent: selectedVariant,
     };
     setAdditionalVariants(prev => [...prev, newVariant]);
   };
@@ -910,27 +987,38 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 </div>
 
                 {/* Additional Variants */}
-                {additionalVariants.map((variant, index) => (
-                  <div key={variant.id} className='bg-green-50 p-4 rounded-lg'>
-                    <div className='flex items-center justify-between mb-3'>
-                      <h4 className='font-medium text-gray-900 flex items-center'>
-                        <BarChart3 className='w-4 h-4 mr-2 text-green-600' />
-                        Variant {String.fromCharCode(66 + index)} (Additional Test)
-                      </h4>
-                      <button
-                        type='button'
-                        onClick={() => removeVariant(variant.id)}
-                        className='p-1 text-red-600 hover:text-red-700 hover:bg-red-100 rounded transition-colors'
-                        title='Remove variant'
-                      >
-                        <Trash2 className='w-4 h-4' />
-                      </button>
-                    </div>
-                    <div className='space-y-3'>
-                      <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                {additionalVariants.map((variant, index) => {
+                  const elementType = elementTypes.find(et => et.value === variant.elementType);
+                  const ElementIcon = elementType?.icon || Target;
+                  
+                  return (
+                    <div key={variant.id} className='bg-green-50 p-4 rounded-lg border border-green-200'>
+                      <div className='flex items-center justify-between mb-3'>
+                        <div className='flex items-center space-x-2'>
+                          <ElementIcon className='w-4 h-4 text-green-600' />
+                          <h4 className='font-medium text-gray-900'>
+                            Variant {String.fromCharCode(66 + index)}
+                          </h4>
+                          {elementType && (
+                            <span className='text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full'>
+                              {elementType.label}
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          type='button'
+                          onClick={() => removeVariant(variant.id)}
+                          className='p-1 text-red-600 hover:text-red-700 hover:bg-red-100 rounded transition-colors'
+                          title='Remove variant'
+                        >
+                          <Trash2 className='w-4 h-4' />
+                        </button>
+                      </div>
+
+                      <div className='space-y-3'>
                         <div>
                           <label className='block text-sm font-medium text-gray-700 mb-1'>
-                            Name
+                            Variant Name
                           </label>
                           <input
                             type='text'
@@ -942,6 +1030,37 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                             required
                           />
                         </div>
+
+                        {variant.originalContent && (
+                          <div className='bg-white p-3 rounded border'>
+                            <h5 className='text-sm font-medium text-gray-700 mb-2'>Content Changes</h5>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                              <div>
+                                <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                  Original {elementType?.label || 'Content'}
+                                </label>
+                                <div className='w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded text-gray-600 text-sm'>
+                                  "{variant.originalContent}"
+                                </div>
+                              </div>
+                              <div>
+                                <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                  New {elementType?.label || 'Content'}
+                                </label>
+                                <input
+                                  type='text'
+                                  value={variant.modifiedContent || ''}
+                                  onChange={e =>
+                                    updateAdditionalVariant(variant.id, 'modifiedContent', e.target.value)
+                                  }
+                                  className='w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                                  placeholder={`Enter new ${elementType?.label.toLowerCase() || 'content'}...`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         <div>
                           <label className='block text-sm font-medium text-gray-700 mb-1'>
                             Description
@@ -953,43 +1072,50 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                             }
                             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                             rows={2}
+                            placeholder='Describe the purpose of this variant...'
                             required
                           />
                         </div>
                       </div>
-                      <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                          Changes Made
-                        </label>
-                        <textarea
-                          value={variant.changes}
-                          onChange={e =>
-                            updateAdditionalVariant(variant.id, 'changes', e.target.value)
-                          }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                          rows={2}
-                          placeholder='Describe the specific changes...'
-                          required
-                        />
-                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 {/* Add Variant Button */}
                 <div className='flex justify-center'>
-                  <button
-                    type='button'
-                    onClick={addVariant}
-                    disabled={additionalVariants.length >= 8} // Max 10 total variants (control + primary + 8 additional)
-                    className='px-6 py-3 bg-white border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed'
-                  >
-                    <Plus className='w-5 h-5' />
-                    <span>Add Test Variant</span>
-                    <span className='text-xs bg-gray-100 px-2 py-1 rounded'>
-                      {additionalVariants.length + 2}/10
+                  <div className='flex items-center space-x-3'>
+                    <div className='relative'>
+                      <select
+                        onChange={(e) => {
+                          if (e.target.value && additionalVariants.length < 8) {
+                            addVariant(e.target.value);
+                            e.target.value = ''; // Reset selection
+                          }
+                        }}
+                        disabled={additionalVariants.length >= 8}
+                        className='px-4 py-3 bg-white border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer min-w-[200px]'
+                      >
+                        <option value=''>+ Add Test Variant</option>
+                        {elementTypes.map(type => (
+                          <option key={type.value} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                      <div className='absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+                        <Plus className='w-4 h-4 text-gray-400' />
+                      </div>
+                    </div>
+                    <span className='text-xs bg-gray-100 px-3 py-2 rounded-lg'>
+                      {additionalVariants.length + 2}/10 variants
                     </span>
-                  </button>
+                  </div>
+                  
+                  {additionalVariants.length >= 8 && (
+                    <p className='text-xs text-orange-600 mt-2'>
+                      Maximum of 10 total variants reached
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -1120,7 +1246,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   Review Your A/B Test Configuration
                 </h3>
               </div>
-              
+
               <div className='bg-white rounded-lg p-4 space-y-4'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
@@ -1132,7 +1258,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                       <div><span className='font-medium'>Duration:</span> {formData.duration} days</div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h4 className='font-medium text-gray-900 mb-2'>Test Parameters</h4>
                     <div className='space-y-2 text-sm'>
@@ -1143,12 +1269,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className='font-medium text-gray-900 mb-2'>Hypothesis</h4>
                   <p className='text-sm text-gray-700 bg-gray-50 p-3 rounded'>{formData.hypothesis}</p>
                 </div>
-                
+
                 <div>
                   <h4 className='font-medium text-gray-900 mb-2'>Test Variants ({2 + additionalVariants.length} total)</h4>
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -1169,14 +1295,14 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   </div>
                 </div>
               </div>
-              
+
               <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
                 <div className='flex items-start space-x-3'>
                   <div className='w-6 h-6 text-yellow-600 mt-0.5'>⚠️</div>
                   <div>
                     <h4 className='font-medium text-yellow-900 mb-1'>Ready to Publish</h4>
                     <p className='text-sm text-yellow-800'>
-                      Once published, this test will start collecting data immediately. 
+                      Once published, this test will start collecting data immediately.
                       Make sure all configurations are correct before proceeding.
                     </p>
                   </div>
