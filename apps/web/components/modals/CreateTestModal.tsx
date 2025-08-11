@@ -401,7 +401,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
         const originalContent = getOriginalContent(selectedElementType);
         const variants = generateElementVariants(selectedElementType, originalContent);
         const selectedVariant = variants[Math.floor(Math.random() * variants.length)];
-        
+
         mockAdditionalVariants.push({
           id: `variant_${Date.now()}_${i}`,
           name: `Variant ${nextLetter}`,
@@ -570,7 +570,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   };
 
   const nextStep = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
   };
 
   const prevStep = () => {
@@ -648,15 +648,76 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
             </div>
           )}
 
+          {/* Progress Indicator (Google Optimize Style) */}
+          {!showConfirmation && (
+            <div className='mb-8'>
+              <div className='flex items-center justify-between mb-2'>
+                <span className='text-sm font-medium text-gray-700'>
+                  Step {currentStep} of 4
+                </span>
+                <span className='text-xs text-gray-500'>
+                  {Math.round((currentStep / 4) * 100)}% complete
+                </span>
+              </div>
+              <div className='w-full bg-gray-200 rounded-full h-2'>
+                <div 
+                  className='bg-blue-600 h-2 rounded-full transition-all duration-500 ease-in-out'
+                  style={{ width: `${(currentStep / 4) * 100}%` }}
+                ></div>
+              </div>
+              <div className='flex justify-between mt-2 text-xs text-gray-500'>
+                <span className={currentStep >= 1 ? 'text-blue-600 font-medium' : ''}>Setup</span>
+                <span className={currentStep >= 2 ? 'text-blue-600 font-medium' : ''}>Variants</span>
+                <span className={currentStep >= 3 ? 'text-blue-600 font-medium' : ''}>Audience</span>
+                <span className={currentStep >= 4 ? 'text-blue-600 font-medium' : ''}>Review</span>
+              </div>
+            </div>
+          )}
+
           {!showConfirmation && (
             <>
-              {/* Step 1: Basic Information */}
+              {/* Step 1: Test Setup & Objective */}
               {currentStep === 1 && (
             <div className='space-y-6'>
-              <h3 className='text-lg font-medium text-gray-900 flex items-center'>
-                <Settings className='w-4 h-4 mr-2' />
-                Basic Information
-              </h3>
+              <div className='flex items-center justify-between'>
+                <h3 className='text-lg font-medium text-gray-900 flex items-center'>
+                  <Target className='w-4 h-4 mr-2' />
+                  Test Setup & Objective
+                </h3>
+                <span className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded'>
+                  Step 1 of 4
+                </span>
+              </div>
+
+              {/* Objective Definition (Google Optimize Style) */}
+              <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+                <h4 className='font-medium text-blue-900 mb-2 flex items-center'>
+                  <Target className='w-4 h-4 mr-2' />
+                  What do you want to optimize?
+                </h4>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                  {[
+                    { id: 'conversion', label: 'Increase Conversions', icon: '🎯', desc: 'Button clicks, form submissions' },
+                    { id: 'engagement', label: 'Boost Engagement', icon: '📈', desc: 'Time on page, scroll depth' },
+                    { id: 'revenue', label: 'Drive Revenue', icon: '💰', desc: 'Purchases, sign-ups' }
+                  ].map(objective => (
+                    <button
+                      key={objective.id}
+                      type='button'
+                      onClick={() => handleInputChange('primaryMetric', objective.id)}
+                      className={`p-3 rounded-lg border-2 transition-all text-left ${
+                        formData.primaryMetric === objective.id
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-gray-300 hover:border-gray-400 text-gray-600'
+                      }`}
+                    >
+                      <div className='text-lg mb-1'>{objective.icon}</div>
+                      <div className='font-medium text-sm'>{objective.label}</div>
+                      <div className='text-xs opacity-75'>{objective.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <div className='md:col-span-2'>
@@ -673,33 +734,89 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   />
                 </div>
 
+                {/* Page & Element Selection (Google Optimize Style) */}
                 <div className='md:col-span-2'>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Element Type to Test
+                    Target Page URL
                   </label>
-                  <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
-                    {elementTypes.map(type => {
-                      const Icon = type.icon;
-                      return (
-                        <button
-                          key={type.value}
-                          type='button'
-                          onClick={() => setSelectedElementType(type.value)}
-                          className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center space-y-2 ${
-                            selectedElementType === type.value
-                              ? 'border-blue-500 bg-blue-50 text-blue-700'
-                              : 'border-gray-300 hover:border-gray-400 text-gray-600 hover:text-gray-700'
-                          }`}
-                        >
-                          <Icon className='w-5 h-5' />
-                          <span className='text-xs font-medium text-center'>{type.label}</span>
-                        </button>
-                      );
-                    })}
+                  <div className='flex space-x-2'>
+                    <input
+                      type='url'
+                      value={formData.targetUrl}
+                      onChange={e => handleInputChange('targetUrl', e.target.value)}
+                      className='flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                      placeholder='https://yoursite.com/page-to-test'
+                      required
+                    />
+                    <button
+                      type='button'
+                      onClick={handleWebsiteScan}
+                      disabled={isScanning || !formData.targetUrl}
+                      className='px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
+                    >
+                      {isScanning ? (
+                        <>
+                          <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                          <span>Scanning...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Globe className='w-4 h-4' />
+                          <span>Scan Page</span>
+                        </>
+                      )}
+                    </button>
                   </div>
-                  <p className='text-xs text-gray-500 mt-2'>
-                    All variants in this test will modify the same element type ({elementTypes.find(et => et.value === selectedElementType)?.label})
-                  </p>
+                  {scanResult && (
+                    <div className='mt-3 p-3 bg-green-50 border border-green-200 rounded-lg'>
+                      <div className='flex items-center space-x-2 text-green-800'>
+                        <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                        <span className='text-sm font-medium'>Page scanned successfully</span>
+                      </div>
+                      <p className='text-xs text-green-700 mt-1'>
+                        Found {scanResult.elements?.buttons?.length || 0} buttons, {scanResult.elements?.headlines?.length || 0} headlines, and more elements
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Visual Element Selector (Modern Optimizely Style) */}
+                <div className='md:col-span-2'>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Choose Element to Test
+                  </label>
+                  <div className='bg-gray-50 border border-gray-200 rounded-lg p-4'>
+                    <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+                      {elementTypes.map(type => {
+                        const Icon = type.icon;
+                        const isSelected = selectedElementType === type.value;
+                        return (
+                          <button
+                            key={type.value}
+                            type='button'
+                            onClick={() => setSelectedElementType(type.value)}
+                            className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center space-y-2 relative ${
+                              isSelected
+                                ? 'border-blue-500 bg-blue-100 text-blue-700 shadow-md'
+                                : 'border-gray-300 hover:border-blue-300 text-gray-600 hover:text-blue-600 bg-white'
+                            }`}
+                          >
+                            {isSelected && (
+                              <div className='absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center'>
+                                <div className='w-1.5 h-1.5 bg-white rounded-full'></div>
+                              </div>
+                            )}
+                            <Icon className='w-5 h-5' />
+                            <span className='text-xs font-medium text-center'>{type.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className='mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-700'>
+                      <span className='font-medium'>Selected:</span> {elementTypes.find(et => et.value === selectedElementType)?.label}
+                      <span className='ml-2 opacity-75'>All variants will test this element type</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -874,35 +991,82 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
             </div>
           )}
 
-          {/* Step 2: Variants */}
+                    {/* Step 2: AI-Powered Variant Creation */}
           {currentStep === 2 && (
-                         <div className='space-y-6'>
+                        <div className='space-y-6'>
                <div className='flex items-center justify-between'>
-                 <h3 className='text-lg font-medium text-gray-900 flex items-center'>
-                   <BarChart3 className='w-4 h-4 mr-2' />
-                   Test Variants
-                   <span className='ml-2 text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full'>
-                     {elementTypes.find(et => et.value === selectedElementType)?.label}
-                   </span>
-                 </h3>
-                 <button
-                   type='button'
-                   onClick={handleGenerateVariants}
-                   disabled={isGeneratingVariants || !formData.name || !formData.description || !formData.hypothesis}
-                   className='px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-                 >
-                   {isGeneratingVariants ? (
-                     <>
-                       <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                       <span>Generating...</span>
-                     </>
-                   ) : (
-                     <>
-                       <Wand2 className='w-4 h-4' />
-                       <span>AI Generate</span>
-                     </>
-                   )}
-                 </button>
+                 <div>
+                   <h3 className='text-lg font-medium text-gray-900 flex items-center'>
+                     <Wand2 className='w-4 h-4 mr-2' />
+                     AI Variant Generator
+                   </h3>
+                   <p className='text-sm text-gray-600 mt-1'>
+                     Testing {elementTypes.find(et => et.value === selectedElementType)?.label} • {formData.primaryMetric} optimization
+                   </p>
+                 </div>
+                 <span className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded'>
+                   Step 2 of 4
+                 </span>
+               </div>
+
+               {/* Instant AI Generation Panel */}
+               <div className='bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6'>
+                 <div className='flex items-center justify-between mb-4'>
+                   <div className='flex items-center space-x-3'>
+                     <div className='w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center'>
+                       <Brain className='w-5 h-5 text-purple-600' />
+                     </div>
+                     <div>
+                       <h4 className='font-medium text-gray-900'>AI Variant Generation</h4>
+                       <p className='text-sm text-gray-600'>Instantly create optimized variants based on your page content</p>
+                     </div>
+                   </div>
+                   <button
+                     type='button'
+                     onClick={handleGenerateVariants}
+                     disabled={isGeneratingVariants || !formData.targetUrl || !selectedElementType}
+                     className='px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all flex items-center space-x-2 shadow-lg hover:shadow-xl'
+                   >
+                     {isGeneratingVariants ? (
+                       <>
+                         <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                         <span>Generating Variants...</span>
+                       </>
+                     ) : (
+                       <>
+                         <Zap className='w-5 h-5' />
+                         <span>Generate AI Variants</span>
+                       </>
+                     )}
+                   </button>
+                 </div>
+                 
+                 {!formData.targetUrl || !selectedElementType ? (
+                   <div className='text-center py-4'>
+                     <div className='text-yellow-600 mb-2'>⚠️</div>
+                     <p className='text-sm text-gray-600'>
+                       Complete Step 1 (Target URL and Element Type) to enable AI generation
+                     </p>
+                   </div>
+                 ) : (
+                   <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-center'>
+                     <div className='bg-white p-4 rounded-lg border border-gray-200'>
+                       <div className='text-blue-600 text-2xl mb-2'>🎯</div>
+                       <h5 className='font-medium text-gray-900 mb-1'>Smart Analysis</h5>
+                       <p className='text-xs text-gray-600'>Analyzes your page content and user behavior patterns</p>
+                     </div>
+                     <div className='bg-white p-4 rounded-lg border border-gray-200'>
+                       <div className='text-green-600 text-2xl mb-2'>⚡</div>
+                       <h5 className='font-medium text-gray-900 mb-1'>Instant Variants</h5>
+                       <p className='text-xs text-gray-600'>Creates 3-5 optimized variants in seconds</p>
+                     </div>
+                     <div className='bg-white p-4 rounded-lg border border-gray-200'>
+                       <div className='text-purple-600 text-2xl mb-2'>🚀</div>
+                       <h5 className='font-medium text-gray-900 mb-1'>Ready to Test</h5>
+                       <p className='text-xs text-gray-600'>All variants are editable and test-ready</p>
+                     </div>
+                   </div>
+                 )}
                </div>
 
                {(!formData.name || !formData.description || !formData.hypothesis) && (
@@ -1145,8 +1309,111 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
             </div>
           )}
 
-          {/* Step 3: Configuration */}
+          {/* Step 3: Audience & Targeting */}
           {currentStep === 3 && (
+            <div className='space-y-6'>
+              <div className='flex items-center justify-between'>
+                <h3 className='text-lg font-medium text-gray-900 flex items-center'>
+                  <Users className='w-4 h-4 mr-2' />
+                  Audience & Settings
+                </h3>
+                <span className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded'>
+                  Step 3 of 4
+                </span>
+              </div>
+
+              {/* Quick Audience Settings (Google Optimize Style) */}
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-gray-900'>Traffic Allocation</h4>
+                  <div className='bg-gray-50 p-4 rounded-lg'>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Percentage of visitors to include
+                    </label>
+                    <div className='flex items-center space-x-3'>
+                      <input
+                        type='range'
+                        min='1'
+                        max='100'
+                        value={formData.trafficSplit}
+                        onChange={e => handleInputChange('trafficSplit', parseInt(e.target.value))}
+                        className='flex-1'
+                      />
+                      <span className='text-sm font-medium text-gray-900 min-w-[3rem]'>
+                        {formData.trafficSplit}%
+                      </span>
+                    </div>
+                    <p className='text-xs text-gray-500 mt-2'>
+                      {formData.trafficSplit}% of visitors will see test variants, others see original
+                    </p>
+                  </div>
+                </div>
+
+                <div className='space-y-4'>
+                  <h4 className='font-medium text-gray-900'>Test Duration</h4>
+                  <div className='bg-gray-50 p-4 rounded-lg'>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Estimated test duration
+                    </label>
+                    <select
+                      value={formData.duration}
+                      onChange={e => handleInputChange('duration', parseInt(e.target.value))}
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                    >
+                      <option value={7}>1 week</option>
+                      <option value={14}>2 weeks (recommended)</option>
+                      <option value={21}>3 weeks</option>
+                      <option value={30}>1 month</option>
+                      <option value={60}>2 months</option>
+                    </select>
+                    <p className='text-xs text-gray-500 mt-2'>
+                      Longer tests provide more reliable results
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced Settings */}
+              <div className='border-t border-gray-200 pt-6'>
+                <h4 className='font-medium text-gray-900 mb-4'>Statistical Settings</h4>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Minimum Detectable Effect
+                    </label>
+                    <div className='flex items-center space-x-2'>
+                      <input
+                        type='number'
+                        min='1'
+                        max='50'
+                        value={formData.minimumDetectableEffect}
+                        onChange={e => handleInputChange('minimumDetectableEffect', parseInt(e.target.value))}
+                        className='flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                      />
+                      <span className='text-sm text-gray-600'>%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Confidence Level
+                    </label>
+                    <select
+                      value={formData.significanceLevel}
+                      onChange={e => handleInputChange('significanceLevel', parseInt(e.target.value))}
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                    >
+                      <option value={90}>90%</option>
+                      <option value={95}>95% (recommended)</option>
+                      <option value={99}>99%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Configuration */}
+          {currentStep === 4 && (
             <div className='space-y-6'>
               <h3 className='text-lg font-medium text-gray-900 flex items-center'>
                 <Users className='w-4 h-4 mr-2' />
@@ -1361,10 +1628,10 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               {!showConfirmation ? (
                 <button
                   type='button'
-                  onClick={currentStep < 3 ? nextStep : () => setShowConfirmation(true)}
+                  onClick={currentStep < 4 ? nextStep : () => setShowConfirmation(true)}
                   className='px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                 >
-                  {currentStep < 3 ? 'Next' : 'Review & Confirm'}
+                  {currentStep < 4 ? 'Next' : 'Review & Confirm'}
                 </button>
               ) : (
                 <div className='flex space-x-3'>
