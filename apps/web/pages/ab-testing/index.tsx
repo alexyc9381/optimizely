@@ -157,6 +157,12 @@ const ABTestingPage: React.FC = () => {
     }
   };
 
+  const handleViewAnalytics = (testId: string) => {
+    // Navigate to analytics page or open analytics modal
+    console.log('Viewing analytics for test:', testId);
+    alert(`Analytics for test ${testId} - This would open detailed analytics view`);
+  };
+
   const TestCard: React.FC<{ test: ABTest }> = ({ test }) => (
     <div
       className='bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200'
@@ -211,7 +217,9 @@ const ABTestingPage: React.FC = () => {
             </button>
           )}
           <button
+            onClick={() => handleViewAnalytics(test.id)}
             className='p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors'
+            title='View analytics'
             data-oid='eea59n.'
           >
             <BarChart3 className='w-4 h-4' data-oid='24q739b' />
