@@ -1,20 +1,21 @@
 import {
-  BarChart3,
-  Brain,
-  Globe,
-  Settings,
-  Target,
-  Users,
-  X,
-  Zap,
+    BarChart3,
+    Brain,
+    Globe,
+    Settings,
+    Target,
+    Users,
+    Wand2,
+    X,
+    Zap,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useUserProfile } from '../../lib/contexts/UserProfileContext';
 import {
-  CreateABTestConfig,
-  TestSuggestion,
-  WebsiteScanResult,
-  apiClient,
+    CreateABTestConfig,
+    TestSuggestion,
+    WebsiteScanResult,
+    apiClient,
 } from '../../src/services/apiClient';
 
 interface CreateTestModalProps {
@@ -61,6 +62,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   const [selectedSuggestion, setSelectedSuggestion] =
     useState<TestSuggestion | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isGeneratingVariants, setIsGeneratingVariants] = useState(false);
 
   // Dynamic industries based on user profile
   const getIndustries = () => {
@@ -286,6 +288,62 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       setError(err instanceof Error ? err.message : 'Failed to scan website');
     } finally {
       setIsScanning(false);
+    }
+  };
+
+  const handleGenerateVariants = async () => {
+    if (!formData.name || !formData.description || !formData.hypothesis) {
+      setError('Please fill in the basic information (name, description, hypothesis) before generating variants');
+      return;
+    }
+
+    setIsGeneratingVariants(true);
+    setError(null);
+
+    try {
+      // Mock AI variant generation - replace with real API call
+      const mockGeneratedVariants = {
+        control: {
+          name: 'Original Version',
+          description: `Current implementation of ${formData.name.toLowerCase()}`,
+        },
+        variant: {
+          name: 'Optimized Version',
+          description: `Enhanced version based on hypothesis: ${formData.hypothesis}`,
+          changes: `Implement changes to test the hypothesis: ${formData.hypothesis.substring(0, 100)}${formData.hypothesis.length > 100 ? '...' : ''}`,
+        },
+      };
+
+      // Auto-fill the variants but allow manual editing
+      setFormData(prev => ({
+        ...prev,
+        variants: mockGeneratedVariants,
+      }));
+
+      // Show success notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+      notification.innerHTML = `
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span>AI variants generated! You can edit them manually.</span>
+        </div>
+      `;
+
+      document.body.appendChild(notification);
+
+      // Remove notification after 4 seconds
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(notification), 300);
+      }, 4000);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate variants');
+    } finally {
+      setIsGeneratingVariants(false);
     }
   };
 
@@ -653,11 +711,40 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
 
           {/* Step 2: Variants */}
           {currentStep === 2 && (
-            <div className='space-y-6'>
-              <h3 className='text-lg font-medium text-gray-900 flex items-center'>
-                <BarChart3 className='w-4 h-4 mr-2' />
-                Test Variants
-              </h3>
+                         <div className='space-y-6'>
+               <div className='flex items-center justify-between'>
+                 <h3 className='text-lg font-medium text-gray-900 flex items-center'>
+                   <BarChart3 className='w-4 h-4 mr-2' />
+                   Test Variants
+                 </h3>
+                 <button
+                   type='button'
+                   onClick={handleGenerateVariants}
+                   disabled={isGeneratingVariants || !formData.name || !formData.description || !formData.hypothesis}
+                   className='px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
+                 >
+                   {isGeneratingVariants ? (
+                     <>
+                       <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                       <span>Generating...</span>
+                     </>
+                   ) : (
+                     <>
+                       <Wand2 className='w-4 h-4' />
+                       <span>AI Generate</span>
+                     </>
+                   )}
+                 </button>
+               </div>
+
+               {(!formData.name || !formData.description || !formData.hypothesis) && (
+                 <div className='bg-blue-50 border border-blue-200 rounded-lg p-3'>
+                   <p className='text-sm text-blue-700 flex items-center'>
+                     <Wand2 className='w-4 h-4 mr-2' />
+                     Complete Step 1 (name, description, hypothesis) to enable AI variant generation
+                   </p>
+                 </div>
+               )}
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 {/* Control */}
