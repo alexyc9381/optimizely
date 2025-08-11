@@ -1,20 +1,20 @@
 import {
-    BarChart3,
-    Pause,
-    Play,
-    Target,
-    TrendingUp,
-    Users,
+  BarChart3,
+  Pause,
+  Play,
+  Target,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
-import CreateTestModal from '../../components/modals/CreateTestModal';
 import AnalyticsModal from '../../components/modals/AnalyticsModal';
+import CreateTestModal from '../../components/modals/CreateTestModal';
 import {
-    formatNumber,
-    formatPercentage,
-    getStatusColor,
+  formatNumber,
+  formatPercentage,
+  getStatusColor,
 } from '../../lib/utils';
 import { ABTest, apiClient } from '../../src/services/apiClient';
 
@@ -27,7 +27,8 @@ const ABTestingPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
-  const [selectedTestForAnalytics, setSelectedTestForAnalytics] = useState<ABTest | null>(null);
+  const [selectedTestForAnalytics, setSelectedTestForAnalytics] =
+    useState<ABTest | null>(null);
 
   // Load tests from backend
   useEffect(() => {
@@ -60,7 +61,7 @@ const ABTestingPage: React.FC = () => {
 
   const handleTestCreated = (testId: string, testData?: any) => {
     console.log('Test created:', testId);
-    
+
     // Create a new test object to add to the local state
     const newTest: ABTest = {
       id: testId,
@@ -76,13 +77,14 @@ const ABTestingPage: React.FC = () => {
       confidence: 0,
       uplift: 0,
     };
-    
+
     // Add the new test to the local state
     setTests(prevTests => [newTest, ...prevTests]);
-    
+
     // Show a success notification
     const notification = document.createElement('div');
-    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+    notification.className =
+      'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
     notification.innerHTML = `
       <div class="flex items-center space-x-2">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -91,9 +93,9 @@ const ABTestingPage: React.FC = () => {
         <span>A/B Test ${testId} created successfully!</span>
       </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Remove notification after 5 seconds
     setTimeout(() => {
       notification.style.opacity = '0';
@@ -378,10 +380,7 @@ const ABTestingPage: React.FC = () => {
                   Confidence
                 </p>
               </div>
-              <p
-                className='text-lg font-bold text-blue-900'
-                data-oid='v:feje2'
-              >
+              <p className='text-lg font-bold text-blue-900' data-oid='v:feje2'>
                 {formatPercentage(test.confidence)}
               </p>
             </div>
@@ -422,37 +421,77 @@ const ABTestingPage: React.FC = () => {
               <span className='text-xs font-medium text-gray-600'>
                 Conversion Trend (Last 7 Days)
               </span>
-              <span className={`text-xs font-medium ${
-                test.uplift > 0 ? 'text-green-600' : 'text-red-600'
-              }`}>
-                {test.uplift > 0 ? '+' : ''}{test.uplift.toFixed(1)}%
+              <span
+                className={`text-xs font-medium ${
+                  test.uplift > 0 ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {test.uplift > 0 ? '+' : ''}
+                {test.uplift.toFixed(1)}%
               </span>
             </div>
             <div className='h-12 relative'>
               <svg viewBox='0 0 100 30' className='w-full h-full'>
                 <defs>
-                  <linearGradient id={`gradient-${test.id}`} x1='0%' y1='0%' x2='0%' y2='100%'>
-                    <stop offset='0%' style={{stopColor: test.conversionRate.variant > test.conversionRate.control ? '#10B981' : '#EF4444', stopOpacity: 0.3}} />
-                    <stop offset='100%' style={{stopColor: test.conversionRate.variant > test.conversionRate.control ? '#10B981' : '#EF4444', stopOpacity: 0}} />
+                  <linearGradient
+                    id={`gradient-${test.id}`}
+                    x1='0%'
+                    y1='0%'
+                    x2='0%'
+                    y2='100%'
+                  >
+                    <stop
+                      offset='0%'
+                      style={{
+                        stopColor:
+                          test.conversionRate.variant >
+                          test.conversionRate.control
+                            ? '#10B981'
+                            : '#EF4444',
+                        stopOpacity: 0.3,
+                      }}
+                    />
+                    <stop
+                      offset='100%'
+                      style={{
+                        stopColor:
+                          test.conversionRate.variant >
+                          test.conversionRate.control
+                            ? '#10B981'
+                            : '#EF4444',
+                        stopOpacity: 0,
+                      }}
+                    />
                   </linearGradient>
                 </defs>
                 {/* Background grid */}
-                <path d='M0 15 L100 15' stroke='#E5E7EB' strokeWidth='0.5' strokeDasharray='2,2' />
+                <path
+                  d='M0 15 L100 15'
+                  stroke='#E5E7EB'
+                  strokeWidth='0.5'
+                  strokeDasharray='2,2'
+                />
                 {/* Trend line - simulated upward/downward trend */}
                 <path
-                  d={test.conversionRate.variant > test.conversionRate.control
-                    ? 'M0 25 Q25 20 50 15 Q75 10 100 5'  // Upward trend
-                    : 'M0 10 Q25 12 50 18 Q75 22 100 25'  // Downward trend
+                  d={
+                    test.conversionRate.variant > test.conversionRate.control
+                      ? 'M0 25 Q25 20 50 15 Q75 10 100 5' // Upward trend
+                      : 'M0 10 Q25 12 50 18 Q75 22 100 25' // Downward trend
                   }
-                  stroke={test.conversionRate.variant > test.conversionRate.control ? '#10B981' : '#EF4444'}
+                  stroke={
+                    test.conversionRate.variant > test.conversionRate.control
+                      ? '#10B981'
+                      : '#EF4444'
+                  }
                   strokeWidth='2'
                   fill='none'
                 />
                 {/* Fill area under curve */}
                 <path
-                  d={test.conversionRate.variant > test.conversionRate.control
-                    ? 'M0 25 Q25 20 50 15 Q75 10 100 5 L100 30 L0 30 Z'
-                    : 'M0 10 Q25 12 50 18 Q75 22 100 25 L100 30 L0 30 Z'
+                  d={
+                    test.conversionRate.variant > test.conversionRate.control
+                      ? 'M0 25 Q25 20 50 15 Q75 10 100 5 L100 30 L0 30 Z'
+                      : 'M0 10 Q25 12 50 18 Q75 22 100 25 L100 30 L0 30 Z'
                   }
                   fill={`url(#gradient-${test.id})`}
                 />
@@ -461,16 +500,22 @@ const ABTestingPage: React.FC = () => {
                   // Deterministic variation based on test ID and index (no Math.random)
                   const seed = test.id.charCodeAt(0) + i;
                   const variation = ((seed * 13) % 100) / 25 - 2; // -2 to 2
-                  const y = test.conversionRate.variant > test.conversionRate.control
-                    ? 25 - (i * 5) + variation
-                    : 10 + (i * 3) + variation;
+                  const y =
+                    test.conversionRate.variant > test.conversionRate.control
+                      ? 25 - i * 5 + variation
+                      : 10 + i * 3 + variation;
                   return (
                     <circle
                       key={i}
                       cx={x}
                       cy={y}
                       r='1.5'
-                      fill={test.conversionRate.variant > test.conversionRate.control ? '#10B981' : '#EF4444'}
+                      fill={
+                        test.conversionRate.variant >
+                        test.conversionRate.control
+                          ? '#10B981'
+                          : '#EF4444'
+                      }
                       stroke='white'
                       strokeWidth='1'
                     />
@@ -533,12 +578,6 @@ const ABTestingPage: React.FC = () => {
           </div>
 
           <div className='flex items-center space-x-3' data-oid='fol8jbt'>
-            <button
-              className='border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors'
-              data-oid='jni_e_g'
-            >
-              Import Test
-            </button>
             <button
               onClick={() => setShowCreateModal(true)}
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
@@ -672,10 +711,7 @@ const ABTestingPage: React.FC = () => {
                 className='w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center'
                 data-oid='h5:pcbq'
               >
-                <Target
-                  className='w-5 h-5 text-blue-600'
-                  data-oid='hhkxs8-'
-                />
+                <Target className='w-5 h-5 text-blue-600' data-oid='hhkxs8-' />
               </div>
             </div>
           </div>

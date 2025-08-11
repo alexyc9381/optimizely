@@ -1,12 +1,12 @@
 import {
-    AlertCircle,
-    CheckCircle,
-    Download,
-    ExternalLink,
-    Loader,
-    RefreshCw,
-    Settings,
-    Trash2,
+  AlertCircle,
+  CheckCircle,
+  Download,
+  ExternalLink,
+  Loader,
+  RefreshCw,
+  Settings,
+  Trash2,
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
@@ -167,14 +167,7 @@ const IntegrationsPage: React.FC = () => {
     }
   };
 
-  // Calculate metrics from actual data
-  const totalIntegrations = integrations.length;
-  const installedIntegrations = integrations.filter(
-    i => i.status === 'Installed'
-  ).length;
-  const availableIntegrations = integrations.filter(
-    i => i.status === 'Available'
-  ).length;
+  // Calculate metrics from actual data (currently using mock data below)
 
   const WebsiteIntegration = () => (
     <div className='space-y-8' data-oid='81v309i'>
@@ -649,7 +642,7 @@ export default function App() {
                 GET /api/analytics
               </span>
               <span
-                                  className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'
+                className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded'
                 data-oid='bvs8ode'
               >
                 Analytics
@@ -696,7 +689,7 @@ export default function App() {
             <input
               type='url'
               placeholder='https://your-app.com/webhooks/universal-ai'
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
               data-oid='scac02g'
             />
 
@@ -752,7 +745,7 @@ export default function App() {
             <input
               type='text'
               placeholder='webhook_secret_key'
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
               data-oid='w3_6.z8'
             />
 
@@ -939,8 +932,6 @@ export default function App() {
             </button>
           </div>
         </div>
-
-
 
         {/* Integration Tabs */}
         <div className='border-b border-gray-200' data-oid='m4-q:av'>

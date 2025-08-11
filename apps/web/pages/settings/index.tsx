@@ -1,4 +1,12 @@
-import { Eye, EyeOffIcon as EyeOff, Key, Mail, Save, Shield, Users } from 'lucide-react';
+import {
+  Eye,
+  EyeOffIcon as EyeOff,
+  Key,
+  Mail,
+  Save,
+  Shield,
+  Users,
+} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
 import { apiClient } from '../../src/services/apiClient';
@@ -153,8 +161,13 @@ const SettingsPage: React.FC = () => {
     if (typeof window !== 'undefined') {
       const urlParams = new window.URLSearchParams(window.location.search);
       const tab = urlParams.get('tab');
-      if (tab && ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)) {
-        setActiveTab(tab as 'account' | 'team' | 'billing' | 'security' | 'integrations');
+      if (
+        tab &&
+        ['account', 'team', 'billing', 'security', 'integrations'].includes(tab)
+      ) {
+        setActiveTab(
+          tab as 'account' | 'team' | 'billing' | 'security' | 'integrations'
+        );
       }
     }
   }, []);
@@ -288,10 +301,21 @@ const SettingsPage: React.FC = () => {
               <button
                 key={tab.key}
                 onClick={() => {
-                  setActiveTab(tab.key as 'account' | 'team' | 'billing' | 'security' | 'integrations');
+                  setActiveTab(
+                    tab.key as
+                      | 'account'
+                      | 'team'
+                      | 'billing'
+                      | 'security'
+                      | 'integrations'
+                  );
                   // Update URL without router for SSR compatibility
                   if (typeof window !== 'undefined') {
-                    window.history.pushState({}, '', `/settings?tab=${tab.key}`);
+                    window.history.pushState(
+                      {},
+                      '',
+                      `/settings?tab=${tab.key}`
+                    );
                   }
                 }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
@@ -346,7 +370,7 @@ const SettingsPage: React.FC = () => {
                     </label>
                     <input
                       type='text'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.profile.fullName}
                       onChange={e =>
                         setSettings({
@@ -370,7 +394,7 @@ const SettingsPage: React.FC = () => {
                     </label>
                     <input
                       type='email'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.profile.email}
                       onChange={e =>
                         setSettings({
@@ -394,7 +418,7 @@ const SettingsPage: React.FC = () => {
                     </label>
                     <input
                       type='text'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.profile.company}
                       onChange={e =>
                         setSettings({
@@ -417,7 +441,7 @@ const SettingsPage: React.FC = () => {
                     </label>
                     <input
                       type='text'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.profile.role}
                       onChange={e =>
                         setSettings({
@@ -451,7 +475,7 @@ const SettingsPage: React.FC = () => {
                       Primary Business Type
                     </label>
                     <select
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.business.businessType}
                       onChange={e =>
                         setSettings({
@@ -499,7 +523,7 @@ const SettingsPage: React.FC = () => {
                       Company Size
                     </label>
                     <select
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.business.companySize}
                       onChange={e =>
                         setSettings({
@@ -534,7 +558,7 @@ const SettingsPage: React.FC = () => {
                       Monthly Traffic Volume
                     </label>
                     <select
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                       value={settings.business.monthlyTraffic}
                       onChange={e =>
                         setSettings({
@@ -823,10 +847,7 @@ const SettingsPage: React.FC = () => {
                   className='text-center p-4 bg-blue-50 rounded-lg'
                   data-oid='z38ehou'
                 >
-                  <p
-                    className='text-sm text-blue-600 mb-1'
-                    data-oid='k47zyu_'
-                  >
+                  <p className='text-sm text-blue-600 mb-1' data-oid='k47zyu_'>
                     Next Billing
                   </p>
                   <p
