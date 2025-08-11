@@ -1,10 +1,10 @@
 import {
-  BarChart3,
-  Pause,
-  Play,
-  Target,
-  TrendingUp,
-  Users,
+    BarChart3,
+    Pause,
+    Play,
+    Target,
+    TrendingUp,
+    Users,
 } from 'lucide-react';
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
@@ -12,9 +12,9 @@ import DashboardLayout from '../../components/Layout/DashboardLayout';
 import AnalyticsModal from '../../components/modals/AnalyticsModal';
 import CreateTestModal from '../../components/modals/CreateTestModal';
 import {
-  formatNumber,
-  formatPercentage,
-  getStatusColor,
+    formatNumber,
+    formatPercentage,
+    getStatusColor,
 } from '../../lib/utils';
 import { ABTest, apiClient } from '../../src/services/apiClient';
 
@@ -37,12 +37,12 @@ const ABTestingPage: React.FC = () => {
         // Try to load from localStorage first
         const savedTests = localStorage.getItem('ab-tests');
         let localTests: ABTest[] = savedTests ? JSON.parse(savedTests) : [];
-        
+
         // Merge with mock data for demo purposes
-        const allTests = [...localTests, ...mockTests.filter(mock => 
+        const allTests = [...localTests, ...mockTests.filter(mock =>
           !localTests.find(local => local.id === mock.id)
         )];
-        
+
         setTests(allTests);
         setError(null);
         setLoading(false);
@@ -84,31 +84,31 @@ const ABTestingPage: React.FC = () => {
       industry: testData?.industry || 'General',
       startDate: new Date().toISOString(),
       endDate: testData?.duration ? new Date(Date.now() + testData.duration * 24 * 60 * 60 * 1000).toISOString() : undefined,
-      visitors: Math.floor(Math.random() * 1000) + 100, // Start with some sample visitors for demo
+      visitors: 0, // Start with zero visitors - no data yet
       conversionRate: {
-        control: Math.random() * 10 + 2, // Sample conversion rates for demo
-        variant: Math.random() * 12 + 2,
+        control: 0, // No conversion data initially
+        variant: 0,
       },
-      confidence: Math.floor(Math.random() * 40) + 60, // Sample confidence for demo
-      uplift: Math.random() * 20 - 5, // Sample uplift for demo
+      confidence: 0, // No confidence until data is collected
+      uplift: 0, // No uplift calculation without data
     };
 
     // Add the new test to the local state
     setTests(prevTests => {
       const updatedTests = [newTest, ...prevTests];
-      
+
       // Save to localStorage for persistence
       try {
-        localStorage.setItem('ab-tests', JSON.stringify(updatedTests.filter(test => 
+        localStorage.setItem('ab-tests', JSON.stringify(updatedTests.filter(test =>
           !mockTests.find(mock => mock.id === test.id) // Only save user-created tests
         )));
       } catch (err) {
         console.warn('Failed to save tests to localStorage:', err);
       }
-      
+
       return updatedTests;
     });
-    
+
     console.log('Added new test to dashboard:', newTest);
 
     // Show a success notification
@@ -345,7 +345,11 @@ const ABTestingPage: React.FC = () => {
                 </p>
               </div>
               <p className='text-lg font-bold text-gray-900' data-oid='lsmo_mm'>
-                {formatNumber(test.visitors)}
+                {test.visitors === 0 ? (
+                  <span className="text-gray-500 text-sm">Collecting data...</span>
+                ) : (
+                  formatNumber(test.visitors)
+                )}
               </p>
             </div>
             <div
@@ -366,7 +370,11 @@ const ABTestingPage: React.FC = () => {
                 </p>
               </div>
               <p className='text-lg font-bold text-blue-900' data-oid='wx_jutn'>
-                {formatPercentage(test.conversionRate.control)}
+                {test.conversionRate.control === 0 && test.visitors === 0 ? (
+                  <span className="text-gray-500 text-sm">-</span>
+                ) : (
+                  formatPercentage(test.conversionRate.control)
+                )}
               </p>
             </div>
             <div
@@ -390,7 +398,11 @@ const ABTestingPage: React.FC = () => {
                 className='text-lg font-bold text-green-900'
                 data-oid='abr1vuy'
               >
-                {formatPercentage(test.conversionRate.variant)}
+                {test.conversionRate.variant === 0 && test.visitors === 0 ? (
+                  <span className="text-gray-500 text-sm">-</span>
+                ) : (
+                  formatPercentage(test.conversionRate.variant)
+                )}
               </p>
             </div>
             <div
@@ -411,7 +423,11 @@ const ABTestingPage: React.FC = () => {
                 </p>
               </div>
               <p className='text-lg font-bold text-blue-900' data-oid='v:feje2'>
-                {formatPercentage(test.confidence)}
+                {test.confidence === 0 && test.visitors === 0 ? (
+                  <span className="text-gray-500 text-sm">-</span>
+                ) : (
+                  formatPercentage(test.confidence)
+                )}
               </p>
             </div>
           </div>
