@@ -2,6 +2,7 @@
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { useEffect, useRef } from 'react';
+import { UserProfileProvider } from '../lib/contexts/UserProfileContext';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -94,7 +95,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <SessionProvider session={pageProps?.session}>
-      <Component {...pageProps} data-oid='.ib-vfs' />
+      <UserProfileProvider>
+        <Component {...pageProps} data-oid='.ib-vfs' />
+      </UserProfileProvider>
     </SessionProvider>
   );
 }

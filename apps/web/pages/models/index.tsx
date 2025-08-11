@@ -129,11 +129,11 @@ const ModelsPage: React.FC = () => {
 
   const handleTrainingStarted = (jobId: string) => {
     console.log('Training job started:', jobId);
-    
+
     // Add a new training model to the local state to show immediate feedback
     const newTrainingModel: AIModel = {
       id: jobId,
-      name: 'Training in Progress...', 
+      name: 'Training in Progress...',
       type: 'Training',
       status: 'Training',
       accuracy: 0,
@@ -141,9 +141,9 @@ const ModelsPage: React.FC = () => {
       usage: 0,
       version: '1.0.0'
     };
-    
+
     setModels(prevModels => [newTrainingModel, ...prevModels]);
-    
+
     // Show a success notification
     const notification = document.createElement('div');
     notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
@@ -155,9 +155,9 @@ const ModelsPage: React.FC = () => {
         <span>Training job ${jobId} started successfully!</span>
       </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Remove notification after 5 seconds
     setTimeout(() => {
       notification.style.opacity = '0';

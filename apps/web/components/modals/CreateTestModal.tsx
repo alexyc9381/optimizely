@@ -1,6 +1,7 @@
 import { BarChart3, Settings, Target, Users, X, Zap, Brain, Globe } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { CreateABTestConfig, TestSuggestion, WebsiteScanResult, apiClient } from '../../src/services/apiClient';
+import { useUserProfile } from '../../lib/contexts/UserProfileContext';
 
 interface CreateTestModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   onClose,
   onTestCreated,
 }) => {
+  const { userProfile } = useUserProfile();
   const [formData, setFormData] = useState<CreateABTestConfig>({
     name: '',
     description: '',
@@ -45,18 +47,25 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
   const [selectedSuggestion, setSelectedSuggestion] = useState<TestSuggestion | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const industries = [
-    'SaaS',
-    'E-commerce',
-    'Healthcare',
-    'FinTech',
-    'Manufacturing',
-    'Education',
-    'Real Estate',
-    'Travel',
-    'Media',
-    'Retail',
-  ];
+  // Dynamic industries based on user profile
+  const getIndustries = () => {
+    if (userProfile?.onboarding?.selectedIndustries?.length) {
+      return userProfile.onboarding.selectedIndustries;
+    }
+    // Fallback to comprehensive list
+    return [
+      'SaaS',
+      'E-commerce',
+      'Healthcare',
+      'FinTech',
+      'Manufacturing',
+      'Education',
+      'Real Estate',
+      'Travel',
+      'Media',
+      'Retail',
+    ];
+  };
 
   const primaryMetrics = [
     { value: 'conversion_rate', label: 'Conversion Rate' },
@@ -400,7 +409,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                     required
                   >
                     <option value="">Select Industry</option>
-                    {industries.map(industry => (
+                    {getIndustries().map(industry => (
                       <option key={industry} value={industry}>{industry}</option>
                     ))}
                   </select>

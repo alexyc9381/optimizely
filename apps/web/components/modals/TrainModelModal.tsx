@@ -1,6 +1,7 @@
 import { Brain, Settings, TrendingUp, X } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ModelTrainingConfig, apiClient } from '../../src/services/apiClient';
+import { useUserProfile } from '../../lib/contexts/UserProfileContext';
 
 interface TrainModelModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
   onClose,
   onTrainingStarted,
 }) => {
+  const { userProfile, loading: profileLoading } = useUserProfile();
   const [formData, setFormData] = useState<ModelTrainingConfig>({
     name: '',
     industry: '',
@@ -29,40 +31,73 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const industries = [
-    'SaaS',
-    'E-commerce',
-    'Healthcare',
-    'FinTech',
-    'Manufacturing',
-    'Education',
-    'Real Estate',
-    'Travel',
-    'Media',
-    'Retail',
-  ];
+  // Dynamic options based on user profile and onboarding data
+  const getIndustries = () => {
+    if (userProfile?.onboarding?.selectedIndustries?.length) {
+      return userProfile.onboarding.selectedIndustries;
+    }
+    // Fallback to comprehensive list
+    return [
+      'SaaS',
+      'E-commerce', 
+      'Healthcare',
+      'FinTech',
+      'Manufacturing',
+      'Education',
+      'Real Estate',
+      'Travel',
+      'Media',
+      'Retail',
+    ];
+  };
 
-  const modelTypes = [
-    'Optimization',
-    'Prediction',
-    'Classification',
-    'Risk Analysis',
-    'Quality Control',
-    'Recommendation',
-    'Anomaly Detection',
-    'Time Series',
-  ];
+  const getModelTypes = () => {
+    if (userProfile?.onboarding?.modelPreferences?.length) {
+      return userProfile.onboarding.modelPreferences;
+    }
+    // Fallback to comprehensive list
+    return [
+      'Optimization',
+      'Prediction',
+      'Classification', 
+      'Risk Analysis',
+      'Quality Control',
+      'Recommendation',
+      'Anomaly Detection',
+      'Time Series',
+    ];
+  };
 
-  const dataSources = [
-    'CSV Upload',
-    'Database Connection',
-    'API Integration',
-    'Web Analytics',
-    'Customer Data Platform',
-    'CRM System',
-    'Marketing Automation',
-    'E-commerce Platform',
-  ];
+  const getDataSources = () => {
+    if (userProfile?.onboarding?.dataIntegrations?.length) {
+      return userProfile.onboarding.dataIntegrations;
+    }
+    // Fallback to comprehensive list
+    return [
+      'CSV Upload',
+      'Database Connection',
+      'API Integration',
+      'Web Analytics',
+      'Customer Data Platform',
+      'CRM System',
+      'Marketing Automation',
+      'E-commerce Platform',
+    ];
+  };
+
+  // Pre-populate form with user's primary industry if available
+  useEffect(() => {
+    if (userProfile && !formData.industry) {
+      const primaryIndustry = userProfile.onboarding?.selectedIndustries?.[0] || 
+                             userProfile.business.businessType;
+      if (primaryIndustry) {
+        setFormData(prev => ({
+          ...prev,
+          industry: primaryIndustry
+        }));
+      }
+    }
+  }, [userProfile, formData.industry]);
 
   const handleInputChange = (field: string, value: string | number) => {
     if (field.startsWith('hyperparameters.')) {
@@ -103,7 +138,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
           startTime: new Date().toISOString(),
           estimatedCompletion: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes from now
         };
-        
+
         // Simulate some delay to make it feel real
         await new Promise(resolve => setTimeout(resolve, 1500));
       }
@@ -144,7 +179,14 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Train New Model</h2>
-              <p className="text-sm text-gray-500">Configure and start training a new AI model</p>
+              <p className="text-sm text-gray-500">
+                Configure and start training a new AI model
+                {userProfile && (
+                  <span className="text-blue-600 ml-2">
+                    for {userProfile.profile.company}
+                  </span>
+                )}
+              </p>
             </div>
           </div>
           <button
@@ -159,6 +201,15 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
+
+          {profileLoading && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-sm text-blue-700 flex items-center">
+                <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mr-2"></div>
+                Loading your profile preferences...
+              </p>
             </div>
           )}
 
@@ -195,7 +246,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
                   required
                 >
                   <option value="">Select Industry</option>
-                  {industries.map(industry => (
+                  {getIndustries().map(industry => (
                     <option key={industry} value={industry}>{industry}</option>
                   ))}
                 </select>
@@ -212,7 +263,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
                   required
                 >
                   <option value="">Select Type</option>
-                  {modelTypes.map(type => (
+                  {getModelTypes().map(type => (
                     <option key={type} value={type}>{type}</option>
                   ))}
                 </select>
@@ -229,7 +280,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
                   required
                 >
                   <option value="">Select Data Source</option>
-                  {dataSources.map(source => (
+                  {getDataSources().map(source => (
                     <option key={source} value={source}>{source}</option>
                   ))}
                 </select>
