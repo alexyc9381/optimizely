@@ -1,5 +1,4 @@
 import {
-    BarChart3,
     Brain,
     Globe,
     MousePointer,
@@ -11,7 +10,7 @@ import {
     Users,
     Wand2,
     X,
-    Zap,
+    Zap
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useUserProfile } from '../../lib/contexts/UserProfileContext';
@@ -660,7 +659,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 </span>
               </div>
               <div className='w-full bg-gray-200 rounded-full h-2'>
-                <div 
+                <div
                   className='bg-blue-600 h-2 rounded-full transition-all duration-500 ease-in-out'
                   style={{ width: `${(currentStep / 4) * 100}%` }}
                 ></div>
@@ -1040,7 +1039,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                      )}
                    </button>
                  </div>
-                 
+
                  {!formData.targetUrl || !selectedElementType ? (
                    <div className='text-center py-4'>
                      <div className='text-yellow-600 mb-2'>⚠️</div>

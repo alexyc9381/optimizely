@@ -30,56 +30,86 @@ const ABTestingPage: React.FC = () => {
   const [selectedTestForAnalytics, setSelectedTestForAnalytics] =
     useState<ABTest | null>(null);
 
-  // Load tests from backend
+  // Load tests from backend and localStorage
   useEffect(() => {
     const fetchTests = async () => {
-      // For demo purposes, use mock data immediately for better UX
-      console.warn('Using demo data for A/B testing page');
-      setError('Unable to connect to backend. Showing demo data.');
-      setTests(mockTests);
-      setLoading(false);
-
-      // Uncomment below for real API integration
-      /*
       try {
-        setLoading(true);
-        const testsData = await apiClient.getABTests();
-        setTests(testsData);
+        // Try to load from localStorage first
+        const savedTests = localStorage.getItem('ab-tests');
+        let localTests: ABTest[] = savedTests ? JSON.parse(savedTests) : [];
+        
+        // Merge with mock data for demo purposes
+        const allTests = [...localTests, ...mockTests.filter(mock => 
+          !localTests.find(local => local.id === mock.id)
+        )];
+        
+        setTests(allTests);
         setError(null);
+        setLoading(false);
+
+        // Uncomment below for real API integration
+        /*
+        try {
+          setLoading(true);
+          const testsData = await apiClient.getABTests();
+          setTests(testsData);
+          setError(null);
+        } catch (err) {
+          console.warn('Failed to fetch A/B tests from API, using mock data:', err);
+          setError('Unable to connect to backend. Showing demo data.');
+          setTests(mockTests);
+        } finally {
+          setLoading(false);
+        }
+        */
       } catch (err) {
-        console.warn('Failed to fetch A/B tests from API, using mock data:', err);
-        setError('Unable to connect to backend. Showing demo data.');
+        console.warn('Error loading tests:', err);
+        setError('Unable to load tests. Showing demo data.');
         setTests(mockTests);
-      } finally {
         setLoading(false);
       }
-      */
     };
 
     fetchTests();
   }, []);
 
   const handleTestCreated = (testId: string, testData?: any) => {
-    console.log('Test created:', testId);
+    console.log('Test created:', testId, testData);
 
     // Create a new test object to add to the local state
     const newTest: ABTest = {
       id: testId,
       name: testData?.name || 'New A/B Test',
-      status: 'Draft',
+      status: 'Running', // Set as Running when published
       industry: testData?.industry || 'General',
       startDate: new Date().toISOString(),
-      visitors: 0,
+      endDate: testData?.duration ? new Date(Date.now() + testData.duration * 24 * 60 * 60 * 1000).toISOString() : undefined,
+      visitors: Math.floor(Math.random() * 1000) + 100, // Start with some sample visitors for demo
       conversionRate: {
-        control: 0,
-        variant: 0,
+        control: Math.random() * 10 + 2, // Sample conversion rates for demo
+        variant: Math.random() * 12 + 2,
       },
-      confidence: 0,
-      uplift: 0,
+      confidence: Math.floor(Math.random() * 40) + 60, // Sample confidence for demo
+      uplift: Math.random() * 20 - 5, // Sample uplift for demo
     };
 
     // Add the new test to the local state
-    setTests(prevTests => [newTest, ...prevTests]);
+    setTests(prevTests => {
+      const updatedTests = [newTest, ...prevTests];
+      
+      // Save to localStorage for persistence
+      try {
+        localStorage.setItem('ab-tests', JSON.stringify(updatedTests.filter(test => 
+          !mockTests.find(mock => mock.id === test.id) // Only save user-created tests
+        )));
+      } catch (err) {
+        console.warn('Failed to save tests to localStorage:', err);
+      }
+      
+      return updatedTests;
+    });
+    
+    console.log('Added new test to dashboard:', newTest);
 
     // Show a success notification
     const notification = document.createElement('div');
