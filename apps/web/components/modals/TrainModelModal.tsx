@@ -64,7 +64,7 @@ const TrainModelModal: React.FC<TrainModelModalProps> = ({
     'E-commerce Platform',
   ];
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | number) => {
     if (field.startsWith('hyperparameters.')) {
       const param = field.split('.')[1];
       setFormData(prev => ({

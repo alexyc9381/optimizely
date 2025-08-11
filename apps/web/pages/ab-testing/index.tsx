@@ -9,6 +9,7 @@ import {
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/Layout/DashboardLayout';
+import CreateTestModal from '../../components/modals/CreateTestModal';
 import {
     formatNumber,
     formatPercentage,
@@ -23,6 +24,7 @@ const ABTestingPage: React.FC = () => {
   const [tests, setTests] = useState<ABTest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Load tests from backend
   useEffect(() => {
@@ -52,6 +54,13 @@ const ABTestingPage: React.FC = () => {
 
     fetchTests();
   }, []);
+
+  const handleTestCreated = (testId: string) => {
+    console.log('Test created:', testId);
+    // Refresh the tests list
+    // In a real app, you'd refetch the data or optimistically update
+    alert(`A/B Test ${testId} has been created successfully!`);
+  };
 
   // Mock data fallback
   const mockTests: ABTest[] = [
@@ -482,6 +491,7 @@ const ABTestingPage: React.FC = () => {
               Import Test
             </button>
             <button
+              onClick={() => setShowCreateModal(true)}
               className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors'
               data-oid='4hpzcnj'
             >
@@ -736,6 +746,7 @@ const ABTestingPage: React.FC = () => {
                 'No draft tests. Create a new test and save it as a draft.'}
             </p>
             <button
+              onClick={() => setShowCreateModal(true)}
               className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors'
               data-oid='.k77zsb'
             >
@@ -744,6 +755,13 @@ const ABTestingPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Create Test Modal */}
+      <CreateTestModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onTestCreated={handleTestCreated}
+      />
     </DashboardLayout>
   );
 };

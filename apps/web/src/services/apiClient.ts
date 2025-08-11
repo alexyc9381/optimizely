@@ -27,6 +27,30 @@ export interface ABTest {
   uplift: number;
 }
 
+export interface CreateABTestConfig {
+  name: string;
+  description: string;
+  industry: string;
+  targetUrl: string;
+  hypothesis: string;
+  primaryMetric: string;
+  variants: {
+    control: {
+      name: string;
+      description: string;
+    };
+    variant: {
+      name: string;
+      description: string;
+      changes: string;
+    };
+  };
+  trafficSplit: number;
+  duration: number;
+  minimumDetectableEffect: number;
+  significanceLevel: number;
+}
+
 export interface AnalyticsData {
   totalVisitors: number;
   conversionRate: number;

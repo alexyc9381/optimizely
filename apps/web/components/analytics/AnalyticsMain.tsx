@@ -26,7 +26,7 @@ export default function AnalyticsMain() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
-  const [selectedMetric, setSelectedMetric] = useState('revenue');
+  const [selectedMetric] = useState('revenue');
 
   // Mock data fallback
   const mockAnalyticsData: AnalyticsData = {
