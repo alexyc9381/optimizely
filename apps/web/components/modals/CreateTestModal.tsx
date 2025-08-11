@@ -71,6 +71,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     useState<TestSuggestion | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isGeneratingVariants, setIsGeneratingVariants] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Dynamic industries based on user profile
   const getIndustries = () => {
@@ -343,7 +344,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
         ...prev,
         variants: mockGeneratedVariants,
       }));
-      
+
       setAdditionalVariants(mockAdditionalVariants);
 
       // Show success notification
@@ -478,6 +479,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       });
       setAdditionalVariants([]);
       setCurrentStep(1);
+      setShowConfirmation(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create test');
     } finally {
@@ -564,8 +566,10 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
             </div>
           )}
 
-          {/* Step 1: Basic Information */}
-          {currentStep === 1 && (
+          {!showConfirmation && (
+            <>
+              {/* Step 1: Basic Information */}
+              {currentStep === 1 && (
             <div className='space-y-6'>
               <h3 className='text-lg font-medium text-gray-900 flex items-center'>
                 <Settings className='w-4 h-4 mr-2' />
@@ -1104,11 +1108,87 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               </div>
             </div>
           )}
+            </>
+          )}
+
+          {/* Confirmation Review Screen */}
+          {showConfirmation && (
+            <div className='space-y-6 bg-blue-50 border border-blue-200 rounded-lg p-6'>
+              <div className='flex items-center space-x-3 mb-4'>
+                <Target className='w-6 h-6 text-blue-600' />
+                <h3 className='text-lg font-semibold text-gray-900'>
+                  Review Your A/B Test Configuration
+                </h3>
+              </div>
+              
+              <div className='bg-white rounded-lg p-4 space-y-4'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <h4 className='font-medium text-gray-900 mb-2'>Test Details</h4>
+                    <div className='space-y-2 text-sm'>
+                      <div><span className='font-medium'>Name:</span> {formData.name}</div>
+                      <div><span className='font-medium'>Industry:</span> {formData.industry}</div>
+                      <div><span className='font-medium'>Target URL:</span> {formData.targetUrl}</div>
+                      <div><span className='font-medium'>Duration:</span> {formData.duration} days</div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className='font-medium text-gray-900 mb-2'>Test Parameters</h4>
+                    <div className='space-y-2 text-sm'>
+                      <div><span className='font-medium'>Traffic Split:</span> {formData.trafficSplit}% per variant</div>
+                      <div><span className='font-medium'>Primary Metric:</span> {formData.primaryMetric.replace('_', ' ')}</div>
+                      <div><span className='font-medium'>Min Effect:</span> {formData.minimumDetectableEffect}%</div>
+                      <div><span className='font-medium'>Confidence:</span> {formData.significanceLevel}%</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className='font-medium text-gray-900 mb-2'>Hypothesis</h4>
+                  <p className='text-sm text-gray-700 bg-gray-50 p-3 rounded'>{formData.hypothesis}</p>
+                </div>
+                
+                <div>
+                  <h4 className='font-medium text-gray-900 mb-2'>Test Variants ({2 + additionalVariants.length} total)</h4>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                    <div className='bg-gray-50 p-3 rounded'>
+                      <h5 className='font-medium text-sm text-gray-900'>{formData.variants.control.name}</h5>
+                      <p className='text-xs text-gray-600'>{formData.variants.control.description}</p>
+                    </div>
+                    <div className='bg-blue-50 p-3 rounded'>
+                      <h5 className='font-medium text-sm text-blue-900'>{formData.variants.variant.name}</h5>
+                      <p className='text-xs text-blue-700'>{formData.variants.variant.description}</p>
+                    </div>
+                    {additionalVariants.map((variant, index) => (
+                      <div key={variant.id} className='bg-green-50 p-3 rounded'>
+                        <h5 className='font-medium text-sm text-green-900'>{variant.name}</h5>
+                        <p className='text-xs text-green-700'>{variant.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
+                <div className='flex items-start space-x-3'>
+                  <div className='w-6 h-6 text-yellow-600 mt-0.5'>⚠️</div>
+                  <div>
+                    <h4 className='font-medium text-yellow-900 mb-1'>Ready to Publish</h4>
+                    <p className='text-sm text-yellow-800'>
+                      Once published, this test will start collecting data immediately. 
+                      Make sure all configurations are correct before proceeding.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Navigation Buttons */}
           <div className='flex items-center justify-between pt-6 border-t border-gray-200 mt-8'>
             <div>
-              {currentStep > 1 && (
+              {currentStep > 1 && !showConfirmation && (
                 <button
                   type='button'
                   onClick={prevStep}
@@ -1128,32 +1208,41 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 Cancel
               </button>
 
-              {currentStep < 3 ? (
+              {!showConfirmation ? (
                 <button
                   type='button'
-                  onClick={nextStep}
+                  onClick={currentStep < 3 ? nextStep : () => setShowConfirmation(true)}
                   className='px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                 >
-                  Next
+                  {currentStep < 3 ? 'Next' : 'Review & Confirm'}
                 </button>
               ) : (
-                <button
-                  type='submit'
-                  disabled={isSubmitting}
-                  className='px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2'
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                      <span>Creating Test...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Target className='w-4 h-4' />
-                      <span>Create Test</span>
-                    </>
-                  )}
-                </button>
+                <div className='flex space-x-3'>
+                  <button
+                    type='button'
+                    onClick={() => setShowConfirmation(false)}
+                    className='px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
+                  >
+                    Back to Edit
+                  </button>
+                  <button
+                    type='submit'
+                    disabled={isSubmitting}
+                    className='px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2'
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                        <span>Publishing Test...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Target className='w-4 h-4' />
+                        <span>Publish Test</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               )}
             </div>
           </div>
