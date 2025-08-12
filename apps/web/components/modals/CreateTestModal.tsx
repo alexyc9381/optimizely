@@ -1184,7 +1184,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 {/* Primary Variant */}
                 <div className='bg-green-50 p-4 rounded-lg border border-green-200'>
                   <h4 className='font-medium text-gray-900 mb-3 flex items-center'>
-                    <Zap className='w-4 h-4 mr-2 text-blue-600' />
+                    <Zap className='w-4 h-4 mr-2 text-green-600' />
                     Variant A (Primary Test)
                   </h4>
                   <div className='space-y-3'>
