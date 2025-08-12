@@ -94,13 +94,13 @@ router.post('/scan', async (req, res) => {
       }
 
       const loadTime = Date.now() - startTime;
-      
+
       console.log('Firecrawl scan completed successfully');
       console.log('Full crawlResult:', JSON.stringify(crawlResult, null, 2).substring(0, 1000) + '...');
-      
+
       // Firecrawl returns data directly in the response, not nested under .data
       const data = crawlResult as any;
-      
+
       console.log('Available data keys:', data ? Object.keys(data) : 'No data');
 
             // Extract basic page information
@@ -236,135 +236,7 @@ router.post('/scan', async (req, res) => {
   }
 });
 
-// Helper functions to extract elements from Apify crawler data
-function extractHeadlines(crawlData: any, html: string): any[] {
-  // Try to get headlines from crawler data first
-  if (crawlData.headings && Array.isArray(crawlData.headings)) {
-    return crawlData.headings.map((heading: any, index: number) => ({
-      text: heading.text ? heading.text.substring(0, 200) : '',
-      level: heading.level || 1,
-      location: `H${heading.level || 1} ${index + 1}`
-    }));
-  }
-
-  // Fallback to HTML parsing
-  const headlineMatches = html.match(/<h[1-6][^>]*>([^<]*)<\/h[1-6]>/gi) || [];
-  return headlineMatches.map((match, index) => {
-    const levelMatch = match.match(/<h([1-6])/i);
-    const textMatch = match.match(/>([^<]*)</);
-    return {
-      text: textMatch ? textMatch[1].trim().substring(0, 200) : '',
-      level: levelMatch ? parseInt(levelMatch[1]) : 1,
-      location: `H${levelMatch ? levelMatch[1] : '1'} ${index + 1}`
-    };
-  }).filter(h => h.text);
-}
-
-function extractButtons(crawlData: any, html: string): any[] {
-  // Try to get buttons from crawler data first
-  if (crawlData.buttons && Array.isArray(crawlData.buttons)) {
-    return crawlData.buttons.map((btn: any, index: number) => {
-      const text = btn.text || btn.value || `Button ${index + 1}`;
-      let type: 'cta' | 'navigation' | 'form' = 'navigation';
-      const btnText = text.toLowerCase();
-
-      if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
-        type = 'cta';
-      } else if (btnText.includes('submit') || btnText.includes('send')) {
-        type = 'form';
-      }
-
-      return {
-        text: text.substring(0, 100),
-        location: `Button ${index + 1}`,
-        type,
-        prominence: 5
-      };
-    });
-  }
-
-  // Fallback to HTML parsing
-  const buttonMatches = html.match(/<button[^>]*>([^<]*)<\/button>|<input[^>]*type=["'](?:button|submit)["'][^>]*>/gi) || [];
-  return buttonMatches.map((match, index) => {
-    const textMatch = match.match(/>([^<]*)</);
-    const valueMatch = match.match(/value=["']([^"']*)["']/i);
-    const text = textMatch ? textMatch[1].trim() : (valueMatch ? valueMatch[1].trim() : `Button ${index + 1}`);
-
-    let type: 'cta' | 'navigation' | 'form' = 'navigation';
-    const btnText = text.toLowerCase();
-    if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
-      type = 'cta';
-    } else if (btnText.includes('submit') || btnText.includes('send')) {
-      type = 'form';
-    }
-
-    return {
-      text: text.substring(0, 100),
-      location: `Button ${index + 1}`,
-      type,
-      prominence: 5
-    };
-  }).filter(btn => btn.text);
-}
-
-function extractImages(crawlData: any, html: string): any[] {
-  // Try to get images from crawler data first
-  if (crawlData.images && Array.isArray(crawlData.images)) {
-    return crawlData.images.map((img: any, index: number) => ({
-      alt: (img.alt || '').substring(0, 100),
-      src: (img.src || img.url || '').substring(0, 200),
-      location: `Image ${index + 1}`
-    })).filter((img: any) => img.src);
-  }
-
-  // Fallback to HTML parsing
-  const imageMatches = html.match(/<img[^>]*>/gi) || [];
-  return imageMatches.map((match, index) => {
-    const altMatch = match.match(/alt=["']([^"']*)["']/i);
-    const srcMatch = match.match(/src=["']([^"']*)["']/i);
-    return {
-      alt: altMatch ? altMatch[1].substring(0, 100) : '',
-      src: srcMatch ? srcMatch[1].substring(0, 200) : '',
-      location: `Image ${index + 1}`
-    };
-  }).filter(img => img.src);
-}
-
-function extractForms(crawlData: any, html: string): any[] {
-  // Try to get forms from crawler data first
-  if (crawlData.forms && Array.isArray(crawlData.forms)) {
-    return crawlData.forms.map((form: any, index: number) => ({
-      type: form.action ? 'submission' : 'interactive',
-      fields: form.fields || [],
-      location: `Form ${index + 1}`
-    }));
-  }
-
-  // Fallback to HTML parsing
-  const formMatches = html.match(/<form[^>]*>[\s\S]*?<\/form>/gi) || [];
-  return formMatches.map((match, index) => {
-    const inputMatches = match.match(/<input[^>]*>/gi) || [];
-    const textareaMatches = match.match(/<textarea[^>]*>/gi) || [];
-    const selectMatches = match.match(/<select[^>]*>/gi) || [];
-
-    const fields: string[] = [];
-
-    [...inputMatches, ...textareaMatches, ...selectMatches].forEach(input => {
-      const nameMatch = input.match(/name=["']([^"']*)["']/i);
-      const placeholderMatch = input.match(/placeholder=["']([^"']*)["']/i);
-      const typeMatch = input.match(/type=["']([^"']*)["']/i);
-
-      const field = nameMatch ? nameMatch[1] : (placeholderMatch ? placeholderMatch[1] : (typeMatch ? typeMatch[1] : 'field'));
-      if (field) fields.push(field);
-    });
-
-    return fields.length > 0 ? {
-      type: match.includes('action=') ? 'submission' : 'interactive',
-      fields,
-      location: `Form ${index + 1}`
-    } : null;
-  }).filter(Boolean) as any[];
-}
+// Helper functions for content analysis
 
 function guessIndustry(title: string, description: string, headlines: any[]): string {
   const content = (title + ' ' + description + ' ' + headlines.map(h => h.text).join(' ')).toLowerCase();

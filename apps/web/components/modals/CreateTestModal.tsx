@@ -200,6 +200,155 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     }
   }, [scanResult]);
 
+  // Helper function to generate hypothesis based on element type and scan data
+  const generateHypothesis = (elementType: string | null, scanData: any) => {
+    if (!elementType || !scanData) return '';
+
+    const elementTypeLower = elementType.toLowerCase();
+    const title = scanData.title || 'the page';
+
+    switch (elementTypeLower) {
+      case 'headline':
+        return `If we optimize the headline to be more compelling and clear, then users will be more engaged and conversion rates will increase because a stronger headline better communicates the value proposition.`;
+      case 'button text':
+        return `If we improve the button text to be more action-oriented and clear, then more users will click and convert because clearer call-to-action language reduces friction.`;
+      case 'description':
+        return `If we enhance the description to be more persuasive and benefit-focused, then users will have better understanding of the value and conversion rates will improve.`;
+      case 'image':
+        return `If we optimize the image to be more relevant and engaging, then users will have better visual connection with the content and conversion rates will increase.`;
+      default:
+        return `If we optimize the ${elementTypeLower} on ${title}, then user engagement and conversion rates will improve because better ${elementTypeLower} design reduces friction and increases clarity.`;
+    }
+  };
+
+    // Helper function to extract original content based on element type
+  const getOriginalContentFromScan = (elementType: string | null, scanData: any) => {
+    if (!elementType || !scanData?.elements) return '';
+
+    const elementTypeLower = elementType.toLowerCase();
+
+    switch (elementTypeLower) {
+      case 'headline':
+        const headlines = scanData.elements.headlines;
+        if (headlines.length > 0) {
+          // Get the main H1 first, or the first available headline
+          const mainHeadline = headlines.find((h: any) => h.level === 1) || headlines[0];
+          return mainHeadline.text.trim();
+        }
+        return 'Main Headline';
+      case 'button text':
+        const buttons = scanData.elements.buttons;
+        if (buttons.length > 0) {
+          // Prioritize CTA buttons, then navigation, then any button
+          const ctaButton = buttons.find((btn: any) => btn.type === 'cta') ||
+                           buttons.find((btn: any) => btn.text.toLowerCase().includes('get') ||
+                                                      btn.text.toLowerCase().includes('try') ||
+                                                      btn.text.toLowerCase().includes('start')) ||
+                           buttons[0];
+          return ctaButton.text.trim();
+        }
+        return 'Click Here';
+      case 'description':
+        // Use the page description or meta description from scan
+        return scanData.description?.trim() || scanData.title?.trim() + ' - improve your experience' || 'Page description content';
+      case 'image':
+        const images = scanData.elements.images;
+        if (images.length > 0) {
+          // Get the first image with meaningful alt text
+          const meaningfulImage = images.find((img: any) => img.alt && img.alt.length > 5) || images[0];
+          return meaningfulImage.alt?.trim() || 'Hero image';
+        }
+        return 'Main image';
+      default:
+        return `Original ${elementTypeLower} content`;
+    }
+  };
+
+  // Helper function to generate AI variants based on scanned content
+  const generateVariantsFromScanData = async (elementType: string | null, originalContent: string) => {
+    if (!elementType || !originalContent) return;
+
+    const elementTypeLower = elementType.toLowerCase();
+    let generatedVariants: any[] = [];
+
+    // Generate variants based on element type - ALL variants follow same structure
+    switch (elementTypeLower) {
+      case 'headline':
+        generatedVariants = [
+          {
+            name: 'Variant B (Power Words)',
+            description: `Unlock Your ${originalContent.replace(/\b\w+\b/, 'Ultimate')}`,
+            changes: 'Added power words and urgency to increase engagement'
+          },
+          {
+            name: 'Variant C (Benefit Focused)',
+            description: `${originalContent} - Get Results Fast`,
+            changes: 'Emphasized benefits and speed of results'
+          },
+          {
+            name: 'Variant D (Question Format)',
+            description: `Ready to ${originalContent.toLowerCase()}?`,
+            changes: 'Used question format to increase engagement'
+          }
+        ];
+        break;
+      case 'button text':
+        generatedVariants = [
+          {
+            name: 'Variant B (Action Oriented)',
+            description: `Get ${originalContent.replace(/click|here|now/gi, '').trim()} Now`,
+            changes: 'Made more action-oriented with urgency'
+          },
+          {
+            name: 'Variant C (Urgency)',
+            description: `${originalContent.replace(/click|here/gi, '').trim()} Today`,
+            changes: 'Added time-based urgency'
+          },
+          {
+            name: 'Variant D (Benefit)',
+            description: `Start ${originalContent.replace(/click|here|get|now/gi, '').trim()}`,
+            changes: 'Focused on action and beginning journey'
+          }
+        ];
+        break;
+      case 'description':
+        generatedVariants = [
+          {
+            name: 'Variant B (Benefit Heavy)',
+            description: `${originalContent} - Transform your results in just minutes.`,
+            changes: 'Added specific benefit and time promise'
+          },
+          {
+            name: 'Variant C (Social Proof)',
+            description: `Join thousands who use ${originalContent.split(' ').slice(0, 5).join(' ')}...`,
+            changes: 'Added social proof and community aspect'
+          },
+          {
+            name: 'Variant D (Problem/Solution)',
+            description: `Tired of poor results? ${originalContent}`,
+            changes: 'Addressed pain point before solution'
+          }
+        ];
+        break;
+      default:
+        generatedVariants = [
+          {
+            name: 'Variant B (Enhanced)',
+            description: `Enhanced ${originalContent}`,
+            changes: 'General optimization for better performance'
+          },
+          {
+            name: 'Variant C (Improved)',
+            description: `Improved ${originalContent}`,
+            changes: 'Refined version with better clarity'
+          }
+        ];
+    }
+
+    // Update additional variants
+    setAdditionalVariants(generatedVariants);
+  };
+
   const handleWebsiteScan = async () => {
     if (!formData.targetUrl) {
       setError('Please enter a target URL first');
@@ -219,6 +368,48 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       setScanResult(scanResponse);
       setSuggestions(suggestionsResponse);
       setShowSuggestions(true);
+
+      // AUTO-FILL FORM FIELDS BASED ON SCANNED DATA
+      setFormData(prev => ({
+        ...prev,
+        // Auto-fill industry from scanned data
+        industry: scanResponse.industry || prev.industry,
+
+        // Auto-fill name if not already set
+        name: prev.name || `${scanResponse.title || 'Website'} - ${selectedElementType || 'Element'} Test`,
+
+        // Auto-fill description based on scan results
+        description: prev.description || `A/B testing ${selectedElementType?.toLowerCase() || 'element'} on ${scanResponse.title || 'the website'} to improve conversion rates. Page contains ${scanResponse.elements.buttons.length} buttons, ${scanResponse.elements.headlines.length} headlines, and ${scanResponse.elements.forms.length} forms.`,
+
+        // Auto-fill hypothesis based on element type and scan data
+        hypothesis: prev.hypothesis || generateHypothesis(selectedElementType, scanResponse)
+      }));
+
+            // Auto-populate variants based on selected element type and scanned content
+      if (selectedElementType && scanResponse.elements) {
+        const originalContent = getOriginalContentFromScan(selectedElementType, scanResponse);
+        if (originalContent) {
+          // Set control variant with ACTUAL scraped content
+          setFormData(prev => ({
+            ...prev,
+          variants: {
+              ...prev.variants,
+            control: {
+                name: 'Original',
+                description: originalContent // This is the ACTUAL content from the website
+            },
+            variant: {
+                name: 'Variant A',
+                description: `Enhanced ${originalContent}`, // AI-enhanced version
+                changes: `Optimized ${selectedElementType?.toLowerCase()} content`
+              }
+            }
+          }));
+
+          // Generate AI variants based on the scanned content (these will be additional variants)
+          generateVariantsFromScanData(selectedElementType, originalContent);
+        }
+      }
 
       // Auto-select highest priority suggestion
       if (suggestionsResponse.length > 0) {
@@ -478,9 +669,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               <div key={step} className='flex items-center'>
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    step <= currentStep
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-600'
+                  step <= currentStep
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-600'
                   }`}
                 >
                   {step}
@@ -488,7 +679,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 <div className='ml-2'>
                   <p
                     className={`text-sm font-medium ${
-                      step <= currentStep ? 'text-gray-900' : 'text-gray-500'
+                    step <= currentStep ? 'text-gray-900' : 'text-gray-500'
                     }`}
                   >
                     {step === 1 && 'Basic Info'}
@@ -499,7 +690,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 {step < 3 && (
                   <div
                     className={`w-16 h-0.5 mx-4 ${
-                      step < currentStep ? 'bg-blue-600' : 'bg-gray-200'
+                    step < currentStep ? 'bg-blue-600' : 'bg-gray-200'
                     }`}
                   />
                 )}
@@ -544,13 +735,13 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           {!showConfirmation && (
             <>
               {/* Step 1: Test Setup & Objective */}
-              {currentStep === 1 && (
+          {currentStep === 1 && (
             <div className='space-y-6'>
               <div className='flex items-center justify-between'>
                 <h3 className='text-lg font-medium text-gray-900 flex items-center'>
                   <Target className='w-4 h-4 mr-2' />
                   Test Setup & Objective
-                </h3>
+              </h3>
                 <span className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded'>
                   Step 1 of 4
                 </span>
@@ -866,7 +1057,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                    <h3 className='text-lg font-medium text-gray-900 flex items-center'>
                      <Wand2 className='w-4 h-4 mr-2' />
                      AI Variant Generator
-                   </h3>
+              </h3>
                    <p className='text-sm text-gray-600 mt-1'>
                      Testing {elementTypes.find(et => et.value === selectedElementType)?.label} • {formData.primaryMetric} optimization
                    </p>
@@ -998,13 +1189,13 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   </h4>
                   <div className='space-y-3'>
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-                      <div>
+                    <div>
                         <label className='block text-sm font-medium text-gray-700 mb-1'>
-                          Name
-                        </label>
-                        <input
+                        Name
+                      </label>
+                      <input
                           type='text'
-                          value={formData.variants.variant.name}
+                        value={formData.variants.variant.name}
                           onChange={e =>
                             handleInputChange(
                               'variants.variant.name',
@@ -1012,15 +1203,15 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                             )
                           }
                           className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                          required
-                        />
-                      </div>
-                      <div>
+                        required
+                      />
+                    </div>
+                    <div>
                         <label className='block text-sm font-medium text-gray-700 mb-1'>
-                          Description
-                        </label>
-                        <textarea
-                          value={formData.variants.variant.description}
+                        Description
+                      </label>
+                      <textarea
+                        value={formData.variants.variant.description}
                           onChange={e =>
                             handleInputChange(
                               'variants.variant.description',
@@ -1028,9 +1219,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                             )
                           }
                           className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                          rows={2}
-                          required
-                        />
+                        rows={2}
+                        required
+                      />
                       </div>
                     </div>
                     <div>
@@ -1125,9 +1316,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                                   placeholder={`Enter new ${elementType?.label.toLowerCase() || 'content'}...`}
                                 />
                               </div>
-                            </div>
-                          </div>
-                        )}
+              </div>
+            </div>
+          )}
 
                         <div>
                           <label className='block text-sm font-medium text-gray-700 mb-1'>
@@ -1442,12 +1633,18 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                     </div>
                     <div className='bg-blue-50 p-3 rounded'>
                       <h5 className='font-medium text-sm text-blue-900'>{formData.variants.variant.name}</h5>
-                      <p className='text-xs text-blue-700'>{formData.variants.variant.description}</p>
+                      <p className='text-xs text-blue-700 mb-1'>{formData.variants.variant.description}</p>
+                      {formData.variants.variant.changes && (
+                        <p className='text-xs text-blue-600 italic'>Changes: {formData.variants.variant.changes}</p>
+                      )}
                     </div>
                     {additionalVariants.map((variant, index) => (
                       <div key={variant.id} className='bg-green-50 p-3 rounded'>
                         <h5 className='font-medium text-sm text-green-900'>{variant.name}</h5>
-                        <p className='text-xs text-green-700'>{variant.description}</p>
+                        <p className='text-xs text-green-700 mb-1'>{variant.description}</p>
+                        {variant.changes && (
+                          <p className='text-xs text-green-600 italic'>Changes: {variant.changes}</p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -1502,7 +1699,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 </button>
               ) : (
                 <div className='flex space-x-3'>
-                  <button
+                <button
                     type='button'
                     onClick={() => setShowConfirmation(false)}
                     className='px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
@@ -1511,21 +1708,21 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   </button>
                   <button
                     type='submit'
-                    disabled={isSubmitting}
+                  disabled={isSubmitting}
                     className='px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2'
-                  >
-                    {isSubmitting ? (
-                      <>
+                >
+                  {isSubmitting ? (
+                    <>
                         <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
                         <span>Publishing Test...</span>
-                      </>
-                    ) : (
-                      <>
+                    </>
+                  ) : (
+                    <>
                         <Target className='w-4 h-4' />
                         <span>Publish Test</span>
-                      </>
-                    )}
-                  </button>
+                    </>
+                  )}
+                </button>
                 </div>
               )}
             </div>

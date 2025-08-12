@@ -196,7 +196,20 @@ class ApiClient {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
-    return response.json();
+    const jsonResponse = await response.json();
+
+    // Handle wrapped API responses { success: true, data: ... }
+    if (jsonResponse.success && jsonResponse.data) {
+      return jsonResponse.data;
+    }
+
+    // Handle error responses { success: false, error: ... }
+    if (jsonResponse.success === false) {
+      throw new Error(jsonResponse.error || 'API request failed');
+    }
+
+    // Return direct response for other endpoints
+    return jsonResponse;
   }
 
   // A/B Testing API

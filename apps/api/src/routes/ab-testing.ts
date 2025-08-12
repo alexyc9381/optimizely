@@ -802,4 +802,157 @@ function getExperimentTemplates() {
   ];
 }
 
+// POST /suggestions - Generate test suggestions based on scan data
+router.post('/suggestions', async (req: Request, res: Response) => {
+  try {
+    const { scanData } = req.body;
+    
+    if (!scanData) {
+      return res.status(400).json({
+        success: false,
+        error: 'Scan data is required'
+      });
+    }
+
+    // Generate test suggestions based on scan data
+    const suggestions = generateTestSuggestions(scanData);
+    
+    res.json({
+      success: true,
+      data: suggestions
+    });
+  } catch (error) {
+    console.error('Test suggestions error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate test suggestions'
+    });
+  }
+});
+
+// Helper function to generate test suggestions from scan data
+function generateTestSuggestions(scanData: any): any[] {
+  const suggestions: any[] = [];
+
+  // Generate suggestions based on headlines
+  if (scanData.elements?.headlines?.length > 0) {
+    const mainHeadline = scanData.elements.headlines.find((h: any) => h.level === 1) || 
+                        scanData.elements.headlines[0];
+    
+    suggestions.push({
+      id: 'headline_test_1',
+      name: 'Headline Optimization',
+      description: 'Test different variations of your main headline to improve engagement',
+      hypothesis: 'If we optimize the headline to be more compelling and specific, then more users will engage because clearer value propositions increase conversion rates.',
+      priority: 'high',
+      estimatedImpact: 15,
+      confidence: 85,
+      category: 'copy',
+      variants: {
+        control: {
+          name: 'Original',
+          description: mainHeadline.text
+        },
+        variant: {
+          name: 'Benefit-Focused',
+          description: `${mainHeadline.text} - Get Results Fast`,
+          changes: 'Added benefit-focused call-out to emphasize value'
+        }
+      },
+      recommendedMetric: 'Click-through rate',
+      recommendedDuration: 14,
+      trafficSplit: 50
+    });
+  }
+
+  // Generate suggestions based on CTA buttons
+  const ctaButtons = scanData.elements?.buttons?.filter((btn: any) => btn.type === 'cta') || [];
+  if (ctaButtons.length > 0) {
+    const primaryCta = ctaButtons[0];
+    
+    suggestions.push({
+      id: 'cta_test_1',
+      name: 'CTA Button Optimization',
+      description: 'Test different call-to-action button text to improve conversion',
+      hypothesis: 'If we make the CTA button text more action-oriented and specific, then more users will click because clearer action language reduces friction.',
+      priority: 'high',
+      estimatedImpact: 12,
+      confidence: 80,
+      category: 'cta',
+      variants: {
+        control: {
+          name: 'Original',
+          description: primaryCta.text
+        },
+        variant: {
+          name: 'Action-Oriented',
+          description: `Start ${primaryCta.text.replace(/click|here|now/gi, '').trim()} Today`,
+          changes: 'Changed to action-oriented language with urgency'
+        }
+      },
+      recommendedMetric: 'Conversion rate',
+      recommendedDuration: 14,
+      trafficSplit: 50
+    });
+  }
+
+  // Generate suggestions based on forms
+  if (scanData.elements?.forms?.length > 0) {
+    suggestions.push({
+      id: 'form_test_1',
+      name: 'Form Optimization',
+      description: 'Test simplified form fields to reduce abandonment',
+      hypothesis: 'If we reduce the number of form fields, then more users will complete the form because shorter forms have lower psychological barriers.',
+      priority: 'medium',
+      estimatedImpact: 20,
+      confidence: 75,
+      category: 'form',
+      variants: {
+        control: {
+          name: 'Original Form',
+          description: `Current form with ${scanData.elements.forms[0].fields?.length || 'multiple'} fields`
+        },
+        variant: {
+          name: 'Simplified Form',
+          description: 'Reduced to essential fields only',
+          changes: 'Removed non-essential form fields to reduce friction'
+        }
+      },
+      recommendedMetric: 'Form completion rate',
+      recommendedDuration: 21,
+      trafficSplit: 50
+    });
+  }
+
+  // Generate suggestions based on trust signals
+  if (scanData.metrics?.trustSignals < 3) {
+    suggestions.push({
+      id: 'trust_test_1',
+      name: 'Trust Signal Enhancement',
+      description: 'Add trust indicators to improve conversion confidence',
+      hypothesis: 'If we add security badges and testimonials, then more users will convert because trust signals reduce purchase anxiety.',
+      priority: 'medium',
+      estimatedImpact: 8,
+      confidence: 70,
+      category: 'social-proof',
+      variants: {
+        control: {
+          name: 'No Trust Signals',
+          description: 'Current page without additional trust indicators'
+        },
+        variant: {
+          name: 'Enhanced Trust',
+          description: 'Added security badges, testimonials, and guarantee text',
+          changes: 'Added trust signals throughout the page'
+        }
+      },
+      recommendedMetric: 'Conversion rate',
+      recommendedDuration: 21,
+      trafficSplit: 50
+    });
+  }
+
+  return suggestions;
+}
+
 export default router;
