@@ -94,16 +94,19 @@ router.post('/scan', async (req, res) => {
       }
 
       const loadTime = Date.now() - startTime;
-      const data = (crawlResult as any).data;
-
+      
       console.log('Firecrawl scan completed successfully');
+      console.log('Full crawlResult:', JSON.stringify(crawlResult, null, 2).substring(0, 1000) + '...');
+      
+      // Firecrawl returns data directly in the response, not nested under .data
+      const data = crawlResult as any;
+      
       console.log('Available data keys:', data ? Object.keys(data) : 'No data');
-      console.log('Data object:', JSON.stringify(data, null, 2).substring(0, 500) + '...');
 
             // Extract basic page information
       const title = data?.metadata?.title || 'Untitled Page';
       const description = data?.metadata?.description || '';
-      
+
       // Extract structured data or parse from markdown/html
       let headlines: any[] = [];
       let buttons: any[] = [];
