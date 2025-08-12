@@ -1183,50 +1183,75 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
 
                 {/* Primary Variant */}
                 <div className='bg-green-50 p-4 rounded-lg border border-green-200'>
-                  <h4 className='font-medium text-gray-900 mb-3 flex items-center'>
-                    <Zap className='w-4 h-4 mr-2 text-green-600' />
-                    Variant A (Primary Test)
-                  </h4>
+                  <div className='flex items-center justify-between mb-3'>
+                    <div className='flex items-center space-x-2'>
+                      <Zap className='w-4 h-4 text-green-600' />
+                      <h4 className='font-medium text-gray-900'>
+                        Variant A (Primary Test)
+                      </h4>
+                      {selectedElementType && (
+                        <span className='text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full'>
+                          {elementTypes.find(et => et.value === selectedElementType)?.label || selectedElementType}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
                   <div className='space-y-3'>
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-                    <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Name
-                      </label>
-                      <input
-                          type='text'
-                        value={formData.variants.variant.name}
-                          onChange={e =>
-                            handleInputChange(
-                              'variants.variant.name',
-                              e.target.value
-                            )
-                          }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                        required
-                      />
-                    </div>
-                    <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Description
-                      </label>
-                      <textarea
-                        value={formData.variants.variant.description}
-                          onChange={e =>
-                            handleInputChange(
-                              'variants.variant.description',
-                              e.target.value
-                            )
-                          }
-                          className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                        rows={2}
-                        required
-                      />
-                      </div>
-                    </div>
                     <div>
                       <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Changes Made
+                        Variant Name
+                      </label>
+                      <input
+                        type='text'
+                        value={formData.variants.variant.name}
+                        onChange={e =>
+                          handleInputChange(
+                            'variants.variant.name',
+                            e.target.value
+                          )
+                        }
+                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                        required
+                      />
+                    </div>
+
+                    {formData.variants.control.description && (
+                      <div className='bg-white p-3 rounded border'>
+                        <h5 className='text-sm font-medium text-gray-700 mb-2'>Content Changes</h5>
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Original {selectedElementType || 'Content'}
+                            </label>
+                            <div className='w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded text-gray-600 text-sm'>
+                              "{formData.variants.control.description}"
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              New {selectedElementType || 'Content'}
+                            </label>
+                            <textarea
+                              value={formData.variants.variant.description}
+                              onChange={e =>
+                                handleInputChange(
+                                  'variants.variant.description',
+                                  e.target.value
+                                )
+                              }
+                              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                              rows={3}
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        Description
                       </label>
                       <textarea
                         value={formData.variants.variant.changes}
@@ -1238,7 +1263,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                         }
                         className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
                         rows={2}
-                        placeholder='Describe the specific changes...'
+                        placeholder='Describe the changes and rationale for this variant...'
                         required
                       />
                     </div>
