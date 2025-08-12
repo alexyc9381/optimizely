@@ -296,6 +296,53 @@ class ApiClient {
     });
   }
 
+  // AI Generation API
+  async generateVariants(data: {
+    elementType: string;
+    originalContent: string;
+    hypothesis?: string;
+    targetUrl?: string;
+    industry?: string;
+    context?: string;
+    count?: number;
+  }): Promise<Array<{
+    name: string;
+    description: string;
+    changes: string;
+    rationale: string;
+  }>> {
+    return this.request('/ai/generate-variants', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async generateHypothesis(data: {
+    elementType: string;
+    originalContent: string;
+    targetUrl?: string;
+    industry?: string;
+    context?: string;
+  }): Promise<{ hypothesis: string }> {
+    return this.request('/ai/generate-hypothesis', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async generateDescription(data: {
+    elementType: string;
+    originalContent: string;
+    hypothesis: string;
+    targetUrl?: string;
+    industry?: string;
+  }): Promise<{ description: string }> {
+    return this.request('/ai/generate-description', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
   // Industry Insights API
   async getIndustryData(industry: string): Promise<IndustryData> {
     return this.request<IndustryData>(`/industry-insights/${industry}`);

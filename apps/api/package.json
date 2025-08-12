@@ -39,7 +39,9 @@
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",
+    "@google/generative-ai": "^0.21.0",
     "@graphql-tools/schema": "^10.0.23",
+    "@mendable/firecrawl-js": "^1.8.2",
     "@prisma/client": "^6.10.1",
     "@types/ioredis": "^4.28.10",
     "@types/ws": "^8.18.1",
@@ -60,7 +62,6 @@
     "js-yaml": "^4.1.0",
     "morgan": "^1.10.0",
     "prisma": "^6.10.1",
-    "@mendable/firecrawl-js": "^1.8.2",
     "swagger-ui-express": "^5.0.1",
     "ws": "^8.18.2"
   }

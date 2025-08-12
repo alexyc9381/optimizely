@@ -359,6 +359,10 @@ app.use(`/api/${apiVersion}/universal`, universalAPIRoutes);
 import websiteScannerRoutes from './routes/website-scanner';
 app.use(`/api/${apiVersion}/website`, websiteScannerRoutes);
 
+// Import and mount AI Generation routes
+import aiGenerationRoutes from './routes/ai-generation';
+app.use(`/api/${apiVersion}/ai`, aiGenerationRoutes);
+
 // Import and mount Pipeline Visualization routes
 import pipelineVisualizationRoutes from './routes/pipeline-visualization';
 app.use(`/api/${apiVersion}/pipeline`, pipelineVisualizationRoutes);

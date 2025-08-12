@@ -201,8 +201,8 @@ const Sidebar: React.FC = () => {
       : [];
 
     return (
-      <div className='mb-1' data-oid='j9ws9v6'>
-        <div className='flex items-center' data-oid='u7-:jxn'>
+      <div className='mb-1'>
+        <div className='flex items-center'>
           <Link
             href={item.href}
             className={`flex items-center w-full px-2 py-3 text-sm font-medium rounded-lg transition-colors duration-200 min-h-[44px] ${
@@ -210,22 +210,20 @@ const Sidebar: React.FC = () => {
                 ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             } ${paddingLeft}`}
-            data-oid='f4pjazq'
           >
             {item.icon && (
-              <span className='mr-3' data-oid='h4i69k:'>
+              <span className='mr-3'>
                 {item.icon}
               </span>
             )}
             {!isCollapsed && (
               <>
-                <span className='flex-1' data-oid=':.9_h0_'>
+                <span className='flex-1'>
                   {item.name}
                 </span>
                 {item.badge && (
                   <span
                     className='inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full'
-                    data-oid='8gm75wg'
                   >
                     {item.badge}
                   </span>
@@ -238,7 +236,6 @@ const Sidebar: React.FC = () => {
             <button
               onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
               className='p-2 ml-2 text-gray-400 hover:text-gray-600 min-h-[44px] min-w-[44px] flex items-center justify-center'
-              data-oid='3qyhgxm'
             >
               <svg
                 className={`w-4 h-4 transform transition-transform ${
