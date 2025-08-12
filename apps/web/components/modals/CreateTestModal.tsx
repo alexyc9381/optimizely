@@ -1069,9 +1069,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                           'pricing': ['Pricing', 'Price', 'Cost'],
                           'social proof': ['Trust', 'Social', 'Testimonial', 'Review']
                         };
-                        
+
                         const relevantTypes = elementTypeMap[selectedElementType] || [];
-                        return relevantTypes.some(type => 
+                        return relevantTypes.some(type =>
                           suggestion.name.toLowerCase().includes(type.toLowerCase()) ||
                           suggestion.description.toLowerCase().includes(type.toLowerCase())
                         );

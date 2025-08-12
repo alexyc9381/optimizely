@@ -168,12 +168,7 @@ const Sidebar: React.FC = () => {
         </svg>
       ),
 
-      children: [
-        { name: 'Account', href: '/settings?tab=account', icon: null },
-        { name: 'Team', href: '/settings?tab=team', icon: null },
-        { name: 'Billing', href: '/settings?tab=billing', icon: null },
-        { name: 'Security', href: '/settings?tab=security', icon: null },
-      ],
+
     },
   ];
 
