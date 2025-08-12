@@ -1253,20 +1253,24 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                     </div>
                     <div>
                       <label className='block text-sm font-medium text-gray-700 mb-1'>
-                        Description
+                        Original Content
                       </label>
-                      <textarea
-                        value={formData.variants.control.description}
-                        onChange={e =>
-                          handleInputChange(
-                            'variants.control.description',
-                            e.target.value
-                          )
-                        }
-                        className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                        rows={2}
-                        required
-                      />
+                      <div className='bg-white p-3 border border-gray-200 rounded-lg'>
+                        <div className='text-sm text-gray-600 mb-2'>
+                          <strong>Element Type:</strong> {selectedElementType ? elementTypes.find(et => et.value === selectedElementType)?.label : 'Not selected'}
+                        </div>
+                        <div className='text-sm text-gray-600 mb-2'>
+                          <strong>Original Text:</strong> 
+                        </div>
+                        <div className='bg-gray-50 p-2 rounded border text-sm font-mono text-gray-800'>
+                          "{getOriginalContentFromScan(selectedElementType, scanResult) || formData.variants.control.description || 'No content detected'}"
+                        </div>
+                        {scanResult?.url && (
+                          <div className='text-xs text-gray-500 mt-2'>
+                            <strong>Source:</strong> {scanResult.url}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
