@@ -1049,14 +1049,34 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               </div>
 
               {/* AI Test Suggestions */}
-              {showSuggestions && suggestions.length > 0 && (
+              {showSuggestions && suggestions.length > 0 && selectedElementType && (
                 <div className='mt-8'>
                   <h4 className='text-lg font-medium text-gray-900 flex items-center mb-4'>
                     <Zap className='w-4 h-4 mr-2 text-yellow-500' />
-                    AI-Powered Test Suggestions
+                    AI-Powered Test Suggestions for {elementTypes.find(et => et.value === selectedElementType)?.label}
                   </h4>
                   <div className='space-y-3'>
-                    {suggestions.map(suggestion => (
+                    {suggestions
+                      .filter(suggestion => {
+                        // Filter suggestions based on selected element type
+                        const elementTypeMap = {
+                          'button': ['Call-to-Action', 'Button', 'CTA'],
+                          'headline': ['Headline', 'Title', 'Header'],
+                          'description': ['Description', 'Copy', 'Text'],
+                          'image': ['Image', 'Visual', 'Photo'],
+                          'form': ['Form', 'Input', 'Field'],
+                          'navigation': ['Navigation', 'Menu', 'Nav'],
+                          'pricing': ['Pricing', 'Price', 'Cost'],
+                          'social proof': ['Trust', 'Social', 'Testimonial', 'Review']
+                        };
+                        
+                        const relevantTypes = elementTypeMap[selectedElementType] || [];
+                        return relevantTypes.some(type => 
+                          suggestion.name.toLowerCase().includes(type.toLowerCase()) ||
+                          suggestion.description.toLowerCase().includes(type.toLowerCase())
+                        );
+                      })
+                      .map(suggestion => (
                       <div
                         key={suggestion.id}
                         className={`p-4 rounded-lg border cursor-pointer transition-all ${
