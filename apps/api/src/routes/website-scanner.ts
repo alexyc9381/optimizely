@@ -80,7 +80,7 @@ router.post('/scan', async (req, res) => {
       // Call your Apify actor directly via REST API
       console.log(`Starting Apify crawl for URL: ${url}`);
       console.log(`Using Apify token: ${apifyToken ? apifyToken.substring(0, 20) + '...' : 'MISSING'}`);
-      
+
       const runResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs`, {
         method: 'POST',
         headers: {
@@ -95,7 +95,23 @@ router.post('/scan', async (req, res) => {
       if (!runResponse.ok) {
         const errorText = await runResponse.text();
         console.error(`Apify API error: ${runResponse.status} ${runResponse.statusText}`, errorText);
-        throw new Error(`Apify API error: ${runResponse.status} ${runResponse.statusText}`);
+        
+        // Parse error response to provide better error messages
+        let errorMessage = `Apify API error: ${runResponse.status} ${runResponse.statusText}`;
+        try {
+          const errorData = JSON.parse(errorText);
+          if (errorData.error) {
+            if (errorData.error.type === 'actor-memory-limit-exceeded') {
+              errorMessage = 'Apify memory limit exceeded. Please upgrade your Apify plan or free up memory by stopping other running actors.';
+            } else {
+              errorMessage = errorData.error.message || errorMessage;
+            }
+          }
+        } catch (parseError) {
+          // Use default error message if JSON parsing fails
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const runData = await runResponse.json();
@@ -151,12 +167,12 @@ router.post('/scan', async (req, res) => {
       }
 
             const crawlResults = await datasetResponse.json();
-      
+
       console.log(`Dataset response received, item count: ${crawlResults ? crawlResults.length : 0}`);
       if (crawlResults && crawlResults.length > 0) {
         console.log('First item keys:', Object.keys(crawlResults[0]));
       }
-      
+
       if (!crawlResults || crawlResults.length === 0) {
         throw new Error('No data extracted from the page - your Apify actor may not have produced any output');
       }
