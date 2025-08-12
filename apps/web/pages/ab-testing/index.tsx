@@ -469,11 +469,19 @@ const ABTestingPage: React.FC = () => {
               </span>
               <span
                 className={`text-xs font-medium ${
-                  test.uplift > 0 ? 'text-green-600' : 'text-red-600'
+                  test.visitors === 0 
+                    ? 'text-gray-400' 
+                    : test.uplift > 0 
+                    ? 'text-green-600' 
+                    : 'text-red-600'
                 }`}
               >
-                {test.uplift > 0 ? '+' : ''}
-                {test.uplift.toFixed(1)}%
+                {test.visitors === 0 ? '0.0%' : (
+                  <>
+                    {test.uplift > 0 ? '+' : ''}
+                    {test.uplift.toFixed(1)}%
+                  </>
+                )}
               </span>
             </div>
             <div className='h-12 relative'>
@@ -489,20 +497,20 @@ const ABTestingPage: React.FC = () => {
                     <stop
                       offset='0%'
                       style={{
-                        stopColor:
-                          test.conversionRate.variant >
-                          test.conversionRate.control
+                        stopColor: test.visitors === 0 
+                          ? '#9CA3AF' 
+                          : test.conversionRate.variant > test.conversionRate.control
                             ? '#10B981'
                             : '#EF4444',
-                        stopOpacity: 0.3,
+                        stopOpacity: test.visitors === 0 ? 0.1 : 0.3,
                       }}
                     />
                     <stop
                       offset='100%'
                       style={{
-                        stopColor:
-                          test.conversionRate.variant >
-                          test.conversionRate.control
+                        stopColor: test.visitors === 0 
+                          ? '#9CA3AF' 
+                          : test.conversionRate.variant > test.conversionRate.control
                             ? '#10B981'
                             : '#EF4444',
                         stopOpacity: 0,
@@ -517,15 +525,19 @@ const ABTestingPage: React.FC = () => {
                   strokeWidth='0.5'
                   strokeDasharray='2,2'
                 />
-                {/* Trend line - simulated upward/downward trend */}
+                {/* Trend line */}
                 <path
                   d={
-                    test.conversionRate.variant > test.conversionRate.control
+                    test.visitors === 0
+                      ? 'M0 15 L100 15' // Flat line for no data
+                      : test.conversionRate.variant > test.conversionRate.control
                       ? 'M0 25 Q25 20 50 15 Q75 10 100 5' // Upward trend
                       : 'M0 10 Q25 12 50 18 Q75 22 100 25' // Downward trend
                   }
                   stroke={
-                    test.conversionRate.variant > test.conversionRate.control
+                    test.visitors === 0
+                      ? '#9CA3AF' // Gray for no data
+                      : test.conversionRate.variant > test.conversionRate.control
                       ? '#10B981'
                       : '#EF4444'
                   }
@@ -535,14 +547,16 @@ const ABTestingPage: React.FC = () => {
                 {/* Fill area under curve */}
                 <path
                   d={
-                    test.conversionRate.variant > test.conversionRate.control
+                    test.visitors === 0
+                      ? 'M0 15 L100 15 L100 30 L0 30 Z' // Flat area for no data
+                      : test.conversionRate.variant > test.conversionRate.control
                       ? 'M0 25 Q25 20 50 15 Q75 10 100 5 L100 30 L0 30 Z'
                       : 'M0 10 Q25 12 50 18 Q75 22 100 25 L100 30 L0 30 Z'
                   }
                   fill={`url(#gradient-${test.id})`}
                 />
-                {/* Data points */}
-                {[20, 40, 60, 80].map((x, i) => {
+                {/* Data points - only show if there's data */}
+                {test.visitors > 0 && [20, 40, 60, 80].map((x, i) => {
                   // Deterministic variation based on test ID and index (no Math.random)
                   const seed = test.id.charCodeAt(0) + i;
                   const variation = ((seed * 13) % 100) / 25 - 2; // -2 to 2
