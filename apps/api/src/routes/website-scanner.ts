@@ -79,6 +79,8 @@ router.post('/scan', async (req, res) => {
 
       // Call your Apify actor directly via REST API
       console.log(`Starting Apify crawl for URL: ${url}`);
+      console.log(`Using Apify token: ${apifyToken ? apifyToken.substring(0, 20) + '...' : 'MISSING'}`);
+      
       const runResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs`, {
         method: 'POST',
         headers: {
@@ -86,9 +88,7 @@ router.post('/scan', async (req, res) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          startUrls: [{ url }],
-          maxRequestsPerCrawl: 1,
-          maxCrawlDepth: 0
+          startUrls: [{ url }]
         })
       });
 
@@ -107,16 +107,16 @@ router.post('/scan', async (req, res) => {
       let attempts = 0;
       const maxAttempts = 60; // 60 seconds timeout (Apify can take time)
       let defaultDatasetId = null;
-      
+
       while (runStatus === 'RUNNING' && attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds between checks
-        
+
         const statusResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs/${runId}`, {
           headers: {
             'Authorization': `Bearer ${apifyToken}`
           }
         });
-        
+
         if (statusResponse.ok) {
           const statusData = await statusResponse.json();
           runStatus = statusData.data.status;
@@ -125,7 +125,7 @@ router.post('/scan', async (req, res) => {
         } else {
           console.error(`Failed to check run status: ${statusResponse.status}`);
         }
-        
+
         attempts++;
       }
 
@@ -150,10 +150,15 @@ router.post('/scan', async (req, res) => {
         throw new Error(`Failed to get dataset: ${datasetResponse.status} ${datasetResponse.statusText}`);
       }
 
-      const crawlResults = await datasetResponse.json();
-
+            const crawlResults = await datasetResponse.json();
+      
+      console.log(`Dataset response received, item count: ${crawlResults ? crawlResults.length : 0}`);
+      if (crawlResults && crawlResults.length > 0) {
+        console.log('First item keys:', Object.keys(crawlResults[0]));
+      }
+      
       if (!crawlResults || crawlResults.length === 0) {
-        throw new Error('No data extracted from the page');
+        throw new Error('No data extracted from the page - your Apify actor may not have produced any output');
       }
 
       const crawlData = crawlResults[0];
@@ -216,84 +221,12 @@ router.post('/scan', async (req, res) => {
         data: scanResult
       });
 
-    } catch (error) {
+        } catch (error) {
       console.error('Apify crawler error:', error);
-      console.log('Falling back to simple HTML parsing...');
-      
-      // Fallback to simple HTML parsing if Apify fails
-      try {
-        const response = await fetch(url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-          },
-          redirect: 'follow'
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const html = await response.text();
-        const loadTime = Date.now() - startTime;
-
-        // Basic HTML parsing (simple regex-based extraction)
-        const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
-        const title = titleMatch ? titleMatch[1].trim() : 'Untitled Page';
-
-        const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
-        const description = descMatch ? descMatch[1].trim() : '';
-
-        const viewportMatch = html.match(/<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']*)["']/i);
-        const mobileOptimized = viewportMatch ? viewportMatch[1].includes('width=device-width') : false;
-
-        // Extract headlines, buttons, images, forms using existing functions
-        const headlines = extractHeadlines({}, html);
-        const buttons = extractButtons({}, html);
-        const images = extractImages({}, html);
-        const forms = extractForms({}, html);
-
-        // Count trust signals
-        const trustWords = ['secure', 'ssl', 'encrypted', 'verified', 'certified', 'guarantee', 'testimonial', 'review'];
-        const lowerHTML = html.toLowerCase();
-        const trustSignals = trustWords.filter(word => lowerHTML.includes(word)).length;
-
-        // Generate industry guess
-        const industry = guessIndustry(title, description, headlines);
-
-        // Calculate metrics
-        const conversionElements = buttons.filter((btn: any) => btn.type === 'cta').length + forms.length;
-
-        // Generate recommendations
-        const recommendations = generateRecommendations({ title, description, elements: { buttons, headlines, images, forms } }, conversionElements, trustSignals);
-
-        const scanResult: ScanResult = {
-          url,
-          title,
-          description,
-          industry,
-          elements: { buttons, headlines, images, forms },
-          metrics: {
-            loadTime,
-            mobileOptimized,
-            conversionElements,
-            trustSignals
-          },
-          recommendations
-        };
-
-        res.json({
-          success: true,
-          data: scanResult,
-          note: 'Scanned using fallback HTML parser (Apify temporarily unavailable)'
-        });
-
-      } catch (fallbackError) {
-        console.error('Fallback parsing also failed:', fallbackError);
-        res.status(500).json({
-          success: false,
-          error: 'Failed to scan page. Both Apify crawler and fallback parser failed. Please ensure the URL is publicly accessible.'
-        });
-      }
+      res.status(500).json({
+        success: false,
+        error: 'Failed to crawl page with Apify. Please check your Apify token and try again: ' + (error as Error).message
+      });
     }
 
   } catch (error) {
