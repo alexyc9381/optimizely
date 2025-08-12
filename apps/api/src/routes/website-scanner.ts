@@ -1,6 +1,4 @@
 import express from 'express';
-import https from 'https';
-import { URL } from 'url';
 
 const router = express.Router();
 
@@ -73,107 +71,106 @@ router.post('/scan', async (req, res) => {
     const startTime = Date.now();
 
     try {
-      // Simple HTML fetch and basic parsing
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        },
-        redirect: 'follow'
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const apifyToken = process.env.APIFY_TOKEN;
+      
+      if (!apifyToken) {
+        throw new Error('APIFY_TOKEN environment variable is not set');
       }
 
-      const html = await response.text();
+      // Call your Apify actor directly via REST API
+      const runResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apifyToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          startUrls: [{ url }],
+          maxRequestsPerCrawl: 1,
+          maxCrawlDepth: 0
+        })
+      });
+
+      if (!runResponse.ok) {
+        throw new Error(`Apify API error: ${runResponse.status} ${runResponse.statusText}`);
+      }
+
+      const runData = await runResponse.json();
+      const runId = runData.data.id;
+
+      // Wait for run to complete (poll status)
+      let runStatus = 'RUNNING';
+      let attempts = 0;
+      const maxAttempts = 30; // 30 seconds timeout
+      
+      while (runStatus === 'RUNNING' && attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+        
+        const statusResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs/${runId}`, {
+          headers: {
+            'Authorization': `Bearer ${apifyToken}`
+          }
+        });
+        
+        if (statusResponse.ok) {
+          const statusData = await statusResponse.json();
+          runStatus = statusData.data.status;
+        }
+        
+        attempts++;
+      }
+
+      if (runStatus !== 'SUCCEEDED') {
+        throw new Error(`Apify run failed or timed out. Status: ${runStatus}`);
+      }
+
+      // Get the results from the dataset
+      const datasetResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs/${runId}/dataset/items`, {
+        headers: {
+          'Authorization': `Bearer ${apifyToken}`
+        }
+      });
+
+      if (!datasetResponse.ok) {
+        throw new Error(`Failed to get dataset: ${datasetResponse.status}`);
+      }
+
+      const crawlResults = await datasetResponse.json();
+      
+      if (!crawlResults || crawlResults.length === 0) {
+        throw new Error('No data extracted from the page');
+      }
+
+      const crawlData = crawlResults[0];
       const loadTime = Date.now() - startTime;
 
-      // Basic HTML parsing (simple regex-based extraction)
-      const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
-      const title = titleMatch ? titleMatch[1].trim() : 'Untitled Page';
+      // Extract and transform data from your crawler results
+      const title = crawlData.title || 'Untitled Page';
+      const description = crawlData.description || crawlData.metaDescription || '';
+      
+      // Parse content elements from crawler data
+      const content = crawlData.text || crawlData.content || '';
+      const html = crawlData.html || '';
 
-      const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
-      const description = descMatch ? descMatch[1].trim() : '';
+      // Extract headlines from crawler data or HTML
+      const headlines = extractHeadlines(crawlData, html);
+      
+      // Extract buttons from crawler data or HTML  
+      const buttons = extractButtons(crawlData, html);
+      
+      // Extract images from crawler data
+      const images = extractImages(crawlData, html);
+      
+      // Extract forms from crawler data or HTML
+      const forms = extractForms(crawlData, html);
 
-      const viewportMatch = html.match(/<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']*)["']/i);
-      const mobileOptimized = viewportMatch ? viewportMatch[1].includes('width=device-width') : false;
+      // Check mobile optimization
+      const mobileOptimized = html.includes('viewport') && html.includes('width=device-width');
 
-      // Extract headlines
-      const headlineMatches = html.match(/<h[1-6][^>]*>([^<]*)<\/h[1-6]>/gi) || [];
-      const headlines = headlineMatches.map((match, index) => {
-        const levelMatch = match.match(/<h([1-6])/i);
-        const textMatch = match.match(/>([^<]*)</);
-        return {
-          text: textMatch ? textMatch[1].trim().substring(0, 200) : '',
-          level: levelMatch ? parseInt(levelMatch[1]) : 1,
-          location: `H${levelMatch ? levelMatch[1] : '1'} ${index + 1}`
-        };
-      }).filter(h => h.text);
-
-      // Extract buttons (basic detection)
-      const buttonMatches = html.match(/<button[^>]*>([^<]*)<\/button>|<input[^>]*type=["'](?:button|submit)["'][^>]*>/gi) || [];
-      const buttons = buttonMatches.map((match, index) => {
-        const textMatch = match.match(/>([^<]*)</);
-        const valueMatch = match.match(/value=["']([^"']*)["']/i);
-        const text = textMatch ? textMatch[1].trim() : (valueMatch ? valueMatch[1].trim() : `Button ${index + 1}`);
-        
-        let type: 'cta' | 'navigation' | 'form' = 'navigation';
-        const btnText = text.toLowerCase();
-        if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
-          type = 'cta';
-        } else if (btnText.includes('submit') || btnText.includes('send')) {
-          type = 'form';
-        }
-
-        return {
-          text: text.substring(0, 100),
-          location: `Button ${index + 1}`,
-          type,
-          prominence: 5 // Default prominence
-        };
-      }).filter(btn => btn.text);
-
-      // Extract images
-      const imageMatches = html.match(/<img[^>]*>/gi) || [];
-      const images = imageMatches.map((match, index) => {
-        const altMatch = match.match(/alt=["']([^"']*)["']/i);
-        const srcMatch = match.match(/src=["']([^"']*)["']/i);
-        return {
-          alt: altMatch ? altMatch[1].substring(0, 100) : '',
-          src: srcMatch ? srcMatch[1].substring(0, 200) : '',
-          location: `Image ${index + 1}`
-        };
-      }).filter(img => img.src);
-
-      // Extract forms (basic detection)
-      const formMatches = html.match(/<form[^>]*>[\s\S]*?<\/form>/gi) || [];
-      const forms = formMatches.map((match, index) => {
-        const inputMatches = match.match(/<input[^>]*>/gi) || [];
-        const textareaMatches = match.match(/<textarea[^>]*>/gi) || [];
-        const selectMatches = match.match(/<select[^>]*>/gi) || [];
-        
-        const fields: string[] = [];
-        
-        [...inputMatches, ...textareaMatches, ...selectMatches].forEach(input => {
-          const nameMatch = input.match(/name=["']([^"']*)["']/i);
-          const placeholderMatch = input.match(/placeholder=["']([^"']*)["']/i);
-          const typeMatch = input.match(/type=["']([^"']*)["']/i);
-          
-          const field = nameMatch ? nameMatch[1] : (placeholderMatch ? placeholderMatch[1] : (typeMatch ? typeMatch[1] : 'field'));
-          if (field) fields.push(field);
-        });
-
-        return fields.length > 0 ? {
-          type: match.includes('action=') ? 'submission' : 'interactive',
-          fields,
-          location: `Form ${index + 1}`
-        } : null;
-      }).filter(Boolean) as any[];
-
-      // Count trust signals
-      const lowerHTML = html.toLowerCase();
+      // Count trust signals in content
       const trustWords = ['secure', 'ssl', 'encrypted', 'verified', 'certified', 'guarantee', 'testimonial', 'review'];
-      const trustSignals = trustWords.filter(word => lowerHTML.includes(word)).length;
+      const lowerContent = (content + ' ' + html).toLowerCase();
+      const trustSignals = trustWords.filter(word => lowerContent.includes(word)).length;
 
       // Generate industry guess
       const industry = guessIndustry(title, description, headlines);
@@ -205,10 +202,10 @@ router.post('/scan', async (req, res) => {
       });
 
     } catch (error) {
-      console.error('Page scanning error:', error);
+      console.error('Apify crawler error:', error);
       res.status(500).json({
         success: false,
-        error: 'Failed to scan page. Please ensure the URL is publicly accessible and try again.'
+        error: 'Failed to crawl page with Apify. Please ensure the URL is accessible and your Apify token is configured: ' + (error as Error).message
       });
     }
 
@@ -220,6 +217,136 @@ router.post('/scan', async (req, res) => {
     });
   }
 });
+
+// Helper functions to extract elements from Apify crawler data
+function extractHeadlines(crawlData: any, html: string): any[] {
+  // Try to get headlines from crawler data first
+  if (crawlData.headings && Array.isArray(crawlData.headings)) {
+    return crawlData.headings.map((heading: any, index: number) => ({
+      text: heading.text ? heading.text.substring(0, 200) : '',
+      level: heading.level || 1,
+      location: `H${heading.level || 1} ${index + 1}`
+    }));
+  }
+
+  // Fallback to HTML parsing
+  const headlineMatches = html.match(/<h[1-6][^>]*>([^<]*)<\/h[1-6]>/gi) || [];
+  return headlineMatches.map((match, index) => {
+    const levelMatch = match.match(/<h([1-6])/i);
+    const textMatch = match.match(/>([^<]*)</);
+    return {
+      text: textMatch ? textMatch[1].trim().substring(0, 200) : '',
+      level: levelMatch ? parseInt(levelMatch[1]) : 1,
+      location: `H${levelMatch ? levelMatch[1] : '1'} ${index + 1}`
+    };
+  }).filter(h => h.text);
+}
+
+function extractButtons(crawlData: any, html: string): any[] {
+  // Try to get buttons from crawler data first
+  if (crawlData.buttons && Array.isArray(crawlData.buttons)) {
+    return crawlData.buttons.map((btn: any, index: number) => {
+      const text = btn.text || btn.value || `Button ${index + 1}`;
+      let type: 'cta' | 'navigation' | 'form' = 'navigation';
+      const btnText = text.toLowerCase();
+      
+      if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
+        type = 'cta';
+      } else if (btnText.includes('submit') || btnText.includes('send')) {
+        type = 'form';
+      }
+
+      return {
+        text: text.substring(0, 100),
+        location: `Button ${index + 1}`,
+        type,
+        prominence: 5
+      };
+    });
+  }
+
+  // Fallback to HTML parsing
+  const buttonMatches = html.match(/<button[^>]*>([^<]*)<\/button>|<input[^>]*type=["'](?:button|submit)["'][^>]*>/gi) || [];
+  return buttonMatches.map((match, index) => {
+    const textMatch = match.match(/>([^<]*)</);
+    const valueMatch = match.match(/value=["']([^"']*)["']/i);
+    const text = textMatch ? textMatch[1].trim() : (valueMatch ? valueMatch[1].trim() : `Button ${index + 1}`);
+
+    let type: 'cta' | 'navigation' | 'form' = 'navigation';
+    const btnText = text.toLowerCase();
+    if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
+      type = 'cta';
+    } else if (btnText.includes('submit') || btnText.includes('send')) {
+      type = 'form';
+    }
+
+    return {
+      text: text.substring(0, 100),
+      location: `Button ${index + 1}`,
+      type,
+      prominence: 5
+    };
+  }).filter(btn => btn.text);
+}
+
+function extractImages(crawlData: any, html: string): any[] {
+  // Try to get images from crawler data first
+  if (crawlData.images && Array.isArray(crawlData.images)) {
+    return crawlData.images.map((img: any, index: number) => ({
+      alt: (img.alt || '').substring(0, 100),
+      src: (img.src || img.url || '').substring(0, 200),
+      location: `Image ${index + 1}`
+    })).filter((img: any) => img.src);
+  }
+
+  // Fallback to HTML parsing
+  const imageMatches = html.match(/<img[^>]*>/gi) || [];
+  return imageMatches.map((match, index) => {
+    const altMatch = match.match(/alt=["']([^"']*)["']/i);
+    const srcMatch = match.match(/src=["']([^"']*)["']/i);
+    return {
+      alt: altMatch ? altMatch[1].substring(0, 100) : '',
+      src: srcMatch ? srcMatch[1].substring(0, 200) : '',
+      location: `Image ${index + 1}`
+    };
+  }).filter(img => img.src);
+}
+
+function extractForms(crawlData: any, html: string): any[] {
+  // Try to get forms from crawler data first
+  if (crawlData.forms && Array.isArray(crawlData.forms)) {
+    return crawlData.forms.map((form: any, index: number) => ({
+      type: form.action ? 'submission' : 'interactive',
+      fields: form.fields || [],
+      location: `Form ${index + 1}`
+    }));
+  }
+
+  // Fallback to HTML parsing
+  const formMatches = html.match(/<form[^>]*>[\s\S]*?<\/form>/gi) || [];
+  return formMatches.map((match, index) => {
+    const inputMatches = match.match(/<input[^>]*>/gi) || [];
+    const textareaMatches = match.match(/<textarea[^>]*>/gi) || [];
+    const selectMatches = match.match(/<select[^>]*>/gi) || [];
+
+    const fields: string[] = [];
+
+    [...inputMatches, ...textareaMatches, ...selectMatches].forEach(input => {
+      const nameMatch = input.match(/name=["']([^"']*)["']/i);
+      const placeholderMatch = input.match(/placeholder=["']([^"']*)["']/i);
+      const typeMatch = input.match(/type=["']([^"']*)["']/i);
+
+      const field = nameMatch ? nameMatch[1] : (placeholderMatch ? placeholderMatch[1] : (typeMatch ? typeMatch[1] : 'field'));
+      if (field) fields.push(field);
+    });
+
+    return fields.length > 0 ? {
+      type: match.includes('action=') ? 'submission' : 'interactive',
+      fields,
+      location: `Form ${index + 1}`
+    } : null;
+  }).filter(Boolean) as any[];
+}
 
 function guessIndustry(title: string, description: string, headlines: any[]): string {
   const content = (title + ' ' + description + ' ' + headlines.map(h => h.text).join(' ')).toLowerCase();
