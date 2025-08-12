@@ -806,7 +806,7 @@ function getExperimentTemplates() {
 router.post('/suggestions', async (req: Request, res: Response) => {
   try {
     const { scanData } = req.body;
-    
+
     if (!scanData) {
       return res.status(400).json({
         success: false,
@@ -816,7 +816,7 @@ router.post('/suggestions', async (req: Request, res: Response) => {
 
     // Generate test suggestions based on scan data
     const suggestions = generateTestSuggestions(scanData);
-    
+
     res.json({
       success: true,
       data: suggestions
@@ -836,9 +836,9 @@ function generateTestSuggestions(scanData: any): any[] {
 
   // Generate suggestions based on headlines
   if (scanData.elements?.headlines?.length > 0) {
-    const mainHeadline = scanData.elements.headlines.find((h: any) => h.level === 1) || 
+    const mainHeadline = scanData.elements.headlines.find((h: any) => h.level === 1) ||
                         scanData.elements.headlines[0];
-    
+
     suggestions.push({
       id: 'headline_test_1',
       name: 'Headline Optimization',
@@ -869,7 +869,7 @@ function generateTestSuggestions(scanData: any): any[] {
   const ctaButtons = scanData.elements?.buttons?.filter((btn: any) => btn.type === 'cta') || [];
   if (ctaButtons.length > 0) {
     const primaryCta = ctaButtons[0];
-    
+
     suggestions.push({
       id: 'cta_test_1',
       name: 'CTA Button Optimization',
