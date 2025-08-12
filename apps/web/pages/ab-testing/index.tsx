@@ -469,10 +469,10 @@ const ABTestingPage: React.FC = () => {
               </span>
               <span
                 className={`text-xs font-medium ${
-                  test.visitors === 0 
-                    ? 'text-gray-400' 
-                    : test.uplift > 0 
-                    ? 'text-green-600' 
+                  test.visitors === 0
+                    ? 'text-gray-400'
+                    : test.uplift > 0
+                    ? 'text-green-600'
                     : 'text-red-600'
                 }`}
               >
@@ -497,8 +497,8 @@ const ABTestingPage: React.FC = () => {
                     <stop
                       offset='0%'
                       style={{
-                        stopColor: test.visitors === 0 
-                          ? '#9CA3AF' 
+                        stopColor: test.visitors === 0
+                          ? '#9CA3AF'
                           : test.conversionRate.variant > test.conversionRate.control
                             ? '#10B981'
                             : '#EF4444',
@@ -508,8 +508,8 @@ const ABTestingPage: React.FC = () => {
                     <stop
                       offset='100%'
                       style={{
-                        stopColor: test.visitors === 0 
-                          ? '#9CA3AF' 
+                        stopColor: test.visitors === 0
+                          ? '#9CA3AF'
                           : test.conversionRate.variant > test.conversionRate.control
                             ? '#10B981'
                             : '#EF4444',

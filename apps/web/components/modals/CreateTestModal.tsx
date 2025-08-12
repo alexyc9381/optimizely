@@ -210,161 +210,29 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     setError(null);
 
     try {
-      // Mock scan for demo - replace with real API call
-      const mockScanResult: WebsiteScanResult = {
-        url: formData.targetUrl,
-        title: 'Demo Website',
-        description: 'A sample website for testing',
-        industry:
-          formData.targetUrl.includes('shop') ||
-          formData.targetUrl.includes('store')
-            ? 'E-commerce'
-            : 'SaaS',
-        elements: {
-          buttons: [
-            { text: 'Sign Up', location: 'header', type: 'cta', prominence: 9 },
-            {
-              text: 'Get Started',
-              location: 'hero',
-              type: 'cta',
-              prominence: 10,
-            },
-            {
-              text: 'Learn More',
-              location: 'features',
-              type: 'cta',
-              prominence: 6,
-            },
-          ],
-          headlines: [
-            {
-              text: 'Transform Your Business Today',
-              level: 1,
-              location: 'hero',
-            },
-            { text: 'Powerful Features', level: 2, location: 'features' },
-          ],
-          images: [{ alt: 'Hero image', src: '/hero.jpg', location: 'hero' }],
-          forms: [
-            {
-              type: 'signup',
-              fields: ['email', 'password'],
-              location: 'modal',
-            },
-          ],
-        },
-        metrics: {
-          loadTime: 2.3,
-          mobileOptimized: true,
-          conversionElements: 3,
-          trustSignals: 2,
-        },
-        recommendations: [
-          'Consider testing CTA button colors',
-          'Improve headline clarity',
-          'Add social proof elements',
-        ],
-      };
+      // Call real website scanning API
+      const scanResponse = await apiClient.scanWebsite(formData.targetUrl);
 
-      // Generate intelligent test suggestions based on scan
-      const mockSuggestions: TestSuggestion[] = [
-        {
-          id: '1',
-          name: 'CTA Button Color Test',
-          description:
-            'Test different colors for the primary CTA button to improve conversion',
-          hypothesis:
-            'If we change the CTA button from blue to orange, then conversion rates will increase because orange creates more urgency and stands out better',
-          priority: 'high',
-          estimatedImpact: 15,
-          confidence: 85,
-          category: 'cta',
-          variants: {
-            control: {
-              name: 'Blue CTA Button',
-              description: 'Current blue "Get Started" button',
-            },
-            variant: {
-              name: 'Orange CTA Button',
-              description: 'High-contrast orange "Get Started" button',
-              changes:
-                'Change button color from #3B82F6 to #F97316, maintain white text',
-            },
-          },
-          recommendedMetric: 'conversion_rate',
-          recommendedDuration: 14,
-          trafficSplit: 50,
-        },
-        {
-          id: '2',
-          name: 'Headline Optimization',
-          description:
-            'Test a more benefit-focused headline to improve engagement',
-          hypothesis:
-            'If we change the headline to focus on specific benefits, then user engagement will increase because visitors will better understand the value proposition',
-          priority: 'medium',
-          estimatedImpact: 12,
-          confidence: 78,
-          category: 'copy',
-          variants: {
-            control: {
-              name: 'Current Headline',
-              description: 'Transform Your Business Today',
-            },
-            variant: {
-              name: 'Benefit-Focused Headline',
-              description: 'Increase Revenue by 40% in 30 Days',
-              changes:
-                'Replace generic headline with specific, measurable benefit',
-            },
-          },
-          recommendedMetric: 'engagement_rate',
-          recommendedDuration: 21,
-          trafficSplit: 50,
-        },
-        {
-          id: '3',
-          name: 'Social Proof Addition',
-          description:
-            'Add customer testimonials to build trust and credibility',
-          hypothesis:
-            'If we add customer testimonials near the CTA, then conversion rates will increase because social proof reduces perceived risk',
-          priority: 'medium',
-          estimatedImpact: 18,
-          confidence: 82,
-          category: 'social-proof',
-          variants: {
-            control: {
-              name: 'No Social Proof',
-              description: 'Current layout without testimonials',
-            },
-            variant: {
-              name: 'With Customer Testimonials',
-              description:
-                'Add 3 customer testimonials with photos below hero section',
-              changes:
-                'Insert testimonial carousel with customer photos, names, and company logos',
-            },
-          },
-          recommendedMetric: 'conversion_rate',
-          recommendedDuration: 28,
-          trafficSplit: 50,
-        },
-      ];
+      // Generate test suggestions based on scan results
+      const suggestionsResponse = await apiClient.getTestSuggestions(scanResponse);
 
-      setScanResult(mockScanResult);
-      setSuggestions(mockSuggestions);
+      setScanResult(scanResponse);
+      setSuggestions(suggestionsResponse);
       setShowSuggestions(true);
 
       // Auto-select highest priority suggestion
-      if (mockSuggestions.length > 0) {
+      if (suggestionsResponse.length > 0) {
         const highestPriority =
-          mockSuggestions.find(s => s.priority === 'high') ||
-          mockSuggestions[0];
+          suggestionsResponse.find(s => s.priority === 'high') ||
+          suggestionsResponse[0];
         setSelectedSuggestion(highestPriority);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to scan website');
+      console.error('Failed to scan website:', err);
+      setError(
+        'Failed to scan website. Please check the URL and try again. ' +
+        'Note: The website must be publicly accessible.'
+      );
     } finally {
       setIsScanning(false);
     }
