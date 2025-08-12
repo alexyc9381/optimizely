@@ -1,4 +1,5 @@
 import express from 'express';
+import FirecrawlApp from '@mendable/firecrawl-js';
 
 const router = express.Router();
 
@@ -70,143 +71,120 @@ router.post('/scan', async (req, res) => {
 
     const startTime = Date.now();
 
-    try {
-      const apifyToken = process.env.APIFY_TOKEN;
-
-      if (!apifyToken) {
-        throw new Error('APIFY_TOKEN environment variable is not set');
-      }
-
-      // Call your Apify actor directly via REST API
-      console.log(`Starting Apify crawl for URL: ${url}`);
-      console.log(`Using Apify token: ${apifyToken ? apifyToken.substring(0, 20) + '...' : 'MISSING'}`);
-
-      const runResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apifyToken}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          startUrls: [{ url }]
-        })
-      });
-
-      if (!runResponse.ok) {
-        const errorText = await runResponse.text();
-        console.error(`Apify API error: ${runResponse.status} ${runResponse.statusText}`, errorText);
-        
-        // Parse error response to provide better error messages
-        let errorMessage = `Apify API error: ${runResponse.status} ${runResponse.statusText}`;
         try {
-          const errorData = JSON.parse(errorText);
-          if (errorData.error) {
-            if (errorData.error.type === 'actor-memory-limit-exceeded') {
-              errorMessage = 'Apify memory limit exceeded. Please upgrade your Apify plan or free up memory by stopping other running actors.';
-            } else {
-              errorMessage = errorData.error.message || errorMessage;
-            }
-          }
-        } catch (parseError) {
-          // Use default error message if JSON parsing fails
-        }
-        
-        throw new Error(errorMessage);
+      const firecrawlApiKey = process.env.FIRECRAWL_API_KEY;
+      
+      if (!firecrawlApiKey) {
+        throw new Error('FIRECRAWL_API_KEY environment variable is not set');
       }
 
-      const runData = await runResponse.json();
-      const runId = runData.data.id;
-      console.log(`Apify run started with ID: ${runId}`);
+      // Initialize Firecrawl app
+      console.log(`Starting Firecrawl scan for URL: ${url}`);
+      console.log(`Using Firecrawl API key: ${firecrawlApiKey ? firecrawlApiKey.substring(0, 10) + '...' : 'MISSING'}`);
+      
+      const app = new FirecrawlApp({ apiKey: firecrawlApiKey });
 
-            // Wait for run to complete (poll status with longer timeout and better error handling)
-      let runStatus = 'RUNNING';
-      let attempts = 0;
-      const maxAttempts = 60; // 60 seconds timeout (Apify can take time)
-      let defaultDatasetId = null;
-
-      while (runStatus === 'RUNNING' && attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds between checks
-
-        const statusResponse = await fetch(`https://api.apify.com/v2/acts/aYG0l9s7dbB7j3gbS/runs/${runId}`, {
-          headers: {
-            'Authorization': `Bearer ${apifyToken}`
-          }
-        });
-
-        if (statusResponse.ok) {
-          const statusData = await statusResponse.json();
-          runStatus = statusData.data.status;
-          defaultDatasetId = statusData.data.defaultDatasetId;
-          console.log(`Apify run status: ${runStatus}, attempt: ${attempts + 1}/${maxAttempts}`);
-        } else {
-          console.error(`Failed to check run status: ${statusResponse.status}`);
-        }
-
-        attempts++;
-      }
-
-      if (runStatus !== 'SUCCEEDED') {
-        console.error(`Apify run did not complete successfully. Final status: ${runStatus}`);
-        throw new Error(`Apify run failed or timed out. Status: ${runStatus}`);
-      }
-
-      if (!defaultDatasetId) {
-        throw new Error('No dataset ID found in run data');
-      }
-
-      // Get the results from the dataset using the correct dataset ID
-      const datasetResponse = await fetch(`https://api.apify.com/v2/datasets/${defaultDatasetId}/items`, {
-        headers: {
-          'Authorization': `Bearer ${apifyToken}`
-        }
+      // Scrape the page with Firecrawl
+      const crawlResult = await app.scrapeUrl(url, {
+        formats: ['markdown', 'html']
       });
 
-      if (!datasetResponse.ok) {
-        console.error(`Dataset fetch failed: ${datasetResponse.status} ${datasetResponse.statusText}`);
-        throw new Error(`Failed to get dataset: ${datasetResponse.status} ${datasetResponse.statusText}`);
+      if (!crawlResult || !crawlResult.success) {
+        throw new Error('Firecrawl failed to extract data from the page');
       }
 
-            const crawlResults = await datasetResponse.json();
-
-      console.log(`Dataset response received, item count: ${crawlResults ? crawlResults.length : 0}`);
-      if (crawlResults && crawlResults.length > 0) {
-        console.log('First item keys:', Object.keys(crawlResults[0]));
-      }
-
-      if (!crawlResults || crawlResults.length === 0) {
-        throw new Error('No data extracted from the page - your Apify actor may not have produced any output');
-      }
-
-      const crawlData = crawlResults[0];
       const loadTime = Date.now() - startTime;
+      const data = (crawlResult as any).data;
 
-      // Extract and transform data from your crawler results
-      const title = crawlData.title || 'Untitled Page';
-      const description = crawlData.description || crawlData.metaDescription || '';
+      console.log('Firecrawl scan completed successfully');
+      console.log('Available data keys:', data ? Object.keys(data) : 'No data');
 
-      // Parse content elements from crawler data
-      const content = crawlData.text || crawlData.content || '';
-      const html = crawlData.html || '';
+      // Extract basic page information
+      const title = data.extract?.title || data.metadata?.title || 'Untitled Page';
+      const description = data.extract?.description || data.metadata?.description || '';
+      
+      // Extract structured data or parse from markdown/html
+      let headlines = data.extract?.headlines || [];
+      let buttons = data.extract?.buttons || [];
+      let images = data.extract?.images || [];
+      let forms = data.extract?.forms || [];
 
-      // Extract headlines from crawler data or HTML
-      const headlines = extractHeadlines(crawlData, html);
+      // If extraction didn't work, parse from markdown or HTML
+      if (headlines.length === 0 || buttons.length === 0) {
+        const content = data.markdown || data.html || '';
+        
+        // Extract headlines from markdown/HTML
+        if (headlines.length === 0) {
+          const headlineMatches = content.match(/^#{1,6}\s+(.+)$/gm) || [];
+          headlines = headlineMatches.map((match: string, index: number) => {
+            const level = (match.match(/^#+/) || [''])[0].length;
+            const text = match.replace(/^#+\s+/, '').trim();
+            return {
+              text: text.substring(0, 200),
+              level,
+              location: `H${level} ${index + 1}`
+            };
+          });
+        }
 
-      // Extract buttons from crawler data or HTML
-      const buttons = extractButtons(crawlData, html);
+        // Extract buttons from content
+        if (buttons.length === 0) {
+          const buttonMatches = content.match(/\[([^\]]+)\]\([^)]+\)|<button[^>]*>([^<]*)<\/button>|<input[^>]*type=["'](?:button|submit)["'][^>]*>/gi) || [];
+          buttons = buttonMatches.map((match: string, index: number) => {
+            let text = '';
+            if (match.startsWith('[')) {
+              text = match.match(/\[([^\]]+)\]/)?.[1] || '';
+            } else {
+              text = match.match(/>([^<]*)</)?.[1] || `Button ${index + 1}`;
+            }
+            
+            let type: 'cta' | 'navigation' | 'form' = 'navigation';
+            const btnText = text.toLowerCase();
+            if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
+              type = 'cta';
+            } else if (btnText.includes('submit') || btnText.includes('send')) {
+              type = 'form';
+            }
 
-      // Extract images from crawler data
-      const images = extractImages(crawlData, html);
+            return {
+              text: text.substring(0, 100),
+              location: `Button ${index + 1}`,
+              type,
+              prominence: 5
+            };
+          });
+        }
 
-      // Extract forms from crawler data or HTML
-      const forms = extractForms(crawlData, html);
+        // Extract images if not already extracted
+        if (images.length === 0) {
+          const imageMatches = content.match(/!\[([^\]]*)\]\(([^)]+)\)|<img[^>]*>/gi) || [];
+          images = imageMatches.map((match: string, index: number) => {
+            let alt = '', src = '';
+            if (match.startsWith('!')) {
+              const mdMatch = match.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+              alt = mdMatch?.[1] || '';
+              src = mdMatch?.[2] || '';
+            } else {
+              alt = match.match(/alt=["']([^"']*)["']/i)?.[1] || '';
+              src = match.match(/src=["']([^"']*)["']/i)?.[1] || '';
+            }
+            return {
+              alt: alt.substring(0, 100),
+              src: src.substring(0, 200),
+              location: `Image ${index + 1}`
+            };
+          }).filter((img: any) => img.src);
+        }
+      }
 
-      // Check mobile optimization
+      // Check mobile optimization from HTML
+      const html = data.html || '';
       const mobileOptimized = html.includes('viewport') && html.includes('width=device-width');
 
       // Count trust signals in content
       const trustWords = ['secure', 'ssl', 'encrypted', 'verified', 'certified', 'guarantee', 'testimonial', 'review'];
-      const lowerContent = (content + ' ' + html).toLowerCase();
-      const trustSignals = trustWords.filter(word => lowerContent.includes(word)).length;
+      const allContent = (title + ' ' + description + ' ' + (data.markdown || '') + ' ' + html).toLowerCase();
+      const trustSignals = trustWords.filter(word => allContent.includes(word)).length;
 
       // Generate industry guess
       const industry = guessIndustry(title, description, headlines);
@@ -237,11 +215,11 @@ router.post('/scan', async (req, res) => {
         data: scanResult
       });
 
-        } catch (error) {
-      console.error('Apify crawler error:', error);
+    } catch (error) {
+      console.error('Firecrawl crawler error:', error);
       res.status(500).json({
         success: false,
-        error: 'Failed to crawl page with Apify. Please check your Apify token and try again: ' + (error as Error).message
+        error: 'Failed to crawl page with Firecrawl. Please check your API key and try again: ' + (error as Error).message
       });
     }
 
