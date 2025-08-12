@@ -1083,7 +1083,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                      type='button'
                      onClick={handleGenerateVariants}
                      disabled={isGeneratingVariants || !formData.targetUrl || !selectedElementType}
-                     className='px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all flex items-center space-x-2 shadow-lg hover:shadow-xl'
+                     className='px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center space-x-2'
                    >
                      {isGeneratingVariants ? (
                        <>
