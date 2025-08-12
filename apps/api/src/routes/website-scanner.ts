@@ -1,5 +1,5 @@
-import express from 'express';
 import FirecrawlApp from '@mendable/firecrawl-js';
+import express from 'express';
 
 const router = express.Router();
 
@@ -73,7 +73,7 @@ router.post('/scan', async (req, res) => {
 
         try {
       const firecrawlApiKey = process.env.FIRECRAWL_API_KEY;
-      
+
       if (!firecrawlApiKey) {
         throw new Error('FIRECRAWL_API_KEY environment variable is not set');
       }
@@ -81,7 +81,7 @@ router.post('/scan', async (req, res) => {
       // Initialize Firecrawl app
       console.log(`Starting Firecrawl scan for URL: ${url}`);
       console.log(`Using Firecrawl API key: ${firecrawlApiKey ? firecrawlApiKey.substring(0, 10) + '...' : 'MISSING'}`);
-      
+
       const app = new FirecrawlApp({ apiKey: firecrawlApiKey });
 
       // Scrape the page with Firecrawl
@@ -98,21 +98,22 @@ router.post('/scan', async (req, res) => {
 
       console.log('Firecrawl scan completed successfully');
       console.log('Available data keys:', data ? Object.keys(data) : 'No data');
+      console.log('Data object:', JSON.stringify(data, null, 2).substring(0, 500) + '...');
 
-      // Extract basic page information
-      const title = data.extract?.title || data.metadata?.title || 'Untitled Page';
-      const description = data.extract?.description || data.metadata?.description || '';
+            // Extract basic page information
+      const title = data?.metadata?.title || 'Untitled Page';
+      const description = data?.metadata?.description || '';
       
       // Extract structured data or parse from markdown/html
-      let headlines = data.extract?.headlines || [];
-      let buttons = data.extract?.buttons || [];
-      let images = data.extract?.images || [];
-      let forms = data.extract?.forms || [];
+      let headlines: any[] = [];
+      let buttons: any[] = [];
+      let images: any[] = [];
+      let forms: any[] = [];
 
       // If extraction didn't work, parse from markdown or HTML
       if (headlines.length === 0 || buttons.length === 0) {
-        const content = data.markdown || data.html || '';
-        
+        const content = data?.markdown || data?.html || '';
+
         // Extract headlines from markdown/HTML
         if (headlines.length === 0) {
           const headlineMatches = content.match(/^#{1,6}\s+(.+)$/gm) || [];
@@ -137,7 +138,7 @@ router.post('/scan', async (req, res) => {
             } else {
               text = match.match(/>([^<]*)</)?.[1] || `Button ${index + 1}`;
             }
-            
+
             let type: 'cta' | 'navigation' | 'form' = 'navigation';
             const btnText = text.toLowerCase();
             if (btnText.includes('buy') || btnText.includes('purchase') || btnText.includes('get started') || btnText.includes('sign up')) {
@@ -178,12 +179,12 @@ router.post('/scan', async (req, res) => {
       }
 
       // Check mobile optimization from HTML
-      const html = data.html || '';
+      const html = data?.html || '';
       const mobileOptimized = html.includes('viewport') && html.includes('width=device-width');
 
       // Count trust signals in content
       const trustWords = ['secure', 'ssl', 'encrypted', 'verified', 'certified', 'guarantee', 'testimonial', 'review'];
-      const allContent = (title + ' ' + description + ' ' + (data.markdown || '') + ' ' + html).toLowerCase();
+      const allContent = (title + ' ' + description + ' ' + (data?.markdown || '') + ' ' + html).toLowerCase();
       const trustSignals = trustWords.filter(word => allContent.includes(word)).length;
 
       // Generate industry guess
