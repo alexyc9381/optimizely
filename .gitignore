@@ -9,8 +9,11 @@ dev-debug.log
 # Dependency directories
 node_modules/
 
-# Environment variables
-.env
+# Environment variables - ALL variants
+.env*
+!.env.example
+!.env.template
+!env.production.template
 
 # Editor directories and files
 .idea
