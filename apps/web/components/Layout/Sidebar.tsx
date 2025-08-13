@@ -6,7 +6,6 @@ interface NavItem {
   name: string;
   href: string;
   icon: React.ReactNode;
-  badge?: string;
   children?: NavItem[];
   isAdvanced?: boolean; // Added for advanced settings toggle
 }
@@ -42,7 +41,6 @@ const Sidebar: React.FC = () => {
         />
       ),
 
-      badge: '12',
       children: [
         { name: 'Active Tests', href: '/ab-testing/active', icon: null },
         { name: 'Create Test', href: '/ab-testing/create', icon: null },
@@ -77,7 +75,6 @@ const Sidebar: React.FC = () => {
         />
       ),
 
-      badge: '94%',
       children: [
         { name: 'Model Performance', href: '/models/performance', icon: null },
         { name: 'Training Data', href: '/models/training', icon: null },
@@ -216,13 +213,6 @@ const Sidebar: React.FC = () => {
                 <span className='flex-1'>
                   {item.name}
                 </span>
-                {item.badge && (
-                  <span
-                    className='inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full'
-                  >
-                    {item.badge}
-                  </span>
-                )}
               </>
             )}
           </Link>
