@@ -236,6 +236,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           return mainHeadline.text.trim();
         }
         return 'Main Headline';
+      case 'button':
       case 'button text':
         const buttons = scanData.elements.buttons;
         if (buttons.length > 0) {
@@ -243,7 +244,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           const ctaButton = buttons.find((btn: any) => btn.type === 'cta') ||
                            buttons.find((btn: any) => btn.text.toLowerCase().includes('get') ||
                                                       btn.text.toLowerCase().includes('try') ||
-                                                      btn.text.toLowerCase().includes('start')) ||
+                                                      btn.text.toLowerCase().includes('start') ||
+                                                      btn.text.toLowerCase().includes('sign') ||
+                                                      btn.text.toLowerCase().includes('join')) ||
                            buttons[0];
           return ctaButton.text.trim();
         }
@@ -821,8 +824,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
               <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
                 <h4 className='font-medium text-blue-900 mb-2 flex items-center'>
                   <Target className='w-4 h-4 mr-2' />
-                  What do you want to optimize?
+                  What do you want to optimize? <span className='text-red-600 ml-1'>*</span>
                 </h4>
+                <p className='text-sm text-blue-700 mb-3'>Choose one optimization goal for your test:</p>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                   {[
                     { id: 'conversion', label: 'Increase Conversions', icon: '🎯', desc: 'Button clicks, form submissions' },
@@ -833,11 +837,11 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                       key={objective.id}
                       type='button'
                       onClick={() => handleInputChange('primaryMetric', objective.id)}
-                      className={`p-3 rounded-lg border-2 transition-all text-left ${
+                      className={
                         formData.primaryMetric === objective.id
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-300 hover:border-gray-400 text-gray-600'
-                      }`}
+                          ? 'p-3 rounded-lg border-2 transition-all text-left cursor-pointer border-blue-600 bg-blue-50 text-blue-700'
+                          : 'p-3 rounded-lg border-2 transition-all text-left cursor-pointer border-gray-300 text-gray-600 hover:border-blue-500 hover:text-blue-700 hover:bg-blue-50'
+                      }
                     >
                       <div className='text-lg mb-1'>{objective.icon}</div>
                       <div className='font-medium text-sm'>{objective.label}</div>
@@ -908,6 +912,38 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   )}
                 </div>
 
+                <div className='md:col-span-2'>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Description
+                  </label>
+                  <textarea
+                    value={formData.description}
+                    onChange={e =>
+                      handleInputChange('description', e.target.value)
+                    }
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                    rows={3}
+                    placeholder="Describe what you're testing and why..."
+                    required
+                  />
+                </div>
+
+                <div className='md:col-span-2'>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Hypothesis
+                  </label>
+                  <textarea
+                    value={formData.hypothesis}
+                    onChange={e =>
+                      handleInputChange('hypothesis', e.target.value)
+                    }
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
+                    rows={2}
+                    placeholder='If we change X, then Y will happen because...'
+                    required
+                  />
+                </div>
+
                 {/* Visual Element Selector (Modern Optimizely Style) */}
                 <div className='md:col-span-2'>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
@@ -947,105 +983,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                   </div>
                 </div>
 
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Industry
-                  </label>
-                  <select
-                    value={formData.industry}
-                    onChange={e =>
-                      handleInputChange('industry', e.target.value)
-                    }
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                    required
-                  >
-                    <option value=''>Select Industry</option>
-                    {getIndustries().map(industry => (
-                      <option key={industry} value={industry}>
-                        {industry}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Target URL
-                  </label>
-                  <div className='flex space-x-2'>
-                    <input
-                      type='url'
-                      value={formData.targetUrl}
-                      onChange={e =>
-                        handleInputChange('targetUrl', e.target.value)
-                      }
-                      className='flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                      placeholder='https://example.com/page'
-                      required
-                    />
-                    <button
-                      type='button'
-                      onClick={handleWebsiteScan}
-                      disabled={isScanning || !formData.targetUrl}
-                      className='px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors flex items-center space-x-2'
-                    >
-                      {isScanning ? (
-                        <>
-                          <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-                          <span>Scanning...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Brain className='w-4 h-4' />
-                          <span>AI Scan</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  {scanResult && (
-                    <div className='mt-2 p-3 bg-green-50 border border-green-200 rounded-lg'>
-                      <div className='flex items-center text-sm text-green-700'>
-                        <Globe className='w-4 h-4 mr-2' />
-                        <span>
-                          Website scanned successfully - Industry:{' '}
-                          {scanResult.industry}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
 
-                <div className='md:col-span-2'>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Description
-                  </label>
-                  <textarea
-                    value={formData.description}
-                    onChange={e =>
-                      handleInputChange('description', e.target.value)
-                    }
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                    rows={3}
-                    placeholder="Describe what you're testing and why..."
-                    required
-                  />
-                </div>
 
-                <div className='md:col-span-2'>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Hypothesis
-                  </label>
-                  <textarea
-                    value={formData.hypothesis}
-                    onChange={e =>
-                      handleInputChange('hypothesis', e.target.value)
-                    }
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700'
-                    rows={2}
-                    placeholder='If we change X, then Y will happen because...'
-                    required
-                  />
-                </div>
               </div>
 
               {/* AI Test Suggestions */}
@@ -1260,7 +1200,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                           <strong>Element Type:</strong> {selectedElementType ? elementTypes.find(et => et.value === selectedElementType)?.label : 'Not selected'}
                         </div>
                         <div className='text-sm text-gray-600 mb-2'>
-                          <strong>Original Text:</strong> 
+                          <strong>Original Text:</strong>
                         </div>
                         <div className='bg-gray-50 p-2 rounded border text-sm font-mono text-gray-800'>
                           "{getOriginalContentFromScan(selectedElementType, scanResult) || formData.variants.control.description || 'No content detected'}"
@@ -1719,7 +1659,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
                     <h4 className='font-medium text-gray-900 mb-2'>Test Details</h4>
-                    <div className='space-y-2 text-sm'>
+                    <div className='space-y-2 text-sm text-gray-700'>
                       <div><span className='font-medium'>Name:</span> {formData.name}</div>
                       <div><span className='font-medium'>Industry:</span> {formData.industry}</div>
                       <div><span className='font-medium'>Target URL:</span> {formData.targetUrl}</div>
@@ -1729,7 +1669,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
 
                   <div>
                     <h4 className='font-medium text-gray-900 mb-2'>Test Parameters</h4>
-                    <div className='space-y-2 text-sm'>
+                    <div className='space-y-2 text-sm text-gray-700'>
                       <div><span className='font-medium'>Traffic Split:</span> {formData.trafficSplit}% per variant</div>
                       <div><span className='font-medium'>Primary Metric:</span> {formData.primaryMetric.replace('_', ' ')}</div>
                       <div><span className='font-medium'>Min Effect:</span> {formData.minimumDetectableEffect}%</div>
