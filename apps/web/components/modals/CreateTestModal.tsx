@@ -143,25 +143,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     ];
   };
 
-  // Dynamic industries based on user profile
-  const getIndustries = () => {
-    if (userProfile?.onboarding?.selectedIndustries?.length) {
-      return userProfile.onboarding.selectedIndustries;
-    }
-    // Fallback to comprehensive list
-    return [
-      'SaaS',
-      'E-commerce',
-      'Healthcare',
-      'FinTech',
-      'Manufacturing',
-      'Education',
-      'Real Estate',
-      'Travel',
-      'Media',
-      'Retail',
-    ];
-  };
+
 
   const primaryMetrics = [
     { value: 'conversion_rate', label: 'Conversion Rate' },
@@ -228,7 +210,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
     const elementTypeLower = elementType.toLowerCase();
 
     switch (elementTypeLower) {
-      case 'headline':
+      case 'headline': {
         const headlines = scanData.elements.headlines;
         if (headlines.length > 0) {
           // Get the main H1 first, or the first available headline
@@ -236,8 +218,9 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           return mainHeadline.text.trim();
         }
         return 'Main Headline';
+      }
       case 'button':
-      case 'button text':
+      case 'button text': {
         const buttons = scanData.elements.buttons;
         if (buttons.length > 0) {
           // Prioritize CTA buttons, then navigation, then any button
@@ -251,10 +234,11 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           return ctaButton.text.trim();
         }
         return 'Click Here';
+      }
       case 'description':
         // Use the page description or meta description from scan
         return scanData.description?.trim() || scanData.title?.trim() + ' - improve your experience' || 'Page description content';
-      case 'image':
+      case 'image': {
         const images = scanData.elements.images;
         if (images.length > 0) {
           // Get the first image with meaningful alt text
@@ -262,6 +246,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           return meaningfulImage.alt?.trim() || 'Hero image';
         }
         return 'Main image';
+      }
       default:
         return `Original ${elementTypeLower} content`;
     }
@@ -538,12 +523,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
       setError(`Failed to generate AI variants: ${err instanceof Error ? err.message : 'Unknown error'}. Falling back to basic variants.`);
 
       // Fallback to mock generation if AI fails
-      console.log('Falling back to mock variant generation...');
-      const fallbackOriginalContent = getOriginalContentFromScan(selectedElementType, scanResult) || getOriginalContent(selectedElementType);
-      const variantStrings = generateElementVariants(selectedElementType, fallbackOriginalContent);
+              console.log('Falling back to mock variant generation...');
+        const fallbackOriginalContent = getOriginalContentFromScan(selectedElementType, scanResult) || getOriginalContent(selectedElementType);
+        const variantStrings = generateElementVariants(selectedElementType, fallbackOriginalContent);
 
-      // Convert strings to proper variant objects
-      const mockAdditionalVariants = variantStrings.slice(0, 2).map((variantText, index) => {
+                // Convert strings to proper variant objects
+        const mockAdditionalVariants = variantStrings.slice(0, 2).map((variantText, index) => {
         const nextLetter = String.fromCharCode(67 + index); // C, D, etc.
         return {
           id: `variant_${Date.now()}_${index}`,
@@ -554,7 +539,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
           originalContent: fallbackOriginalContent,
           modifiedContent: variantText,
         };
-      });
+        });
 
       const mockGeneratedVariants = {
         control: {
@@ -1016,7 +1001,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({
                           suggestion.description.toLowerCase().includes(type.toLowerCase())
                         );
                       })
-                      .map(suggestion => (
+                      .map((suggestion) => (
                       <div
                         key={suggestion.id}
                         className={`p-4 rounded-lg border cursor-pointer transition-all ${
